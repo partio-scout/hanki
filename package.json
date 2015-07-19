@@ -1,0 +1,32 @@
+{
+  "name": "fj16_hankinta_backend",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "jshint ."
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "dependencies": {
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "errorhandler": "^1.1.1",
+    "loopback": "^2.14.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-datasource-juggler": "^2.19.0",
+    "loopback-connector-postgresql": "^2.2.0",
+    "serve-favicon": "^2.0.1"
+  },
+  "optionalDependencies": {
+    "loopback-explorer": "^1.1.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.5.6"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "description": "fj16_hankinta_backend"
+}
