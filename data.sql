@@ -10,4 +10,4 @@ INSERT INTO purchaseuser (name,phone,email,enlistment,user_section) VALUES ('Pek
 INSERT INTO purchaseuser (name,phone,email,enlistment,user_section) VALUES ('Kaisa Controller','123','kaisa@controll.er','Controller','Palvelut');
 INSERT INTO purchaseuser (name,phone,email,enlistment,user_section) VALUES ('Heidi Hankkija','123','heidi@hankki.ja','Hankkija','Palvelut');
 INSERT INTO usageobject (name,master,controller,provider) VALUES ('Leiriostot',2,3,4);
-INSERT INTO purchaseorder (name,master,controller,provider) VALUES ('Leirin tavarat',1,1,1);
+INSERT INTO purchaseorder (name,costcenter_id,usageobject_id,subscriber) VALUES ('Leirin tavarat',1,1,1);

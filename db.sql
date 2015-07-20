@@ -268,3 +268,83 @@ REFERENCES public.title (title_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+ALTER SEQUENCE account_account_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY account.account_id;
+  
+ALTER SEQUENCE costcenter_costcenter_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY costcenter.costcenter_id;
+  
+ALTER SEQUENCE delivery_delivery_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY delivery.delivery_id;
+  
+ALTER SEQUENCE purchaseorder_order_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY purchaseorder.order_id;
+  
+ALTER SEQUENCE purchaseorderrow_order_row_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY purchaseorderrow.order_row_id;
+  
+ALTER SEQUENCE purchaseuser_user_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY purchaseuser.user_id;
+  
+ALTER SEQUENCE supplier_supplier_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY supplier.supplier_id;
+  
+ALTER SEQUENCE title_title_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY title.title_id;
+  
+ALTER SEQUENCE titlegroup_titlegroup_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY titlegroup.titlegroup_id;
+  
+ALTER SEQUENCE usageobject_usageobject_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1
+  OWNED BY usageobject.usageobject_id;
