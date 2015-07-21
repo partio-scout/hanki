@@ -22,7 +22,9 @@
     "loopback-explorer": "^1.1.0"
   },
   "devDependencies": {
-    "jshint": "^2.5.6"
+    "jshint": "^2.5.6",
+    "mocha": "^2.2.5",
+    "supertest": "^1.0.1"
   },
   "repository": {
     "type": "",
