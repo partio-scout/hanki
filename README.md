@@ -14,7 +14,7 @@ In the repository, install dependencies by running:
 
     npm install
 
-Create the database "fj16-procurement" and a PostgreSQL user "fj16-procurement" with a black password:
+Create the database "fj16_procurement" and a PostgreSQL user "fj16_procurement" with a black password:
 
     $ psql template1
     template1=# CREATE DATABASE fj16_procurement;
