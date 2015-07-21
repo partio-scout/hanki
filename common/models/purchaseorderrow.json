@@ -302,7 +302,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "title": {
+      "type": "belongsTo",
+      "model": "Title",
+      "foreignKey": "titleId"
+    },
+	"delivery": {
+      "type": "belongsTo",
+      "model": "Delivery",
+      "foreignKey": "deliveryId"
+    },
+	"Order": {
+      "type": "belongsTo",
+      "model": "Purchaseorder",
+      "foreignKey": "orderId"
+    }
+  },
   "acls": [],
   "methods": []
 }

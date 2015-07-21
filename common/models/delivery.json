@@ -98,7 +98,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "order_rows": {
+      "type": "hasMany",
+      "model": "Purchaseorderrow",
+      "foreignKey": "deliveryId"
+    }
+  },
   "acls": [],
   "methods": []
 }

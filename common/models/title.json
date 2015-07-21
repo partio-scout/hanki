@@ -287,7 +287,28 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+	"titlegroup": {
+      "type": "belongsTo",
+      "model": "Titlegroup",
+      "foreignKey": "titlegroupId"
+    },
+	"supplier": {
+      "type": "belongsTo",
+      "model": "Supplier",
+      "foreignKey": "supplierId"
+    },
+	"order_rows": {
+      "type": "hasMany",
+      "model": "Purchaseorderrow",
+      "foreignKey": "titleId"
+    }
+  },
   "acls": [],
   "methods": []
 }

@@ -65,7 +65,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+	"titles": {
+      "type": "hasMany",
+      "model": "Title",
+      "foreignKey": "accountId"
+    }
+  },
   "acls": [],
   "methods": []
 }

@@ -98,7 +98,29 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "order_rows": {
+      "type": "hasMany",
+      "model": "Purchaseorderrow",
+      "foreignKey": "Purchaseorder"
+    },
+	"costcenter": {
+      "type": "belongsTo",
+      "model": "Costcenter",
+      "foreignKey": "costcenterId"
+    },
+	"subscriber": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "subscriber"
+    }
+	,
+	"usageobject": {
+      "type": "belongsTo",
+      "model": "Usageobject",
+      "foreignKey": "usageobjectId"
+    }
+  },
   "acls": [],
   "methods": []
 }
