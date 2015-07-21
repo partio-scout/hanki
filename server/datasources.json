@@ -2,9 +2,9 @@
   "db": {
     "host": "127.0.0.1",
     "port": 5432,
-    "database": "postgres",
-    "username": "postgres",
-    "password": "root",
+    "database": "fj16-procurement",
+    "username": "fj16-procurement",
+    "password": "",
     "name": "db",
     "connector": "postgresql"
   }
