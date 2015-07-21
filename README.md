@@ -14,13 +14,19 @@ In the repository, install dependencies by running:
 
     npm install
 
-Create the database "fj16_procurement" and a PostgreSQL user "fj16_procurement" with a black password:
+Make sure your local PostgreSQL installation is running, and connect to it using:
 
-    $ psql template1
-    template1=# CREATE DATABASE fj16_procurement;
-    template1=# CREATE USER fj16_procurement WITH PASSWORD '';
-    template1=# GRANT ALL PRIVILEGES ON DATABASE fj16_procurement to fj16_procurement;
-    template1=# \q
+    psql template1 postgres
+    
+While connected to PostgreSQL, create the database "fj16_procurement" and a PostgreSQL user "fj16_procurement" with a black password:
+
+    CREATE DATABASE fj16_procurement;
+    CREATE USER fj16_procurement WITH PASSWORD '';
+    GRANT ALL PRIVILEGES ON DATABASE fj16_procurement to fj16_procurement;
+
+Close the connection by typing:
+
+    \q
 
 Import db.sql and data.sql to the database:
 
