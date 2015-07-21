@@ -2,8 +2,8 @@
   "db": {
     "host": "127.0.0.1",
     "port": 5432,
-    "database": "ubuntu",
-    "username": "circle_test",
+    "database": "circle_test",
+    "username": "ubuntu",
     "password": "",
     "name": "db",
     "connector": "postgresql"
