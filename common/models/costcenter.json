@@ -49,12 +49,25 @@
   },
   "validations": [],
   "relations": {
-	"orders": {
+    "orders": {
       "type": "hasMany",
       "model": "Purchaseorder",
       "foreignKey": "costcenterId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }

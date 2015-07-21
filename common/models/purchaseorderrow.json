@@ -308,17 +308,30 @@
       "model": "Title",
       "foreignKey": "titleId"
     },
-	"delivery": {
+    "delivery": {
       "type": "belongsTo",
       "model": "Delivery",
       "foreignKey": "deliveryId"
     },
-	"Order": {
+    "Order": {
       "type": "belongsTo",
       "model": "Purchaseorder",
       "foreignKey": "orderId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }

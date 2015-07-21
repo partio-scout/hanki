@@ -104,23 +104,35 @@
       "model": "Purchaseorderrow",
       "foreignKey": "Purchaseorder"
     },
-	"costcenter": {
+    "costcenter": {
       "type": "belongsTo",
       "model": "Costcenter",
       "foreignKey": "costcenterId"
     },
-	"subscriber": {
+    "subscriber": {
       "type": "belongsTo",
       "model": "Purchaseuser",
       "foreignKey": "subscriber"
-    }
-	,
-	"usageobject": {
+    },
+    "usageobject": {
       "type": "belongsTo",
       "model": "Usageobject",
       "foreignKey": "usageobjectId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }

@@ -105,23 +105,35 @@
       "model": "Purchaseorder",
       "foreignKey": "usageobjectId"
     },
-	"master": {
+    "master": {
       "type": "belongsTo",
       "model": "Purchaseuser",
       "foreignKey": "master"
     },
-	"controller": {
+    "controller": {
       "type": "belongsTo",
       "model": "Purchaseuser",
       "foreignKey": "controller"
-    }
-	,
-	"provider": {
+    },
+    "provider": {
       "type": "belongsTo",
       "model": "Purchaseuser",
       "foreignKey": "provider"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }

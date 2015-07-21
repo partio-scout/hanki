@@ -293,22 +293,35 @@
       "model": "Account",
       "foreignKey": "accountId"
     },
-	"titlegroup": {
+    "titlegroup": {
       "type": "belongsTo",
       "model": "Titlegroup",
       "foreignKey": "titlegroupId"
     },
-	"supplier": {
+    "supplier": {
       "type": "belongsTo",
       "model": "Supplier",
       "foreignKey": "supplierId"
     },
-	"order_rows": {
+    "order_rows": {
       "type": "hasMany",
       "model": "Purchaseorderrow",
       "foreignKey": "titleId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }
