@@ -30,7 +30,7 @@
     },
     "description": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": 255,
       "precision": null,
       "scale": null,
@@ -40,7 +40,7 @@
         "dataLength": 255,
         "dataPrecision": null,
         "dataScale": null,
-        "nullable": "NO"
+        "nullable": "YES"
       },
       "_selectable": false,
       "comments": "kuvaus"
