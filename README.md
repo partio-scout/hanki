@@ -18,10 +18,10 @@ Make sure your local PostgreSQL installation is running, and connect to it using
 
     psql template1 postgres
     
-While connected to PostgreSQL, create the database "fj16_procurement" and a PostgreSQL user "fj16_procurement" with a black password:
+While connected to PostgreSQL, create the database "fj16_procurement" and a PostgreSQL user "fj16_procurement" with "root" as password:
 
     CREATE DATABASE fj16_procurement;
-    CREATE USER fj16_procurement WITH PASSWORD '';
+    CREATE USER fj16_procurement WITH PASSWORD 'root';
     GRANT ALL PRIVILEGES ON DATABASE fj16_procurement to fj16_procurement;
 
 Close the connection by typing:
