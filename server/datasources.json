@@ -4,7 +4,7 @@
     "port": 5432,
     "database": "fj16_procurement",
     "username": "fj16_procurement",
-    "password": "",
+    "password": "root",
     "name": "db",
     "connector": "postgresql"
   }
