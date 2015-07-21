@@ -15,3 +15,20 @@ describe('Server', function() {
       .end(done);
   });
 });
+
+describe('Accounts', function() {
+  it('should initially contain two Account objects', function(done) {
+    app.models.Account.find({ }, function(err, res) {
+      expect(res).to.have.length(2);
+      done();
+    });
+  });
+});
+
+describe('REST API', function() {
+  it('should decline access to Accounts for unauthenticated users', function(done) {
+    request(app).get('/api/Accounts')
+      .expect(401)
+      .end(done);
+  });
+});
