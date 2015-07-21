@@ -65,12 +65,25 @@
   },
   "validations": [],
   "relations": {
-	"titles": {
+    "titles": {
       "type": "hasMany",
       "model": "Title",
       "foreignKey": "titlegroupId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": []
 }
