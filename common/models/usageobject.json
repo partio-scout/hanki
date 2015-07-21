@@ -99,7 +99,29 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "orders": {
+      "type": "hasMany",
+      "model": "Purchaseorder",
+      "foreignKey": "usageobjectId"
+    },
+	"master": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "master"
+    },
+	"controller": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "controller"
+    }
+	,
+	"provider": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "provider"
+    }
+  },
   "acls": [],
   "methods": []
 }

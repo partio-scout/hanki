@@ -133,7 +133,29 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "orders": {
+      "type": "hasMany",
+      "model": "Purchaseorder",
+      "foreignKey": "subscriber"
+    },
+	"usageobjects_master": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "master"
+    },
+	"usageobjects_controller": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "controller"
+    }
+	,
+	"usageobjects_provider": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "provider"
+    }
+  },
   "acls": [],
   "methods": []
 }

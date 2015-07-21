@@ -48,7 +48,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+	"orders": {
+      "type": "hasMany",
+      "model": "Purchaseorder",
+      "foreignKey": "costcenterId"
+    }
+  },
   "acls": [],
   "methods": []
 }
