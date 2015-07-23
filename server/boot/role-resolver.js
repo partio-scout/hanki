@@ -1,7 +1,6 @@
 module.exports = function(app) {
 	var Role = app.models.Role;
 	var User = app.models.User;
-	var RoleMapping = app.models.RoleMapping;
 
 	// create roles if they don't already exist
 
