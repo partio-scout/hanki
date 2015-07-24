@@ -6,10 +6,9 @@ module.exports = function(app) {
 
 	// create orderer role
 	Role.findOrCreate({
-		where: {id: '1'}
+		where: {name: 'orderer'}
 	},
 	{
-		id: 1,
 		name: 'orderer'
 	}, function(err, role) {
 		if(err) throw err;
@@ -17,10 +16,9 @@ module.exports = function(app) {
 
 	// create approver role
 	Role.findOrCreate({
-		where: {id: '2'}
+		where: {name: 'approver'}
 	},
 	{
-		id: 2,
 		name: 'approver'
 	}, function(err, role) {
 		if(err) throw err;
@@ -28,10 +26,9 @@ module.exports = function(app) {
 
 	// create controller role
 	Role.findOrCreate({
-		where: {id: '3'}
+		where: {name: 'controller'}
 	},
 	{
-		id: 3,
 		name: 'controller'
 	}, function(err, role) {
 		if(err) throw err;
@@ -39,10 +36,9 @@ module.exports = function(app) {
 
 	// create procurementMaster role
 	Role.findOrCreate({
-		where: {id: '4'}
+		where: {name: 'procurementMaster'}
 	},
 	{
-		id: 4,
 		name: 'procurementMaster'
 	}, function(err, role) {
 		if(err) throw err;
@@ -50,10 +46,9 @@ module.exports = function(app) {
 
 	// create procurementAdmin role
 	Role.findOrCreate({
-		where: {id: '5'}
+		where: {name: 'procurementAdmin'}
 	},
 	{
-		id: 5,
 		name: 'procurementAdmin'
 	}, function(err, role) {
 		if(err) throw err;
