@@ -1,6 +1,35 @@
 module.exports = function(app) {
 	var Role = app.models.Role;
 	var User = app.models.User;
+	var RoleMapping = app.models.RoleMapping;
+
+	// create default admin user
+	User.findOrCreate({
+		where: {username: 'admin'}
+	},
+	{
+		username: 'admin', 
+		email: 'admin@foo.fi', 
+		password: 'admin'
+	}, function(err, user) {
+		if (err) throw err;
+
+		Role.findOrCreate({
+			where: {name: 'admin'}
+		},
+		{
+			name: 'admin'
+		}, function(err, role) {
+			if(err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
+	});
 
 	// create roles if they don't already exist
 
