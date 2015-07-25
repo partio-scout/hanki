@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var Promise = require('bluebird');
 
 describe('User control', function() {
+  /*
   describe('decline access for unauthenticated users', function() {
     it('should decline access to Accounts for unauthenticated users', function(done) {
       request(app).get('/api/Accounts')
@@ -66,8 +67,8 @@ describe('User control', function() {
         .end(done);
     });
   });
+*/
 
-/*
   describe('Orderer', function() {
     var User = app.models.User;
     var Role = app.models.Role;
@@ -81,85 +82,93 @@ describe('User control', function() {
     function createTestUser(username, userpass) {
       return new Promise(function (resolve, reject) {
         // create dummy user for testing
-        User.findOrCreate({
-          where: {email: username}
-        },
-        {
-          email: username,
-          password: userpass
-        }, function(err, user) {
-          if(err) throw err; 
-          resolve(user); 
+        console.log("ASD");
+        User.findOrCreate(
+          {
+            where: {email: username}
+          },
+          {
+            email: username,
+            password: userpass
+          }, function(err, user) {
+            if(err) reject(err);
+            console.log("Dummy user created! (or it already existed...)");
+            resolve(user); 
         });
       });
     }
 
     function assignRoleToUser(user) {
       return new Promise(function (resolve, reject) {
-        Role.findOne({
+        console.log("Role assingment!!");
+        return Role.findOne({
           where: {name: 'orderer'}
         }, function(err, role) {
           if(err) throw err;
-          role.principals.create({
+          return role.principals.create({
             principalType: RoleMapping.USER,
             principalId: user.id
           }, function(err, principal) {
             if(err) throw err;
-            resolve(user);
+            resolve();
           });
         });
       });
     }
 
-    function loginUser(user) {
+    function loginUser(username, userpass) {
       return new Promise(function (resolve, reject) {
         // log in as orderer
-        User.login({
+        console.log("User login attempt");
+        return User.login({
           email: username,
           password: userpass
         }, function(err, accessToken) {
           if(err) throw err;
-          return resolve(accessToken, user);
+          console.log("Some token here: " + accessToken.id);
+          resolve(accessToken);
         });
       });
     }
 
-    function doTests(accessToken, user) {
-      return new Promise(function (resolve, reject) {
-        // do actual tests here, because we need that accesstoken
-        it('should allow to get orderlines', function(done) {
-          request(app).get('/api/Purchaseorderrows')
-            .expect(200)
-            .end(done);
-        });
-
-        // finally resolve promise
-        resolve(accessToken, user);
+    // do some testing with authenticated users
+    it('should be allowed to get orderlines', function(done) {
+      loginUser(username, userpass)
+      .then(function(accessToken) {
+        console.log("Token: " + accessToken.id);
+        request(app).get("/api/Purchaseorderrows?access_token=" + accessToken.id)
+        .expect(200)
+        .end(done);
       });
-    }
+      
+    });
+    /*
+    it('should be allowed to get ordes', function(done) {
+      request(app).get('/api/Purchaseorders?access_token=' + accessToken)
+        .expect(200)
+        .end(done);
+    });
+    */
 
-    function logoutUser(accessToken, user) {
+    function logoutUser(accessToken) {
       return new Promise(function (resolve, reject) {
         // logout user
         User.logout(accessToken.id, function(err) {
+          if (err) throw err;
         });
-        return resolve(user);
+        resolve();
       });
     }
 
-    function deleteUser(user) {
-      User.destroyById(user.id, function(err) {
+    function deleteUser(username) {
+      User.destroyAll({email: username}, function(err) {
         if(err) throw err;
       });
     }
-
+/*
     createTestUser(username, userpass)
     .then(assignRoleToUser)
-    .then(loginUser(username, userpass))
-    .then(doTests)
-    .then(logoutUser)
-    .then(deleteUser);
-    
-  });
 */
+  });
+
 });
