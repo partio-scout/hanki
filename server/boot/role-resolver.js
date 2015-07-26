@@ -2,25 +2,23 @@ module.exports = function(app) {
 	var Role = app.models.Role;
 	var User = app.models.User;
 	var RoleMapping = app.models.RoleMapping;
+	
 
-	// create default admin user
-	User.findOrCreate({
-		where: {username: 'admin'}
+	// create roles if they don't already exist and assign default user to each role
+
+	// create admin role
+	Role.findOrCreate({
+		where: {name: 'admin'}
 	},
 	{
-		username: 'admin', 
-		email: 'admin@foo.fi', 
-		password: 'admin'
-	}, function(err, user) {
-		if (err) throw err;
+		name: 'admin'
+	}, function(err, role) {
+		if(err) throw err;
 
-		Role.findOrCreate({
-			where: {name: 'admin'}
-		},
-		{
-			name: 'admin'
-		}, function(err, role) {
-			if(err) throw err;
+		User.find({
+			where: {username: 'admin'}
+		}, function(err, user) {
+			if (err) throw err;
 
 			role.principals.create({
 				principalType: RoleMapping.USER,
@@ -31,8 +29,6 @@ module.exports = function(app) {
 		});
 	});
 
-	// create roles if they don't already exist
-
 	// create orderer role
 	Role.findOrCreate({
 		where: {name: 'orderer'}
@@ -41,6 +37,19 @@ module.exports = function(app) {
 		name: 'orderer'
 	}, function(err, role) {
 		if(err) throw err;
+
+		User.find({
+			where: {username: 'orderer'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
 	});
 
 	// create approver role
@@ -51,6 +60,19 @@ module.exports = function(app) {
 		name: 'approver'
 	}, function(err, role) {
 		if(err) throw err;
+
+		User.find({
+			where: {username: 'approver'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
 	});
 
 	// create controller role
@@ -61,6 +83,19 @@ module.exports = function(app) {
 		name: 'controller'
 	}, function(err, role) {
 		if(err) throw err;
+
+		User.find({
+			where: {username: 'approver'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
 	});
 
 	// create procurementMaster role
@@ -71,6 +106,19 @@ module.exports = function(app) {
 		name: 'procurementMaster'
 	}, function(err, role) {
 		if(err) throw err;
+
+		User.find({
+			where: {username: 'procurementMaster'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
 	});
 
 	// create procurementAdmin role
@@ -81,5 +129,41 @@ module.exports = function(app) {
 		name: 'procurementAdmin'
 	}, function(err, role) {
 		if(err) throw err;
+
+		User.find({
+			where: {username: 'procurementAdmin'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
+	});
+
+	// create provider role
+	Role.findOrCreate({
+		where: {name: 'provider'}
+	},
+	{
+		name: 'provider'
+	}, function(err, role) {
+		if(err) throw err;
+
+		User.find({
+			where: {username: 'provider'}
+		}, function(err, user) {
+			if (err) throw err;
+
+			role.principals.create({
+				principalType: RoleMapping.USER,
+				principalId: user.id
+			}, function(err, principal) {
+				if(err) throw err;
+			});
+		});
 	});
 };

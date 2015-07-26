@@ -12,3 +12,37 @@ INSERT INTO title (title_id,name,titlegroup_id,unit,price_without_tax,vat_percen
 	(2,'Naulat 30mm', 1, 'Kg', 3.5, 22, 4,1,1,'supplier_titlecode HERE'),
 	(3,'Vaneri', 2, 'm', 3.5, 22, 4,1,1,'supplier_titlecode HERE'),
 	(4,'2x4" raakapuu', 2, 'm', 3.5, 22, 4,1,1,'supplier_titlecode HERE');
+
+/* Insert users 
+	default password is 'salasana'
+*/
+INSERT INTO "user" VALUES (NULL, 'admin', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'admin@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO "user" VALUES (NULL, 'master', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'master@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO "user" VALUES (NULL, 'controller', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'controller@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3);
+INSERT INTO "user" VALUES (NULL, 'provider', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'provider@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4);
+INSERT INTO "user" VALUES (NULL, 'orderer', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'orderer@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5);
+INSERT INTO "user" VALUES (NULL, 'approver', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'approver@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6);
+INSERT INTO "user" VALUES (NULL, 'procurementAdmin', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'procurementAdmin@foo.fi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7);
+
+/* Insert roles *//*
+INSERT INTO role VALUES (1, 'admin', NULL, '2015-07-26 13:40:15+03', '2015-07-26 13:40:15+03');
+INSERT INTO role VALUES (2, 'procurementMaster', NULL, '2015-07-26 13:40:14.994+03', '2015-07-26 13:40:14.994+03');
+INSERT INTO role VALUES (3, 'controller', NULL, '2015-07-26 13:40:14.993+03', '2015-07-26 13:40:14.993+03');
+INSERT INTO role VALUES (4, 'provider', NULL, '2015-07-26 13:40:15.023+03', '2015-07-26 13:40:15.023+03');
+INSERT INTO role VALUES (5, 'orderer', NULL, '2015-07-26 13:40:15.023+03', '2015-07-26 13:40:15.023+03');
+INSERT INTO role VALUES (6, 'approver', NULL, '2015-07-26 13:40:14.987+03', '2015-07-26 13:40:14.987+03');
+INSERT INTO role VALUES (7, 'procurementAdmin', NULL, '2015-07-26 13:40:15.002+03', '2015-07-26 13:40:15.002+03');
+*/
+
+/* Do rolemapping *//*
+INSERT INTO rolemapping VALUES (1, 'USER', '1', 1);
+INSERT INTO rolemapping VALUES (2, 'USER', '2', 2);
+INSERT INTO rolemapping VALUES (3, 'USER', '3', 3);
+INSERT INTO rolemapping VALUES (4, 'USER', '4', 4);
+INSERT INTO rolemapping VALUES (5, 'USER', '5', 5);
+INSERT INTO rolemapping VALUES (6, 'USER', '6', 6);
+INSERT INTO rolemapping VALUES (7, 'USER', '7', 7);
+*/
+
+/* Insert usageobjects */
+INSERT INTO usageobject (usageobject_id,name,master,controller,provider) VALUES (1,'Käyttökohde',2,3,4);
