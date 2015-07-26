@@ -3,7 +3,7 @@ module.exports = function(app) {
 	var User = app.models.User;
 	var RoleMapping = app.models.RoleMapping;
 	
-
+	/*
 	// create roles if they don't already exist and assign default user to each role
 
 	// create admin role
@@ -166,4 +166,5 @@ module.exports = function(app) {
 			});
 		});
 	});
+	*/
 };
