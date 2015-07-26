@@ -3,7 +3,6 @@ TRUNCATE titlegroup CASCADE;
 TRUNCATE supplier CASCADE;
 TRUNCATE delivery CASCADE;
 TRUNCATE costcenter CASCADE;
-TRUNCATE purchaseuser CASCADE;
 TRUNCATE usageobject CASCADE;
 TRUNCATE purchaseorder CASCADE;
 TRUNCATE purchaseorderrow CASCADE;

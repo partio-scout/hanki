@@ -63,6 +63,9 @@ CREATE TABLE "user"
   status character varying(1024),
   created timestamp with time zone,
   lastupdated timestamp with time zone,
+  phone VARCHAR(255),
+  enlistment VARCHAR(255),
+  user_section VARCHAR(255),
   id serial NOT NULL,
   CONSTRAINT user_pkey PRIMARY KEY (id)
 )
@@ -135,17 +138,6 @@ CREATE TABLE public.costcenter (
                 CONSTRAINT costcenter_pk PRIMARY KEY (costcenter_id)
 );
 
-CREATE TABLE public.purchaseuser (
-                user_id SERIAL NOT NULL,
-                name VARCHAR(255) NOT NULL,
-				phone VARCHAR(255) NOT NULL,
-				email VARCHAR(255) NOT NULL,
-				enlistment VARCHAR(255) NOT NULL,
-				user_section VARCHAR(255),
-				last_login TIMESTAMP,
-                CONSTRAINT purchaseuser_pk PRIMARY KEY (user_id)
-);
-
 CREATE TABLE public.usageobject (
                 usageobject_id SERIAL NOT NULL,
                 name VARCHAR(255) NOT NULL,
@@ -206,30 +198,30 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_purchaseuser_master_fk
+ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_user_master_fk
 FOREIGN KEY (master)
-REFERENCES public.purchaseuser (user_id)
+REFERENCES public.user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_purchaseuser_controller_fk
+ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_user_controller_fk
 FOREIGN KEY (controller)
-REFERENCES public.purchaseuser (user_id)
+REFERENCES public.user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_purchaseuser_provider_fk
+ALTER TABLE public.usageobject ADD CONSTRAINT usageobject_user_provider_fk
 FOREIGN KEY (provider)
-REFERENCES public.purchaseuser (user_id)
+REFERENCES public.user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.purchaseorder ADD CONSTRAINT purchaseorder_purchaseuser_fk
+ALTER TABLE public.purchaseorder ADD CONSTRAINT purchaseorder_user_fk
 FOREIGN KEY (subscriber)
-REFERENCES public.purchaseuser (user_id)
+REFERENCES public.user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -308,14 +300,6 @@ ALTER SEQUENCE purchaseorderrow_order_row_id_seq
   START 1
   CACHE 1
   OWNED BY purchaseorderrow.order_row_id;
-  
-ALTER SEQUENCE purchaseuser_user_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1
-  OWNED BY purchaseuser.user_id;
   
 ALTER SEQUENCE supplier_supplier_id_seq
   INCREMENT 1

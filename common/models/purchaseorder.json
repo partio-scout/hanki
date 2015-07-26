@@ -111,7 +111,7 @@
     },
     "subscriber": {
       "type": "belongsTo",
-      "model": "Purchaseuser",
+      "model": "User",
       "foreignKey": "subscriber"
     },
     "usageobject": {

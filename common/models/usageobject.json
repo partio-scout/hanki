@@ -107,17 +107,17 @@
     },
     "master": {
       "type": "belongsTo",
-      "model": "Purchaseuser",
+      "model": "User",
       "foreignKey": "master"
     },
     "controller": {
       "type": "belongsTo",
-      "model": "Purchaseuser",
+      "model": "User",
       "foreignKey": "controller"
     },
     "provider": {
       "type": "belongsTo",
-      "model": "Purchaseuser",
+      "model": "User",
       "foreignKey": "provider"
     }
   },

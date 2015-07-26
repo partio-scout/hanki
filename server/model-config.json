@@ -50,12 +50,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "Purchaseuser": {
-    "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
   "Delivery": {
     "dataSource": "db",
     "public": true,

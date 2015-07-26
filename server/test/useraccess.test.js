@@ -37,12 +37,6 @@ describe('User control', function() {
         .end(done);
     });
 
-    it('should decline access to Purchaseusers for unauthenticated users', function(done) {
-      request(app).get('/api/Purchaseusers')
-        .expect(401)
-        .end(done);
-    });
-
     it('should decline access to Suppliers for unauthenticated users', function(done) {
       request(app).get('/api/Suppliers')
         .expect(401)
@@ -136,7 +130,7 @@ describe('User control', function() {
       loginUser(username, userpass)
       .then(function(accessToken) {
         console.log("Token: " + accessToken.id);
-        request(app).get("/api/Purchaseorderrows?access_token=" + accessToken.id)
+        request(app).get("/api/Purchaseorders?access_token=" + accessToken.id)
         .expect(200)
         .end(done);
       });
