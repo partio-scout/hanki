@@ -157,6 +157,13 @@
       "principalType": "ROLE",
       "principalId": "procurementAdmin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "orderer",
+      "permission": "ALLOW",
+      "property": "create"
     }
   ],
   "methods": []

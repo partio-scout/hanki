@@ -151,12 +151,20 @@ describe('Orderer', function() {
         .end(done);
       }); 
     });
-/*
+/* This is still failing
     it('create new Purchaseorder', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        request(app).post
-      })
-    });*/
+        request(app).post("/api/Purchaseorders?access_token=" + accessToken.id)
+        .send({
+          "usageobjectId": 1,
+          "name": "Paljon nauloja",
+          "costcenterId": 1
+        })
+        .expect(200)
+        .end(done);
+      });
+    });
+*/
   });
 });
