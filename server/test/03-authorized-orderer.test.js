@@ -8,49 +8,9 @@ var Promise = require('bluebird');
 
 describe('Orderer', function() {
   var User = app.models.User;
-  var Role = app.models.Role;
-  var RoleMapping = app.models.RoleMapping;
 
   var username = 'orderer';
   var userpass = 'salasana';
-  var userid;
-  var UserAccesstoken;
-
-  function createTestUser(username, userpass) {
-    return new Promise(function (resolve, reject) {
-      // create dummy user for testing
-      User.findOrCreate(
-        {
-          where: {username: username}
-        },
-        {
-          username: username,
-          password: userpass
-        }, function(err, user) {
-          if(err) reject(err);
-          //console.log("Dummy user created! (or it already existed...)");
-          resolve(user); 
-      });
-    });
-  }
-
-  function assignRoleToUser(user) {
-    return new Promise(function (resolve, reject) {
-      //console.log("Role assingment!!");
-      return Role.findOne({
-        where: {name: 'orderer'}
-      }, function(err, role) {
-        if(err) throw err;
-        return role.principals.create({
-          principalType: RoleMapping.USER,
-          principalId: user.id
-        }, function(err, principal) {
-          if(err) throw err;
-          resolve();
-        });
-      });
-    });
-  }
 
   function loginUser(username, userpass) {
     return new Promise(function (resolve, reject) {
@@ -151,7 +111,7 @@ describe('Orderer', function() {
         .end(done);
       }); 
     });
-/* This is still failing
+
     it('create new Purchaseorder', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
@@ -159,12 +119,13 @@ describe('Orderer', function() {
         .send({
           "usageobjectId": 1,
           "name": "Paljon nauloja",
-          "costcenterId": 1
+          "costcenterId": 1,
+          "subscriber": accessToken.userId
         })
         .expect(200)
         .end(done);
       });
     });
-*/
+
   });
 });

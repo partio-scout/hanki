@@ -28,7 +28,7 @@ module.exports = function(app) {
 			});
 		});
 	});
-
+*/
 	// create orderer role
 	Role.findOrCreate({
 		where: {name: 'orderer'}
@@ -38,8 +38,13 @@ module.exports = function(app) {
 	}, function(err, role) {
 		if(err) throw err;
 
-		User.find({
-			where: {username: 'orderer'}
+		User.findOrCreate({
+			where: {username: 'testi'}
+		},
+		{
+			username: 'testi',
+			email: 'testi@foo.fi',
+			password: 'salasana'
 		}, function(err, user) {
 			if (err) throw err;
 
@@ -48,10 +53,11 @@ module.exports = function(app) {
 				principalId: user.id
 			}, function(err, principal) {
 				if(err) throw err;
+				console.log("Rolemapping done");
 			});
 		});
 	});
-
+/*
 	// create approver role
 	Role.findOrCreate({
 		where: {name: 'approver'}

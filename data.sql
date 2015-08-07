@@ -35,13 +35,13 @@ INSERT INTO role VALUES (7, 'procurementAdmin', NULL, '2015-07-26 13:40:15.002+0
 
 
 /* Do rolemapping */
-INSERT INTO rolemapping VALUES (1, 'USER', '1', 1);
-INSERT INTO rolemapping VALUES (2, 'USER', '2', 2);
-INSERT INTO rolemapping VALUES (3, 'USER', '3', 3);
-INSERT INTO rolemapping VALUES (4, 'USER', '4', 4);
-INSERT INTO rolemapping VALUES (5, 'USER', '5', 5);
-INSERT INTO rolemapping VALUES (6, 'USER', '6', 6);
-INSERT INTO rolemapping VALUES (7, 'USER', '7', 7);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '1', 1);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '2', 2);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '3', 3);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '4', 4);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '5', 5);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '6', 6);
+INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '7', 7);
 
 
 /* Insert usageobjects */
