@@ -1,12 +1,23 @@
 module.exports = function(Title) {
     Title.DataImport = function(csv,cb){
+        // var Promise = require('promise');
         var loopback = require('loopback');
         var app = require('../../server/server');
         var Titlegroup = app.models.Titlegroup;
+        var async = require('async');
+        // var myTitlegroupexists = Promise.denodeify(Titlegroup.exists);
+
+        // var promise1 = new Promise(function(resolve,reject){
+        //     Titlegroup.exists(object.titlegroupId, function(err, bool){
+        //         if (err) reject(err);
+        //         else resolve(bool);
+        //     });
+        // });
+
 
         function csvJSON(csv){
-        // console.log(typeof csv);
-          var lines=csv.split("\\n");
+        // console.log(csv);
+          var lines = csv.split("\\n");
         //   console.log(lines[0]);
         //  console.log(lines);
           var result = [];
@@ -20,34 +31,51 @@ module.exports = function(Title) {
         	  }
         	  result.push(obj);
           }
+        //   console.log(result);
           return result; //JavaScript object
         //   return JSON.stringify(result); //JSON
         }
-        var ehto;
+        // console.log(csv);
         var result = csvJSON(csv);
+        console.log(result);
 
 
-        // tarkistetaan tietojen oikeellisuus ja lisätään objekti kantaan
-        for (var i=0;i<result.length;i++) {
-        //    console.log(result[i].titlegroupId);
-            (function(index) {
-                Titlegroup.exists(result[index].titlegroupId,function(err, bool) {
-                    if (!bool) result[index].titlegroupId = 0;
-                    Title.create(result[index], function(err,object){
-                        if (err) cb(err);
-
+        function CheckResults(object){
+            async.parallel([
+                function(callback) {
+                    Titlegroup.exists(object.titlegroupId, function(err, bool) {
+                        callback(null, bool);
                     });
-                });
-            })(i);
-                // result[i].titlegroupId = 0;
+                }
 
+            ],
+            function(err, array) {
+                // console.log(array);
+                console.log('Täällä mennään');
+                if (!array[0]) object.titlegroupId = 0;
+                // console.log('täällä ollaan', object);
+                Title.create(object, function(err,object) {
+                                if (err) cb(err);
+                                // else console.log(object);
+                            });
 
+            });
         }
 
-        //console.log(JSON.stringify(result));
-        cb(null);
+        async.each(result, CheckResults, function(err) {
+            console.log('Päästiin tänne');
+            if (err) console.log(err);
+            else {
+                // Title.destroyAll(function(err){});
+                console.log('Täälläkin mennään');
+
+                cb(null,result);
+            }
+        });
+        // console.log(result);
+
     };
-//};
+
 
 
     Title.remoteMethod(
