@@ -102,7 +102,7 @@
     "order_rows": {
       "type": "hasMany",
       "model": "Purchaseorderrow",
-      "foreignKey": "Purchaseorder"
+      "foreignKey": "orderId"
     },
     "costcenter": {
       "type": "belongsTo",
