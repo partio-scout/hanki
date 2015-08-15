@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "pretest": "./testsetup.sh && jshint .",
+    "pretest": "jshint . && ./testsetup.sh",
     "test": "NODE_ENV='test' mocha -R spec server/test"
   },
   "engines": {
