@@ -1,19 +1,10 @@
 module.exports = function(Title) {
     Title.DataImport = function(csv,cb){
-        // var Promise = require('promise');
+        var Q = require('q');
         var loopback = require('loopback');
         var app = require('../../server/server');
         var Titlegroup = app.models.Titlegroup;
-        var async = require('async');
-        // var myTitlegroupexists = Promise.denodeify(Titlegroup.exists);
-
-        // var promise1 = new Promise(function(resolve,reject){
-        //     Titlegroup.exists(object.titlegroupId, function(err, bool){
-        //         if (err) reject(err);
-        //         else resolve(bool);
-        //     });
-        // });
-
+        // var async = require('async');
 
         function csvJSON(csv){
         // console.log(csv);
@@ -31,53 +22,36 @@ module.exports = function(Title) {
         	  }
         	  result.push(obj);
           }
-        //   console.log(result);
           return result; //JavaScript object
         //   return JSON.stringify(result); //JSON
         }
-        // console.log(csv);
+
+
         var result = csvJSON(csv);
         console.log(result);
 
+        //promise-viritelmä alkaa
+        var Titlegroup_exists = Q.denodeify(Titlegroup.exists);
+        console.log('täällä');
+        var Title_create = Q.denodeify(Title.create);
+        console.log('täälläkin');
+        for (var i = 0; i < result.length; i++){
+            console.log(result[i].titlegroupId);
+            Titlegroup_exists(result[i].titlegroupId)
+            .then(function(bool){
+                console.log(bool);
+                if (!bool) result[i].titlegroupId = 0;
+            }, null)
+            .then(Title_create(result).then(function(result){
+                console.log('melkein valmis');
+                cb(null, result);
+            }, function(err){
+                    console.log(err);
+                    cb(err,null);
+                })
+        );
 
-        function CheckResults(object){
-            async.parallel([
-                function(callback) {
-                    Titlegroup.exists(object.titlegroupId, function(err, bool) {
-                        callback(null, bool);
-                    });
-                }
-
-            ],
-            function(err, array) {
-                // console.log(array);
-                console.log('Täällä mennään');
-                if (!array[0]) object.titlegroupId = 0;
-                // console.log('täällä ollaan', object);
-                Title.create(object, function(err,object) {
-                                if (err) cb(err);
-                                // else console.log(object);
-                            });
-
-            });
-        }
-
-        async.each(result, CheckResults, function(err) {
-            console.log('Päästiin tänne');
-            if (err) console.log(err);
-            else {
-                // Title.destroyAll(function(err){});
-                console.log('Täälläkin mennään');
-
-                cb(null,result);
-            }
-        });
-        // console.log(result);
-
-    };
-
-
-
+    }
     Title.remoteMethod(
         'DataImport',
         {
