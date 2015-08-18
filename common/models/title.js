@@ -112,7 +112,11 @@ module.exports = function(Title) {
                             cb(err);
                     });
         }
-
+        function isReady(index,len){
+            index++;
+            console.log(index);
+            if (index == len) cb(null,'Tuotteesi on lisätty tietokantaan.');
+        }
 
         var result = csvJSON(csv);
         console.log(result);
@@ -120,15 +124,8 @@ module.exports = function(Title) {
         var index = 0;
 
         for (var i = 0; i < len; i++){
-            checkTitle(result[i],index)
-            .then(function(bool){
-                // console.log(bool);
-                index++;
-                console.log(index);
-                if (index == len) cb(null,'Tuotteesi on lisätty tietokantaan.');
-            })
-
-
+            checkTitle(result[i],index,len)
+            .then(isReady(index,len));
         }
     };
 
