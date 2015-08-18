@@ -42,7 +42,7 @@ module.exports = function(Title) {
                         }
                         else resolve(false);
                     }
-                })
+                });
             });
         }
         function account_exists(obj){
@@ -58,7 +58,7 @@ module.exports = function(Title) {
                         }
                         else resolve(false);
                     }
-                })
+                });
             });
         }
         function supplier_exists(obj){
@@ -74,7 +74,7 @@ module.exports = function(Title) {
                         }
                         else resolve(false);
                     }
-                })
+                });
             });
         }
         function title_create(obj){
@@ -88,7 +88,7 @@ module.exports = function(Title) {
                         // console.log(obj);
                         resolve(true);
                     }
-                })
+                });
             });
         }
         function checkTitle(obj){
@@ -104,13 +104,13 @@ module.exports = function(Title) {
                             }, function(err){
                                 console.log('1',err);
                                 cb(err);
-                            })
+                            });
                         // console.log(array);
                         // return true;
                     }, function(err){
                             console.log('2',err);
                             cb(err);
-                    })
+                    });
         }
 
 
@@ -119,18 +119,18 @@ module.exports = function(Title) {
         var len = result.length;
         var index = 0;
 
-        for (var i = 0; i < len; i++){;
+        for (var i = 0; i < len; i++){
             checkTitle(result[i],index)
             .then(function(bool){
                 // console.log(bool);
-                index++
+                index++;
                 console.log(index);
                 if (index == len) cb(null,'Tuotteesi on lisätty tietokantaan.');
             })
 
 
-        };
-    }
+        }
+    };
 
     Title.remoteMethod(
         'DataImport',
