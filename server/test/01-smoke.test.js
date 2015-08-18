@@ -24,11 +24,3 @@ describe('Accounts', function() {
     });
   });
 });
-
-describe('REST API', function() {
-  it('should decline access to Accounts for unauthenticated users', function(done) {
-    request(app).get('/api/Accounts')
-      .expect(401)
-      .end(done);
-  });
-});

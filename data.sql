@@ -46,3 +46,13 @@ INSERT INTO rolemapping (principaltype, principalid, roleid) VALUES ('USER', '7'
 
 /* Insert usageobjects */
 INSERT INTO usageobject (usageobject_id,name,master,controller,provider) VALUES (1,'Käyttökohde',2,3,4);
+
+/* Insert purchase orders */
+/* 1 - owned by controller */
+INSERT INTO purchaseorder (usageobject_id,name,costcenter_id,subscriber) VALUES (1, 'Tornin materiaalit - controller', 1, 3);
+/* 2 - owned by orderer */
+INSERT INTO purchaseorder (usageobject_id,name,costcenter_id,subscriber) VALUES (1, 'Tanssilava - orderer', 1, 5);
+
+/* Insert purchaseorderrows */
+/* for order #2 (orderer) */
+INSERT INTO purchaseorderrow (title_id, amount, delivery_id, order_id, self_supply, modified, approved) VALUES (1, 2, 1, 2, 'false', '2015-07-26 13:40:15.002+03', 'false');

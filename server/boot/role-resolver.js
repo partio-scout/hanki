@@ -28,7 +28,6 @@ module.exports = function(app) {
 			});
 		});
 	});
-*/
 	// create orderer role
 	Role.findOrCreate({
 		where: {name: 'orderer'}
@@ -57,7 +56,7 @@ module.exports = function(app) {
 			});
 		});
 	});
-/*
+
 	// create approver role
 	Role.findOrCreate({
 		where: {name: 'approver'}
