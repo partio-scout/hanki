@@ -2,7 +2,6 @@
 
 var app = require('../server');
 var request = require('supertest');
-var assert = require('assert');
 var expect = require('chai').expect;
 
 describe('Server', function() {
@@ -10,7 +9,7 @@ describe('Server', function() {
     request(app).get('/')
       .expect(200)
       .expect(function(res) {
-      	expect(res.body.started).to.be.a('string');
+        expect(res.body.started).to.be.a('string');
       })
       .end(done);
   });
@@ -20,6 +19,7 @@ describe('Accounts', function() {
   it('should initially contain two Account objects', function(done) {
     app.models.Account.find({ }, function(err, res) {
       expect(res).to.have.length(2);
+      expect(err).to.be.null;
       done();
     });
   });
