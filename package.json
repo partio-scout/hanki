@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "pretest": "jshint .",
+    "pretest": "eslint .",
     "test": "mocha -R spec server/test"
   },
   "engines": {
@@ -24,7 +24,8 @@
   },
   "devDependencies": {
     "chai": "^3.2.0",
-    "jshint": "^2.5.6",
+    "eslint": "^1.2.0",
+    "eslint-plugin-react": "^3.2.3",
     "mocha": "^2.2.5",
     "supertest": "^1.0.1"
   },
