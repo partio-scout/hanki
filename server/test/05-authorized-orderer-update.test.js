@@ -1,11 +1,10 @@
+// temporarily disabled
+/*
 var app = require('../server');
 var request = require('supertest');
 var assert = require('assert');
 var expect = require('chai').expect;
 var Promise = require('bluebird');
-
-// temporarily disabled
-/*
 
 describe('Orderer', function() {
   var User = app.models.User;

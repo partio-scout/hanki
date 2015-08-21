@@ -11,12 +11,12 @@ module.exports = function(app) {
 
   // (2) This is how you can add a "relationship" to the built-in User model via boot script
   var Purchaseorder = app.models.Purchaseorder;
-  User.hasMany(Purchaseorder, {as: 'Purchaseorders', foreignKey: 'subscriber'});
+  User.hasMany(Purchaseorder, { as: 'Purchaseorders', foreignKey: 'subscriber' });
 
   var Usageobject = app.models.Usageobject;
-  User.hasMany(Usageobject, {as: 'Usagebjects', foreignKey: 'master'});
-  User.hasMany(Usageobject, {as: 'Usagebjects', foreignKey: 'controller'});
-  User.hasMany(Usageobject, {as: 'Usagebjects', foreignKey: 'provider'});
+  User.hasMany(Usageobject, { as: 'Usagebjects', foreignKey: 'master' });
+  User.hasMany(Usageobject, { as: 'Usagebjects', foreignKey: 'controller' });
+  User.hasMany(Usageobject, { as: 'Usagebjects', foreignKey: 'provider' });
 
   // (3) This is how you can add "remote methods" to the built-in User model via boot script
   // (3a) either

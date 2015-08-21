@@ -52,6 +52,5 @@ module.exports = function(app) {
     name: 'procurementAdmin'
   }, function(err, role) {
     if (err) throw err;
-  });
+  });*/
 };
-*/

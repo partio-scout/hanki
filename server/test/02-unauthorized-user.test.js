@@ -1,10 +1,9 @@
 var app = require('../server');
 var request = require('supertest');
-var assert = require('assert');
-var expect = require('chai').expect;
+//var assert = require('assert');
+//var expect = require('chai').expect;
 
 describe('Unauthenticated user', function() {
-
   it('should not be able to access Accounts', function(done) {
     request(app).get('/api/Accounts')
       .expect(401)

@@ -1,14 +1,11 @@
 var app = require('../server');
 var request = require('supertest');
-var assert = require('assert');
-var expect = require('chai').expect;
+//var assert = require('assert');
+//var expect = require('chai').expect;
 var Promise = require('bluebird');
-
-
 
 describe('Orderer', function() {
   var User = app.models.User;
-
   var username = 'orderer';
   var userpass = 'salasana';
 
@@ -19,7 +16,7 @@ describe('Orderer', function() {
         username: username,
         password: userpass
       }, function(err, accessToken) {
-        if(err) throw err;
+        if (err) throw err;
 
         resolve(accessToken);
       });
@@ -30,12 +27,12 @@ describe('Orderer', function() {
     it('Purchaseorder', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        request(app).post("/api/Purchaseorders?access_token=" + accessToken.id)
+        request(app).post('/api/Purchaseorders?access_token=' + accessToken.id)
         .send({
-          "usageobjectId": 1,
-          "name": "Paljon nauloja",
-          "costcenterId": 1,
-          "subscriber": accessToken.userId
+          'usageobjectId': 1,
+          'name': 'Paljon nauloja',
+          'costcenterId': 1,
+          'subscriber': accessToken.userId
         })
         .expect(200)
         .end(done);
@@ -46,16 +43,16 @@ describe('Orderer', function() {
       loginUser(username,  userpass)
       .then(function(accessToken) {
         d = new Date().toISOString();
-        request(app).post("/api/Purchaseorderrows?access_token=" + accessToken.id)
+        request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
         .send({
-          "titleId": 1,
-          "amount": 16,
-          "deliveryId": 1,
-          "orderId": 3,
-          "selfSupply": false,
-          "approved": false,
-          "finished": false,
-          "modified": d
+          'titleId': 1,
+          'amount': 16,
+          'deliveryId': 1,
+          'orderId': 3,
+          'selfSupply': false,
+          'approved': false,
+          'finished': false,
+          'modified': d
         })
         .expect(200)
         .end(done);
