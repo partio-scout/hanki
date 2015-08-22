@@ -11,7 +11,7 @@ var LoginPage = React.createClass({
     return (
       <Row>
         <Col>
-          <h3>TERVETULOA!</h3>
+          <h3>TERVETULOA!!!</h3>
           <p>Lorem ipsum dolor sit amet</p>
           <ButtonToolbar>
             <Button
