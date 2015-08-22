@@ -5,3 +5,8 @@ database:
   override:
     - psql circle_test ubuntu < db.sql
     - psql circle_test ubuntu < data.sql
+deployment:
+  demo:
+    branch: master
+    heroku:
+      appname: fj16-procurement-demo
