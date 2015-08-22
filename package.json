@@ -19,7 +19,7 @@
     "loopback-connector-postgresql": "^2.2.0",
     "serve-favicon": "^2.0.1",
     "bluebird": "~2.9.34",
-    "csv-parse": "~1.0.0"
+    "csv-parse": "~1.0.0",
     "alt": "0.16.4",
     "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.5",
