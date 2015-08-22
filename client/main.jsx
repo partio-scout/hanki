@@ -25,8 +25,8 @@ var App = React.createClass({
   }
 });
 
-var LoginPage = require('./LoginPage');
-var MyPurchaseOrders = require('./MyPurchaseOrders');
+var LoginPage = require('./LoginPage.jsx');
+var MyPurchaseOrders = require('./MyPurchaseOrders.jsx');
 
 var routes = (
   <Route handler={ App } path="/">

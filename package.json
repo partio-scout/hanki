@@ -4,7 +4,9 @@
   "main": "server/server.js",
   "scripts": {
     "pretest": "./testsetup.sh && eslint .",
-    "test": "NODE_ENV=test mocha -R spec server/test"
+    "test": "NODE_ENV=test mocha -R spec server/test",
+    "postinstall": "npm run deploy",
+    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
   },
   "engines": {
     "node": "0.12.x"
@@ -25,7 +27,8 @@
     "react": "0.13.3",
     "react-router": "^0.13.3",
     "react-router-bootstrap": "^0.18.0",
-    "uglify-js": "2.4.17"
+    "uglify-js": "2.4.17",
+    "webpack": "^1.8.5"
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
@@ -48,7 +51,6 @@
     "sass-loader": "^1.0.3",
     "style-loader": "^0.10.2",
     "url-loader": "^0.5.6",
-    "webpack": "^1.8.5",
     "webpack-dev-server": "^1.8.0"
   },
   "repository": {
