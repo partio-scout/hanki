@@ -49,7 +49,7 @@ module.exports = function(Title) {
             return Q.Promise(function(resolve,reject){
                 Account.exists(obj.accountId, function(err, bool){
                     if (err) {
-                        reject(new Error("account_exists" + new Error (err)));
+                        reject(new Error("account_exists " + new Error (err)));
                     }
                     else {
                         if (!bool) {
@@ -65,7 +65,7 @@ module.exports = function(Title) {
             return Q.Promise(function(resolve,reject){
                 Supplier.exists(obj.supplierId, function(err, bool){
                     if (err) {
-                        reject(new Error("supplier_exists" + new Error (err)));
+                        reject(new Error("supplier_exists " + new Error (err)));
                     }
                     else {
                         if (!bool) {
@@ -82,7 +82,7 @@ module.exports = function(Title) {
                 Title.create(obj, function(err, obj){
                     if (err) {
                         console.log(obj);
-                        reject(new Error("title_create" + new Error (err)));
+                        reject(new Error("title_create " + new Error (err)));
                     }
                     else {
                         // console.log(obj);
@@ -100,19 +100,19 @@ module.exports = function(Title) {
                     .then(function(array){
                         title_create(obj)
                             .then(function(obj){
-                                return true;
+                                return;
                             }, function(err){
                                 console.log('1',err);
-                                cb(err);
+                                cb(err,null);
                             });
                         // console.log(array);
                         // return true;
                     }, function(err){
                             console.log('2',err);
-                            cb(err);
+                            cb(err,null);
                     });
         }
-        function isReady(index,len){
+        function isReady(){
             index++;
             console.log(index);
             if (index == len) cb(null,'Tuotteesi on lisätty tietokantaan.');
@@ -124,8 +124,9 @@ module.exports = function(Title) {
         var index = 0;
 
         for (var i = 0; i < len; i++){
-            checkTitle(result[i],index,len)
-            .then(isReady(index,len));
+            checkTitle(result[i])
+            .then(isReady());
+
         }
     };
 
