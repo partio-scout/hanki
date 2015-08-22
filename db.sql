@@ -94,14 +94,14 @@ CREATE TABLE public.title (
 CREATE TABLE public.titlegroup (
                 titlegroup_id SERIAL NOT NULL,
                 name VARCHAR(255) NOT NULL,
-				description VARCHAR(255) NOT NULL,
+				description VARCHAR(255),
                 CONSTRAINT titlegroup_pk PRIMARY KEY (titlegroup_id)
 );
 
 CREATE TABLE public.account (
                 account_id SERIAL NOT NULL,
                 name VARCHAR(255) NOT NULL,
-				description VARCHAR(255) NOT NULL,
+				description VARCHAR(255),
                 CONSTRAINT account_pk PRIMARY KEY (account_id)
 );
 
