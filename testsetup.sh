@@ -6,7 +6,7 @@ dbname="fj16_procurement_test"
 echo "Using database '"$dbname"'."
 echo
 
-command="psql template1 postgres"
+command="psql template1 fj16_procurement_test"
 
 # Drop all other connections expect this one
 # This is needed to be able to drop existing database without problems where someone is still using it
@@ -19,8 +19,6 @@ $command -c "SELECT pg_terminate_backend(pg_stat_activity.pid)
 
 $command -c "DROP DATABASE IF EXISTS "$dbname";"
 $command -c "CREATE DATABASE "$dbname";"
-$command -c "CREATE USER "$dbuser" WITH PASSWORD 'root';"
-$command -c "GRANT ALL PRIVILEGES ON DATABASE "$dbname" TO "$dbuser";"
 
 command="psql "$dbname" "$dbuser""
 
