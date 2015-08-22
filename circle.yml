@@ -1,6 +1,6 @@
 machine:
   environment:
-    NODE_ENV: ci
+    NODE_ENV: test
 database:
   override:
     - psql circle_test ubuntu < db.sql
