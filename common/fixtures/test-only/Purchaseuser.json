@@ -1,0 +1,30 @@
+[
+  {
+  	"name": "Teuvo Tilaaja",
+  	"phone": "050 2345678",
+  	"email": "teuvo@tilaa.ja",
+  	"enlistment": "Ostaja",
+  	"userSection": "Palvelut"
+  },
+  {
+  	"name": "Pekka Päällikkö",
+  	"phone": "040 3456789",
+  	"email": "pekka.paallikko@roihu2016.fi",
+  	"enlistment": "Päällikkö",
+  	"userSection": "Palvelut"
+  },
+  {
+  	"name": "Kaisa Controller",
+  	"phone": "045 13457709",
+  	"email": "kaisa.controller@roihu2016.fi",
+  	"enlistment": "Controller",
+  	"userSection": "Palvelut"
+  },
+  {
+  	"name": "Heidi Hankkija",
+  	"phone": "041 79396930",
+  	"email": "heidi.hankkija@roihu2016.fi",
+  	"enlistment": "Hankkija",
+  	"userSection": "Palvelut"
+  }
+]
