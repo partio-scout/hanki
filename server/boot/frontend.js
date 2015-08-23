@@ -5,10 +5,9 @@ module.exports = function(server) {
   var publicPath = path.resolve(__dirname, '../../public');
   server.use(loopback.static(publicPath));
 
-  var isProduction = process.env.NODE_ENV === 'production';
-  var isTest = process.env.NODE_ENV === 'test';
+  var isDev = process.env.NODE_ENV === 'dev';
 
-  if (!isProduction && !isTest) {
+  if (isDev) {
     var httpProxy = require('http-proxy');
     var proxy = httpProxy.createProxyServer({
       changeOrigin: true,

@@ -22,8 +22,8 @@ $command -c "CREATE DATABASE "$dbname";"
 
 command="psql "$dbname" "$dbuser""
 
-$command -f db.sql
-$command -f data.sql
+node server/migrate/create-schema.js
+node server/migrate/create-test-fixtures.js
 
 #c='export NODE_ENV="testing"'
 #$c
