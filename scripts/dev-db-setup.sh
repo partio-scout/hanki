@@ -10,8 +10,8 @@ command="psql template1 "$dbuser""
 $command -c "CREATE USER fj16_procurement WITH PASSWORD 'root';"
 $command -c "ALTER USER fj16_procurement CREATEDB;"
 psql template1 fj16_procurement -c "CREATE DATABASE fj16_procurement;"
-psql fj16_procurement fj16_procurement < ../db.sql
-psql fj16_procurement fj16_procurement < ../data.sql
+node ../server/migrate/create-schema.js
+node ../server/migrate/create-test-fixtures.js
 
 # Create test database
 $command -c "CREATE USER fj16_procurement_test WITH PASSWORD 'root';"
