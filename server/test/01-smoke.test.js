@@ -16,7 +16,7 @@ describe('Server', function() {
 });
 
 describe('Accounts', function() {
-  it('should initially contain two Account objects', function(done) {
+  it('should initially contain three Account objects', function(done) {
     app.models.Account.find({ }, function(err, res) {
       expect(res).to.have.length(3);
       expect(err).to.be.null;

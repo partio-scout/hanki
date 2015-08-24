@@ -14,3 +14,4 @@ INSERT INTO purchaseuser (name,phone,email,enlistment,user_section) VALUES ('Kai
 INSERT INTO purchaseuser (name,phone,email,enlistment,user_section) VALUES ('Heidi Hankkija','123','heidi@hankki.ja','Hankkija','Palvelut');
 INSERT INTO usageobject (name,master,controller,provider) VALUES ('Leiriostot',2,3,4);
 INSERT INTO purchaseorder (name,costcenter_id,usageobject_id,subscriber) VALUES ('Leirin tavarat',1,1,1);
+INSERT INTO "user" VALUES (NULL, 'orderer', '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC', NULL, NULL, 'orderer@foo.fi', NULL, NULL, NULL, NULL, NULL, 5);
