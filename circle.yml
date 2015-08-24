@@ -3,5 +3,9 @@ machine:
     NODE_ENV: test
 database:
   override:
-    - psql circle_test ubuntu < db.sql
-    - psql circle_test ubuntu < data.sql
+    - echo "ubuntu" | ./scripts/dev-db-setup.sh
+deployment:
+  demo:
+    branch: master
+    heroku:
+      appname: fj16-procurement-demo

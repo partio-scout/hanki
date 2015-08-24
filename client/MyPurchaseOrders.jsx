@@ -6,8 +6,8 @@ var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrder = require('./PurchaseOrder');
-var PurchaseOrderLink = require('./PurchaseOrderLink');
+var PurchaseOrder = require('./PurchaseOrder.jsx');
+var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
 var MyPurchaseOrders = React.createClass({
   render: function () {

@@ -1,11 +1,9 @@
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'public', 'build');
-var mainPath = path.resolve(__dirname, 'client', 'main.js');
+var mainPath = path.resolve(__dirname, 'client', 'main.jsx');
 
 var config = {
-  // We change to normal source mapping, if you need them
-  devtool: 'source-map',
   entry: mainPath,
   output: {
     path: buildPath,
@@ -13,13 +11,22 @@ var config = {
   },
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.js$|\.jsx$/,
       loader: 'babel',
       exclude: [nodeModulesPath]
     },{
       test: /\.css$/,
       loader: 'style!css'
-    }]
+    },{
+      test: /\.scss$/,
+      loader: 'style!css!sass?outputStyle=expanded'
+    },
+    { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url?limit=10000&minetype=application/font-woff' },
+    { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,  loader: 'url?limit=10000&minetype=application/font-woff' },
+    { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=application/octet-stream' },
+    { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file' },
+    { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=image/svg+xml' }
+    ]
   }
 };
 

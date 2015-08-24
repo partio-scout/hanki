@@ -1,0 +1,7 @@
+[
+  { "id": "1", "name": "orderer" },
+  { "id": "2", "name": "approver" },
+  { "id": "3", "name": "controller" },
+  { "id": "4", "name": "procurementMaster" },
+  { "id": "5", "name": "procurementAdmin" }
+]
