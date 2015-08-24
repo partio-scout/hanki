@@ -9,37 +9,46 @@ var partioid = new SAML({
   cert: fs.readFileSync('./server/partioid-login/qaid.crt').toString()
 });
 
+function processError(req, res, err) {
+  res.status(500).send('Oho! Nyt tapahtui virhe. Jos tällaista tapahtuu uudelleen, ole yhteydessä digitaaliset.palvelut@roihu2016.fi. Sori! :(');
+}
+
 module.exports = function(app) {
 
   app.get('/saml/login', function(req, res) {
     partioid.getAuthorizeUrl(req, function(err, url) {
-      //TODO Handle error
-      res.redirect(url);
+      if (err) {
+        processError(req, res, err);
+      } else {
+        res.redirect(url);
+      }
     });
   });
 
   app.post('/auth/partioid', function(req, res) {
     partioid.validatePostResponse(req.body, function(err, samlResult) {
-      app.models.User.findOne({ email: samlResult.email }, function(err, user) {
-        if(err) {
-          res.send('Kirjautuminen epäonnistui tuntemattomasta syystä.')
-          console.error(err);
-        } else if(user === null) {
-          res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että Kuksassa on sama sähköpostiosoite kuin Hankissa.')
-        } else {
-          user.createAccessToken(60, function(err, accessToken) {
-            res.cookie('accessToken', accessToken);
-            res.cookie('email', user.email);
-            res.redirect('/');
-          });
-        }
-      });
-      /*
-        TODO:
-        - handle errors
-        - get user by email -> token to cookie
-          - handle user not found error
-      */
+      if (err) {
+        processError(req, res, err);
+      } else {
+        app.models.User.findOne({ email: samlResult.email }, function(err, user) {
+          if (err) {
+            res.send('Kirjautuminen epäonnistui tuntemattomasta syystä.');
+            console.error(err);
+          } else if (user === null) {
+            res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että Kuksassa on sama sähköpostiosoite kuin Hankissa.');
+          } else {
+            user.createAccessToken(60, function(err, accessToken) {
+              if (err) {
+                processError(req, res, err);
+              } else {
+                res.cookie('accessToken', accessToken);
+                res.cookie('email', user.email);
+                res.redirect('/');
+              }
+            });
+          }
+        });
+      }
     });
   });
 
