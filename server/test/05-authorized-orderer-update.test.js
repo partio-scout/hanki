@@ -1,3 +1,5 @@
+//disabled temporarily
+/*
 var app = require('../server');
 var request = require('supertest');
 //var assert = require('assert');
@@ -57,4 +59,4 @@ describe('Orderer', function() {
     });
   });
 });
-
+*/

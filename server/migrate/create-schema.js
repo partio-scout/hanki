@@ -14,13 +14,13 @@ var modelsToAutoMigrate = [
   'Supplier',
   'Delivery',
   'Costcenter',
-  'Purchaseuser',
   'Usageobject',
   'Purchaseorder',
   'Purchaseorderrow'
 ];
 
-db.automigrate(modelsToAutoMigrate, function() {
+db.automigrate(modelsToAutoMigrate, function(err) {
+  if (err) throw err;
   var roleFixtures = require('../../common/fixtures/all/Role.json');
   app.models.Role.create(roleFixtures, function(err, res) {
     console.log('Created default roles: ', err, res);
