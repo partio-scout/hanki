@@ -76,7 +76,7 @@ module.exports = function(Title) {
                   });
               });
         }
-        if (!csv) cb(null, 'Et antanut tietoa oikeassa muodossa!');
+        if (!csv) cb(null, 'Et antanut tietoa.');
         else {
           parseInput(csv, options)
             .each(function(obj){
