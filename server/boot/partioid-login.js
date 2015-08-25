@@ -1,16 +1,18 @@
 var fs = require('fs');
 var SAML = require('passport-saml').SAML;
 
-//TODO Support different envs
-var partioid = new SAML({
+//TODO Support production env too
+var conf = {
   path: '/auth/partioid',
-  issuer: 'http://localhost:3000',
+  issuer: process.env.PARTIOID_SP_ISSUER || 'http://localhost:3000',
   entryPoint: 'https://qaid.partio.fi/simplesaml/saml2/idp/SSOService.php',
   cert: fs.readFileSync('./server/partioid-login/qaid.crt').toString()
-});
+}
+var partioid = new SAML(conf);
 
 function processError(req, res, err) {
   res.status(500).send('Oho! Nyt tapahtui virhe. Jos tällaista tapahtuu uudelleen, ole yhteydessä digitaaliset.palvelut@roihu2016.fi. Sori! :(');
+  console.error(err);
 }
 
 module.exports = function(app) {
