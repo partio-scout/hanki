@@ -11,4 +11,4 @@ deployment:
       appname: fj16-procurement-demo
 test:
   pre:
-    - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
+    - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
