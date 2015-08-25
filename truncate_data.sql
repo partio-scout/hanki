@@ -1,9 +1,0 @@
-TRUNCATE account CASCADE;
-TRUNCATE titlegroup CASCADE;
-TRUNCATE supplier CASCADE;
-TRUNCATE delivery CASCADE;
-TRUNCATE costcenter CASCADE;
-TRUNCATE usageobject CASCADE;
-TRUNCATE purchaseorder CASCADE;
-TRUNCATE purchaseorderrow CASCADE;
-TRUNCATE title CASCADE;

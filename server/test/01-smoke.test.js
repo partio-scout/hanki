@@ -6,7 +6,7 @@ var expect = require('chai').expect;
 
 describe('Server', function() {
   it('should start up', function(done) {
-    request(app).get('/')
+    request(app).get('/status')
       .expect(200)
       .expect(function(res) {
         expect(res.body.started).to.be.a('string');

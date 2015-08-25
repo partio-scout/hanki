@@ -1,5 +1,5 @@
 {
-  "name": "Delivery",
+  "name": "Purchaseuser",
   "base": "PersistedModel",
   "idInjection": false,
   "options": {
@@ -7,10 +7,10 @@
   },
   "postgresql": {
     "schema": "public",
-    "table": "delivery"
+    "table": "purchaseuser"
   },
   "properties": {
-    "deliveryId": {
+    "userId": {
       "type": "Number",
       "id": true,
       "generated": true,
@@ -19,7 +19,7 @@
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "delivery_id",
+        "columnName": "user_id",
         "dataType": "integer",
         "dataLength": null,
         "dataPrecision": 32,
@@ -27,16 +27,17 @@
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "toimitusnumero"
+      "comments": "henkilönumero"
     },
-    "address": {
+    "name": {
       "type": "String",
       "required": true,
+      "index": true,
       "length": 255,
       "precision": null,
       "scale": null,
       "postgresql": {
-        "columnName": "address",
+        "columnName": "name",
         "dataType": "character varying",
         "dataLength": 255,
         "dataPrecision": null,
@@ -44,16 +45,16 @@
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "osoite"
+      "comments": "nimi"
     },
-    "description": {
+    "email": {
       "type": "String",
       "required": true,
       "length": 255,
       "precision": null,
       "scale": null,
       "postgresql": {
-        "columnName": "description",
+        "columnName": "email",
         "dataType": "character varying",
         "dataLength": 255,
         "dataPrecision": null,
@@ -61,82 +62,112 @@
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "kuvaus"
+      "comments": "sähköposti"
     },
-    "earliest": {
+    "phone": {
       "type": "String",
       "required": true,
-      "length": null,
+      "length": 255,
       "precision": null,
       "scale": null,
       "postgresql": {
-        "columnName": "earliest",
-        "dataType": "timestamp without time zone",
-        "dataLength": null,
+        "columnName": "phone",
+        "dataType": "character varying",
+        "dataLength": 255,
         "dataPrecision": null,
         "dataScale": null,
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "aikaisintaan"
+      "comments": "puhelinnumero"
     },
-    "latest": {
+    "lastLogin": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": null,
       "precision": null,
       "scale": null,
       "postgresql": {
-        "columnName": "latest",
+        "columnName": "last_login",
         "dataType": "timestamp without time zone",
         "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "viime kirjautuminen"
+    },
+    "enlistment": {
+      "type": "String",
+      "required": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "enlistment",
+        "dataType": "character varying",
+        "dataLength": 255,
         "dataPrecision": null,
         "dataScale": null,
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "viimeistään"
+      "comments": "pesti"
+    },
+    "userSection": {
+      "type": "String",
+      "required": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "user_section",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "osa-alue"
     }
   },
   "validations": [],
   "relations": {
-    "order_rows": {
+    "orders": {
       "type": "hasMany",
-      "model": "Purchaseorderrow",
-      "foreignKey": "deliveryId"
+      "model": "Purchaseorder",
+      "foreignKey": "subscriber"
+    },
+    "usageobjects_master": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "master"
+    },
+    "usageobjects_controller": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "controller"
+    },
+    "usageobjects_provider": {
+      "type": "hasMany",
+      "model": "Usageobject",
+      "foreignKey": "provider"
     }
   },
   "acls": [
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
       "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "find"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "procurementMaster",
       "permission": "ALLOW"
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "procurementAdmin",
-      "permission": "ALLOW"
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
     }
   ],
   "methods": []

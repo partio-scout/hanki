@@ -31,6 +31,7 @@
     "usageobjectId": {
       "type": "Number",
       "id": true,
+      "generated": true,
       "required": false,
       "length": null,
       "precision": 32,

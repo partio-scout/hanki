@@ -1,0 +1,11 @@
+machine:
+  environment:
+    NODE_ENV: test
+database:
+  override:
+    - echo "ubuntu" | ./scripts/dev-db-setup.sh
+deployment:
+  demo:
+    branch: master
+    heroku:
+      appname: fj16-procurement-demo
