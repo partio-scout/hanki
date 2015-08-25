@@ -7,7 +7,7 @@ var conf = {
   issuer: process.env.PARTIOID_SP_ISSUER || 'http://localhost:3000',
   entryPoint: 'https://qaid.partio.fi/simplesaml/saml2/idp/SSOService.php',
   cert: fs.readFileSync('./server/partioid-login/qaid.crt').toString()
-}
+};
 var partioid = new SAML(conf);
 
 function processError(req, res, err) {
