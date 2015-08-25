@@ -149,4 +149,28 @@ describe('Orderer', function() {
       });
     });
   });
+
+  describe('should not be allowed to', function() {
+    it('get all Purchaseorders', function(done) {
+      loginUser(username, userpass)
+      .then(function(accessToken) {
+        request(app)
+          .get('/api/Purchaseorders')
+          .query({ access_token: accessToken.id })
+          .expect(401)
+          .end(done);
+      });
+    });
+
+    it('get all Purchaseorderrows', function(done) {
+      loginUser(username, userpass)
+      .then(function(accessToken) {
+        request(app)
+          .get('/api/Purchaseorderrows')
+          .query({ access_token: accessToken.id })
+          .expect(401)
+          .end(done);
+      });
+    });
+  });
 });

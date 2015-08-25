@@ -1,9 +1,7 @@
-// temporarily disabled
-/*
 var app = require('../server');
 var request = require('supertest');
-var assert = require('assert');
-var expect = require('chai').expect;
+//var assert = require('assert');
+//var expect = require('chai').expect;
 var Promise = require('bluebird');
 
 describe('Orderer', function() {
@@ -19,7 +17,7 @@ describe('Orderer', function() {
         username: username,
         password: userpass
       }, function(err, accessToken) {
-        if(err) throw err;
+        if (err) throw err;
         resolve(accessToken);
       });
     });
@@ -29,16 +27,18 @@ describe('Orderer', function() {
     it('Purchaseorder', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        request(app).put("/api/Purchaseorders?access_token=" + accessToken.id)
-        .send({
-          "orderId": 2,
-          "usageobjectId": 1,
-          "name": "Liikaa nauloja",
-          "costcenterId": 1,
-          "subscriber": accessToken.userId
-        })
-        .expect(200)
-        .end(done);
+        request(app)
+          .put('/api/Users/' + accessToken.userId + '/Purchaseorders/2')
+          .query({ access_token: accessToken.id })
+          .send({
+            'orderId': 2,
+            'usageobjectId': 1,
+            'name': 'Liikaa nauloja',
+            'costcenterId': 1,
+            'subscriber': accessToken.userId
+          })
+          .expect(200,'')
+          .end(done);
       });
     });
 
@@ -46,10 +46,10 @@ describe('Orderer', function() {
       loginUser(username, userpass)
       .then(function(accessToken) {
         d = new Date().toISOString();
-        request(app).put("/api/Purchaseorderrows/1?access_token=" + accessToken.id)
+        request(app).put('/api/Purchaseorderrows/1?access_token=' + accessToken.id)
         .send({
-          "selfSupply": true,
-          "modified": d
+          'selfSupply': true,
+          'modified': d
         })
         .expect(200)
         .end(done);
@@ -57,4 +57,4 @@ describe('Orderer', function() {
     });
   });
 });
-*/
+
