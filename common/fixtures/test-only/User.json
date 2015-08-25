@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "username": "orderer",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "email": "orderer@foo.fi"
+  },
+  {
+    "id": 2,
+    "username": "approver",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "email": "approver@foo.fi"
+  },
+  {
+    "id": 3,
+    "username": "controller",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "email": "controller@foo.fi"
+  },
+  {
+  	"id": 4,
+  	"username": "procurementMaster",
+  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+  	"email": "procurementMaster@foo.fi"
+  },
+  {
+  	"id": 5,
+  	"username": "procurementAdmin",
+  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+  	"email": "procurementAdmin@foo.fi"
+  }
+]
