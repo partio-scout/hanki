@@ -1,4 +1,5 @@
 [
+  { "titlegroupId": 0, "name": "Tuntematon ryhmä", "description": "Tuoteryhmää ei tunneta"},
   { "name": "Rautatavara", "description": "Pultit ja mutterit" },
   { "name": "Puutavara", "description": "Laudat ja lankut" }
 ]

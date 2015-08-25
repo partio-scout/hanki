@@ -67,7 +67,8 @@ module.exports = function(Title) {
           return new Promise(function(resolve,reject){
                 Title.create(obj, function(err, obj){
                     if (err) {
-                      console.log(obj);
+                      console.log(obj.titleId);
+                      console.log(err);
                       reject(new Error(err));
                     } else {
                       resolve(true);
@@ -75,31 +76,32 @@ module.exports = function(Title) {
                   });
               });
         }
-
-        parseInput(csv, options)
-          .each(function(obj){
-                return Promise.all([
-                  titlegroup_exists(obj),
-                  account_exists(obj),
-                  supplier_exists(obj),
-                  obj])
-                    .then(function(array){
-                        title_create(obj)
-                            .then(function(obj){
-                              return;
-                            }, function(err){
-                                // console.log('1',err);
-                                cb(err,null);
-                              });
-                      }, function(err){
-                            // console.log('2',err);
-                            cb(err,null);
-                          });
-              })
-                .then(function(result) {
-                    cb(null, result);
-                  });
-
+        if (!csv) cb(null, 'Et antanut tietoa oikeassa muodossa!');
+        else {
+          parseInput(csv, options)
+            .each(function(obj){
+                  return Promise.all([
+                    titlegroup_exists(obj),
+                    account_exists(obj),
+                    supplier_exists(obj),
+                    obj])
+                      .then(function(array){
+                          title_create(obj)
+                              .then(function(obj){
+                                return;
+                              }, function(err){
+                                  // console.log('1',err);
+                                  cb(err,null);
+                                });
+                        }, function(err){
+                              // console.log('2',err);
+                              cb(err,null);
+                            });
+                })
+                  .then(function(result) {
+                      cb(null, result);
+                    });
+        }
       };
 
     Title.remoteMethod(

@@ -40,7 +40,7 @@
         "dataLength": null,
         "dataPrecision": 32,
         "dataScale": 0,
-        "nullable": "NO"
+        "nullable": "YES"
       },
       "_selectable": false,
       "comments": "nimikeryhmä"

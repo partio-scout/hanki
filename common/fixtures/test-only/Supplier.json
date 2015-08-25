@@ -1,5 +1,18 @@
 [
   {
+    "supplierId": 0,
+    "name": "Tuntematon toimittaja",
+    "address": "Toimituskatu 1",
+    "contactPerson": "Tero Toimittaja",
+    "phone": "050 1234567",
+    "email": "tero@toimitta.ja",
+    "customerNumber": "222",
+    "businessId": "Y-222-222",
+    "termsOfPayment": "Käteinen",
+    "termsOfDelivery": "Maksu ensin",
+    "methodOfDelivery": "Paikan päälle"
+  },
+  {
   	"name": "Tmi Toimittaja",
   	"address": "Toimituskatu 1",
   	"contactPerson": "Tero Toimittaja",
