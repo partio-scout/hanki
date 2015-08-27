@@ -39,7 +39,7 @@ module.exports = function(app) {
           } else if (user === null) {
             res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että Kuksassa on sama sähköpostiosoite kuin Hankissa.');
           } else {
-            user.createAccessToken(60, function(err, accessToken) {
+            user.createAccessToken(3600, function(err, accessToken) {
               if (err) {
                 processError(req, res, err);
               } else {
