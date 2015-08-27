@@ -10,7 +10,7 @@ var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Button = ReactBootstrap.Button;
 var Alert = ReactBootstrap.Alert;
 
-function getLoginPage(UserStore, UserActions) {
+function getHomePage(UserStore, UserActions) {
   return React.createClass({
     mixins: [ Navigation ],
 
@@ -72,4 +72,4 @@ function getLoginPage(UserStore, UserActions) {
   });
 };
 
-module.exports = getLoginPage;
+module.exports = getHomePage;

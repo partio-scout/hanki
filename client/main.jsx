@@ -20,7 +20,7 @@ var UserStore = require('./stores/UserStore')(alt, UserActions);
 // Setup main views
 
 var App = require('./components/AppComponent.jsx');
-var LoginPage = require('./components/LoginPage.jsx')(UserStore, UserActions);
+var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx');
 
 // Setup routes
@@ -33,8 +33,8 @@ var DefaultRoute = Router.DefaultRoute;
 
 var routes = (
   <Route handler={ App } path="/">
-    <DefaultRoute handler={ LoginPage } />
-    <Route name="login" path="login" handler={ LoginPage } />
+    <DefaultRoute handler={ HomePage } />
+    <Route name="login" path="login" handler={ HomePage } />
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
       <Route name="new_purchase_order" path="new" handler={ MyPurchaseOrders } />
     </Route>
