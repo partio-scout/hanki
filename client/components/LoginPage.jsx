@@ -1,6 +1,3 @@
-var UserStore = require('../stores/UserStore');
-var UserActions = require('../actions/UserActions');
-
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 
@@ -10,60 +7,64 @@ var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Button = ReactBootstrap.Button;
 var Alert = ReactBootstrap.Alert;
 
-var LoginPage = React.createClass({
-  getInitialState() {
-    return UserStore.getState();
-  },
+function getLoginPage(UserStore, UserActions) {
+  return React.createClass({
 
-  componentDidMount() {
-    UserStore.listen(this.onChange);
-    UserActions.fetchCurrentUser();
-  },
+    getInitialState() {
+      return UserStore.getState();
+    },
 
-  componentWillUnmount() {
-    UserStore.unlisten(this.onChange);
-  },
+    componentDidMount() {
+      UserStore.listen(this.onChange);
+      UserActions.fetchCurrentUser();
+    },
 
-  onChange(state) {
-    this.setState(state);
-  },
+    componentWillUnmount() {
+      UserStore.unlisten(this.onChange);
+    },
 
-  render: function () {
-    var homeView;
-    console.log(this.state);
-    if (this.state.currentUser === undefined) {
-      homeView = (
-        'Loading...'
-      );
-    } else if (this.state.currentUser === null) {
-      homeView = (
-        <ButtonToolbar>
-          <Button
-            href="/saml/login"
-            bsStyle='primary'
-            bsSize='large'>
-            Kirjaudu sisään Partio ID:llä
-          </Button>
-        </ButtonToolbar>
-      );
-    } else {
-      homeView = (
-        <Alert>
-          Moikka, { this.state.currentUser.email }!
-        </Alert>
+    onChange(state) {
+      this.setState(state);
+    },
+
+    render: function () {
+      var homeView;
+      console.log(this.state);
+      if (this.state.currentUser === undefined) {
+        homeView = (
+          'Loading...'
+        );
+      } else if (this.state.currentUser === null) {
+        homeView = (
+          <ButtonToolbar>
+            <Button
+              href="/saml/login"
+              bsStyle='primary'
+              bsSize='large'>
+              Kirjaudu sisään Partio ID:llä
+            </Button>
+          </ButtonToolbar>
+        );
+      } else {
+        homeView = (
+          <Alert>
+            Moikka, { this.state.currentUser.email }!
+          </Alert>
+        );
+      }
+
+      return (
+        <Row>
+          <Col>
+            <h3>HANKI</h3>
+            <p>Lorem ipsum dolor sit amet</p>
+            { homeView }
+          </Col>
+        </Row>
       );
     }
 
-    return (
-      <Row>
-        <Col>
-          <h3>HANKI</h3>
-          <p>Lorem ipsum dolor sit amet</p>
-          { homeView }
-        </Col>
-      </Row>
-    );
-  }
-});
+  });
+};
 
-module.exports = LoginPage;
+module.exports = getLoginPage;

@@ -1,5 +1,16 @@
 require('./styles.scss');
 
+var Cookie = require('js-cookie');
+var accessToken = Cookie.getJSON('accessToken');
+
+var request = require('superagent');
+var RestfulResource = require('./utils/rest.js')(request);
+var User = new RestfulResource('/api/User', accessToken);
+
+var alt = require('./alt');
+var UserActions = require('./actions/UserActions')(alt, User);
+var UserStore = require('./stores/UserStore')(alt, UserActions);
+
 var React = require('react');
 
 var Router = require('react-router');
@@ -25,7 +36,7 @@ var App = React.createClass({
   }
 });
 
-var LoginPage = require('./components/LoginPage.jsx');
+var LoginPage = require('./components/LoginPage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx');
 
 var routes = (
