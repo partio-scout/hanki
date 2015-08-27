@@ -1,6 +1,9 @@
 var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
 
+var Router = require('react-router');
+var Navigation = Router.Navigation;
+
+var ReactBootstrap = require('react-bootstrap');
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
@@ -9,6 +12,7 @@ var Alert = ReactBootstrap.Alert;
 
 function getLoginPage(UserStore, UserActions) {
   return React.createClass({
+    mixins: [ Navigation ],
 
     getInitialState() {
       return UserStore.getState();
@@ -45,6 +49,8 @@ function getLoginPage(UserStore, UserActions) {
           </ButtonToolbar>
         );
       } else {
+        // Redirect logged in users to My Purchase Orders page
+        this.replaceWith('my_purchase_orders');
         homeView = (
           <Alert>
             Moikka, { this.state.currentUser.email }!
