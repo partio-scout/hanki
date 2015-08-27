@@ -27,7 +27,7 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/auth/partioid', function(req, res) {
+  app.post('/saml/consume', function(req, res) {
     partioid.validatePostResponse(req.body, function(err, samlResult) {
       if (err) {
         processError(req, res, err);
