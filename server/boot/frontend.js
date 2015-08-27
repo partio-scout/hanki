@@ -30,5 +30,9 @@ module.exports = function(server) {
     proxy.on('error', function(e) {
       // Just catch it
     });
+
+    server.on('upgrade', function (req, socket, head) {
+      proxy.ws(req, socket, head);
+    });
   }
 };
