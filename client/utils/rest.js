@@ -4,15 +4,30 @@ function createRestfulResourceClass(request) {
   class RestfulResource {
     constructor(endpoint, accessToken) {
       this.endpoint = endpoint;
-      this.accessToken = accessToken;
+      this.accessToken = accessToken ? accessToken.id : null;
+      console.log(accessToken);
+    }
+
+    path(modifier) {
+      modifier = (modifier !== undefined) ? ('/' + modifier) : '';
+      return this.endpoint + modifier + '?access_token=' + this.accessToken;
+    }
+
+    _handleResponse(cb) {
+      return function(err, res) {
+        if(!err && res.status >= 400) {
+          err = {
+            message: 'Rest Error: ' + res.req.url + ' returned HTTP ' + res.status,
+            status: res.status
+          };
+        }
+        res = res.hasOwnProperty('body') ? res.body : res;
+        cb(err, res);
+      }
     }
 
     findById(id, cb) {
-      setTimeout(function() {
-        cb({
-          email: 'asdsad@jallu.rodeo'
-        });
-      }, 2000);
+      request.get(this.path(id)).end(this._handleResponse(cb));
     }
   }
 

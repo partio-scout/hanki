@@ -9,7 +9,7 @@ var accessToken = Cookie.getJSON('accessToken');
 
 var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
-var User = new RestfulResource('/api/User', accessToken);
+var User = new RestfulResource('/api/Users', accessToken);
 
 // Set up Flux Actions and Stores
 
