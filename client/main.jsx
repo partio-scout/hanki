@@ -11,9 +11,11 @@ var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Users', accessToken);
 
-// Set up Flux Actions and Stores
+// Set up Flux
 
-var alt = require('./alt');
+var Alt = require('alt');
+var alt = new Alt();
+
 var UserActions = require('./actions/UserActions')(alt, User);
 var UserStore = require('./stores/UserStore')(alt, UserActions);
 
@@ -46,6 +48,7 @@ Router.run(routes, function (Handler) {
 });
 
 // Check if current user is logged in
+
 if (accessToken && accessToken.userId) {
   UserActions.fetchCurrentUser(accessToken.userId);
 } else {
