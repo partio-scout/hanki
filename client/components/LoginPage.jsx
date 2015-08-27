@@ -1,3 +1,6 @@
+var UserStore = require('../stores/UserStore');
+var UserActions = require('../actions/UserActions');
+
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 
@@ -7,21 +10,32 @@ var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Button = ReactBootstrap.Button;
 var Alert = ReactBootstrap.Alert;
 
-// Yes, this is ugly - will fix later
-var Cookie = require('js-cookie');
-var accessToken = Cookie.getJSON('accessToken');
-var email = Cookie.getJSON('email');
-
 var LoginPage = React.createClass({
+  getInitialState() {
+    return UserStore.getState();
+  },
+
+  componentDidMount() {
+    UserStore.listen(this.onChange);
+    UserActions.fetchCurrentUser();
+  },
+
+  componentWillUnmount() {
+    UserStore.unlisten(this.onChange);
+  },
+
+  onChange(state) {
+    this.setState(state);
+  },
+
   render: function () {
     var homeView;
-    if (accessToken) {
+    console.log(this.state);
+    if (this.state.currentUser === undefined) {
       homeView = (
-        <Alert bsStyle="success">
-          Tervetuloa, { email }
-        </Alert>
+        'Loading...'
       );
-    } else {
+    } else if (this.state.currentUser === null) {
       homeView = (
         <ButtonToolbar>
           <Button
@@ -31,6 +45,12 @@ var LoginPage = React.createClass({
             Kirjaudu sisään Partio ID:llä
           </Button>
         </ButtonToolbar>
+      );
+    } else {
+      homeView = (
+        <Alert>
+          Moikka, { this.state.currentUser.email }!
+        </Alert>
       );
     }
 
