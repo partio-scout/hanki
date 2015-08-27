@@ -19,7 +19,7 @@ var UserStore = require('./stores/UserStore')(alt, UserActions);
 
 // Setup main views
 
-var App = require('./components/AppComponent.jsx');
+var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx');
 
