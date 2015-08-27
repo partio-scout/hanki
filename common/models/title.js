@@ -19,50 +19,6 @@ module.exports = function(Title) {
             });
           });
         }
-
-        function titlegroup_exists(obj){
-          return new Promise(function(resolve,reject){
-              Titlegroup.exists(obj.titlegroupId, function(err, bool){
-                  if (err) {
-                    reject(new Error(err));
-                  } else {
-                    if (!bool) {
-                      obj.titlegroupId = 0;
-                      resolve(true);
-                    }
-                      else resolve(false);
-                  }
-                });
-            });
-        }
-        function account_exists(obj){
-          return new Promise(function(resolve,reject){
-                Account.exists(obj.accountId, function(err, bool){
-                    if (err) {
-                      reject(new Error(err));
-                    } else {
-                      if (!bool) {
-                        obj.accountId = 0;
-                        resolve(true);
-                      } else resolve(false);
-                    }
-                  });
-              });
-        }
-        function supplier_exists(obj){
-          return new Promise(function(resolve,reject){
-                Supplier.exists(obj.supplierId, function(err, bool){
-                    if (err) {
-                      reject(new Error(err));
-                    } else {
-                      if (!bool) {
-                        obj.supplierId = 0;
-                        resolve(true);
-                      } else resolve(false);
-                    }
-                  });
-              });
-        }
         function title_create(obj){
           return new Promise(function(resolve,reject){
                 Title.create(obj, function(err, obj){
@@ -76,25 +32,23 @@ module.exports = function(Title) {
                   });
               });
         }
-        if (!csv) cb(null, 'Et antanut tietoa.');
+        if (!csv) cb(null, '');
         else {
           parseInput(csv, options)
             .each(function(obj){
                   return Promise.all([
-                    titlegroup_exists(obj),
-                    account_exists(obj),
-                    supplier_exists(obj),
+                    Titlegroup._exists(obj),
+                    Account._exists(obj),
+                    Supplier._exists(obj),
                     obj])
                       .then(function(array){
                           title_create(obj)
                               .then(function(obj){
                                 return;
                               }, function(err){
-                                  // console.log('1',err);
                                   cb(err,null);
                                 });
                         }, function(err){
-                              // console.log('2',err);
                               cb(err,null);
                             });
                 })
