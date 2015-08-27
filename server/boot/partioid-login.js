@@ -43,7 +43,7 @@ module.exports = function(app) {
               if (err) {
                 processError(req, res, err);
               } else {
-                res.cookie('accessToken', accessToken);
+                res.cookie('accessToken', JSON.stringify(accessToken));
                 res.cookie('email', user.email);
                 res.redirect('/');
               }
