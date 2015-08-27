@@ -44,3 +44,10 @@ var routes = (
 Router.run(routes, function (Handler) {
   React.render(<Handler/>, document.body);
 });
+
+// Check if current user is logged in
+if (accessToken && accessToken.userId) {
+  UserActions.fetchCurrentUser(accessToken.userId);
+} else {
+  UserActions.fetchCurrentUser();
+}

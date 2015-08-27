@@ -16,7 +16,6 @@ function getLoginPage(UserStore, UserActions) {
 
     componentDidMount() {
       UserStore.listen(this.onChange);
-      UserActions.fetchCurrentUser();
     },
 
     componentWillUnmount() {

@@ -4,9 +4,9 @@ function getUserActions(alt, User) {
       this.dispatch(currentUser);
     }
 
-    fetchCurrentUser() {
+    fetchCurrentUser(id) {
       this.dispatch();
-      User.findById(1, this.actions.updateCurrentUser);
+      User.findById(id, this.actions.updateCurrentUser);
     }
   }
   return alt.createActions(UserActions);
