@@ -184,6 +184,7 @@
       "type": "Number",
       "id": true,
       "required": false,
+      "generated": true,
       "length": null,
       "precision": 32,
       "scale": 0,
