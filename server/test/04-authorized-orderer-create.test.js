@@ -5,7 +5,7 @@ var request = require('supertest');
 var Promise = require('bluebird');
 
 describe('Orderer', function() {
-  var User = app.models.User;
+  var User = app.models.Purchaseuser;
   var username = 'orderer';
   var userpass = 'salasana';
 

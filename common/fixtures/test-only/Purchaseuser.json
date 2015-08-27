@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "username": "orderer",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "name": "Teuvo Tilaaja",
+    "phone": "050 2345678",
+    "email": "teuvo@tilaa.ja",
+    "enlistment": "Ostaja",
+    "userSection": "Palvelut"
+  },
+  {
+    "id": 2,
+    "username": "approver",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "name": "Heidi Hankkija",
+    "phone": "041 79396930",
+    "email": "heidi.hankkija@roihu2016.fi",
+    "enlistment": "Hankkija",
+    "userSection": "Palvelut"
+  },
+  {
+    "id": 3,
+    "username": "controller",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "name": "Kaisa Controller",
+    "phone": "045 13457709",
+    "email": "kaisa.controller@roihu2016.fi",
+    "enlistment": "Controller",
+    "userSection": "Palvelut"
+  },
+  {
+  	"id": 4,
+  	"username": "procurementMaster",
+  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+  	"name": "Pekka Päällikkö",
+    "phone": "040 3456789",
+    "email": "pekka.paallikko@roihu2016.fi",
+    "enlistment": "Päällikkö",
+    "userSection": "Palvelut"
+  },
+  {
+  	"id": 5,
+  	"username": "procurementAdmin",
+  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+  	"email": "procurementAdmin@foo.fi",
+    "name": "Aatu Admin",
+    "phone": "040 1234567",
+    "enlistment": "Admin",
+    "userSection": "Kaiken yläpuolella"
+  }
+]

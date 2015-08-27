@@ -2,7 +2,7 @@ var _ = require('lodash');
 var app = require('../server.js');
 
 var fixturesToImport = [
-  'User',
+  'Purchaseuser',
   'Account',
   'Titlegroup',
   'Supplier',

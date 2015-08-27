@@ -7,7 +7,7 @@ var modelsToAutoMigrate = [
   'AccessToken',
   'Role',
   'RoleMapping',
-  'User',
+  'Purchaseuser',
   'Title',
   'Titlegroup',
   'Account',

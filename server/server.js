@@ -22,4 +22,4 @@ boot(app, __dirname, function(err) {
 });
 
 // Modify user acls to match our requirements
-app.models.User.settings.acls = require('./user-acls.json');
+//app.models.User.settings.acls = require('./user-acls.json');

@@ -5,7 +5,7 @@ var expect = require('chai').expect;
 var Promise = require('bluebird');
 
 describe('Orderer', function() {
-  var User = app.models.User;
+  var User = app.models.Purchaseuser;
 
   var username = 'orderer';
   var userpass = 'salasana';
@@ -115,7 +115,7 @@ describe('Orderer', function() {
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
-            .get('/api/Users/' + accessToken.userId + '/Purchaseorders')
+            .get('/api/Purchaseusers/' + accessToken.userId + '/orders')
             .query({ access_token: accessToken.id })
             .expect(200)
             .expect(function(res) {
@@ -137,7 +137,7 @@ describe('Orderer', function() {
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
-            .get('/api/Users/' + accessToken.userId + '/Purchaseorders')
+            .get('/api/Purchaseusers/' + accessToken.userId + '/orders')
             .query({ filter: { 'include':['order_rows'] } })
             .query({ access_token: accessToken.id })
             .expect(200)

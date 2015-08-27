@@ -1,6 +1,6 @@
 {
   "name": "Purchaseuser",
-  "base": "PersistedModel",
+  "base": "User",
   "idInjection": false,
   "options": {
     "validateUpsert": true
@@ -10,7 +10,7 @@
     "table": "purchaseuser"
   },
   "properties": {
-    "userId": {
+    "id": {
       "type": "Number",
       "id": true,
       "generated": true,
@@ -19,7 +19,7 @@
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "user_id",
+        "columnName": "id",
         "dataType": "integer",
         "dataLength": null,
         "dataPrecision": 32,
@@ -46,23 +46,6 @@
       },
       "_selectable": false,
       "comments": "nimi"
-    },
-    "email": {
-      "type": "String",
-      "required": true,
-      "length": 255,
-      "precision": null,
-      "scale": null,
-      "postgresql": {
-        "columnName": "email",
-        "dataType": "character varying",
-        "dataLength": 255,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      },
-      "_selectable": false,
-      "comments": "sähköposti"
     },
     "phone": {
       "type": "String",
@@ -156,18 +139,119 @@
       "foreignKey": "provider"
     }
   },
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW"
+  "acls": [ 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "$everyone", 
+      "permission": "DENY" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "create" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "deleteById" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "$everyone", 
+      "permission": "ALLOW", 
+      "property": "login" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "exists" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "$everyone", 
+      "permission": "ALLOW", 
+      "property": "logout" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "find" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "findById" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "$owner", 
+      "permission": "ALLOW", 
+      "property": "updateAttributes" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "$everyone", 
+      "permission": "ALLOW", 
+      "property": "confirm" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "upsert" 
+    }, 
+    { 
+      "principalType": "ROLE", 
+      "principalId": "admin", 
+      "permission": "ALLOW", 
+      "property": "updateAll" 
     },
     {
-      "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$unauthenticated",
-      "permission": "DENY"
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__delete__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__create__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__updateById__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__destroyById__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__findById__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__count__orders"
     }
   ],
   "methods": []
