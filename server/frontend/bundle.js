@@ -3,7 +3,7 @@ var WebpackDevServer = require('webpack-dev-server');
 var webpackConfig = require('./../../webpack.config.js');
 
 module.exports = function () {
-
+  console.log('Using WebPack dev server');
   var bundleStart = null;
   var compiler = webpack(webpackConfig);
   compiler.plugin('compile', function() {
