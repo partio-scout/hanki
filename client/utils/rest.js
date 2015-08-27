@@ -15,7 +15,7 @@ function createRestfulResourceClass(request) {
 
     _handleResponse(cb) {
       return function(err, res) {
-        if(!err && res.status >= 400) {
+        if (!err && res.status >= 400) {
           err = {
             message: 'Rest Error: ' + res.req.url + ' returned HTTP ' + res.status,
             status: res.status
@@ -23,7 +23,7 @@ function createRestfulResourceClass(request) {
         }
         res = res.hasOwnProperty('body') ? res.body : res;
         cb(err, res);
-      }
+      };
     }
 
     findById(id, cb) {
