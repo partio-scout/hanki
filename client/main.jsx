@@ -38,8 +38,7 @@ var DefaultRoute = Router.DefaultRoute;
 
 var routes = (
   <Route handler={ App } path="/">
-    <DefaultRoute handler={ HomePage } />
-    <Route name="login" path="login" handler={ HomePage } />
+    <DefaultRoute name="home" handler={ HomePage } />
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
       <Route name="new_purchase_order" path="new" handler={ MyPurchaseOrders } />
     </Route>
