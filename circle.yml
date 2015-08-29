@@ -5,6 +5,8 @@ database:
   override:
     - echo "ubuntu" | ./scripts/dev-db-setup.sh
 deployment:
+  override:
+    - rm -r node_modules
   demo:
     branch: feature/partioid-login
     heroku:
