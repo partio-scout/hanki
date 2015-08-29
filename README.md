@@ -26,4 +26,4 @@ If you have already installed the app and need to reset the database, you can:
 
 Run the application with:
 
-    slc run
+    NODE_ENV=dev slc run
