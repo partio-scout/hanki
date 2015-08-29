@@ -17,7 +17,7 @@ function getUserActions(alt, User, deleteLocalAccessToken) {
 
     logoutCurrentUser() {
       this.dispatch();
-      User.raw('POST', 'logout', (err, res) => {
+      User.raw('POST', 'logout', () => {
         deleteLocalAccessToken();
         this.actions.updateCurrentUser(null);
       });
