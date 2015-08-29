@@ -6,6 +6,6 @@ database:
     - echo "ubuntu" | ./scripts/dev-db-setup.sh
 deployment:
   demo:
-    branch: feature/partioid-login
+    branch: master
     heroku:
       appname: fj16-procurement-demo
