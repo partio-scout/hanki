@@ -1,4 +1,9 @@
 module.exports = function mountLoopBackExplorer(server) {
+
+  if (process.env.NODE_ENV !== 'dev') {
+    return;
+  }
+
   var explorer;
   try {
     explorer = require('loopback-explorer');
