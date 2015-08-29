@@ -4,6 +4,9 @@ require('./styles.scss');
 
 var Cookie = require('js-cookie');
 var accessToken = Cookie.getJSON('accessToken');
+var deleteAccessToken = function() {
+  Cookie.remove('accessToken');
+};
 
 // Setup REST resources
 
@@ -16,7 +19,7 @@ var User = new RestfulResource('/api/Users', accessToken);
 var Alt = require('alt');
 var alt = new Alt();
 
-var UserActions = require('./actions/UserActions')(alt, User);
+var UserActions = require('./actions/UserActions')(alt, User, deleteAccessToken);
 var UserStore = require('./stores/UserStore')(alt, UserActions);
 
 // Setup main views

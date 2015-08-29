@@ -5,7 +5,6 @@ function createRestfulResourceClass(request) {
     constructor(endpoint, accessToken) {
       this.endpoint = endpoint;
       this.accessToken = accessToken ? accessToken.id : null;
-      console.log(accessToken);
     }
 
     path(modifier) {
@@ -28,6 +27,10 @@ function createRestfulResourceClass(request) {
 
     findById(id, cb) {
       request.get(this.path(id)).end(this._handleResponse(cb));
+    }
+
+    raw(method, path, cb) {
+      request(method, this.path(path)).end(this._handleResponse(cb));
     }
   }
 

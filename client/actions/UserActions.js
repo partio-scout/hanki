@@ -1,4 +1,4 @@
-function getUserActions(alt, User) {
+function getUserActions(alt, User, deleteLocalAccessToken) {
   class UserActions {
     updateCurrentUser(currentUser) {
       this.dispatch(currentUser);
@@ -12,6 +12,14 @@ function getUserActions(alt, User) {
         } else {
           this.actions.updateCurrentUser(user);
         }
+      });
+    }
+
+    logoutCurrentUser() {
+      this.dispatch();
+      User.raw('POST', 'logout', (err, res) => {
+        deleteLocalAccessToken();
+        this.actions.updateCurrentUser(null);
       });
     }
   }
