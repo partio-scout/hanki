@@ -8,14 +8,13 @@ var modelsToAutoMigrate = [
   'Role',
   'RoleMapping',
   'User',
+  'Purchaseuser',
   'Title',
   'Titlegroup',
   'Account',
   'Supplier',
   'Delivery',
   'Costcenter',
-  'Purchaseuser',
-  'Usageobject',
   'Purchaseorder',
   'Purchaseorderrow'
 ];

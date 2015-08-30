@@ -46,6 +46,57 @@
       },
       "_selectable": false,
       "comments": "kustannuspaikan nimi"
+    },
+    "master": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "master",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "päällikkö"
+    },
+    "provider": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "provider",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "hankkija"
+    },
+    "controller": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "controller",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "controller"
     }
   },
   "validations": [],
@@ -54,6 +105,21 @@
       "type": "hasMany",
       "model": "Purchaseorder",
       "foreignKey": "costcenterId"
+    },
+    "master": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "master"
+    },
+    "controller": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "controller"
+    },
+    "provider": {
+      "type": "belongsTo",
+      "model": "Purchaseuser",
+      "foreignKey": "provider"
     }
   },
   "acls": [

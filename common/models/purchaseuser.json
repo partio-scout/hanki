@@ -140,19 +140,19 @@
       "model": "Purchaseorder",
       "foreignKey": "subscriber"
     },
-    "usageobjects_master": {
+    "costcenter_master": {
       "type": "hasMany",
-      "model": "Usageobject",
+      "model": "Costcenter",
       "foreignKey": "master"
     },
-    "usageobjects_controller": {
+    "costcenter_controller": {
       "type": "hasMany",
-      "model": "Usageobject",
+      "model": "Costcenter",
       "foreignKey": "controller"
     },
-    "usageobjects_provider": {
+    "costcenter_provider": {
       "type": "hasMany",
-      "model": "Usageobject",
+      "model": "Costcenter",
       "foreignKey": "provider"
     }
   },
