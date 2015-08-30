@@ -1,4 +1,3 @@
-// Request is usually a SuperTest instance
 function createRestfulResourceClass(request) {
 
   class RestfulResource {
@@ -7,16 +6,16 @@ function createRestfulResourceClass(request) {
       this.accessToken = accessToken ? accessToken.id : null;
     }
 
-    path(modifier) {
-      modifier = (modifier !== undefined) ? ('/' + modifier) : '';
-      return this.endpoint + modifier + '?access_token=' + this.accessToken;
+    path(basePath) {
+      basePath = (basePath !== undefined) ? ('/' + basePath) : '';
+      return this.endpoint + basePath + '?access_token=' + this.accessToken;
     }
 
     _handleResponse(cb) {
       return function(err, res) {
         if (!err && res.status >= 400) {
           err = {
-            message: 'Rest Error: ' + res.req.url + ' returned HTTP ' + res.status,
+            message: 'REST Error: ' + res.req.url + ' returned HTTP ' + res.status,
             status: res.status
           };
         }

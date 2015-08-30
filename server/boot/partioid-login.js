@@ -1,7 +1,6 @@
 var fs = require('fs');
 var SAML = require('passport-saml').SAML;
 
-//TODO Support production env too
 var conf = {
   path: '/auth/partioid',
   issuer: process.env.PARTIOID_SP_ISSUER || 'http://localhost:3000',

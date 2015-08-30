@@ -32,11 +32,8 @@ function getHomePage(UserStore, UserActions) {
 
     render: function () {
       var homeView;
-      console.log(this.state);
       if (this.state.currentUser === undefined) {
-        homeView = (
-          'Loading...'
-        );
+        homeView = 'Loading...';
       } else if (this.state.currentUser === null) {
         homeView = (
           <ButtonToolbar>
@@ -51,11 +48,7 @@ function getHomePage(UserStore, UserActions) {
       } else {
         // Redirect logged in users to My Purchase Orders page
         this.replaceWith('my_purchase_orders');
-        homeView = (
-          <Alert>
-            Moikka, { this.state.currentUser.email }!
-          </Alert>
-        );
+        homeView = '';
       }
 
       return (
