@@ -13,6 +13,7 @@ var deleteAccessToken = function() {
 var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Users', accessToken);
+var PurchaseOrder = new RestfulResource('/api/Purchaseorder', accessToken);
 
 // Set up Flux
 
@@ -21,6 +22,9 @@ var alt = new Alt();
 
 var UserActions = require('./actions/UserActions')(alt, User, deleteAccessToken);
 var UserStore = require('./stores/UserStore')(alt, UserActions);
+
+var PurchaseOrderActions = require('./actions/PurchaseOrderActions')(alt, PurchaseOrder);
+var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrderActions);
 
 // Setup main views
 
