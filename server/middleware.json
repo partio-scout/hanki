@@ -17,6 +17,7 @@
   "auth": {
   },
   "parse": {
+    "body-parser#urlencoded": { "params": { "extended": true } }
   },
   "routes": {
   },
