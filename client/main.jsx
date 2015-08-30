@@ -31,6 +31,7 @@ var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrd
 var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, PurchaseOrderActions);
+var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions);
 
 // Setup routes
 
@@ -44,7 +45,7 @@ var routes = (
   <Route handler={ App } path="/">
     <DefaultRoute name="home" handler={ HomePage } />
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
-      <Route name="new_purchase_order" path="new" handler={ MyPurchaseOrders } />
+      <Route name="new_purchase_order" path="new" handler={ NewPurchaseOrder } />
     </Route>
   </Route>
 );
