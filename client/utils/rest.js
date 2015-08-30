@@ -6,9 +6,10 @@ function createRestfulResourceClass(request) {
       this.accessToken = accessToken ? accessToken.id : null;
     }
 
-    path(basePath) {
+    path(basePath, filters) {
       basePath = (basePath !== undefined) ? ('/' + basePath) : '';
-      return this.endpoint + basePath + '?access_token=' + this.accessToken;
+      filters = (filters !== undefined) ? '&' + filters : '';
+      return this.endpoint + basePath + '?access_token=' + this.accessToken + filters;
     }
 
     _handleResponse(cb) {
@@ -24,12 +25,16 @@ function createRestfulResourceClass(request) {
       };
     }
 
-    findAll(cb) {
-      request.get(this.path('')).end(this._handleResponse(cb));
+    findAll(cb, filters) {
+      request.get(this.path('', filters)).end(this._handleResponse(cb));
     }
 
     findById(id, cb) {
       request.get(this.path(id)).end(this._handleResponse(cb));
+    }
+
+    create(obj, cb) {
+      request.post(this.path('')).send(obj).end(this._handleResponse(cb));
     }
 
     raw(method, path, cb) {

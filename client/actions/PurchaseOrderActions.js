@@ -17,6 +17,25 @@ function getPurchaseOrderActions(alt, PurchaseOrder) {
         } else {
           this.actions.updateMyPurchaseOrders(res);
         }
+      }, 'filter[order]=orderId%20DESC');
+    }
+
+    creatingPurchaseOrderFailed(error) {
+      this.dispatch(error);
+    }
+
+    purchaseOrderCreated(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+    }
+
+    createPurchaseOrder(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+      PurchaseOrder.create(purchaseOrder, (err, savedPurchaseOrder) => {
+        if (err) {
+          this.actions.creatingPurchaseOrderFailed(err);
+        } else {
+          this.actions.purchaseOrderCreated(savedPurchaseOrder);
+        }
       });
     }
   }

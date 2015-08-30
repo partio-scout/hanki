@@ -14,6 +14,7 @@ var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Users', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
+var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
 
 // Set up Flux
 
@@ -26,12 +27,15 @@ var UserStore = require('./stores/UserStore')(alt, UserActions);
 var PurchaseOrderActions = require('./actions/PurchaseOrderActions')(alt, PurchaseOrder);
 var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrderActions);
 
+var CostCenterActions = require('./actions/CostCenterActions')(alt, CostCenter);
+var CostCenterStore = require('./stores/CostCenterStore')(alt, CostCenterActions);
+
 // Setup main views
 
 var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, PurchaseOrderActions);
-var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions);
+var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
 
 // Setup routes
 
@@ -59,6 +63,7 @@ Router.run(routes, function (Handler) {
 if (accessToken && accessToken.userId) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
+  CostCenterActions.fetchCostCenters();
 } else {
   UserActions.fetchCurrentUser();
 }
