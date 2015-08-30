@@ -13,7 +13,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder) {
       this.dispatch();
       PurchaseOrder.findAll((err, res) => {
         if (err) {
-          this.actions.loadingMyPurchaseOrdersFailed(err)
+          this.actions.loadingMyPurchaseOrdersFailed(err);
         } else {
           this.actions.updateMyPurchaseOrders(res);
         }
