@@ -6,30 +6,47 @@ var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrder = require('./PurchaseOrder.jsx');
+var PurchaseOrderList = require('./PurchaseOrderList.jsx');
 var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
-var MyPurchaseOrders = React.createClass({
-  render: function () {
-    return (
-      <Row>
-        <Col>
-          <h1>
-            Omat tilaukset
-          </h1>
-          <ButtonLink to="new_purchase_order" bsStyle="primary">
-            Uusi tilaus
-          </ButtonLink>
-          <div>
-            <PurchaseOrderLink />
-            <PurchaseOrderLink />
-          </div>
-          <PurchaseOrder />
-          <PurchaseOrder />
-        </Col>
-      </Row>
-    );
-  }
-});
+var getMyPurchaseOrders = function(PurchaseOrderStore, PurchaseOrderActions) {
+  return React.createClass({
+    getInitialState() {
+      return PurchaseOrderStore.getState();
+    },
 
-module.exports = MyPurchaseOrders;
+    componentDidMount() {
+      PurchaseOrderStore.listen(this.onChange);
+    },
+
+    componentDidUnmount() {
+      PurchaseOrderStore.listen(this.onChange);
+    },
+
+    onChange(state) {
+      this.setState(state);
+    },
+
+    render: function () {
+      return (
+        <Row>
+          <Col>
+            <h1>
+              Omat tilaukset
+            </h1>
+            <ButtonLink to="new_purchase_order" bsStyle="primary">
+              Uusi tilaus
+            </ButtonLink>
+            <div>
+              <PurchaseOrderLink />
+              <PurchaseOrderLink />
+            </div>
+            <PurchaseOrderList purchaseOrders={ this.state.myPurchaseOrders } />
+          </Col>
+        </Row>
+      );
+    }
+  });
+};
+
+module.exports = getMyPurchaseOrders;

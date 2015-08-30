@@ -24,6 +24,10 @@ function createRestfulResourceClass(request) {
       };
     }
 
+    findAll(cb) {
+      request.get(this.path('')).end(this._handleResponse(cb));
+    }
+
     findById(id, cb) {
       request.get(this.path(id)).end(this._handleResponse(cb));
     }

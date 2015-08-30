@@ -13,7 +13,7 @@ var deleteAccessToken = function() {
 var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Users', accessToken);
-var PurchaseOrder = new RestfulResource('/api/Purchaseorder', accessToken);
+var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 
 // Set up Flux
 
@@ -30,7 +30,7 @@ var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrd
 
 var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
-var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx');
+var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, PurchaseOrderActions);
 
 // Setup routes
 
@@ -57,6 +57,7 @@ Router.run(routes, function (Handler) {
 
 if (accessToken && accessToken.userId) {
   UserActions.fetchCurrentUser(accessToken.userId);
+  PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
 } else {
   UserActions.fetchCurrentUser();
 }

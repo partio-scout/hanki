@@ -17,7 +17,7 @@ var PurchaseOrder = React.createClass({
     return (
       <Panel>
         <h2>
-          00000 Tilauksen nimi
+          00000 { this.props.purchaseOrder.name }
         </h2>
         <PurchaseOrderRow />
         <PurchaseOrderRow />
