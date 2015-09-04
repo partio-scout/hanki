@@ -150,7 +150,7 @@
     },
     "supplierTitlecode": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": 255,
       "precision": null,
       "scale": null,
@@ -270,6 +270,7 @@
     "titleId": {
       "type": "Number",
       "id": true,
+      "generated": true,
       "required": false,
       "length": null,
       "precision": 32,

@@ -5,6 +5,7 @@ var fixturesToImport = [
   'Purchaseuser',
   'Account',
   'Titlegroup',
+  'Title',
   'Supplier',
   'Delivery',
   'Costcenter',
