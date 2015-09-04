@@ -15,6 +15,8 @@ var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Users', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
+var Title = new RestfulResource('/api/Titles', accessToken);
+var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 
 // Set up Flux
 
@@ -29,6 +31,8 @@ var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrd
 
 var CostCenterActions = require('./actions/CostCenterActions')(alt, CostCenter);
 var CostCenterStore = require('./stores/CostCenterStore')(alt, CostCenterActions);
+
+var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 
 // Setup main views
 
@@ -64,6 +68,7 @@ if (accessToken && accessToken.userId) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
   CostCenterActions.fetchCostCenters();
+  TitleActions.fetchTitles();
 } else {
   UserActions.fetchCurrentUser();
 }
