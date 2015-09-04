@@ -44,12 +44,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "Usageobject": {
-    "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
   "Purchaseuser": {
     "dataSource": "db",
     "public": true,
