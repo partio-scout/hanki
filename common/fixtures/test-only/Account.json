@@ -1,5 +1,4 @@
 [
-  { "accountId": 0, "name": "Tuntematon testitili", "description": "Tuntematon testitili: Tilinumero FIxxxyyyzzz" },
   { "name": "Testitili 1", "description": "Testitili 1: Tilinumero FIxxxyyyzzz" },
   { "name": "Testitili 2", "description": "Testitili 2: Tilinumero FIxxxyyyzzz" }
 ]
