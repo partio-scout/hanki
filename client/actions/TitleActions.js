@@ -12,12 +12,16 @@ function getTitleActions(alt, Title, Titlegroup) {
 
     fetchTitles() {
       this.dispatch();
-      console.log(Titlegroup, Title)
       Titlegroup.findAll((err, titlegroups) => {
         if (err) {
           this.actions.titleUpdateFailed(null);
         } else {
           Title.findAll((err, titles) => {
+            if (err) {
+              titleUpdateFailed(err);
+              return;
+            }
+
             var titlesByGroup = _(titlegroups)
               .map(function(group) {
                 group.titles = {};
@@ -25,11 +29,11 @@ function getTitleActions(alt, Title, Titlegroup) {
               })
               .indexBy('titlegroupId')
               .value();
-            //in a foreach, place title into correct group
+
+            // Put titles into groups
             _.each(titles, function(title) {
               titlesByGroup[title.titlegroupId].titles[title.titleId] = title;
             });
-            console.log(titlesByGroup)
           });
         }
       });
