@@ -2,9 +2,6 @@ var loopback = require('loopback');
 var path = require('path');
 
 module.exports = function(server) {
-  var publicPath = path.resolve(__dirname, '../../public');
-  server.use(loopback.static(publicPath));
-
   var isDev = process.env.NODE_ENV === 'dev';
 
   if (isDev) {
@@ -35,4 +32,9 @@ module.exports = function(server) {
       proxy.ws(req, socket, head);
     });
   }
+
+  // Public path must be defined after dev paths or else LoopBack will always
+  // use the production version of bundle.js if it happens to exist
+  var publicPath = path.resolve(__dirname, '../../public');
+  server.use(loopback.static(publicPath));
 };
