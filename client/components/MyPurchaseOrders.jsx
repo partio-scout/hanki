@@ -13,7 +13,7 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var PurchaseOrderList = require('./PurchaseOrderList.jsx');
 var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
-var getMyPurchaseOrders = function(PurchaseOrderStore, CostCenterStore, PurchaseOrderActions) {
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore) {
   var myPurchaseOrders = React.createClass({
     statics: {
       getStores() {
