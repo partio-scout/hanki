@@ -12,26 +12,7 @@ var Button = ReactBootstrap.Button;
 
 var Router = require('react-router');
 
-var Price = React.createClass({
-  getDefaultProps: function() {
-    return {
-      value: 0
-    }
-  },
-
-  render: function() {
-    var price = 0;
-    if (this.props.value) {
-      price = this.props.value.toFixed(2).replace('.', ',');
-    }
-
-    return (
-      <span>
-        { price } €
-      </span>
-    );
-  }
-});
+var Price = require('./utils/Price.jsx');
 
 var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var newPurchaseOrderRow = React.createClass({
