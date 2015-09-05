@@ -33,20 +33,21 @@ var Price = React.createClass({
   }
 });
 
-var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore) {
+var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var newPurchaseOrderRow = React.createClass({
     mixins: [ Router.Navigation ],
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, TitleStore ]
+        return [ PurchaseOrderStore, TitleStore, DeliveryStore ]
       },
 
       getPropsFromStores() {
         console.log(TitleStore)
         return {
           purchaseOrders: PurchaseOrderStore.getState(),
-          titles: TitleStore.getState()
+          titles: TitleStore.getState(),
+          deliveries: DeliveryStore.getState()
         }
       }
     },
@@ -67,7 +68,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         titleId: this.state.selectedTitleId,
         amount: this.state.amount,
         approved: false,
-        deliveryId: 0,
+        deliveryId: this.refs.delivery.getValue(),
         memo: this.refs.memo.getValue(),
         orderId: this.props.params.purchaseOrder
       }
@@ -87,7 +88,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       var titlegroups = this.props.titles.titleGroups || { };
       var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
       var selectedTitle = this.props.titles.titles[this.state.selectedTitleId] || { };
-      console.log('selected = ', selectedTitle, this.state.selectedTitleId)
+      var deliveries = this.props.deliveries.deliveries
       return (
         <Modal show='true' onHide={ this.onHide }>
           <Modal.Header closeButton>
@@ -96,7 +97,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           <Modal.Body>
             <form className="form-horizontal">
               <Input ref="title" type='select' label='Tuote' onChange={ this.onSelectedTitleChange } labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <option>Valitse...</option>
+                <option>Valitse tuote...</option>
                 {_.map(titlesByGroup, function(group, titlegroupId) {
                   return (
                     <optgroup label={ titlegroups[titlegroupId].name }>
@@ -115,7 +116,10 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                 <Price value={ selectedTitle.priceWithTax * this.state.amount } />
               </Static>
               <Input ref="delivery" type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
-
+                <option>Valitse toimitusajankohta...</option>
+                {_.map(deliveries, function(delivery) {
+                  return <option value={ delivery.deliveryId }>{ delivery.description }</option>
+                })}
               </Input>
               <Static label="Tarveaika" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
                 <div>

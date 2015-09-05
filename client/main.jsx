@@ -18,6 +18,7 @@ var PurchaseOrderRow = new RestfulResource('/api/Purchaseorderrows', accessToken
 var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
 var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
+var Delivery = new RestfulResource('/api/Deliveries', accessToken);
 
 // Set up Flux
 
@@ -33,6 +34,9 @@ var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrd
 var CostCenterActions = require('./actions/CostCenterActions')(alt, CostCenter);
 var CostCenterStore = require('./stores/CostCenterStore')(alt, CostCenterActions);
 
+var DeliveryActions = require('./actions/DeliveryActions')(alt, Delivery);
+var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
+
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
@@ -42,7 +46,7 @@ var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, CostCenterStore, PurchaseOrderActions);
 var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
-var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
+var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 
 // Setup routes
 
@@ -73,6 +77,7 @@ if (accessToken && accessToken.userId) {
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
   CostCenterActions.fetchCostCenters();
   TitleActions.fetchTitles();
+  DeliveryActions.fetchDeliveries();
 } else {
   UserActions.fetchCurrentUser();
 }
