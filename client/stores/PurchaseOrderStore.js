@@ -1,9 +1,13 @@
 function getPurchaseOrderStore(alt, PurchaseOrderActions) {
   class PurchaseOrderStore {
     constructor() {
+      this.purchaseOrderRows = { };
+
       this.bindListeners({
         handleUpdateMyPurchaseOrders: PurchaseOrderActions.UPDATE_MY_PURCHASE_ORDERS,
-        handlePurchaseOrderCreated: PurchaseOrderActions.PURCHASE_ORDER_CREATED
+        handlePurchaseOrderCreated: PurchaseOrderActions.PURCHASE_ORDER_CREATED,
+        handleUpdatePurchaseOrderRows: PurchaseOrderActions.UPDATE_PURCHASE_ORDER_ROWS,
+        handlePurchaseOrderRowCreated: PurchaseOrderActions.PURCHASE_ORDER_ROW_CREATED
       });
     }
 
@@ -13,6 +17,15 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
 
     handlePurchaseOrderCreated(newPurchaseOrder) {
       this.myPurchaseOrders.unshift(newPurchaseOrder);
+    }
+
+    handleUpdatePurchaseOrderRows(rows) {
+      this.purchaseOrderRows = rows;
+    }
+
+    handlePurchaseOrderRowCreated(row) {
+      this.purchaseOrderRows[row.orderRowId] = row;
+      this.handleUpdatePurchaseOrderRows(this.purchaseOrderRows);
     }
   }
 

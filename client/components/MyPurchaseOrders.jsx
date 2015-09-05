@@ -22,7 +22,7 @@ var getMyPurchaseOrders = function(PurchaseOrderStore, PurchaseOrderActions) {
     },
 
     componentDidUnmount() {
-      PurchaseOrderStore.listen(this.onChange);
+      PurchaseOrderStore.unlisten(this.onChange);
     },
 
     onChange(state) {
@@ -44,7 +44,7 @@ var getMyPurchaseOrders = function(PurchaseOrderStore, PurchaseOrderActions) {
               <PurchaseOrderLink />
               <PurchaseOrderLink />
             </div>
-            <PurchaseOrderList purchaseOrders={ this.state.myPurchaseOrders } />
+            <PurchaseOrderList purchaseOrders={ this.state.myPurchaseOrders } purchaseOrderRows={ this.state.purchaseOrderRows } />
           </Col>
         </Row>
       );

@@ -13,8 +13,9 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div>
-        {this.props.purchaseOrders.map(function(purchaseOrder) {
-          return <PurchaseOrder key={ purchaseOrder.orderId } purchaseOrder={ purchaseOrder } />
+        {this.props.purchaseOrders.map((purchaseOrder) => {
+          var rows = _.filter(this.props.purchaseOrderRows, { orderId: purchaseOrder.orderId });
+          return <PurchaseOrder key={ purchaseOrder.orderId } purchaseOrder={ purchaseOrder } purchaseOrderRows={ rows } />
         })}
       </div>
     );

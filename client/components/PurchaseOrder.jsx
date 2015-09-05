@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
@@ -9,7 +10,7 @@ var PurchaseOrderRow = React.createClass({
   render: function () {
     return (
       <div>
-        Tilausrivi.
+        Tilausrivi: { this.props.row.amount } yksikköä
       </div>
     );
   }
@@ -22,9 +23,10 @@ var PurchaseOrder = React.createClass({
         <h2>
           00000 { this.props.purchaseOrder.name }
         </h2>
-        <ButtonLink to="new_purchase_order_row" bsStyle="primary">Lisää tuote</ButtonLink>
-        <PurchaseOrderRow />
-        <PurchaseOrderRow />
+        <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>
+        {_.map(this.props.purchaseOrderRows, function(row) {
+          return <PurchaseOrderRow row={ row } />
+        })}
       </Panel>
     );
   }
