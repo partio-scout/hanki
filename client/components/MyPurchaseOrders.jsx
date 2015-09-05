@@ -13,17 +13,19 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var PurchaseOrderList = require('./PurchaseOrderList.jsx');
 var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
-var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore) {
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
   var myPurchaseOrders = React.createClass({
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, CostCenterStore ]
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ]
       },
 
       getPropsFromStores() {
         return {
           purchaseOrders: PurchaseOrderStore.getState(),
-          costCenters: CostCenterStore.getState()
+          costCenters: CostCenterStore.getState(),
+          titles: TitleStore.getState(),
+          deliveries: TitleStore.getState()
         }
       }
     },
@@ -46,7 +48,9 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
             <PurchaseOrderList
               purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
-              costCenters={ this.props.costCenters.costCenters } />
+              costCenters={ this.props.costCenters.costCenters }
+              titles={ this.props.titles.titles }
+              deliveries={ this.props.deliveries.deliveries } />
           </Col>
         </Row>
       );
