@@ -3,10 +3,18 @@ var _ = require('lodash');
 function getTitleActions(alt, Title, Titlegroup) {
   class TitleActions {
     updateTitles(titles) {
-      this.dispatch(costCenters);
+      this.dispatch(titles);
     }
 
     titleUpdateFailed(error) {
+      this.dispatch(error);
+    }
+
+    updateTitlegroups(titlegroups) {
+      this.dispatch(titlegroups);
+    }
+
+    titlegroupUpdateFailed(error) {
       this.dispatch(error);
     }
 
@@ -14,27 +22,17 @@ function getTitleActions(alt, Title, Titlegroup) {
       this.dispatch();
       Titlegroup.findAll((err, titlegroups) => {
         if (err) {
+          this.actions.titlegroupUpdateFailed(null);
+        } else {
+          this.actions.updateTitlegroups(_.indexBy(titlegroups, 'titlegroupId'));
+        }
+      });
+
+      Title.findAll((err, titles) => {
+        if (err) {
           this.actions.titleUpdateFailed(null);
         } else {
-          Title.findAll((err, titles) => {
-            if (err) {
-              titleUpdateFailed(err);
-              return;
-            }
-
-            var titlesByGroup = _(titlegroups)
-              .map(function(group) {
-                group.titles = {};
-                return group;
-              })
-              .indexBy('titlegroupId')
-              .value();
-
-            // Put titles into groups
-            _.each(titles, function(title) {
-              titlesByGroup[title.titlegroupId].titles[title.titleId] = title;
-            });
-          });
+          this.actions.updateTitles(_.indexBy(titles, 'titleId'));
         }
       });
     }

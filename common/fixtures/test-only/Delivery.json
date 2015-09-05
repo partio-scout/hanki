@@ -1,8 +1,26 @@
 [
   {
-  	"description": "Tavaroitten toimitus",
-  	"earliest": "2015-08-25",
-  	"latest": "2015-08-27",
-  	"address": "Evo"
+    "description": "Hankin ja tuon tuotteen itse",
+    "address": "n/a"
+  },
+  {
+    "description": "Toimitus ennen leiriä (sovittava erikseen)",
+    "address": "n/a"
+  },
+  {
+    "description": "Toimitus pre-rakennusleirin alkuun mennessä",
+    "address": "Evo"
+  },
+  {
+    "description": "Toimitus rakennusleirin alkuun mennessä",
+    "address": "Evo"
+  },
+  {
+    "description": "Toimitus leirin alkuun mennessä",
+    "address": "Evo"
+  },
+  {
+    "description": "Toimitus leirin aikana",
+    "address": "Evo"
   }
 ]

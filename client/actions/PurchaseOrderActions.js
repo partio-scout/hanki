@@ -1,4 +1,4 @@
-function getPurchaseOrderActions(alt, PurchaseOrder) {
+function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow) {
   class PurchaseOrderActions {
 
     updateMyPurchaseOrders(myPurchaseOrders) {
@@ -28,6 +28,14 @@ function getPurchaseOrderActions(alt, PurchaseOrder) {
       this.dispatch(purchaseOrder);
     }
 
+    creatingPurchaseOrderRowFailed(error) {
+      this.dispatch(error);
+    }
+
+    purchaseOrderRowCreated(row) {
+      this.dispatch(row);
+    }
+
     createPurchaseOrder(purchaseOrder) {
       this.dispatch(purchaseOrder);
       PurchaseOrder.create(purchaseOrder, (err, savedPurchaseOrder) => {
@@ -35,6 +43,17 @@ function getPurchaseOrderActions(alt, PurchaseOrder) {
           this.actions.creatingPurchaseOrderFailed(err);
         } else {
           this.actions.purchaseOrderCreated(savedPurchaseOrder);
+        }
+      });
+    }
+
+    createPurchaseOrderRow(row) {
+      this.dispatch(row);
+      PurchaseOrderRow.create(row, (err, savedRow) => {
+        if (err) {
+          this.actions.creatingPurchaseOrderRowFailed(err);
+        } else {
+          this.actions.purchaseOrderRowCreated(savedRow);
         }
       });
     }

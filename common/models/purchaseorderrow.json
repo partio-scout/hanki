@@ -183,6 +183,7 @@
     "orderRowId": {
       "type": "Number",
       "id": true,
+      "generated": true,
       "required": false,
       "length": null,
       "precision": 32,
@@ -248,23 +249,6 @@
       },
       "_selectable": true,
       "comments": "ostotilausnumero"
-    },
-    "selfSupply": {
-      "type": "Boolean",
-      "required": true,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "postgresql": {
-        "columnName": "self_supply",
-        "dataType": "boolean",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      },
-      "_selectable": false,
-      "comments": "hankin itse"
     },
     "titleId": {
       "type": "Number",
