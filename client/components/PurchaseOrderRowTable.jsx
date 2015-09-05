@@ -8,15 +8,15 @@ var PurchaseOrderRow = React.createClass({
   getDefaultProps: function() {
     return {
       titles: { },
-      row: { }
+      row: { },
+      deliveries: { }
     }
   },
 
   render: function () {
-    var row = this.props.row || { };
-    console.log('****', row)
-    var title = this.props.titles[this.props.row.titleId] || { };
-    console.log(this.props.titles)
+    var row = this.props.row;
+    var title = this.props.titles[row.titleId] || { };
+    var delivery = this.props.deliveries[row.deliveryId] || { };
     return (
       <tr>
         <td>
@@ -47,7 +47,7 @@ var PurchaseOrderRow = React.createClass({
 
         </td>
         <td>
-          toimitus
+          { delivery.description }
         </td>
       </tr>
     );
@@ -77,7 +77,7 @@ var PurchaseOrderRowTable = React.createClass({
         </thead>
         <tbody>
           {_.map(this.props.purchaseOrderRows, (row) => {
-            return <PurchaseOrderRow row={ row } titles={ this.props.titles } />
+            return <PurchaseOrderRow row={ row } titles={ this.props.titles } deliveries={ this.props.deliveries } />
           })}
         </tbody>
       </Table>

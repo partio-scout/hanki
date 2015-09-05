@@ -23,7 +23,8 @@ var PurchaseOrder = React.createClass({
         <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>
         <PurchaseOrderRowTable
           purchaseOrderRows={ this.props.purchaseOrderRows }
-          titles={ this.props.titles } />
+          titles={ this.props.titles }
+          deliveries={ this.props.deliveries } />
       </Panel>
     );
   }

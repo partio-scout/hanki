@@ -25,7 +25,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
           purchaseOrders: PurchaseOrderStore.getState(),
           costCenters: CostCenterStore.getState(),
           titles: TitleStore.getState(),
-          deliveries: TitleStore.getState()
+          deliveries: DeliveryStore.getState()
         }
       }
     },
