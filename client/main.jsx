@@ -57,7 +57,7 @@ var routes = (
     <DefaultRoute name="home" handler={ HomePage } />
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
       <Route name="new_purchase_order" path="new" handler={ NewPurchaseOrder } />
-      <Route name="new_purchase_order_row" path="add-item" handler={ NewPurchaseOrderRow } />
+      <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
     </Route>
   </Route>
 );

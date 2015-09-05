@@ -69,7 +69,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         approved: false,
         deliveryId: 0,
         memo: this.refs.memo.getValue(),
-        orderId: 1 //TODO get from param
+        orderId: this.props.params.purchaseOrder
       }
       PurchaseOrderActions.createPurchaseOrderRow(row);
       this.transitionTo('my_purchase_orders');
