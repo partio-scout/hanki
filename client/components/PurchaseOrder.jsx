@@ -17,11 +17,17 @@ var PurchaseOrderRow = React.createClass({
 });
 
 var PurchaseOrder = React.createClass({
+  getDefaultProps: function() {
+    return {
+      costCenter: { name: '...' }
+    }
+  },
+
   render: function () {
     return (
       <Panel>
         <h2>
-          00000 { this.props.purchaseOrder.name }
+          { this.props.costCenter.code } { this.props.purchaseOrder.name }
         </h2>
         <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>
         {_.map(this.props.purchaseOrderRows, function(row) {

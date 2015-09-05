@@ -2,6 +2,8 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
 
+var connectToStores = require('alt/utils/connectToStores');
+
 var RouteHandler = require('react-router').RouteHandler;
 
 var Row = ReactBootstrap.Row;
@@ -11,22 +13,19 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var PurchaseOrderList = require('./PurchaseOrderList.jsx');
 var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
-var getMyPurchaseOrders = function(PurchaseOrderStore, PurchaseOrderActions) {
-  return React.createClass({
-    getInitialState() {
-      return PurchaseOrderStore.getState();
-    },
+var getMyPurchaseOrders = function(PurchaseOrderStore, CostCenterStore, PurchaseOrderActions) {
+  var myPurchaseOrders = React.createClass({
+    statics: {
+      getStores() {
+        return [ PurchaseOrderStore, CostCenterStore ]
+      },
 
-    componentDidMount() {
-      PurchaseOrderStore.listen(this.onChange);
-    },
-
-    componentDidUnmount() {
-      PurchaseOrderStore.unlisten(this.onChange);
-    },
-
-    onChange(state) {
-      this.setState(state);
+      getPropsFromStores() {
+        return {
+          purchaseOrders: PurchaseOrderStore.getState(),
+          costCenters: CostCenterStore.getState()
+        }
+      }
     },
 
     render: function () {
@@ -44,12 +43,17 @@ var getMyPurchaseOrders = function(PurchaseOrderStore, PurchaseOrderActions) {
               <PurchaseOrderLink />
               <PurchaseOrderLink />
             </div>
-            <PurchaseOrderList purchaseOrders={ this.state.myPurchaseOrders } purchaseOrderRows={ this.state.purchaseOrderRows } />
+            <PurchaseOrderList
+              purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
+              purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
+              costCenters={ this.props.costCenters.costCenters } />
           </Col>
         </Row>
       );
     }
   });
+
+  return connectToStores(myPurchaseOrders);
 };
 
 module.exports = getMyPurchaseOrders;

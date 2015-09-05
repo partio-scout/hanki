@@ -15,7 +15,14 @@ module.exports = React.createClass({
       <div>
         {this.props.purchaseOrders.map((purchaseOrder) => {
           var rows = _.filter(this.props.purchaseOrderRows, { orderId: purchaseOrder.orderId });
-          return <PurchaseOrder key={ purchaseOrder.orderId } purchaseOrder={ purchaseOrder } purchaseOrderRows={ rows } />
+          var costCenter = this.props.costCenters[purchaseOrder.costcenterId] || { };
+          return (
+            <PurchaseOrder
+              key={ purchaseOrder.orderId }
+              purchaseOrder={ purchaseOrder }
+              purchaseOrderRows={ rows }
+              costCenter={ costCenter } />
+          );
         })}
       </div>
     );

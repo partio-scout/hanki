@@ -40,7 +40,7 @@ var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
 var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
-var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, PurchaseOrderActions);
+var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderStore, CostCenterStore, PurchaseOrderActions);
 var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 

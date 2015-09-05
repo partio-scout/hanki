@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function getCostCenterActions(alt, CostCenter) {
   class CostCenterActions {
     updateCostCenters(costCenters) {
@@ -10,11 +12,11 @@ function getCostCenterActions(alt, CostCenter) {
 
     fetchCostCenters() {
       this.dispatch();
-      CostCenter.findAll((err, costCenter) => {
+      CostCenter.findAll((err, costCenters) => {
         if (err) {
           this.actions.costCenterUpdateFailed(null);
         } else {
-          this.actions.updateCostCenters(costCenter);
+          this.actions.updateCostCenters(_.indexBy(costCenters, 'costcenterId'));
         }
       });
     }

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
@@ -50,7 +51,7 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
           <Modal.Body>
             <form className="form-horizontal">
               <Input ref="costcenterId" type='select' label='Kustannuspaikka' labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                {this.state.costCenters.map(function(costCenter) {
+                {_.map(this.state.costCenters, function(costCenter) {
                   return <option value={ costCenter.costcenterId }>{ costCenter.name }</option>
                 })}
               </Input>
