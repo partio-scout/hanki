@@ -11,7 +11,6 @@ module.exports = function(Title) {
     var supplierId_exists = Promise.promisify(Supplier.exists, Supplier);
     var title_create = Promise.promisify(Title.create, Title);
     var Title_beginTransaction = Promise.promisify(Title.beginTransaction, Title);
-    var AnyErrorsHappened = false;
 
     // Check if objects property already exists in db; if not, change to 0
     // obj: a Title-object, func: function to check if property exists, property: property to check & change to 0 if it doesn't exist
@@ -43,43 +42,16 @@ module.exports = function(Title) {
             checkIfPropertyExists(obj, supplierId_exists, 'supplierId'),
             obj
           ]).then(function(array) {
-            title_create(obj, { transaction: tx }).then(function(obj){
-              return;
-            }, function(err) {
-              AnyErrorsHappened = true;
-              cb(err);
-            });
-          }, function(err) {
-              AnyErrorsHappened = true;
-              cb(err);
-            });
-        }, function(err) {
-          AnyErrorsHappened = true;
-          cb(err);
-        }).then(function(result) {
-          return new Promise(function(res,rej) {
-            if (!AnyErrorsHappened) { // no errors; commit tx
-              tx.commit(function(err) {
-                if (err) {
-                  rej(err);
-                } else {
-                  res(result);
-                }
-              });
-            } else { // errors; rollback tx
-              tx.rollback(function(err) {
-                if (err) {
-                  rej(err);
-                } else {
-                  rej();
-                }
-              });
-            }
-          }).then(function(result) { // no errors, return new objects
-            cb(null,result);
-          }, function(err) { // return err
-              cb(err);
-            });
+            return title_create(obj, { transaction: tx });
+          });
+        }).then(function(result) { // titles created successfully
+          tx.commit(function(txError) {
+            txError ? cb(txError) : cb(null,result);
+          });
+        }).catch(function(error) { // at least some failures in CSV read or title creation -> rollback all
+          tx.rollback(function(txError) {
+            txError ? cb(txError) : cb(error);
+          });
         });
       });
     }
