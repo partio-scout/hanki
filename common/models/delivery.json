@@ -29,6 +29,23 @@
       "_selectable": false,
       "comments": "toimitusnumero"
     },
+    "name": {
+      "type": "String",
+      "required": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "name",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "lyhyt kuvaus"
+    },
     "address": {
       "type": "String",
       "required": false,
@@ -48,7 +65,7 @@
     },
     "description": {
       "type": "String",
-      "required": false,
+      "required": true,
       "length": 255,
       "precision": null,
       "scale": null,
