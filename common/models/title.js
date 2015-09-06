@@ -12,13 +12,13 @@ module.exports = function(Title) {
     var title_create = Promise.promisify(Title.create, Title);
     var Title_beginTransaction = Promise.promisify(Title.beginTransaction, Title);
 
-    // Check if objects property already exists in db; if not, change to 0
-    // obj: a Title-object, func: function to check if property exists, property: property to check & change to 0 if it doesn't exist
-    function checkIfPropertyExists(obj, func, property) {
+    // Check if titles property already exists in db; if not, change to 0
+    // title: a Title-object, func: function to check if property exists, property: property to check & change to 0 if it doesn't exist
+    function  setPropertyZeroIfNotExists(title, func, property) {
       if (func && (typeof func == 'function')){ // Check if passed function actually a function
-        return func(obj[property]).then(function(exists){
+        return func(title[property]).then(function(exists){
           if (!exists) { // Property doesn't already exist, so change to 0
-            obj[property] = 0;
+            title[property] = 0;
           }
         }, function(err) {
           cb(err,null);
@@ -35,14 +35,14 @@ module.exports = function(Title) {
     } else {
       var beginTx = Title_beginTransaction({ isolationLevel: Title.Transaction.READ_COMMITTED });
       beginTx.then(function(tx) {
-        Parse(csv, options).each(function(obj){
+        Parse(csv, options).each(function(title){
           return Promise.all([
-            checkIfPropertyExists(obj, titlegroupId_exists, 'titlegroupId'),
-            checkIfPropertyExists(obj, accountId_exists, 'accountId'),
-            checkIfPropertyExists(obj, supplierId_exists, 'supplierId'),
-            obj
+            setPropertyZeroIfNotExists(title, titlegroupId_exists, 'titlegroupId'),
+            setPropertyZeroIfNotExists(title, accountId_exists, 'accountId'),
+            setPropertyZeroIfNotExists(title, supplierId_exists, 'supplierId'),
+            title
           ]).then(function(array) {
-            return title_create(obj, { transaction: tx });
+            return title_create(title, { transaction: tx });
           });
         }).then(function(result) { // titles created successfully
           tx.commit(function(txError) {
