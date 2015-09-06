@@ -7,6 +7,8 @@ var ReactRouterBootstrap = require('react-router-bootstrap');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var PurchaseOrderRowTable = require('./PurchaseOrderRowTable.jsx');
 
+var Price = require('./utils/Price.jsx');
+
 var PurchaseOrder = React.createClass({
   getDefaultProps: function() {
     return {
@@ -15,6 +17,10 @@ var PurchaseOrder = React.createClass({
   },
 
   render: function () {
+    var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
+      var titlePrice = this.props.titles[row.titleId].priceWithTax;
+      return total + row.amount * titlePrice;
+    }, 0);
     return (
       <Panel>
         <h2>
@@ -25,6 +31,9 @@ var PurchaseOrder = React.createClass({
           purchaseOrderRows={ this.props.purchaseOrderRows }
           titles={ this.props.titles }
           deliveries={ this.props.deliveries } />
+        <div className="purchase-order-total-price">
+          Yhteensä: <Price value={ totalPrice } />
+        </div>
       </Panel>
     );
   }
