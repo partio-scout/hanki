@@ -1,5 +1,5 @@
 exports.config = {
-    
+
     //
     // ==================
     // Specify Test Files
@@ -87,14 +87,14 @@ exports.config = {
     // The following are supported: dot (default), spec and xunit
     // see also: http://webdriver.io/guide/testrunner/reporters.html
     reporter: 'spec',
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd'
     },
-    
+
     //
     // =====
     // Hooks
@@ -113,7 +113,7 @@ exports.config = {
     before: function() {
         var chai = require('chai');
         var chaiAsPromised = require('chai-as-promised');
- 
+
         chai.use(chaiAsPromised);
         expect = chai.expect;
         chai.Should();

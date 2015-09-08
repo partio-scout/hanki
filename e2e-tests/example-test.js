@@ -1,6 +1,6 @@
 var chai        = require('chai'),
     assert      = chai.assert,
-    webdriverio = require('../../index');
+    webdriverio = require('webdriverio');
 
 describe('my webdriverio tests', function(){
 
@@ -8,7 +8,7 @@ describe('my webdriverio tests', function(){
     var client = {};
 
     before(function(done){
-            client = webdriverio.remote({ desiredCapabilities: {browserName: 'phantomjs'} });
+            client = webdriverio.remote({ desiredCapabilities: {browserName: 'chrome'} });
             client.init(done);
     });
 
