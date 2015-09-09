@@ -4,6 +4,7 @@ var app = require('../server');
 var request = require('supertest');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
+var ReadFile = Promise.promisify(require('fs').readFile);
 
 describe('DataImport', function() {
   var User = app.models.User;
@@ -121,6 +122,34 @@ describe('DataImport', function() {
             done();
           }
         });
+      });
+    });
+    it('should accept 1000 line csv-file', function(done){
+      this.timeout(5000);
+      // setTimeout(done, 300);
+      var readCSV = ReadFile('./server/test/big_test_1000.csv', 'utf-8');
+      readCSV
+      .then(function(str) {
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).post('/api/Titles/DataImport')
+          .query({ access_token: accessToken.id })
+          .send({ csv: str })
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              console.log(err);
+              done(err);
+            } else {
+              console.log(res.body);
+              expect(res.body.result).to.not.be.empty;
+              done();
+            }
+          });
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
       });
     });
   });
