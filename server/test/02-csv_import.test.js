@@ -9,7 +9,6 @@ var Title = app.models.Title;
 var CountTitles = Promise.promisify(Title.count, Title);
 
 describe('DataImport', function() {
-    var TitlesCount = CountTitles();
     var User = app.models.User;
     var username = 'some_user';
     var userpass = 'salasana';
@@ -104,7 +103,8 @@ describe('DataImport', function() {
         });
       });
       it('should change non-existing titlegroupId, accountId & supplierId to 0', function(done){
-        this.timeout(5000);
+        // this.timeout(5000);
+        var TitlesCount1 = CountTitles();
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
@@ -119,10 +119,10 @@ describe('DataImport', function() {
               expect(res.body.result[0]).to.have.deep.property('titlegroupId', 0);
               expect(res.body.result[0]).to.have.deep.property('accountId', 0);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 0);
-              TitlesCount
+              TitlesCount1
               .then(function(count) {
                 console.log(count);
-                expect(count).to.be.at.least(3);
+                expect(count).to.be.at.least(1);
                 done();
               }, function(err) {
                 throw (err);
@@ -134,6 +134,7 @@ describe('DataImport', function() {
         });
       });
       it('should not change existing titlegroupId, accountId & supplierId to 0', function(done){
+        var TitlesCount2 = CountTitles();
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
@@ -148,10 +149,10 @@ describe('DataImport', function() {
               expect(res.body.result[0]).to.have.deep.property('titlegroupId', 1);
               expect(res.body.result[0]).to.have.deep.property('accountId', 1);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 1);
-              TitlesCount
+              TitlesCount2
               .then(function(count) {
                 console.log(count);
-                expect(count).to.be.at.least(3);
+                expect(count).to.be.at.least(1);
                 done();
               }, function(err) {
                 throw (err);
@@ -163,6 +164,7 @@ describe('DataImport', function() {
         });
       });
       it('should accept 5000 line csv-file', function(done){
+        var TitlesCount3 = CountTitles();
         this.timeout(5000);
         var readCSV = ReadFile('./server/test/big_test_5000.csv', 'utf-8');
         readCSV
@@ -175,11 +177,10 @@ describe('DataImport', function() {
             .expect(200)
             .end(function(err, res) {
               if (err) {
-                console.log(err);
-                done(err);
+                throw (err);
               } else {
-                expect(res.body.result).to.not.be.empty;
-                TitlesCount
+                expect(res.body.result).to.have.length(5000);
+                TitlesCount3
                 .then(function(count) {
                   console.log(count);
                   expect(count).to.be.at.least(5000);
@@ -193,6 +194,7 @@ describe('DataImport', function() {
         })
         .catch(function(err) {
           throw (err);
+          done(err);
         });
       });
     });
