@@ -29,7 +29,7 @@ module.exports = function(Title) {
     };
 
     // options for Parse function:
-    var options = { columns: [ 'name', 'titlegroupId', 'unit', 'priceWithoutTax', 'vatPercent', 'priceWithTax', 'accountId', 'supplierId', 'supplierTitlecode', 'toResold', 'toRent', 'toBought', 'toSignedFor', 'memo', 'selectable' ], skip_empty_lines: true, auto_parse: true, delimiter: ',', rowDelimiter: '\\n' };
+    var options = { columns: [ 'name', 'titlegroupId', 'unit', 'priceWithoutTax', 'vatPercent', 'priceWithTax', 'accountId', 'supplierId', 'supplierTitlecode', 'toResold', 'toRent', 'toBought', 'toSignedFor', 'memo', 'selectable' ], skip_empty_lines: true, auto_parse: true, delimiter: ',', rowDelimiter: ' ' };
     if (!csv || (csv === '')) { // input csv is empty; return empty string
       cb(null, '');
     } else {
