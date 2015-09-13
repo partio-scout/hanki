@@ -53,6 +53,9 @@ module.exports = function(Title) {
             txError ? cb(txError) : cb(error);
           });
         });
+      })
+      .catch(function(error) {
+        cb(error);
       });
     }
   };
