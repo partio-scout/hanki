@@ -3,12 +3,12 @@
   	"name": "Leirin tavarat - controller",
   	"costcenterId": 1,
   	"usageobjectId": 1,
-  	"subscriber": 3
+  	"subscriberId": 3
   },
   {
   	"name": "Tanssilava - orderer",
   	"costcenterId": 1,
   	"usageobjectId": 1,
-  	"subscriber": 1
+  	"subscriberId": 1
   }
 ]

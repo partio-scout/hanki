@@ -121,7 +121,7 @@
     "orders": {
       "type": "hasMany",
       "model": "Purchaseorder",
-      "foreignKey": "subscriber"
+      "foreignKey": "subscriberId"
     },
     "usageobjects_master": {
       "type": "hasMany",

@@ -353,17 +353,10 @@
       "property": "create"
     },
     {
-      "accessType": "*",
+      "accessType": "WRITE",
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW",
-      "property": "upsert"
     }
   ],
   "methods": []

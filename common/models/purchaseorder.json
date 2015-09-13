@@ -46,14 +46,14 @@
       "_selectable": false,
       "comments": "käyttökohde"
     },
-    "subscriber": {
+    "subscriberId": {
       "type": "Number",
       "required": true,
       "length": null,
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "subscriber",
+        "columnName": "subscriber_id",
         "dataType": "integer",
         "dataLength": null,
         "dataPrecision": 32,
@@ -112,8 +112,8 @@
     },
     "subscriber": {
       "type": "belongsTo",
-      "model": "User",
-      "foreignKey": "subscriber"
+      "model": "Purchaseuser",
+      "foreignKey": "subscriberId"
     },
     "usageobject": {
       "type": "belongsTo",
@@ -154,54 +154,53 @@
       "property": "create"
     },
     {
-      "accessType": "EXECUTE",
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW",
-      "property": "updateAttributes"
+      "property": "__delete__order_rows"
     },
     {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__delete__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__create__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__get__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__updateById__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__destroyById__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__findById__order_rows"
-  },
-  {
-    "principalType": "ROLE",
-    "principalId": "$owner",
-    "permission": "ALLOW",
-    "property": "__count__order_rows"
-  }
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__create__order_rows"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__order_rows"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__updateById__order_rows"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__destroyById__order_rows"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__findById__order_rows"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__count__order_rows"
+    }
   ],
   "methods": []
 }
