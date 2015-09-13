@@ -64,6 +64,7 @@ describe('DataImport', function() {
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
           .query({ access_token: accessToken.id })
+          .set('Content-Type', 'application/x-www-form-urlencoded')
           .send({ csv: '' })
           .expect(200)
           .end(function(err, res) {
@@ -74,15 +75,16 @@ describe('DataImport', function() {
             done();
           });
         }, function(err) {
-          throw (err);
+          done(err);
         });
       });
       it('should return 422 when posted csv with flawed line', function(done){
-        var TitlesCountWithWhereClause = CountTitles({ supplierTitlecode: 'Kukkakauppa' });
+        var TitlesCount = CountTitles({ supplierTitlecode: 'Kukkakauppa' });
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
           .query({ access_token: accessToken.id })
+          .set('Content-Type', 'application/x-www-form-urlencoded')
           .send({ csv: ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
           .expect(422)
           .end(function(err, res) {
@@ -90,85 +92,94 @@ describe('DataImport', function() {
               done(err);
             }
             expect(res.body.result).to.be.empty;
-            TitlesCountWithWhereClause
+            TitlesCount
             .then(function(count) {
               expect(count).to.be.equal(0);
               done();
             }, function(err) {
-              throw (err);
+              done(err);
             });
           });
-        }, function(err) {
-          throw (err);
+        })
+        .catch(function(err) {
+          done(err);
         });
       });
       it('should change non-existing titlegroupId, accountId & supplierId to 0', function(done){
         // this.timeout(5000);
-        var TitlesCount1 = CountTitles();
+        var TitlesCount1 = CountTitles({ titlegroupId: 0 });
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
           .query({ access_token: accessToken.id })
-          .send({ csv: 'Lauta,10,m,32,14,45,22,19,Lautakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .set('Accept', '*/*')
+          .send({ csv: '"Teltta",5,kpl,100,21,121,8,6,"Retkeilykauppa",1,1,0,1,"Teltoissa nukutaan",1' })
           .expect(200)
           .end(function(err, res) {
             if (err) {
-              throw (err);
+              done(err);
             } else {
+              console.log(res.body);
               expect(res.body.result).to.not.be.empty;
               expect(res.body.result[0]).to.have.deep.property('titlegroupId', 0);
               expect(res.body.result[0]).to.have.deep.property('accountId', 0);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 0);
               TitlesCount1
               .then(function(count) {
-                console.log(count);
+                // console.log(count);
                 expect(count).to.be.at.least(1);
                 done();
               }, function(err) {
-                throw (err);
+                done(err);
               });
             }
           });
-        }, function(err) {
-          throw (err);
+        })
+        .catch(function(err) {
+          done(err);
         });
       });
       it('should not change existing titlegroupId, accountId & supplierId to 0', function(done){
-        var TitlesCount2 = CountTitles();
+        var TitlesCount2 = CountTitles({ titlegroupId: 1 });
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
           .query({ access_token: accessToken.id })
-          .send({ csv: 'Kakkosnelonen,1,m,32,21,45,1,1,Lautakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .send({ csv: '"Kakkosnelonen",1,m,32,21,45,1,1,"Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
           .expect(200)
           .end(function(err, res) {
             if (err) {
               done(err);
             } else {
+              console.log(res.body);
               expect(res.body.result).to.not.be.empty;
               expect(res.body.result[0]).to.have.deep.property('titlegroupId', 1);
               expect(res.body.result[0]).to.have.deep.property('accountId', 1);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 1);
               TitlesCount2
               .then(function(count) {
-                console.log(count);
+                // console.log(count);
                 expect(count).to.be.at.least(1);
                 done();
               }, function(err) {
-                throw (err);
+                done(err);
               });
             }
           });
-        }, function(err) {
-          throw (err);
+        })
+        .catch(function(err) {
+          done(err);
         });
       });
-      it('should accept 5000 line csv-file', function(done){
+      it('should accept 100 line csv-file', function(done){
         var TitlesCount3 = CountTitles();
-        this.timeout(5000);
-        var readCSV = ReadFile('./server/test/big_test_5000.csv', 'utf-8');
+        this.timeout(10000);
+        var readCSV = ReadFile('./server/test/big_test_100.csv', 'utf-8');
         readCSV
         .then(function(str) {
+          // console.log(str);
           loginUser(username, userpass)
           .then(function(accessToken) {
             request(app).post('/api/Titles/DataImport')
@@ -177,23 +188,27 @@ describe('DataImport', function() {
             .expect(200)
             .end(function(err, res) {
               if (err) {
-                throw (err);
+                done(err);
               } else {
-                expect(res.body.result).to.have.length(5000);
+                // console.log(res.body.result[0]);
+                // console.log(res.body.result[1]);
+                // console.log(res.body.result[2]);
+                // console.log(res.body.result[3]);
+                // console.log(res.body.result[4]);
+                expect(res.body.result).to.have.length(100);
                 TitlesCount3
                 .then(function(count) {
-                  console.log(count);
-                  expect(count).to.be.at.least(5000);
+                  // console.log(count);
+                  expect(count).to.be.at.least(100);
                   done();
                 }, function(err) {
-                  throw (err);
+                  done(err);
                 });
               }
             });
           });
         })
         .catch(function(err) {
-          throw (err);
           done(err);
         });
       });
