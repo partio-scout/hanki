@@ -32,7 +32,7 @@ describe('Orderer', function() {
           'usageobjectId': 1,
           'name': 'Paljon nauloja',
           'costcenterId': 1,
-          'subscriber': accessToken.userId
+          'subscriberId': accessToken.userId
         })
         .expect(200)
         .end(done);

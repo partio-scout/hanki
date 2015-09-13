@@ -111,7 +111,7 @@ describe('Orderer', function() {
       it('Purchaseorders', function(done) {
         var login = loginUser(username, userpass);
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriber: accessToken.userId });
+          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId });
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
@@ -133,7 +133,7 @@ describe('Orderer', function() {
       it('Purchaseorderrows', function(done) {
         var login = loginUser(username, userpass);
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriber: accessToken.userId }, 'order_rows');
+          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId }, 'order_rows');
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
