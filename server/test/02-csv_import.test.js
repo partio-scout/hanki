@@ -5,9 +5,6 @@ var request = require('supertest');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
 var ReadFile = Promise.promisify(require('fs').readFile);
-// var Title = app.models.Title;
-// var CountTitles = Promise.promisify(Title.count, Title);
-// var FindTitles = Promise.promisify(Title.find, Title);
 
 describe('DataImport', function() {
     var User = app.models.User;
