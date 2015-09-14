@@ -5,9 +5,9 @@ var request = require('supertest');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
 var ReadFile = Promise.promisify(require('fs').readFile);
-var Title = app.models.Title;
-var CountTitles = Promise.promisify(Title.count, Title);
-var FindTitles = Promise.promisify(Title.find, Title);
+// var Title = app.models.Title;
+// var CountTitles = Promise.promisify(Title.count, Title);
+// var FindTitles = Promise.promisify(Title.find, Title);
 
 describe('DataImport', function() {
     var User = app.models.User;
@@ -25,8 +25,9 @@ describe('DataImport', function() {
           }
           if (!accessToken) {
             reject(err);
+          } else {
+            resolve(accessToken);
           }
-          else resolve(accessToken);
         });
       });
     }
@@ -37,7 +38,9 @@ describe('DataImport', function() {
           password: pass,
           email: 'user@foo.fi'
         }, function(err, obj) {
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
           resolve(obj);
         });
       });
@@ -75,9 +78,10 @@ describe('DataImport', function() {
           .end(function(err, res) {
             if (err) {
               done(err);
+            } else {
+              expect(res.body.result).to.be.empty;
+              done();
             }
-            expect(res.body.result).to.be.empty;
-            done();
           });
         })
         .catch(function(err) {
@@ -95,9 +99,10 @@ describe('DataImport', function() {
           .end(function(err, res) {
             if (err) {
               done(err);
+            } else {
+              expect(res.body.result).to.be.empty;
+              done();
             }
-            expect(res.body.result).to.be.empty;
-            done();
           });
         })
         .catch(function(err) {
@@ -154,7 +159,7 @@ describe('DataImport', function() {
         });
       });
       it('should accept 5000 line csv-file', function(done){
-        this.timeout(12000);
+        this.timeout(15000);
         var readCSV = ReadFile('./server/test/big_test_5000.csv', 'utf-8');
         readCSV
         .then(function(str) {
@@ -175,34 +180,65 @@ describe('DataImport', function() {
     // Check if database is really updated in the previous tests
     describe('Database', function() {
       it('should contain 5002 Title-objects', function(done) {
-        CountTitles()
-        .then(function(count) {
-          // console.log(count);
-          expect(count).to.equal(5002);
-          done();
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).get('/api/Titles/count')
+          .query({ access_token: accessToken.id })
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              done(err);
+            } else {
+              expect(res.body.count).to.equal(5002);
+              done();
+            }
+          });
+        })
+        .catch(function(err) {
+          done(err);
         });
       });
       it('should have Title-object with name ruuvimeisseli and titlegroupId, accountId and supplierId 0', function(done) {
-        FindTitles({ where: { name: 'Ruuvimeisseli' } })
-        .then(function(titles) {
-          expect(titles).to.have.length(1);
-          expect(titles[0]).to.have.deep.property('titlegroupId', 0);
-          expect(titles[0]).to.have.deep.property('accountId', 0);
-          expect(titles[0]).to.have.deep.property('supplierId', 0);
-          done();
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).get('/api/Titles')
+          .query({ access_token: accessToken.id })
+          .send({ filter: { where: { name: 'Ruuvimeisseli' } } })
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              done(err);
+            } else {
+              expect(res.body).to.have.length(1);
+              expect(res.body[0]).to.have.deep.property('titlegroupId', 0);
+              expect(res.body[0]).to.have.deep.property('accountId', 0);
+              expect(res.body[0]).to.have.deep.property('supplierId', 0);
+              done();
+            }
+          });
         })
         .catch(function(err) {
           done(err);
         });
       });
       it('should have Title-object with name kakkosnelonen and titlegroupId, accountId and supplierId 1', function(done) {
-        FindTitles({ where: { name: 'Kakkosnelonen' } })
-        .then(function(titles) {
-          expect(titles).to.have.length(1);
-          expect(titles[0]).to.have.deep.property('titlegroupId', 1);
-          expect(titles[0]).to.have.deep.property('accountId', 1);
-          expect(titles[0]).to.have.deep.property('supplierId', 1);
-          done();
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).get('/api/Titles')
+          .query({ access_token: accessToken.id })
+          .send({ filter: { where: { name: 'Kakkosnelonen' } } })
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              done(err);
+            } else {
+              expect(res.body).to.have.length(1);
+              expect(res.body[0]).to.have.deep.property('titlegroupId', 1);
+              expect(res.body[0]).to.have.deep.property('accountId', 1);
+              expect(res.body[0]).to.have.deep.property('supplierId', 1);
+              done();
+            }
+          });
         })
         .catch(function(err) {
           done(err);
