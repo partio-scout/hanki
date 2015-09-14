@@ -164,14 +164,7 @@ describe('DataImport', function() {
             .query({ access_token: accessToken.id })
             .send({ csv: str })
             .expect(200)
-            .end(function(err, res) {
-              if (err) {
-                done(err);
-              } else {
-                expect(res.body.result).to.have.length(5000);
-                done();
-              }
-            });
+            .end(done);
           });
         })
         .catch(function(err) {
