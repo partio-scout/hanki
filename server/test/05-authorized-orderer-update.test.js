@@ -58,8 +58,9 @@ describe('Orderer', function() {
           .put('/api/Purchaseorders/2/order_rows/1')
           .query({ access_token: accessToken.id })
           .send(msg)
-          .expect(200)
+          //.expect(200)
           .expect(function(res) {
+            console.log(res);
             // Make sure that it really has changed
             expect(res.body.modified).to.equal(d);
           })
