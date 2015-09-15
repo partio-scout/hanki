@@ -12,7 +12,7 @@ var deleteAccessToken = function() {
 
 var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
-var User = new RestfulResource('/api/Users', accessToken);
+var User = new RestfulResource('/api/Purchaseusers', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 var PurchaseOrderRow = new RestfulResource('/api/Purchaseorderrows', accessToken);
 var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
