@@ -10,10 +10,13 @@ var deleteAccessToken = function() {
 
 // Setup REST resources
 
+var userId = accessToken && accessToken.userId || 0;
+
 var request = require('superagent');
 var RestfulResource = require('./utils/rest.js')(request);
 var User = new RestfulResource('/api/Purchaseusers', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
+var MyPurchaseOrder = new RestfulResource('/api/Purchaseusers/' + userId + '/orders', accessToken);
 var PurchaseOrderRow = new RestfulResource('/api/Purchaseorderrows', accessToken);
 var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
 var Title = new RestfulResource('/api/Titles', accessToken);
@@ -28,7 +31,7 @@ var alt = new Alt();
 var UserActions = require('./actions/UserActions')(alt, User, deleteAccessToken);
 var UserStore = require('./stores/UserStore')(alt, UserActions);
 
-var PurchaseOrderActions = require('./actions/PurchaseOrderActions')(alt, PurchaseOrder, PurchaseOrderRow);
+var PurchaseOrderActions = require('./actions/PurchaseOrderActions')(alt, PurchaseOrder, PurchaseOrderRow, MyPurchaseOrder);
 var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrderActions);
 
 var CostCenterActions = require('./actions/CostCenterActions')(alt, CostCenter);

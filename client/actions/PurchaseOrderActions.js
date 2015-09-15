@@ -1,4 +1,4 @@
-function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow) {
+function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchaseOrder) {
   class PurchaseOrderActions {
 
     updateMyPurchaseOrders(myPurchaseOrders) {
@@ -16,7 +16,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow) {
     fetchMyPurchaseOrders(userId) {
       this.dispatch();
 
-      PurchaseOrder.findAll((err, res) => {
+      MyPurchaseOrder.findAll((err, res) => {
         if (err) {
           this.actions.loadingMyPurchaseOrdersFailed(err);
         } else {
@@ -24,13 +24,14 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow) {
         }
       }, 'filter[order]=orderId%20DESC');
 
-      PurchaseOrderRow.findAll((err, res) => {
+      MyPurchaseOrder.findAll((err, res) => {
         if (err) {
           this.actions.loadingMyPurchaseOrdersFailed(err);
         } else {
-          this.actions.updatePurchaseOrderRows(res);
+          var orderRows = _(res).pluck('order_rows').flatten().value();
+          this.actions.updatePurchaseOrderRows(orderRows);
         }
-      }, 'filter[order]=orderId%20DESC');
+      }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
     }
 
     creatingPurchaseOrderFailed(error) {
