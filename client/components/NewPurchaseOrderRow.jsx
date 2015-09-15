@@ -102,13 +102,6 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                   return <option value={ delivery.deliveryId }>{ delivery.description }</option>
                 })}
               </Input>
-              <Static label="Tarveaika" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <div>
-                  <label><input type="radio" name="needed_full_time" value="1" /> Koko leirin ajaksi</label>
-                </div>
-                <label><input type="radio" name="needed_full_time" value="0" /> Tarvitaan: </label>
-                KALENTERI 1 - KALENTERI 2
-              </Static>
               <Input ref="memo" type='textarea' label='Kommentti' help="Vapaaehtoinen" labelClassName='col-xs-3' wrapperClassName='col-xs-9' />
             </form>
           </Modal.Body>
