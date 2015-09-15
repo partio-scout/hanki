@@ -4,7 +4,7 @@
   "main": "server/server.js",
   "scripts": {
     "pretest": "NODE_ENV=test eslint . && NODE_ENV=test ./testsetup.sh",
-    "test": "NODE_ENV=test mocha -R spec server/test",
+    "test": "NODE_ENV=test mocha -R spec server/test && wdio wdio.conf.js", 
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
   },
@@ -54,7 +54,6 @@
     "http-proxy": "^1.10.1",
     "mocha": "2.0.1",
     "react-bootstrap": "^0.24.2",
-    "selenium-standalone": "^4.6.0",
     "supertest": "^1.0.1",
     "webdriverio": "^3.2.1",
     "webpack-dev-server": "^1.8.0"

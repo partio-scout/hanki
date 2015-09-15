@@ -27,3 +27,13 @@ If you have already installed the app and need to reset the database, you can:
 Run the application with:
 
     NODE_ENV=dev slc run
+
+## Running tests
+
+Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
+
+	java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+
+Tests include linter, API and interation tests. Run all tests and checks:
+
+	npm test

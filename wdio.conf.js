@@ -30,7 +30,7 @@ exports.config = {
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'firefox'
     }],
     //
     // ===================
@@ -105,7 +105,7 @@ exports.config = {
     //
     // Gets executed before all workers get launched.
     onPrepare: function() {
-        // do something
+        console.log('let\'s go');
     },
     //
     // Gets executed before test execution begins. At this point you will have access to all global
@@ -117,6 +117,7 @@ exports.config = {
         chai.use(chaiAsPromised);
         expect = chai.expect;
         chai.Should();
+
     },
     //
     // Gets executed after all tests are done. You still have access to all global variables from
@@ -128,6 +129,6 @@ exports.config = {
     // Gets executed after all workers got shut down and the process is about to exit. It is not
     // possible to defer the end of the process using a promise.
     onComplete: function() {
-        // do something
+        console.log('that\'s it');
     }
 };
