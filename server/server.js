@@ -20,6 +20,3 @@ boot(app, __dirname, function(err) {
   if (require.main === module)
     app.start();
 });
-
-// Modify user acls to match our requirements
-//app.models.User.settings.acls = require('./user-acls.json');
