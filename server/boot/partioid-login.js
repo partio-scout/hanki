@@ -31,7 +31,12 @@ module.exports = function(app) {
       if (err) {
         processError(req, res, err);
       } else {
-        app.models.User.findOne({ email: samlResult.email }, function(err, user) {
+        var query = {
+          where: {
+            email: samlResult.email
+          }
+        };
+        app.models.Purchaseuser.findOne(query, function(err, user) {
           if (err) {
             res.send('Kirjautuminen epäonnistui tuntemattomasta syystä.');
             console.error(err);
