@@ -1,0 +1,27 @@
+[
+  {
+  	"principalType": "USER",
+  	"principalId": 1,
+  	"roleId": 1
+  },
+  {
+  	"principalType": "USER",
+  	"principalId": 2,
+  	"roleId": 2
+  },
+  {
+  	"principalType": "USER",
+  	"principalId": 3,
+  	"roleId": 3
+  },
+  {
+  	"principalType": "USER",
+  	"principalId": 4,
+  	"roleId": 4
+  },
+  {
+  	"principalType": "USER",
+  	"principalId": 5,
+  	"roleId": 5
+  }
+]

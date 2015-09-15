@@ -8,7 +8,9 @@ var fixturesToImport = [
   'Supplier',
   'Delivery',
   'Costcenter',
-  'Purchaseorder'
+  'Purchaseorder',
+  'Purchaseorderrow',
+  'RoleMapping'
 ];
 
 var closeDBConnectionIfImportComplete = _.after(fixturesToImport.length, function() {
