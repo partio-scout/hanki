@@ -27,9 +27,9 @@ app.models.Purchaseuser.create(user, function(err, user) {
     process.exit(1);
   } else {
     app.models.RoleMapping.create({
-      "principalType": "USER",
-      "principalId": user.id,
-      "roleId": 1
+      'principalType': 'USER',
+      'principalId': user.id,
+      'roleId': 1
     }, function(err, res) {
       if (err) {
         console.error('Can\'t create role mapping:\n', err);
