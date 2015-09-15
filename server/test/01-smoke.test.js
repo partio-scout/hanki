@@ -20,7 +20,7 @@ describe('Accounts', function() {
     app.models.Account.find({ }, function(err, res) {
       if (err) done(err);
       expect(res).to.have.length(2);
-      //expect(err).to.be.null;
+      expect(err).to.be.falsy;
       done();
     });
   });

@@ -95,15 +95,6 @@ describe('Orderer', function() {
         });
       });
 
-      it('Usageobjects', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          request(app).get('/api/Usageobjects?access_token=' + accessToken.id)
-          .expect(200)
-          .end(done);
-        });
-      });
-
     });
 
     describe('owned', function() {

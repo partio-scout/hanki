@@ -29,23 +29,6 @@
       "_selectable": false,
       "comments": "tilausnumero"
     },
-    "usageobjectId": {
-      "type": "Number",
-      "required": true,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
-      "postgresql": {
-        "columnName": "usageobject_id",
-        "dataType": "integer",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
-        "nullable": "NO"
-      },
-      "_selectable": false,
-      "comments": "käyttökohde"
-    },
     "subscriberId": {
       "type": "Number",
       "required": true,
@@ -114,11 +97,6 @@
       "type": "belongsTo",
       "model": "Purchaseuser",
       "foreignKey": "subscriberId"
-    },
-    "usageobject": {
-      "type": "belongsTo",
-      "model": "Usageobject",
-      "foreignKey": "usageobjectId"
     }
   },
   "acls": [

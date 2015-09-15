@@ -12,11 +12,17 @@
       }
     }
   },
-  "session": {},
-  "auth": {},
-  "parse": {},
-  "routes": {},
-  "files": {},
+  "session": {
+  },
+  "auth": {
+  },
+  "parse": {
+    "body-parser#urlencoded": { "params": { "extended": true } }
+  },
+  "routes": {
+  },
+  "files": {
+  },
   "final": {
     "loopback#urlNotFound": {}
   },

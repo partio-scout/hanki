@@ -14,7 +14,6 @@ var modelsToAutoMigrate = [
   'Supplier',
   'Delivery',
   'Costcenter',
-  'Usageobject',
   'Purchaseorder',
   'Purchaseorderrow'
 ];

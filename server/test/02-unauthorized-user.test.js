@@ -52,9 +52,4 @@ describe('Unauthenticated user', function() {
       .end(done);
   });
 
-  it('should not be able to access Usageobjects', function(done) {
-    request(app).get('/api/Usageobjects')
-      .expect(401)
-      .end(done);
-  });
 });

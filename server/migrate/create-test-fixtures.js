@@ -8,7 +8,6 @@ var fixturesToImport = [
   'Supplier',
   'Delivery',
   'Costcenter',
-  'Usageobject',
   'Purchaseorder',
   'Purchaseorderrow',
   'RoleMapping'
