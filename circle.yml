@@ -9,3 +9,7 @@ deployment:
     branch: master
     heroku:
       appname: fj16-procurement-demo
+test:
+  pre:
+    - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
+

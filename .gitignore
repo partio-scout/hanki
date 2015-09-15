@@ -1,2 +1,5 @@
 node_modules/**/*
+.~lock.*
+*.json~
 public/build/
+scripts/dbadmin.txt
