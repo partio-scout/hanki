@@ -12,7 +12,16 @@ if (!email) {
 
 var password = crypto.randomBytes(24).toString('hex');
 
-app.models.User.create({ email: email, password: password }, function(err, user) {
+var user = {
+  email: email,
+  password: password,
+  name: 'n/a',
+  phone: 'n/a',
+  enlistment: 'n/a',
+  userSection: 'n/a'
+};
+
+app.models.Purchaseuser.create(user, function(err, user) {
   if (err) {
     console.error('Can\'t create user:\n', err);
     process.exit(1);
