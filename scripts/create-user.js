@@ -26,7 +26,18 @@ app.models.Purchaseuser.create(user, function(err, user) {
     console.error('Can\'t create user:\n', err);
     process.exit(1);
   } else {
-    console.log('User created:\n', user);
-    process.exit(0);
+    app.models.RoleMapping.create({
+      "principalType": "USER",
+      "principalId": user.id,
+      "roleId": 1
+    }, function(err, res) {
+      if (err) {
+        console.error('Can\'t create role mapping:\n', err);
+        process.exit(1);
+      } else {
+        console.log('User created:\n', user);
+        process.exit(0);
+      }
+    });
   }
 });
