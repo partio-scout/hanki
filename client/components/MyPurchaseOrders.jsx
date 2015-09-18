@@ -11,7 +11,6 @@ var Col = ReactBootstrap.Col;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
 var PurchaseOrderList = require('./PurchaseOrderList.jsx');
-var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
 
 var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
   var myPurchaseOrders = React.createClass({
@@ -41,10 +40,6 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
             <ButtonLink to="new_purchase_order" bsStyle="primary">
               Uusi tilaus
             </ButtonLink>
-            <div>
-              <PurchaseOrderLink />
-              <PurchaseOrderLink />
-            </div>
             <PurchaseOrderList
               purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
