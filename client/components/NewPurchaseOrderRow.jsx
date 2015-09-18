@@ -102,7 +102,8 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                   return <option value={ delivery.deliveryId }>{ delivery.description }</option>
                 })}
               </Input>
-              <Input ref="memo" type='textarea' label='Kommentti' help="Vapaaehtoinen" labelClassName='col-xs-3' wrapperClassName='col-xs-9' />
+              <Input ref="memo" type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
+                help='Vapaaehtoinen. Kerro tässä mikä valitsemasi "muu tuote" on ja esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
             </form>
           </Modal.Body>
           <Modal.Footer>
