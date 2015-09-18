@@ -22,7 +22,8 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
         if (err) {
           this.actions.loadingMyPurchaseOrdersFailed(err);
         } else {
-          this.actions.updateMyPurchaseOrders(res);
+          var purchaseOrders = _.indexBy(res, 'orderId');
+          this.actions.updateMyPurchaseOrders(purchaseOrders);
         }
       }, 'filter[order]=orderId%20DESC');
 
@@ -36,11 +37,15 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
     }
 
-    creatingPurchaseOrderFailed(error) {
+    savingPurchaseOrderFailed(error) {
       this.dispatch(error);
     }
 
     purchaseOrderCreated(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+    }
+
+    purchaseOrderUpdated(purchaseOrder) {
       this.dispatch(purchaseOrder);
     }
 
@@ -56,9 +61,20 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       this.dispatch(purchaseOrder);
       PurchaseOrder.create(purchaseOrder, (err, savedPurchaseOrder) => {
         if (err) {
-          this.actions.creatingPurchaseOrderFailed(err);
+          this.actions.savingPurchaseOrderFailed(err);
         } else {
           this.actions.purchaseOrderCreated(savedPurchaseOrder);
+        }
+      });
+    }
+
+    updatePurchaseOrder(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+      PurchaseOrder.update(purchaseOrder.orderId, purchaseOrder, (err, savedPurchaseOrder) => {
+        if (err) {
+          this.actions.savingPurchaseOrderFailed(err);
+        } else {
+          this.actions.purchaseOrderUpdated(savedPurchaseOrder);
         }
       });
     }

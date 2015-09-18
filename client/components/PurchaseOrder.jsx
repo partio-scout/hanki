@@ -2,6 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
+var Glyphicon = ReactBootstrap.Glyphicon;
 
 var ReactRouterBootstrap = require('react-router-bootstrap');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
@@ -25,6 +26,9 @@ var PurchaseOrder = React.createClass({
       <Panel>
         <h2>
           { this.props.costCenter.code } { this.props.purchaseOrder.name }
+          <ButtonLink bsStyle="link" to="edit_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
+            <Glyphicon glyph="pencil" />
+          </ButtonLink>
         </h2>
         <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>
         <PurchaseOrderRowTable

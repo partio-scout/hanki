@@ -13,7 +13,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div>
-        {this.props.purchaseOrders.map((purchaseOrder) => {
+        {_(this.props.purchaseOrders).values().sortBy('orderId').reverse().map((purchaseOrder) => {
           var rows = _.filter(this.props.purchaseOrderRows, { orderId: purchaseOrder.orderId });
           var costCenter = this.props.costCenters[purchaseOrder.costcenterId] || { };
           var titles = this.props.titles || { };
@@ -28,7 +28,7 @@ module.exports = React.createClass({
               titles={ titles }
               deliveries={ deliveries } />
           );
-        })}
+        }).value()}
       </div>
     );
   }

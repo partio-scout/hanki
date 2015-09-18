@@ -50,6 +50,8 @@ var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
 var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
+var EditPurchaseOrder = require('./components/EditPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore);
+
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
@@ -66,6 +68,7 @@ var routes = (
     <DefaultRoute name="home" handler={ HomePage } />
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
       <Route name="new_purchase_order" path="new" handler={ NewPurchaseOrder } />
+      <Route name="edit_purchase_order" path=":purchaseOrder/edit" handler={ EditPurchaseOrder } />
       <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>

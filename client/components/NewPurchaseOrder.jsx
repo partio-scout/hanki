@@ -1,17 +1,12 @@
 var _ = require('lodash');
 var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var ReactRouterBootstrap = require('react-router-bootstrap');
-
-var Modal = ReactBootstrap.Modal;
-var Input = ReactBootstrap.Input;
-var Button = ReactBootstrap.Button;
-
+var ReactAddons = require('react/addons').addons;
 var Router = require('react-router');
+var PurchaseOrderForm = require('./PurchaseOrderForm.jsx');
 
 var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
   return React.createClass({
-    mixins: [ Router.Navigation ],
+    mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     getInitialState() {
       return CostCenterStore.getState();
@@ -29,43 +24,32 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
       this.setState(state);
     },
 
-    onHide: function() {
+    onCancel: function() {
       this.transitionTo('my_purchase_orders');
     },
 
-    onSubmit: function() {
+    onSave: function() {
       var purchaseOrder = {
-        name: this.refs.name.getValue(),
-        costcenterId: this.refs.costcenterId.getValue()
-      }
+        name: this.state.name,
+        costcenterId: this.state.costcenterId
+      };
       PurchaseOrderActions.createPurchaseOrder(purchaseOrder);
       this.transitionTo('my_purchase_orders');
     },
 
     render: function () {
+      var valueLinks = {
+        name: this.linkState('name'),
+        costcenterId: this.linkState('costcenterId')
+      }
+
       return (
-        <Modal show='true' onHide={ this.onHide }>
-          <Modal.Header closeButton>
-            <Modal.Title>Uusi tilaus</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form className="form-horizontal">
-              <Input ref="costcenterId" type='select' label='Kustannuspaikka' labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                {_.map(this.state.costCenters, function(costCenter) {
-                  return <option value={ costCenter.costcenterId }>{ costCenter.code } { costCenter.name }</option>
-                })}
-              </Input>
-              <Input ref="name" type='text' label='Tilauksen nimi' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
-                help='Anna tilaukselle lyhyt ja käyttökohdetta kuvaava nimi, esim. "Vesilaakso/ympäristöpiste" tai "Kahvila Kuppikunta"' />
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className='text-center'>
-            <Button onClick={ this.onSubmit } bsStyle='primary'>Tallenna</Button>
-            <Button onClick={ this.onHide }>Peruuta</Button>
-            </div>
-          </Modal.Footer>
-        </Modal>
+        <PurchaseOrderForm
+          title="Uusi tilaus"
+          costCenters={ this.state.costCenters }
+          onSave={ this.onSave }
+          onCancel={ this.onCancel }
+          valueLinks={ valueLinks } />
       );
     }
   });
