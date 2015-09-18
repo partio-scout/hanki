@@ -3,17 +3,7 @@ var _ = require('lodash');
 function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchaseOrder) {
   class PurchaseOrderActions {
 
-    updateMyPurchaseOrders(myPurchaseOrders) {
-      this.dispatch(myPurchaseOrders);
-    }
-
-    updatePurchaseOrderRows(myPurchaseOrders) {
-      this.dispatch(myPurchaseOrders);
-    }
-
-    loadingMyPurchaseOrdersFailed(error) {
-      this.dispatch(error);
-    }
+    // Fetching orders and rows
 
     fetchMyPurchaseOrders(userId) {
       this.dispatch();
@@ -37,25 +27,19 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
     }
 
-    savingPurchaseOrderFailed(error) {
+    loadingMyPurchaseOrdersFailed(error) {
       this.dispatch(error);
     }
 
-    purchaseOrderCreated(purchaseOrder) {
-      this.dispatch(purchaseOrder);
+    updateMyPurchaseOrders(myPurchaseOrders) {
+      this.dispatch(myPurchaseOrders);
     }
 
-    purchaseOrderUpdated(purchaseOrder) {
-      this.dispatch(purchaseOrder);
+    updatePurchaseOrderRows(myPurchaseOrders) {
+      this.dispatch(myPurchaseOrders);
     }
 
-    creatingPurchaseOrderRowFailed(error) {
-      this.dispatch(error);
-    }
-
-    purchaseOrderRowCreated(row) {
-      this.dispatch(row);
-    }
+    // Creating & updating orders
 
     createPurchaseOrder(purchaseOrder) {
       this.dispatch(purchaseOrder);
@@ -79,6 +63,20 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       });
     }
 
+    savingPurchaseOrderFailed(error) {
+      this.dispatch(error);
+    }
+
+    purchaseOrderCreated(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+    }
+
+    purchaseOrderUpdated(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+    }
+
+    // Creating and updating rows
+
     createPurchaseOrderRow(row) {
       this.dispatch(row);
       PurchaseOrderRow.create(row, (err, savedRow) => {
@@ -90,13 +88,15 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       });
     }
 
-    purchaseOrderRowDeleted(row) {
+    creatingPurchaseOrderRowFailed(error) {
+      this.dispatch(error);
+    }
+
+    purchaseOrderRowCreated(row) {
       this.dispatch(row);
     }
 
-    deletingPurchaseOrderRowFailed(err) {
-      this.dispatch(err);
-    }
+    // Deleting rows
 
     deletePurchaseOrderRow(row) {
       // Delete row via purchase order endpoint
@@ -107,6 +107,14 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
           this.actions.purchaseOrderRowDeleted(row);
         }
       });
+    }
+
+    purchaseOrderRowDeleted(row) {
+      this.dispatch(row);
+    }
+
+    deletingPurchaseOrderRowFailed(err) {
+      this.dispatch(err);
     }
   }
   return alt.createActions(PurchaseOrderActions);
