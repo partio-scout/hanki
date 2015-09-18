@@ -7,6 +7,8 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
         handleUpdateMyPurchaseOrders: PurchaseOrderActions.UPDATE_MY_PURCHASE_ORDERS,
         handlePurchaseOrderCreated: PurchaseOrderActions.PURCHASE_ORDER_CREATED,
         handlePurchaseOrderUpdated: PurchaseOrderActions.PURCHASE_ORDER_UPDATED,
+        handlePurchaseOrderDeleted: PurchaseOrderActions.PURCHASE_ORDER_DELETED,
+
         handleUpdatePurchaseOrderRows: PurchaseOrderActions.UPDATE_PURCHASE_ORDER_ROWS,
         handlePurchaseOrderRowCreated: PurchaseOrderActions.PURCHASE_ORDER_ROW_CREATED,
         handlePurchaseOrderRowDeleted: PurchaseOrderActions.PURCHASE_ORDER_ROW_DELETED
@@ -23,6 +25,10 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
 
     handlePurchaseOrderUpdated(newPurchaseOrder) {
       this.myPurchaseOrders[newPurchaseOrder.orderId] = newPurchaseOrder;
+    }
+
+    handlePurchaseOrderDeleted(deletedPurchaseOrder) {
+      delete this.myPurchaseOrders[deletedPurchaseOrder.orderId];
     }
 
     handleUpdatePurchaseOrderRows(rows) {

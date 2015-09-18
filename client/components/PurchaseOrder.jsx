@@ -26,8 +26,11 @@ var PurchaseOrder = React.createClass({
       <Panel>
         <h2>
           { this.props.costCenter.code } { this.props.purchaseOrder.name }
-          <ButtonLink bsStyle="link" to="edit_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
+          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
             <Glyphicon glyph="pencil" />
+          </ButtonLink>
+          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
+            <Glyphicon glyph="remove" />
           </ButtonLink>
         </h2>
         <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>

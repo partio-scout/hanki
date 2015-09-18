@@ -75,6 +75,26 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       this.dispatch(purchaseOrder);
     }
 
+    // Deleting purchase orders
+
+    deletePurchaseOrder(purchaseOrder) {
+      PurchaseOrder.del(purchaseOrder.orderId, (err, deletedOrder) => {
+        if (err) {
+          this.actions.deletingPurchaseOrderFailed(err);
+        } else {
+          this.actions.purchaseOrderDeleted(purchaseOrder);
+        }
+      });
+    }
+
+    deletingPurchaseOrderFailed(error) {
+      this.dispatch(error);
+    }
+
+    purchaseOrderDeleted(purchaseOrder) {
+      this.dispatch(purchaseOrder);
+    }
+
     // Creating and updating rows
 
     createPurchaseOrderRow(row) {
