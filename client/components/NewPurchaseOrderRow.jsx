@@ -108,8 +108,8 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           </Modal.Body>
           <Modal.Footer>
             <div className='text-center'>
-            <Button onClick={ this.onSubmit } bsStyle='primary'>Tallenna</Button>
-            <Button onClick={ this.onHide }>Peruuta</Button>
+              <Button onClick={ this.onSubmit } bsStyle='primary'>Tallenna</Button>
+              <Button onClick={ this.onHide }>Peruuta</Button>
             </div>
           </Modal.Footer>
         </Modal>

@@ -37,6 +37,10 @@ function createRestfulResourceClass(request) {
       request.post(this.path('')).send(obj).end(this._handleResponse(cb));
     }
 
+    del(id, cb) {
+      request.del(this.path(id)).end(this._handleResponse(cb));
+    }
+
     raw(method, path, cb) {
       request(method, this.path(path)).end(this._handleResponse(cb));
     }

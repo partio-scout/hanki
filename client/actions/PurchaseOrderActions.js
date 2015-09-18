@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchaseOrder) {
   class PurchaseOrderActions {
 
@@ -28,7 +30,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
         if (err) {
           this.actions.loadingMyPurchaseOrdersFailed(err);
         } else {
-          var orderRows = _(res).pluck('order_rows').flatten().value();
+          var orderRows = _(res).pluck('order_rows').flatten().indexBy('orderRowId').value();
           this.actions.updatePurchaseOrderRows(orderRows);
         }
       }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
@@ -68,6 +70,25 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
           this.actions.creatingPurchaseOrderRowFailed(err);
         } else {
           this.actions.purchaseOrderRowCreated(savedRow);
+        }
+      });
+    }
+
+    purchaseOrderRowDeleted(row) {
+      this.dispatch(row);
+    }
+
+    deletingPurchaseOrderRowFailed(err) {
+      this.dispatch(err);
+    }
+
+    deletePurchaseOrderRow(row) {
+      // Delete row via purchase order endpoint
+      PurchaseOrder.raw('DELETE', row.orderId + '/order_rows/' + row.orderRowId, (err, deletedRow) => {
+        if (err) {
+          this.actions.deletingPurchaseOrderRowFailed(err);
+        } else {
+          this.actions.purchaseOrderRowDeleted(row);
         }
       });
     }

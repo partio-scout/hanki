@@ -47,9 +47,11 @@ var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
 var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
+
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
 var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
+var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 // Setup routes
 
@@ -65,6 +67,7 @@ var routes = (
     <Route name="my_purchase_orders" path="own" handler={ MyPurchaseOrders }>
       <Route name="new_purchase_order" path="new" handler={ NewPurchaseOrder } />
       <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
+      <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
   </Route>
 );
@@ -73,7 +76,7 @@ Router.run(routes, function (Handler) {
   React.render(<Handler/>, document.body);
 });
 
-// Check if current user is logged in
+// Check if current user seems to be logged in and start loading content
 
 if (accessToken && accessToken.userId) {
   UserActions.fetchCurrentUser(accessToken.userId);

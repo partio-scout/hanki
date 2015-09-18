@@ -1,8 +1,12 @@
 var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
+
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price.jsx');
+var ButtonLink = ReactRouterBootstrap.ButtonLink;
+var Glyphicon = ReactBootstrap.Glyphicon;
 
 var PurchaseOrderRow = React.createClass({
   getDefaultProps: function() {
@@ -20,6 +24,9 @@ var PurchaseOrderRow = React.createClass({
     return (
       <tr>
         <td>
+          <ButtonLink bsStyle='link' className="delete" to="delete_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
+            <Glyphicon glyph='remove' />
+          </ButtonLink>
           { title.name }
         </td>
         <td>
