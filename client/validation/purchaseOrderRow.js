@@ -1,13 +1,9 @@
-var validator = require('validator')
+var validator = require('validator');
 var getModelValidator = require('./modelValidator');
-
-var notEmpty = function(string) {
-  return !validator.isNull(string);
-}
 
 var isPosititiveOrZeroInt = function(value) {
   return validator.isInt(value, { min: 0 });
-}
+};
 
 var schema = [
   {
@@ -24,7 +20,7 @@ var schema = [
     property: 'deliveryId',
     test: isPosititiveOrZeroInt,
     message: 'Valitse toimitusajankohta'
-  },
+  }
 ];
 
 module.exports = getModelValidator(schema);
