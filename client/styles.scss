@@ -66,3 +66,7 @@ td {
   vertical-align: middle !important;
 }
 
+.field p.form-control-static {
+  display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
+}
+

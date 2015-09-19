@@ -68,6 +68,10 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       }
     },
 
+    onSelectedTitleGroupChange: function() {
+      this.setState({ selectedTitleGroup: this.refs.titleGroup.getValue() });
+    },
+
     onSelectedTitleChange: function() {
       this.setState({ selectedTitleId: this.refs.title.getValue() });
     },
@@ -89,18 +93,21 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           <Modal.Body>
             <form className="form-horizontal">
               <ErrorMessages messages={ this.state.validationErrors } />
-              <Input ref="title" type='select' label='Tuote' onChange={ this.onSelectedTitleChange } labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <option value="">Valitse tuote...</option>
-                {_.map(titlesByGroup, function(group, titlegroupId) {
-                  return (
-                    <optgroup label={ titlegroups[titlegroupId].name }>
-                      {_.map(group, function(title) {
-                        return <option value={ title.titleId }>{ title.name }</option>
-                      })}
-                    </optgroup>
-                  );
-                })}
-              </Input>
+
+              <Static label="Tuote" labelClassName='col-xs-3' wrapperClassName='col-xs-9 field'>
+                <Input ref="titleGroup" type='select' onChange={ this.onSelectedTitleGroupChange } wrapperClassName='col-xs-12'>
+                  <option value="">Valitse tuoteryhmä...</option>
+                  {_.map(titlegroups, function(group) {
+                    return <option value={ group.titlegroupId }>{ group.name }</option>
+                  })}
+                </Input>
+                <Input ref="title" type='select' onChange={ this.onSelectedTitleChange } wrapperClassName='col-xs-12'>
+                  <option value="">Valitse tuote...</option>
+                  {_.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
+                    return <option value={ title.titleId }>{ title.name }</option>
+                  })}
+                </Input>
+              </Static>
               <Input defaultValue={ this.state.amount } ref="amount" onKeyUp={ this.onAmountChange } type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
               <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
                 <Price value={ selectedTitle.priceWithTax } />
