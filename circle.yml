@@ -14,7 +14,6 @@ test:
     - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
 dependencies:
    post:
-      - wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
-      - java -jar selenium-server-standalone-2.44.0.jar:
+      - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
             background: true
 
