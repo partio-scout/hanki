@@ -12,7 +12,7 @@ console.log(process.env.PATH);
 options.PORT = 3005;
 
 // New process is spawned with command "slc run".
-var procSysProcess = spawn('slc',['run'],options).on('error', function( err ){ throw err; });
+var procSysProcess = spawn('slc',['run'],options);
 
 describe('HANKI', function() {
 
