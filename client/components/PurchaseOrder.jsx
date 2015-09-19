@@ -23,7 +23,7 @@ var PurchaseOrder = React.createClass({
       return total + row.amount * titlePrice;
     }, 0);
     return (
-      <Panel>
+      <Panel className="purchase-order">
         <h2>
           { this.props.costCenter.code } { this.props.purchaseOrder.name }
           <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
@@ -33,7 +33,12 @@ var PurchaseOrder = React.createClass({
             <Glyphicon glyph="remove" />
           </ButtonLink>
         </h2>
-        <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">Lisää tuote</ButtonLink>
+        <div className="toolBar">
+          <ButtonLink to="new_purchase_order_row" params={{ purchaseOrder: this.props.purchaseOrder.orderId }} bsStyle="primary">
+            <Glyphicon glyph="plus" />
+            <span> Lisää tuote</span>
+          </ButtonLink>
+        </div>
         <PurchaseOrderRowTable
           purchaseOrderRows={ this.props.purchaseOrderRows }
           titles={ this.props.titles }

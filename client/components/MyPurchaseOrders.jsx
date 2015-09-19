@@ -8,6 +8,7 @@ var RouteHandler = require('react-router').RouteHandler;
 
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
+var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
 var PurchaseOrderList = require('./PurchaseOrderList.jsx');
@@ -37,9 +38,12 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
             <h1>
               Omat tilaukset
             </h1>
-            <ButtonLink to="new_purchase_order" bsStyle="primary">
-              Uusi tilaus
-            </ButtonLink>
+            <div className="toolBar">
+              <ButtonLink to="new_purchase_order" bsStyle="primary">
+                <Glyphicon glyph="plus" />
+                <span> Uusi tilaus</span>
+              </ButtonLink>
+            </div>
             <PurchaseOrderList
               purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }

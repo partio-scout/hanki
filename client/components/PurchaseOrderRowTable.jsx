@@ -64,7 +64,7 @@ var PurchaseOrderRow = React.createClass({
 var PurchaseOrderRowTable = React.createClass({
   render: function() {
     return (
-      <Table>
+      <Table striped>
         <thead>
           <tr>
             <th rowSpan="2">Tuote</th>
@@ -72,7 +72,7 @@ var PurchaseOrderRowTable = React.createClass({
             <th rowSpan="2">Summa</th>
             <th rowSpan="2">Huomiot</th>
             <th rowSpan="2">Hyväksyt&shy;täväksi</th>
-            <th colSpan="3">Hyväksyntä</th>
+            <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
             <th rowSpan="2">Tilattu</th>
             <th rowSpan="2">Toimitus</th>
           </tr>
