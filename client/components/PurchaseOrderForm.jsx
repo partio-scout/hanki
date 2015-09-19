@@ -4,6 +4,7 @@ var ReactBootstrap = require('react-bootstrap');
 var Modal = ReactBootstrap.Modal;
 var Input = ReactBootstrap.Input;
 var Button = ReactBootstrap.Button;
+var ErrorMessages = require('./utils/ErrorMessages.jsx');
 
 var PurchaseOrderForm = React.createClass({
   getDefaultProps: function() {
@@ -21,9 +22,10 @@ var PurchaseOrderForm = React.createClass({
         </Modal.Header>
         <Modal.Body>
           <form className="form-horizontal">
+            <ErrorMessages messages={ this.props.validationErrors } />
             <Input ref="costcenterId" type='select' label='Kustannuspaikka' valueLink={ this.props.valueLinks.costcenterId }
               labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-              <option>Valitse kustannuspaikka...</option>
+              <option value="">Valitse kustannuspaikka...</option>
               {_.map(this.props.costCenters, function(costCenter) {
                 return (<option value={ costCenter.costcenterId } key={ costCenter.costcenterId }>
                   { costCenter.code } { costCenter.name }

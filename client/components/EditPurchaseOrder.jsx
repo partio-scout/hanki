@@ -5,6 +5,8 @@ var Router = require('react-router');
 
 var PurchaseOrderForm = require('./PurchaseOrderForm.jsx');
 
+var validatePurchaseOrder = require('../validation/purchaseOrder');
+
 var connectToStores = require('alt/utils/connectToStores');
 
 var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore) {
@@ -55,8 +57,15 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
         name: this.state.name,
         costcenterId: this.state.costcenterId
       }
-      PurchaseOrderActions.updatePurchaseOrder(purchaseOrder);
-      this.transitionTo('my_purchase_orders');
+
+      var validationErrors = validatePurchaseOrder(purchaseOrder);
+
+      this.setState({ validationErrors: validationErrors });
+
+      if (validationErrors.length === 0) {
+        PurchaseOrderActions.updatePurchaseOrder(purchaseOrder);
+        this.transitionTo('my_purchase_orders');
+      }
     },
 
     render: function () {
@@ -71,7 +80,8 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
           costCenters={ this.props.costCenters.costCenters }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
-          valueLinks={ valueLinks } />
+          valueLinks={ valueLinks }
+          validationErrors={ this.state.validationErrors } />
       );
     }
   });

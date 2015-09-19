@@ -4,6 +4,8 @@ var ReactAddons = require('react/addons').addons;
 var Router = require('react-router');
 var PurchaseOrderForm = require('./PurchaseOrderForm.jsx');
 
+var validatePurchaseOrder = require('../validation/purchaseOrder');
+
 var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
   return React.createClass({
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
@@ -33,8 +35,15 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
         name: this.state.name,
         costcenterId: this.state.costcenterId
       };
-      PurchaseOrderActions.createPurchaseOrder(purchaseOrder);
-      this.transitionTo('my_purchase_orders');
+
+      var validationErrors = validatePurchaseOrder(purchaseOrder);
+
+      this.setState({ validationErrors: validationErrors });
+
+      if(validationErrors.length === 0) {
+        PurchaseOrderActions.createPurchaseOrder(purchaseOrder);
+        this.transitionTo('my_purchase_orders');
+      }
     },
 
     render: function () {
@@ -49,7 +58,8 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
           costCenters={ this.state.costCenters }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
-          valueLinks={ valueLinks } />
+          valueLinks={ valueLinks }
+          validationErrors={ this.state.validationErrors } />
       );
     }
   });
