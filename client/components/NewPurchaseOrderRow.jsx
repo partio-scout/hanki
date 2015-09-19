@@ -3,12 +3,15 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
 
+var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
+
 var connectToStores = require('alt/utils/connectToStores');
 
 var Modal = ReactBootstrap.Modal;
 var Input = ReactBootstrap.Input;
 var Static = ReactBootstrap.FormControls.Static;
 var Button = ReactBootstrap.Button;
+var ErrorMessages = require('./utils/ErrorMessages.jsx');
 
 var Router = require('react-router');
 
@@ -35,8 +38,9 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
 
     getInitialState: function() {
       return {
-        selectedTitleId: 0,
-        amount: 0
+        selectedTitleId: '',
+        amount: 0,
+        validationErrors: [ ]
       }
     },
 
@@ -53,8 +57,15 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         memo: this.refs.memo.getValue(),
         orderId: this.props.params.purchaseOrder
       }
-      PurchaseOrderActions.createPurchaseOrderRow(row);
-      this.transitionTo('my_purchase_orders');
+
+      var validationErrors = validatePurchaseOrderRow(row);
+
+      this.setState({ validationErrors: validationErrors });
+
+      if (validationErrors.length === 0) {
+        PurchaseOrderActions.createPurchaseOrderRow(row);
+        this.transitionTo('my_purchase_orders');
+      }
     },
 
     onSelectedTitleChange: function() {
@@ -77,8 +88,9 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           </Modal.Header>
           <Modal.Body>
             <form className="form-horizontal">
+              <ErrorMessages messages={ this.state.validationErrors } />
               <Input ref="title" type='select' label='Tuote' onChange={ this.onSelectedTitleChange } labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <option>Valitse tuote...</option>
+                <option value="">Valitse tuote...</option>
                 {_.map(titlesByGroup, function(group, titlegroupId) {
                   return (
                     <optgroup label={ titlegroups[titlegroupId].name }>
@@ -97,7 +109,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                 <Price value={ selectedTitle.priceWithTax * this.state.amount } />
               </Static>
               <Input ref="delivery" type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
-                <option>Valitse toimitusajankohta...</option>
+                <option value="">Valitse toimitusajankohta...</option>
                 {_.map(deliveries, function(delivery) {
                   return <option value={ delivery.deliveryId }>{ delivery.description }</option>
                 })}
