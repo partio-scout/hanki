@@ -7,10 +7,12 @@ The new process will get the same enviromental variables as the current
 process, but the PORT is different.
 */
 options = process.env;
+console.log(options);
+console.log(process.env.PATH);
 options.PORT = 3005;
 
 // New process is spawned with command "slc run".
-var procSysProcess = spawn('slc',['run'],options);
+var procSysProcess = spawn('slc',['run'],options).on('error', function( err ){ throw err });
 
 describe('HANKI', function() {
 
