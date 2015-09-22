@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "pretest": "NODE_ENV=test eslint . && NODE_ENV=test ./testsetup.sh",
+    "pretest": "NODE_ENV=test eslint . && NODE_ENV=test ./scripts/testsetup.sh",
     "test": "NODE_ENV=test mocha -R spec server/test",
     "postinstall": "npm run deploy",
-    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
+    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
+    "dev-setup": "./scripts/dev-setup.sh"
   },
   "engines": {
     "node": "0.12.x"
@@ -14,6 +15,7 @@
   "dependencies": {
     "alt": "0.16.4",
     "babel-loader": "^5.1.3",
+    "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
     "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.5",
@@ -32,13 +34,13 @@
     "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.5",
     "loopback-datasource-juggler": "^2.19.0",
-    "node-sass": "^3.1.0",
-    "passport-saml": "^0.12.0",
     "react": "0.13.3",
     "react-router": "^0.13.3",
     "react-router-bootstrap": "^0.18.0",
-    "sass-loader": "^1.0.3",
     "serve-favicon": "^2.0.1",
+    "node-sass": "^3.1.0",
+    "passport-saml": "^0.12.0",
+    "sass-loader": "^1.0.3",
     "style-loader": "^0.10.2",
     "superagent": "^1.3.0",
     "uglify-js": "2.4.17",

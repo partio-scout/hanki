@@ -1,0 +1,20 @@
+[
+  {	
+  	"titleId": 1,
+  	"amount": 2,
+  	"deliveryId": 1,
+  	"orderId": 2,
+  	"selfSupply": "false",
+  	"modified": "2015-07-26 13:40:15.002+03",
+  	"approved": "false"
+  },
+  {	
+  	"titleId": 1,
+  	"amount": 2,
+  	"deliveryId": 1,
+  	"orderId": 1,
+  	"selfSupply": "false",
+  	"modified": "2015-07-26 13:40:15.002+03",
+  	"approved": "false"
+  }
+]

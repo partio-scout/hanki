@@ -3,9 +3,13 @@ machine:
     NODE_ENV: test
 database:
   override:
-    - echo "ubuntu" | ./scripts/dev-db-setup.sh
+    - echo "ubuntu" | npm run dev-setup
 deployment:
   demo:
-    branch: master
+    branch: demo
     heroku:
       appname: fj16-procurement-demo
+test:
+  pre:
+    - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
+

@@ -7,9 +7,6 @@
       "./models"
     ]
   },
-  "User": {
-    "dataSource": "db"
-  },
   "AccessToken": {
     "dataSource": "db",
     "public": false
@@ -44,12 +41,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "Purchaseuser": {
-    "dataSource": "db",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
   "Delivery": {
     "dataSource": "db",
     "public": true,
@@ -63,6 +54,12 @@
     "$resolved": true
   },
   "Purchaseorder": {
+    "dataSource": "db",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "Purchaseuser": {
     "dataSource": "db",
     "public": true,
     "$promise": {},
