@@ -6,19 +6,24 @@ module.exports = function(Title) {
     var Titlegroup = app.models.Titlegroup;
     var Account = app.models.Account;
     var Supplier = app.models.Supplier;
-    var titlegroupId_exists = Promise.promisify(Titlegroup.exists, Titlegroup);
-    var accountId_exists = Promise.promisify(Account.exists, Account);
-    var supplierId_exists = Promise.promisify(Supplier.exists, Supplier);
+    var titlegroup_findOne = Promise.promisify(Titlegroup.findOne, Titlegroup);
+    var account_findOne = Promise.promisify(Account.findOne, Account);
+    var supplier_findOne = Promise.promisify(Supplier.findOne, Supplier);
     var title_create = Promise.promisify(Title.create, Title);
     var Title_beginTransaction = Promise.promisify(Title.beginTransaction, Title);
 
     // Check if titles property already exists in db; if not, change to 0
     // title: a Title-object, func: function to check if property exists, property: property to check & change to 0 if it doesn't exist
-    function  setPropertyZeroIfNotExists(title, func, property) {
+    function replaceNameInPropertyWithId(title, func, property) {
       if (func && (typeof func == 'function')){ // Check if passed function actually a function
-        return func(title[property]).then(function(exists){
-          if (!exists) { // Property doesn't already exist, so change to 0
-            title[property] = 0;
+        return func({ where: { name: title[property] } }).then(function(model) {
+          if (model === null) {
+            //res.status(422);
+            var err = new Error('Could not find ' + property + ' ' + title[property] + ' for title ' + title.name);
+            err.status = 422;
+            throw err;
+          } else {
+            title[property] = model[property];
           }
         }, function(err) {
           cb(err,null);
@@ -37,9 +42,9 @@ module.exports = function(Title) {
       beginTx.then(function(tx) {
         Parse(csv, options).each(function(title){
           return Promise.all([
-            setPropertyZeroIfNotExists(title, titlegroupId_exists, 'titlegroupId'),
-            setPropertyZeroIfNotExists(title, accountId_exists, 'accountId'),
-            setPropertyZeroIfNotExists(title, supplierId_exists, 'supplierId'),
+            replaceNameInPropertyWithId(title, titlegroup_findOne, 'titlegroupId'),
+            replaceNameInPropertyWithId(title, account_findOne, 'accountId'),
+            replaceNameInPropertyWithId(title, supplier_findOne, 'supplierId'),
             title
           ]).then(function(array) {
             return title_create(title, { transaction: tx });

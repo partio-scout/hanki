@@ -96,46 +96,34 @@ describe('DataImport', function() {
         });
       });
 
-      it('should change non-existing titlegroupId, accountId & supplierId to 0', function(done){
+      // TODO similar test for supplier and account
+      it('should return 422 when title group is not found', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
-          request(app).post('/api/Titles/DataImport')
-          .query({ access_token: accessToken.id })
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .set('Accept', '*/*')
-          .send({ csv: '"Ruuvimeisseli",5,kpl,100,21,121,8,6,"Rautatavarakauppa",1,1,0,1,"Rakenteluun",1' })
-          .expect(200)
+          postCSV(accessToken, '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1')
+          .expect(422)
           .end(function(err, res) {
             if (err) {
               done(err);
             } else {
-              expect(res.body.result).to.not.be.empty;
-              expect(res.body.result[0]).to.have.deep.property('titlegroupId', 0);
-              expect(res.body.result[0]).to.have.deep.property('accountId', 0);
-              expect(res.body.result[0]).to.have.deep.property('supplierId', 0);
+              expect(res.body.result).to.be.empty;
               done();
             }
           });
-        })
-        .catch(function(err) {
-          done(err);
         });
       });
 
-      it('should not change existing titlegroupId, accountId & supplierId to 0', function(done){
+      it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
-          request(app).post('/api/Titles/DataImport')
-          .query({ access_token: accessToken.id })
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .send({ csv: '"Kakkosnelonen",1,m,32,21,45,1,1,"Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
+          postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,32,21,45,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
           .expect(200)
           .end(function(err, res) {
             if (err) {
               done(err);
             } else {
               expect(res.body.result).to.not.be.empty;
-              expect(res.body.result[0]).to.have.deep.property('titlegroupId', 1);
+              expect(res.body.result[0]).to.have.deep.property('titlegroupId', 2);
               expect(res.body.result[0]).to.have.deep.property('accountId', 1);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 1);
               done();
@@ -168,10 +156,12 @@ describe('DataImport', function() {
     });
 
     // Check if database is really updated in the previous tests
+    // TODO Move these into same tests
+    // TODO Make an afterEach hook that restores the database
 
     describe('Database', function() {
 
-      it('should contain 102 Title-objects', function(done) {
+      it('should contain 100 Title-objects', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).get('/api/Titles/count')
@@ -181,31 +171,7 @@ describe('DataImport', function() {
             if (err) {
               done(err);
             } else {
-              expect(res.body.count).to.equal(102);
-              done();
-            }
-          });
-        })
-        .catch(function(err) {
-          done(err);
-        });
-      });
-
-      it('should have Title-object with name ruuvimeisseli and titlegroupId, accountId and supplierId 0', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          request(app).get('/api/Titles')
-          .query({ access_token: accessToken.id })
-          .send({ filter: { where: { name: 'Ruuvimeisseli' } } })
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              expect(res.body).to.have.length(1);
-              expect(res.body[0]).to.have.deep.property('titlegroupId', 0);
-              expect(res.body[0]).to.have.deep.property('accountId', 0);
-              expect(res.body[0]).to.have.deep.property('supplierId', 0);
+              expect(res.body.count).to.equal(100);
               done();
             }
           });
@@ -227,7 +193,7 @@ describe('DataImport', function() {
               done(err);
             } else {
               expect(res.body).to.have.length(1);
-              expect(res.body[0]).to.have.deep.property('titlegroupId', 1);
+              expect(res.body[0]).to.have.deep.property('titlegroupId', 2);
               expect(res.body[0]).to.have.deep.property('accountId', 1);
               expect(res.body[0]).to.have.deep.property('supplierId', 1);
               done();
