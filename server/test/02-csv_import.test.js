@@ -7,8 +7,8 @@ var expect = require('chai').expect;
 var ReadFile = Promise.promisify(require('fs').readFile);
 
 describe('DataImport', function() {
-    var User = app.models.User;
-    var username = 'some_user';
+    var User = app.models.Purchaseuser;
+    var username = 'procurementAdmin';
     var userpass = 'salasana';
 
     function loginUser(username, userpass) {
@@ -28,31 +28,17 @@ describe('DataImport', function() {
         });
       });
     }
-    function createUser(username,pass) {
-      return new Promise(function (resolve, reject) {
-        return User.create({
-          username: username,
-          password: pass,
-          email: 'user@foo.fi'
-        }, function(err, obj) {
-          if (err) {
-            throw err;
-          }
-          resolve(obj);
-        });
-      });
-    }
-    before('Create user', function() {
-      createUser(username, userpass);
-    });
+
     // REST API tests for unauthenticated and authenticated users (nothing posted)
     describe('REST API', function() {
+
       it('should decline access for unauthenticated users', function(done) {
         request(app).post('/api/Titles/DataImport')
         .expect(401)
         .end(done);
       });
-      it('should grant access for unauthenticated users', function(done) {
+
+      it('should grant access for authenticated users', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).post('/api/Titles/DataImport')
@@ -62,6 +48,7 @@ describe('DataImport', function() {
         });
       });
     });
+
     // test different input strings
     describe('Method', function() {
       it('should return empty array when posted null', function(done) {
@@ -85,6 +72,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should return 422 when posted csv with flawed line', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -106,6 +94,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should change non-existing titlegroupId, accountId & supplierId to 0', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -131,6 +120,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should not change existing titlegroupId, accountId & supplierId to 0', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -155,6 +145,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should accept 100 line csv-file', function(done){
         this.timeout(15000);
         var readCSV = ReadFile('./server/test/big_test_100.csv', 'utf-8');
@@ -174,8 +165,11 @@ describe('DataImport', function() {
         });
       });
     });
+
     // Check if database is really updated in the previous tests
+
     describe('Database', function() {
+
       it('should contain 102 Title-objects', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -195,6 +189,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should have Title-object with name ruuvimeisseli and titlegroupId, accountId and supplierId 0', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -218,6 +213,7 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
       it('should have Title-object with name kakkosnelonen and titlegroupId, accountId and supplierId 1', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -241,5 +237,6 @@ describe('DataImport', function() {
           done(err);
         });
       });
+
     });
   });
