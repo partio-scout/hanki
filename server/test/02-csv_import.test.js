@@ -4,7 +4,8 @@ var app = require('../server');
 var request = require('supertest');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
-var ReadFile = Promise.promisify(require('fs').readFile);
+var fs = require('fs');
+var ReadFile = Promise.promisify(fs.readFile);
 
 describe('DataImport', function() {
     var User = app.models.Purchaseuser;
@@ -34,6 +35,27 @@ describe('DataImport', function() {
         .query({ access_token: accessToken.id })
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send({ csv: csv });
+    }
+
+    function itSholdNotAcceptCSV(description, csv) {
+      it('should return 422 when posted csv ' + description, function(done) {
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          postCSV(accessToken, csv)
+          .expect(422)
+          .end(function(err, res) {
+            if (err) {
+              done(err);
+            } else {
+              expect(res.body.result).to.be.empty;
+              done();
+            }
+          });
+        })
+        .catch(function(err) {
+          done(err);
+        });
+      });
     }
 
     // REST API tests for unauthenticated and authenticated users (nothing posted)
@@ -77,41 +99,12 @@ describe('DataImport', function() {
         });
       });
 
-      it('should return 422 when posted csv with flawed line', function(done){
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          postCSV(accessToken, ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
-          .expect(422)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              expect(res.body.result).to.be.empty;
-              done();
-            }
-          });
-        })
-        .catch(function(err) {
-          done(err);
-        });
-      });
+      itSholdNotAcceptCSV('containing a single flawed line', ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0');
+      itSholdNotAcceptCSV('containing many lines and one flawed', fs.readFileSync('./server/test/single_flawed_line.csv', 'utf-8'));
 
-      // TODO similar test for supplier and account
-      it('should return 422 when title group is not found', function(done){
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          postCSV(accessToken, '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1')
-          .expect(422)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              expect(res.body.result).to.be.empty;
-              done();
-            }
-          });
-        });
-      });
+      itSholdNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+      itSholdNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+      itSholdNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
 
       it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
         loginUser(username, userpass)
