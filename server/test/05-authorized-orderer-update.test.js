@@ -28,7 +28,7 @@ describe('Orderer', function() {
       loginUser(username, userpass)
       .then(function(accessToken) {
         nameForOrder = 'Liikaa nauloja';
-        msg = {
+        var msg = {
           'orderId': 3,
           'usageobjectId': 1,
           'name': nameForOrder,
@@ -52,7 +52,7 @@ describe('Orderer', function() {
       loginUser(username, userpass)
       .then(function(accessToken) {
         d = new Date().toISOString();
-        msg = {
+        var msg = {
           'selfSupply': true,
           'modified': d
         };
@@ -74,7 +74,7 @@ describe('Orderer', function() {
     it('Purchaseorders', function(done) {
       loginUser(username,userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'orderId': 1,
           'usageobjectId': 1,
           'name': nameForOrder,
@@ -93,7 +93,7 @@ describe('Orderer', function() {
     it('Purchaseorderrows', function(done) {
       loginUser(username,userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'selfSupply': true,
           'modified': d
         };
@@ -111,7 +111,7 @@ describe('Orderer', function() {
     it('Accounts', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'name': 'new title name'
         };
         request(app)
@@ -126,7 +126,7 @@ describe('Orderer', function() {
     it('Costcenters', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'name': 'new costcenter name'
         };
         request(app)
@@ -141,7 +141,7 @@ describe('Orderer', function() {
     it('Deliveries', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'description': 'new delivery name'
         };
         request(app)
@@ -156,7 +156,7 @@ describe('Orderer', function() {
     it('Suppliers', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'name': 'new supplier name'
         };
         request(app)
@@ -171,7 +171,7 @@ describe('Orderer', function() {
     it('Titlegroups', function(done) {
       loginUser(username, userpass)
       .then(function(accessToken) {
-        msg = {
+        var msg = {
           'name': 'new titlegroup name'
         };
         request(app)
