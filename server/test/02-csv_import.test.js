@@ -29,6 +29,13 @@ describe('DataImport', function() {
       });
     }
 
+    function postCSV(accessToken, csv) {
+      return request(app).post('/api/Titles/DataImport')
+        .query({ access_token: accessToken.id })
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send({ csv: csv });
+    }
+
     // REST API tests for unauthenticated and authenticated users (nothing posted)
     describe('REST API', function() {
 
@@ -54,10 +61,7 @@ describe('DataImport', function() {
       it('should return empty array when posted null', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
-          request(app).post('/api/Titles/DataImport')
-          .query({ access_token: accessToken.id })
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .send({ csv: '' })
+          postCSV(accessToken, '')
           .expect(200)
           .end(function(err, res) {
             if (err) {
@@ -76,10 +80,7 @@ describe('DataImport', function() {
       it('should return 422 when posted csv with flawed line', function(done){
         loginUser(username, userpass)
         .then(function(accessToken) {
-          request(app).post('/api/Titles/DataImport')
-          .query({ access_token: accessToken.id })
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .send({ csv: ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0' })
+          postCSV(accessToken, ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
           .expect(422)
           .end(function(err, res) {
             if (err) {
