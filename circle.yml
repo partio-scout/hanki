@@ -6,7 +6,7 @@ database:
     - echo "ubuntu" | npm run dev-setup
 deployment:
   demo:
-    branch: master
+    branch: demo
     heroku:
       appname: fj16-procurement-demo
 test:
