@@ -15,12 +15,13 @@ test:
   pre:
     - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
 dependencies:
-   post:
-      - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
-            background: true
   cache_directories:
     - ~/nvm/v0.10.33/lib/node_modules/strongloop
     - ~/nvm/v0.10.33/bin/strongloop
   pre:
     - if [ ! -e ~/nvm/v0.10.33/bin/strongloop ]; then npm install -g strongloop; else echo "strongloop seems to be cached"; fi;
+  post:
+    - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
+      background: true
+
 
