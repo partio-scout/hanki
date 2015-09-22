@@ -155,9 +155,9 @@ describe('DataImport', function() {
           done(err);
         });
       });
-      it('should accept 5000 line csv-file', function(done){
+      it('should accept 100 line csv-file', function(done){
         this.timeout(15000);
-        var readCSV = ReadFile('./server/test/big_test_5000.csv', 'utf-8');
+        var readCSV = ReadFile('./server/test/big_test_100.csv', 'utf-8');
         readCSV
         .then(function(str) {
           loginUser(username, userpass)
@@ -176,7 +176,7 @@ describe('DataImport', function() {
     });
     // Check if database is really updated in the previous tests
     describe('Database', function() {
-      it('should contain 5002 Title-objects', function(done) {
+      it('should contain 102 Title-objects', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
           request(app).get('/api/Titles/count')
@@ -186,7 +186,7 @@ describe('DataImport', function() {
             if (err) {
               done(err);
             } else {
-              expect(res.body.count).to.equal(5002);
+              expect(res.body.count).to.equal(102);
               done();
             }
           });
