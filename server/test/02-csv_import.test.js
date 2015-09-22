@@ -5,12 +5,15 @@ var request = require('supertest');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
 var fs = require('fs');
-var ReadFile = Promise.promisify(fs.readFile);
 
 describe('DataImport', function() {
     var User = app.models.Purchaseuser;
     var username = 'procurementAdmin';
     var userpass = 'salasana';
+
+    afterEach(function(done) {
+      app.models.Title.destroyAll(done);
+    });
 
     function loginUser(username, userpass) {
       return new Promise(function (resolve, reject) {
@@ -37,7 +40,17 @@ describe('DataImport', function() {
         .send({ csv: csv });
     }
 
-    function itSholdNotAcceptCSV(description, csv) {
+    function expectTitleCountInDatabaseToBe(num, cb) {
+      app.models.Title.count(function(err, count) {
+        if (err) {
+          throw err;
+        }
+        expect(count).to.equal(num);
+        cb();
+      });
+    }
+
+    function itShouldNotAcceptCSV(description, csv) {
       it('should return 422 when posted csv ' + description, function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
@@ -48,7 +61,7 @@ describe('DataImport', function() {
               done(err);
             } else {
               expect(res.body.result).to.be.empty;
-              done();
+              expectTitleCountInDatabaseToBe(0, done);
             }
           });
         })
@@ -99,12 +112,12 @@ describe('DataImport', function() {
         });
       });
 
-      itSholdNotAcceptCSV('containing a single flawed line', ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0');
-      itSholdNotAcceptCSV('containing many lines and one flawed', fs.readFileSync('./server/test/single_flawed_line.csv', 'utf-8'));
+      itShouldNotAcceptCSV('containing a single flawed line', ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0');
+      itShouldNotAcceptCSV('containing many lines and one flawed', fs.readFileSync('./server/test/single_flawed_line.csv', 'utf-8'));
 
-      itSholdNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-      itSholdNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-      itSholdNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+      itShouldNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+      itShouldNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+      itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
 
       it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
         loginUser(username, userpass)
@@ -113,13 +126,13 @@ describe('DataImport', function() {
           .expect(200)
           .end(function(err, res) {
             if (err) {
-              done(err);
+              throw err;
             } else {
               expect(res.body.result).to.not.be.empty;
               expect(res.body.result[0]).to.have.deep.property('titlegroupId', 2);
               expect(res.body.result[0]).to.have.deep.property('accountId', 1);
               expect(res.body.result[0]).to.have.deep.property('supplierId', 1);
-              done();
+              expectTitleCountInDatabaseToBe(1, done);
             }
           });
         })
@@ -128,75 +141,19 @@ describe('DataImport', function() {
         });
       });
 
-      it('should accept 100 line csv-file', function(done){
+      it('should accept 100 line csv-file', function(done) {
+        var csv = fs.readFileSync('./server/test/big_test_100.csv', 'utf-8');
         this.timeout(15000);
-        var readCSV = ReadFile('./server/test/big_test_100.csv', 'utf-8');
-        readCSV
-        .then(function(str) {
-          loginUser(username, userpass)
-          .then(function(accessToken) {
-            request(app).post('/api/Titles/DataImport')
-            .query({ access_token: accessToken.id })
-            .send({ csv: str })
-            .expect(200)
-            .end(done);
+        loginUser(username, userpass).then(function(accessToken) {
+          request(app).post('/api/Titles/DataImport')
+          .query({ access_token: accessToken.id })
+          .send({ csv: csv })
+          .expect(200)
+          .end(function() {
+            expectTitleCountInDatabaseToBe(100, done);
           });
-        })
-        .catch(function(err) {
-          done(err);
         });
       });
     });
 
-    // Check if database is really updated in the previous tests
-    // TODO Move these into same tests
-    // TODO Make an afterEach hook that restores the database
-
-    describe('Database', function() {
-
-      it('should contain 100 Title-objects', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          request(app).get('/api/Titles/count')
-          .query({ access_token: accessToken.id })
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              expect(res.body.count).to.equal(100);
-              done();
-            }
-          });
-        })
-        .catch(function(err) {
-          done(err);
-        });
-      });
-
-      it('should have Title-object with name kakkosnelonen and titlegroupId, accountId and supplierId 1', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
-          request(app).get('/api/Titles')
-          .query({ access_token: accessToken.id })
-          .send({ filter: { where: { name: 'Kakkosnelonen' } } })
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              expect(res.body).to.have.length(1);
-              expect(res.body[0]).to.have.deep.property('titlegroupId', 2);
-              expect(res.body[0]).to.have.deep.property('accountId', 1);
-              expect(res.body[0]).to.have.deep.property('supplierId', 1);
-              done();
-            }
-          });
-        })
-        .catch(function(err) {
-          done(err);
-        });
-      });
-
-    });
   });
