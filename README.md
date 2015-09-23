@@ -14,19 +14,21 @@ In the repository, install dependencies by running:
 
     npm install
 
-Make sure your local PostgreSQL installation is running, and install the app using:
+Make sure your local PostgreSQL installation is running, and set up dev environment with:
 
-	./sripts/dev-db-setup.sh
+  npm run dev-setup
 
 If you have already installed the app and need to reset the database, you can:
 
-	psql template1 postgres < scripts/drop-databases.sql
+  ./scripts/reset-db.sh
 
 ## Running the app
 
 Run the application with:
 
     NODE_ENV=dev slc run
+
+(then connect to localhost:3000 with your browser to see)
 
 ## Running tests
 

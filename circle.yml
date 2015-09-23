@@ -5,10 +5,10 @@ machine:
     version: v0.10.33
 database:
   override:
-    - echo "ubuntu" | ./scripts/dev-db-setup.sh
+    - echo "ubuntu" | npm run dev-setup
 deployment:
   demo:
-    branch: master
+    branch: demo
     heroku:
       appname: fj16-procurement-demo
 test:
