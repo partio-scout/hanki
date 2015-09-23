@@ -22,6 +22,6 @@ dependencies:
     - if [ ! -e ~/nvm/v0.10.33/bin/strongloop ]; then npm install -g strongloop; else echo "strongloop seems to be cached"; fi;
   post:
     - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
-      background: true
+        background: true
 
 
