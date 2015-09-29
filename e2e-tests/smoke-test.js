@@ -7,8 +7,6 @@ The new process will get the same enviromental variables as the current
 process, but the PORT is different.
 */
 options = process.env;
-console.log(options);
-console.log(process.env.PATH);
 options.PORT = 3005;
 
 // New process is spawned with command "slc run".
@@ -30,7 +28,6 @@ describe('HANKI', function() {
     An event listener is given for standard output stream of the chill process
     */
     procSysProcess.stdout.on('data', function (data) {
-      console.log('stdout: ' + data);
       // Output is transformed into a string
       var dataString = data.toString();
       // The keyword on output indecates procurement system is running
@@ -47,7 +44,6 @@ describe('HANKI', function() {
     */
     setTimeout(function() {
       procSysProcess.kill();
-      console.log('Procurement system is closed');
       done();
     },1000);
   });

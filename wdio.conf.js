@@ -103,11 +103,6 @@ exports.config = {
   // will wait until that promise got resolved to continue.
   // see also: http://webdriver.io/guide/testrunner/hooks.html
   //
-  // Gets executed before all workers get launched.
-  onPrepare: function() {
-    console.log('Let\'s go! Starting integration tests.');
-  },
-  //
   // Gets executed before test execution begins. At this point you will have access to all global
   // variables like `browser`. It is the perfect place to define custom commands.
   before: function() {
@@ -122,18 +117,5 @@ exports.config = {
     */
     expect = chai.expect;
     chai.Should();
-  },
-  //
-  // Gets executed after all tests are done. You still have access to all global variables from
-  // the test.
-  after: function() {
-
-  },
-  //
-  // Gets executed after all workers got shut down and the process is about to exit. It is not
-  // possible to defer the end of the process using a promise.
-  onComplete: function() {
-    console.log('That\'s it, integration tests are over!');
-
   }
 };
