@@ -19,7 +19,7 @@ describe('HANKI', function() {
   it('should contain a login button', function() {
 
     var loginButton = browser
-            .url('http://localhost:3005/')
+            .url('/')
             .selectByVisibleText('.btn', 'Kirjaudu');
     return expect(loginButton).to.be.ok;
   });
