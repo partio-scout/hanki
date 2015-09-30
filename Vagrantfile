@@ -1,0 +1,74 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# First some installation scripts, vagrant conf itself is lower down
+
+# The base box only has the C locale installed, these should cover most uses
+$generate_locales = <<SCRIPT
+locale-gen fi_FI.UTF-8
+locale-gen en_US.UTF-8
+SCRIPT
+
+# Installs absolute minimun for building/running
+$install_packages = <<SCRIPT
+curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash -
+apt-get install -y build-essential git postgresql nodejs
+SCRIPT
+
+# Some configuration changes need to be made to postgres to allow local
+# logins with passwords.
+$configure_postgres = <<SCRIPT
+cp /vagrant/vagrant/pg_hba.conf /etc/postgresql/9.3/main/
+service postgresql reload
+SCRIPT
+
+# To enable global installations with npm without using sudo, change
+# ownership of some directories to the vagrant default user.
+$ensure_permissions = <<SCRIPT
+vagrant_user="vagrant"
+bin="/usr/bin"
+node_modules="/usr/lib/node_modules"
+
+mkdir -p "$bin"
+mkdir -p "$node_modules"
+chown "$vagrant_user" "$bin"
+chown -R "$vagrant_user" "$node_modules"
+SCRIPT
+
+# Finally install npm dependencies and setup development database.
+# Vagrant mounts the project directory at /vagrant.
+# This script will be run as the unprivileged development user.
+$install_project = <<SCRIPT
+cd /vagrant
+npm install -g strongloop
+
+npm install
+
+sudo -u postgres npm run dev-setup <<< "$dbuser
+y
+"
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  # The development virtual machine will run Ubuntu 14.04 Trusty Tahr
+  config.vm.box = "ubuntu/trusty64"
+  # Forward port 3000 into the virtual machine to be able to access
+  # the software from the host
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  # By default 512MB of memory is reserved for the machine, but npm requires
+  # more for some operations. This proved to be enough, though it might be
+  # able to survive with less.
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1536
+  end
+  # Run provisioning scripts in this order.
+  config.vm.provision "shell", inline: $generate_locales
+  config.vm.provision "shell", inline: $install_packages
+  config.vm.provision "shell", inline: $configure_postgres
+  config.vm.provision "shell", inline: $ensure_permissions
+  # npm installations and project setup need to be run as the development user
+  config.vm.provision "shell" do |s|
+    s.privileged = false
+    s.inline = $install_project
+  end
+end
