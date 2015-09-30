@@ -35,6 +35,20 @@ chown "$vagrant_user" "$bin"
 chown -R "$vagrant_user" "$node_modules"
 SCRIPT
 
+# Set the NODE_ENV environment variable, and the default login location
+# This script will be run as the unprivileged development user.
+$configure_dotprofile = <<SCRIPT
+source ~/.profile
+
+if [ -z "$NODE_ENV" ]; then
+  echo "export NODE_ENV=dev" >> ~/.profile
+fi
+
+if [ $(pwd) != "/vagrant" ]; then
+  echo "cd /vagrant" >> ~/.profile
+fi
+SCRIPT
+
 # Finally install npm dependencies and setup development database.
 # Vagrant mounts the project directory at /vagrant.
 # This script will be run as the unprivileged development user.
@@ -66,7 +80,12 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: $install_packages
   config.vm.provision "shell", inline: $configure_postgres
   config.vm.provision "shell", inline: $ensure_permissions
-  # npm installations and project setup need to be run as the development user
+  # environment setup, npm installations and project setup need to be run
+  # as the development user
+  config.vm.provision "shell" do |s|
+    s.privileged = false
+    s.inline = $configure_dotprofile
+  end
   config.vm.provision "shell" do |s|
     s.privileged = false
     s.inline = $install_project
