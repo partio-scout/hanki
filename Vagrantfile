@@ -38,14 +38,24 @@ SCRIPT
 # Set the NODE_ENV environment variable, and the default login location
 # This script will be run as the unprivileged development user.
 $configure_dotprofile = <<SCRIPT
-source ~/.profile
+profile_dir=~/.profile
+locale="en_US.UTF-8"
 
-if [ -z "$NODE_ENV" ]; then
-  echo "export NODE_ENV=dev" >> ~/.profile
-fi
+export_env_if_unset() {
+  if [ -z "${!1}" ]; then
+    echo "export $1=$2" >> "$profile_dir"
+  fi
+}
+
+source "$profile_dir"
+
+export_env_if_unset "NODE_ENV" "dev"
+export_env_if_unset "LANG" "$locale"
+export_env_if_unset "LANGUAGE" "$locale"
+export_env_if_unset "LC_ALL" "$locale"
 
 if [ $(pwd) != "/vagrant" ]; then
-  echo "cd /vagrant" >> ~/.profile
+  echo "cd /vagrant" >> "$profile_dir"
 fi
 SCRIPT
 
