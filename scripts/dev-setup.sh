@@ -4,15 +4,12 @@ procurement_user_password="root"
 
 cd "$(dirname "$0")"
 
-read -p "Enter the name of the PostgreSQL superuser on your system. On Linux, it's usually 'postgres', on OS X it's usually your current user's name ("$USER"): " dbuser
-echo 
-
-command="psql template1 "$dbuser""
+command="psql template1"
 
 # Ask if want try to drop existing users and databases
 echo "If you have not installed the app before, you can safely select NO to next question. However, if you are not sure or have installed app previously, you should select YES option"
 read -p "Do you want to drop existing databases and users? [Y/n] " -n 1 -r
-echo 
+echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	# Try dropping existing databases and users
 	echo "Dropping existing databases and users"

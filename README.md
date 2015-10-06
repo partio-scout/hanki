@@ -31,9 +31,13 @@ Clone this repository.
 
 In the repository, install dependencies by running:
 
-    npm install
+  npm install
 
 Make sure your local PostgreSQL installation is running, and set up dev environment with:
+
+  sudo -u postgres npm run dev-setup
+
+Or, if you're using OS X:
 
   npm run dev-setup
 
@@ -49,7 +53,7 @@ Run the application with:
 
    (then connect to localhost:3000 with your browser to see)
 
-## Running test
+## Running tests
 
 Run the tests with
 
