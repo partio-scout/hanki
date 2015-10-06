@@ -3,7 +3,7 @@ machine:
     NODE_ENV: test
 database:
   override:
-    - npm run dev-setup
+    - echo "y" | npm run dev-setup
 deployment:
   demo:
     branch: demo
