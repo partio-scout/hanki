@@ -1,4 +1,4 @@
 [
-  { "name": "Rautatavara", "description": "Pultit ja mutterit" },
-  { "name": "Puutavara", "description": "Laudat ja lankut" }
+  { "titlegroupId": 1, "name": "Rautatavara", "description": "Pultit ja mutterit" },
+  { "titlegroupId": 2, "name": "Puutavara", "description": "Laudat ja lankut" }
 ]
