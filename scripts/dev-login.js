@@ -16,12 +16,12 @@ var query = {
 };
 
 app.models.Purchaseuser.findOne(query, function(err, user) {
-  if(err) {
+  if (err) {
     console.error('Can\'t find user:', err);
     process.exit(1);
   } else {
     user.createAccessToken(8*3600, function(err, accessToken) {
-      if(err) {
+      if (err) {
         console.error('Can\'t generate access token:', err);
       } else {
         var url = 'http://localhost:3000/dev-login/' + accessToken.id;
