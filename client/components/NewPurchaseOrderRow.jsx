@@ -85,6 +85,19 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
       var selectedTitle = this.props.titles.titles[this.state.selectedTitleId] || { };
       var deliveries = this.props.deliveries.deliveries
+
+      var titleOptions = _.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
+        return <option value={ title.titleId }>{ title.name }</option>
+      });
+
+      var titlegroupOptions = _.map(titlegroups, function(group) {
+        return <option value={ group.titlegroupId }>{ group.name }</option>
+      });
+
+      var deliveryOptions = _.map(deliveries, function(delivery) {
+        return <option value={ delivery.deliveryId }>{ delivery.description }</option>
+      });
+
       return (
         <Modal show='true' onHide={ this.onHide }>
           <Modal.Header closeButton>
@@ -97,15 +110,11 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
               <Static label="Tuote" labelClassName='col-xs-3' wrapperClassName='col-xs-9 field'>
                 <Input ref="titleGroup" type='select' onChange={ this.onSelectedTitleGroupChange } wrapperClassName='col-xs-12'>
                   <option value="">Valitse tuoteryhmä...</option>
-                  {_.map(titlegroups, function(group) {
-                    return <option value={ group.titlegroupId }>{ group.name }</option>
-                  })}
+                  { titlegroupOptions }
                 </Input>
                 <Input ref="title" type='select' onChange={ this.onSelectedTitleChange } wrapperClassName='col-xs-12'>
                   <option value="">Valitse tuote...</option>
-                  {_.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
-                    return <option value={ title.titleId }>{ title.name }</option>
-                  })}
+                  { titleOptions }
                 </Input>
               </Static>
               <Input defaultValue={ this.state.amount } ref="amount" onKeyUp={ this.onAmountChange } type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
@@ -117,9 +126,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
               </Static>
               <Input ref="delivery" type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
                 <option value="">Valitse toimitusajankohta...</option>
-                {_.map(deliveries, function(delivery) {
-                  return <option value={ delivery.deliveryId }>{ delivery.description }</option>
-                })}
+                { deliveryOptions }
               </Input>
               <Input ref="memo" type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
                 help='Vapaaehtoinen. Kerro tässä mikä valitsemasi "muu tuote" on ja esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />

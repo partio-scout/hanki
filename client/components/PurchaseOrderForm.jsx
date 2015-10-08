@@ -15,6 +15,12 @@ var PurchaseOrderForm = React.createClass({
   },
 
   render: function () {
+    var costcenterOptions = _.map(this.props.costCenters, function(costCenter) {
+      return (<option value={ costCenter.costcenterId } key={ costCenter.costcenterId }>
+        { costCenter.code } { costCenter.name }
+      </option>);
+    });
+
     return (
       <Modal show='true' onHide={ this.props.onCancel }>
         <Modal.Header closeButton>
@@ -26,11 +32,7 @@ var PurchaseOrderForm = React.createClass({
             <Input ref="costcenterId" type='select' label='Kustannuspaikka' valueLink={ this.props.valueLinks.costcenterId }
               labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
               <option value="">Valitse kustannuspaikka...</option>
-              {_.map(this.props.costCenters, function(costCenter) {
-                return (<option value={ costCenter.costcenterId } key={ costCenter.costcenterId }>
-                  { costCenter.code } { costCenter.name }
-                </option>);
-              })}
+              { costcenterOptions }
             </Input>
             <Input ref="name" type='text' label='Tilauksen nimi' valueLink={ this.props.valueLinks.name }
               labelClassName='col-xs-3' wrapperClassName='col-xs-9'
