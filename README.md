@@ -24,8 +24,15 @@ You can obtain a login URL by running:
 
     npm run dev-login <user email>
 
+### Resetting the dev database
+
+If you simply want to reset the development database contents you can:
+
+  npm run reset-database
+
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
+
 ## Developing without Vagrant
 ### Prerequisites
 
@@ -37,15 +44,27 @@ Clone this repository.
 
 In the repository, install dependencies by running:
 
-    npm install
+  npm install
 
 Make sure your local PostgreSQL installation is running, and set up dev environment with:
 
+  sudo -u postgres npm run dev-setup
+
+Or, if you're using OS X:
+
   npm run dev-setup
 
-If you have already installed the app and need to reset the database, you can:
+To remove development and test databases, you can run:
 
-  ./scripts/reset-db.sh
+  sudo -u postgres npm run dev-teardown
+
+Or, if you're using OS X:
+
+  npm run dev-teardown
+
+If you simply want to reset the development database contents you can:
+
+  npm run reset-database
 
 ### Running the app
 
@@ -55,7 +74,7 @@ Run the application with:
 
    (then connect to localhost:3000 with your browser to see)
 
-## Running test
+## Running tests
 
 Run the tests with
 

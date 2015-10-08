@@ -68,9 +68,7 @@ npm install -g strongloop
 
 npm install
 
-sudo -u postgres npm run dev-setup <<< "$dbuser
-y
-"
+sudo -u postgres npm run dev-setup
 SCRIPT
 
 Vagrant.configure(2) do |config|
