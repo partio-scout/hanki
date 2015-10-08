@@ -18,8 +18,15 @@ The application will be available at http://localhost:3000/, from both the host 
 
 Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production slc run`.
 
+### Resetting the dev database
+
+If you simply want to reset the database contents you can:
+
+  ./scripts/reset-db.sh
+
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
+
 ## Developing without Vagrant
 ### Prerequisites
 
@@ -41,7 +48,15 @@ Or, if you're using OS X:
 
   npm run dev-setup
 
-If you have already installed the app and need to reset the database, you can:
+To remove development and test databases, you can run:
+
+  sudo -u postgres npm run dev-teardown
+
+Or, if you're using OS X:
+
+  npm run dev-teardown
+
+If you simply want to reset the database contents you can:
 
   ./scripts/reset-db.sh
 
