@@ -33,10 +33,10 @@ module.exports = function(server) {
         proxy.ws(req, socket, head);
       });
     }
-  });
 
-  // Public path must be defined after dev paths or else LoopBack will always
-  // use the production version of bundle.js if it happens to exist
-  var publicPath = path.resolve(__dirname, '../../public');
-  server.use(loopback.static(publicPath));
+    // Public path must be defined after dev paths or else LoopBack will always
+    // use the production version of bundle.js if it happens to exist
+    var publicPath = path.resolve(__dirname, '../../public');
+    server.use(loopback.static(publicPath));
+  });
 };
