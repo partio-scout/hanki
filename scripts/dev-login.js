@@ -10,7 +10,13 @@ if (!email) {
   process.exit(1);
 }
 
-app.models.Purchaseuser.findOne({ email: email }, function(err, user) {
+var query = {
+  where: {
+    email: email
+  }
+};
+
+app.models.Purchaseuser.findOne(query, function(err, user) {
   if(err) {
     console.error('Can\'t find user:', err);
     process.exit(1);
