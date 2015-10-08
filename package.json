@@ -7,7 +7,8 @@
     "test": "NODE_ENV=test mocha -R spec server/test",
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
-    "dev-setup": "./scripts/dev-setup.sh"
+    "dev-setup": "./scripts/dev-setup.sh",
+    "dev-login": "node scripts/dev-login.js"
   },
   "engines": {
     "node": "0.12.x"
