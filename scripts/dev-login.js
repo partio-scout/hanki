@@ -17,8 +17,11 @@ var query = {
 
 app.models.Purchaseuser.findOne(query, function(err, user) {
   if (err) {
-    console.error('Can\'t find user:', err);
+    console.error('Error loading user:', err);
     process.exit(1);
+  } else if (user === null) {
+    console.error('Can\'t find user:', email);
+    process.exit(0);
   } else {
     user.createAccessToken(8*3600, function(err, accessToken) {
       if (err) {
