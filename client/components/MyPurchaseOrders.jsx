@@ -2,34 +2,61 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
 
+var connectToStores = require('alt/utils/connectToStores');
+
+var RouteHandler = require('react-router').RouteHandler;
+
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
+var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrder = require('./PurchaseOrder.jsx');
-var PurchaseOrderLink = require('./PurchaseOrderLink.jsx');
+var PurchaseOrderList = require('./PurchaseOrderList.jsx');
 
-var MyPurchaseOrders = React.createClass({
-  render: function () {
-    return (
-      <Row>
-        <Col>
-          <h1>
-            Omat tilaukset
-          </h1>
-          <ButtonLink to="new_purchase_order" bsStyle="primary">
-            Uusi tilaus
-          </ButtonLink>
-          <div>
-            <PurchaseOrderLink />
-            <PurchaseOrderLink />
-          </div>
-          <PurchaseOrder />
-          <PurchaseOrder />
-        </Col>
-      </Row>
-    );
-  }
-});
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
+  var myPurchaseOrders = React.createClass({
+    statics: {
+      getStores() {
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ]
+      },
 
-module.exports = MyPurchaseOrders;
+      getPropsFromStores() {
+        return {
+          purchaseOrders: PurchaseOrderStore.getState(),
+          costCenters: CostCenterStore.getState(),
+          titles: TitleStore.getState(),
+          deliveries: DeliveryStore.getState()
+        }
+      }
+    },
+
+    render: function () {
+      return (
+        <Row>
+          <Col>
+            <RouteHandler />
+            <h1>
+              Omat tilaukset
+            </h1>
+            <div className="toolBar">
+              <ButtonLink to="new_purchase_order" bsStyle="primary">
+                <Glyphicon glyph="plus" />
+                <span> Uusi tilaus</span>
+              </ButtonLink>
+            </div>
+            <PurchaseOrderList
+              purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
+              purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
+              costCenters={ this.props.costCenters.costCenters }
+              titles={ this.props.titles.titles }
+              deliveries={ this.props.deliveries.deliveries } />
+          </Col>
+        </Row>
+      );
+    }
+  });
+
+  return connectToStores(myPurchaseOrders);
+};
+
+module.exports = getMyPurchaseOrders;

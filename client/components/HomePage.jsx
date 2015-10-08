@@ -36,14 +36,12 @@ function getHomePage(UserStore, UserActions) {
         homeView = 'Loading...';
       } else if (this.state.currentUser === null) {
         homeView = (
-          <ButtonToolbar>
-            <Button
-              href="/saml/login"
-              bsStyle='primary'
-              bsSize='large'>
-              Kirjaudu sisään Partio ID:llä
-            </Button>
-          </ButtonToolbar>
+          <Button
+            href="/saml/login"
+            bsStyle='primary'
+            bsSize='large'>
+            Kirjaudu sisään Partio ID:llä
+          </Button>
         );
       } else {
         // Redirect logged in users to My Purchase Orders page
@@ -54,9 +52,11 @@ function getHomePage(UserStore, UserActions) {
       return (
         <Row>
           <Col>
-            <h3>HANKI</h3>
-            <p>Lorem ipsum dolor sit amet</p>
-            { homeView }
+            <div className="text-center">
+              <h1>Tervetuloa Hankiin!</h1>
+              <p>...ja eikun hankkimaan!</p>
+              { homeView }
+            </div>
           </Col>
         </Row>
       );
