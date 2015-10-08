@@ -8,7 +8,8 @@
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
     "dev-setup": "./scripts/dev-setup.sh",
-    "dev-teardown": "./scripts/dev-teardown.sh"
+    "dev-teardown": "./scripts/dev-teardown.sh",
+    "reset-database": "./scripts/reset-db.sh"
   },
   "engines": {
     "node": "0.12.x"

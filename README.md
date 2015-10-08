@@ -20,9 +20,9 @@ Note that the virtual machine has the `NODE_ENV`-environment variable set to `de
 
 ### Resetting the dev database
 
-If you simply want to reset the database contents you can:
+If you simply want to reset the development database contents you can:
 
-  ./scripts/reset-db.sh
+  npm run reset-database
 
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
@@ -56,9 +56,9 @@ Or, if you're using OS X:
 
   npm run dev-teardown
 
-If you simply want to reset the database contents you can:
+If you simply want to reset the development database contents you can:
 
-  ./scripts/reset-db.sh
+  npm run reset-database
 
 ### Running the app
 
