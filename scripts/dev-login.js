@@ -1,4 +1,3 @@
-var open = require('open');
 var path = require('path');
 var serverPath = path.resolve(__dirname, '../server');
 var app = require(serverPath + '/server.js');
