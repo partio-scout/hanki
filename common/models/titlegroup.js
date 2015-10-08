@@ -1,3 +1,2 @@
-module.exports = function(Titlegroup) {
-
+module.exports = function(Titlegroup){
 };

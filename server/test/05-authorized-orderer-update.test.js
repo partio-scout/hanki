@@ -30,7 +30,6 @@ describe('Orderer', function() {
         nameForOrder = 'Liikaa nauloja';
         var msg = {
           'orderId': 3,
-          'usageobjectId': 1,
           'name': nameForOrder,
           'costcenterId': 1,
           'subscriberId': accessToken.userId
@@ -53,7 +52,6 @@ describe('Orderer', function() {
       .then(function(accessToken) {
         d = new Date().toISOString();
         var msg = {
-          'selfSupply': true,
           'modified': d
         };
         request(app)
@@ -76,7 +74,6 @@ describe('Orderer', function() {
       .then(function(accessToken) {
         var msg = {
           'orderId': 1,
-          'usageobjectId': 1,
           'name': nameForOrder,
           'costcenterId': 1,
           'subscriberId': accessToken.userId
@@ -94,7 +91,6 @@ describe('Orderer', function() {
       loginUser(username,userpass)
       .then(function(accessToken) {
         var msg = {
-          'selfSupply': true,
           'modified': d
         };
         request(app)

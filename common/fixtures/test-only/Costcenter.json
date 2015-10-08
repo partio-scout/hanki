@@ -1,6 +1,7 @@
 [
   {
-    "name": "00000 Roihun johtoryhmä",
+    "code": "00000",
+    "name": "Roihun johtoryhmä",
     "controller": 3,
     "provider": 4,
     "master": 2
