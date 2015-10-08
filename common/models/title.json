@@ -150,7 +150,7 @@
     },
     "supplierTitlecode": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": 255,
       "precision": null,
       "scale": null,
