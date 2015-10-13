@@ -9,8 +9,8 @@ process, but the PORT is different.
 options = process.env;
 options.PORT = 3005;
 
-// New process is spawned with command "slc run".
-var procSysProcess = spawn('slc',['run'],options);
+// A separate process is spawned for tests
+var procSysProcess = spawn('node',['.'],options);
 
 describe('HANKI', function() {
 
