@@ -22,6 +22,9 @@ var PurchaseOrder = React.createClass({
       var titlePrice = this.props.titles[row.titleId].priceWithTax;
       return total + row.amount * titlePrice;
     }, 0);
+
+    var canDelete = !!(this.props.purchaseOrderRows && this.props.purchaseOrderRows.length === 0);
+
     return (
       <Panel className="purchase-order">
         <h2>
@@ -29,7 +32,8 @@ var PurchaseOrder = React.createClass({
           <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
             <Glyphicon glyph="pencil" />
           </ButtonLink>
-          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order" params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
+          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order"
+            disabled={ !canDelete } params={{ purchaseOrder: this.props.purchaseOrder.orderId }}>
             <Glyphicon glyph="remove" />
           </ButtonLink>
         </h2>
