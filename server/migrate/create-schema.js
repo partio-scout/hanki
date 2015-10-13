@@ -21,7 +21,11 @@ var modelsToAutoMigrate = [
 ];
 
 var fixturesToImport = [
-  'Role'
+  'Role',
+  'Titlegroup',
+  'Title',
+  'Supplier',
+  'Account'
 ];
 
 function getFixtures(modelName) {
