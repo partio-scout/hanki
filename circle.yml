@@ -5,18 +5,14 @@ machine:
     version: v0.12.0
 database:
   override:
-    - echo "ubuntu" | npm run dev-setup
+    - npm run dev-setup
 deployment:
   demo:
     branch: demo
     heroku:
       appname: fj16-procurement-demo
-test:
-  pre:
-    - echo "ubuntu" | ./scripts/create-ci-dbadmin.sh
 dependencies:
   post:
     - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
         background: true
-
 

@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Iso naula",
+    "titlegroupId": 1,
+    "unit": "kpl",
+    "priceWithoutTax": 0.40,
+    "vatPercent": 0.24,
+    "priceWithTax": 0.50,
+    "accountId": 1,
+    "supplierId": 0,
+    "supplierTitleCode": "",
+    "toResold": false,
+    "toRent": false,
+    "toBought": true,
+    "toSignedFor": false,
+    "memo": "Voi vetää vaikka päähän",
+    "selectable": true
+  },
+  {
+    "name": "Kakkosnelonen",
+    "titlegroupId": 2,
+    "unit": "m",
+    "priceWithoutTax": 4.00,
+    "vatPercent": 0.24,
+    "priceWithTax": 5.00,
+    "accountId": 1,
+    "supplierId": 0,
+    "supplierTitleCode": "",
+    "toResold": false,
+    "toRent": false,
+    "toBought": true,
+    "toSignedFor": false,
+    "memo": "",
+    "selectable": true
+  },
+  {
+    "name": "Kakkoskakkonen",
+    "titlegroupId": 2,
+    "unit": "m",
+    "priceWithoutTax": 2.00,
+    "vatPercent": 0.24,
+    "priceWithTax": 2.50,
+    "accountId": 1,
+    "supplierId": 0,
+    "supplierTitleCode": "",
+    "toResold": false,
+    "toRent": false,
+    "toBought": true,
+    "toSignedFor": false,
+    "memo": "",
+    "selectable": true
+  }
+]

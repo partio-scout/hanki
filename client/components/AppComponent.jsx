@@ -24,7 +24,7 @@ function getApp(UserStore, UserActions) {
     },
 
     onChange(state) {
-      if (this.state.currentUser && !state.currentUser) {
+      if (!state.currentUser) {
         this.transitionTo('home');
       }
       this.setState(state);
