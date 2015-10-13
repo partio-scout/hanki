@@ -9,3 +9,8 @@ deployment:
     branch: demo
     heroku:
       appname: fj16-procurement-demo
+dependencies:
+  post:
+    - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
+        background: true
+

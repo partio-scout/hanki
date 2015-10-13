@@ -72,10 +72,14 @@ Run the application with:
 
     NODE_ENV=dev slc run
 
-   (then connect to localhost:3000 with your browser to see)
+(then connect to localhost:3000 with your browser to see)
 
 ## Running tests
 
-Run the tests with
+Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
 
-     npm test
+	java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+
+Tests include linter, API and interation tests. Run all tests and checks:
+
+	npm test

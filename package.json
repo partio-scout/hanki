@@ -4,7 +4,7 @@
   "main": "server/server.js",
   "scripts": {
     "pretest": "NODE_ENV=test eslint . && NODE_ENV=test npm run reset-database",
-    "test": "NODE_ENV=test mocha -R spec server/test",
+    "test": "NODE_ENV=test mocha -R spec server/test && wdio wdio.conf.js",
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
     "dev-setup": "./scripts/dev-setup.sh",
@@ -58,13 +58,15 @@
     "babel": "^5.8.5",
     "babel-core": "^5.4.7",
     "chai": "2.3.0",
+    "chai-as-promised": "^5.1.0",
     "eslint": "^1.2.0",
     "eslint-plugin-react": "^3.2.3",
-    "mocha": "2.0.1",
-    "supertest": "^1.0.1",
     "file-loader": "^0.8.4",
     "http-proxy": "^1.10.1",
+    "mocha": "2.0.1",
     "react-bootstrap": "^0.24.2",
+    "supertest": "^1.0.1",
+    "webdriverio": "^3.2.1",
     "webpack-dev-server": "^1.8.0"
   },
   "repository": {
