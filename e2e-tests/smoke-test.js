@@ -17,8 +17,8 @@ describe('HANKI', function() {
   it('should contain a login button', function() {
 
     var loginButton = browser
-            .url('/')
-            .selectByVisibleText('.btn', 'Kirjaudu');
+      .url('/')
+      .selectByVisibleText('.btn', 'Kirjaudu');
     return expect(loginButton).to.be.ok;
   });
 
