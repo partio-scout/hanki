@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "pretest": "NODE_ENV=test eslint . && NODE_ENV=test ./scripts/testsetup.sh",
+    "pretest": "NODE_ENV=test eslint . && NODE_ENV=test npm run reset-database",
     "test": "NODE_ENV=test mocha -R spec server/test && wdio wdio.conf.js",
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
