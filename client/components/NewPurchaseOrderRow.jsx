@@ -117,7 +117,14 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                   { titleOptions }
                 </Input>
               </Static>
-              <Input defaultValue={ this.state.amount } ref="amount" onKeyUp={ this.onAmountChange } type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
+              <Input defaultValue={ this.state.amount }
+                ref="amount"
+                onKeyUp={ this.onAmountChange }
+                type='text'
+                label='Määrä'
+                labelClassName='col-xs-3'
+                wrapperClassName='col-xs-9'
+                addonAfter={ selectedTitle.unit } />
               <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
                 <Price value={ selectedTitle.priceWithTax } />
               </Static>
@@ -128,7 +135,11 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                 <option value="">Valitse toimitusajankohta...</option>
                 { deliveryOptions }
               </Input>
-              <Input ref="memo" type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
+              <Input ref="memo"
+                type='textarea'
+                label='Kommentti'
+                labelClassName='col-xs-3'
+                wrapperClassName='col-xs-9'
                 help='Vapaaehtoinen. Kerro tässä mikä valitsemasi "muu tuote" on ja esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
             </form>
           </Modal.Body>
