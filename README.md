@@ -18,6 +18,10 @@ The application will be available at http://localhost:3000/, from both the host 
 
 Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production slc run`.
 
+### Creating users
+
+    npm run create-user <user email>
+
 ### Logging in
 
 You can obtain a login URL by running:
