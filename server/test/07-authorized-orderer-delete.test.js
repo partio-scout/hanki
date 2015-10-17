@@ -1,48 +1,21 @@
 var app = require('../server');
 var request = require('supertest');
-var expect = require('chai').expect;
 var _ = require('lodash');
 var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var username = 'orderer';
-  var userpass = 'salasana';
-
-  function createFixture(modelName, fixture, cb) {
-    app.models[modelName].create(fixture, function(err, res) {
-      if (err) {
-        throw new Error('Unable to create ' + modelName + ' fixture: ' + err);
-      } else {
-        cb();
-      }
-    });
-  }
-
-  function deleteFixtureIfExists(modelName, id, cb) {
-    app.models[modelName].destroyById(id, cb);
-  }
-
-  function expectModelToBeDeleted(modelName, id, cb) {
-    return function() {
-      app.models[modelName].findById(id, function(err, res) {
-        expect(err).to.be.undefined;
-        expect(res).to.be.null;
-        cb();
-      });
-    };
-  }
 
   beforeEach(function(done) {
     var doneWhenAllDone = _.after(2, done);
 
-    createFixture('Purchaseorder', {
+    testUtils.createFixture('Purchaseorder', {
       'name': 'delete me',
       'costcenterId': 1,
       'orderId': 222,
       'subscriberId': 1
     }, doneWhenAllDone);
 
-    createFixture('Purchaseorderrow', {
+    testUtils.createFixture('Purchaseorderrow', {
       'orderRowId': 333,
       'titleId': 1,
       'amount': 16,
@@ -56,8 +29,8 @@ describe('Orderer', function() {
 
   afterEach(function(done) {
     var doneWhenAllDone = _.after(2, done);
-    deleteFixtureIfExists('Purchaseorder', 222, doneWhenAllDone);
-    deleteFixtureIfExists('Purchaseorderrow', 333, doneWhenAllDone);
+    testUtils.deleteFixtureIfExists('Purchaseorder', 222, doneWhenAllDone);
+    testUtils.deleteFixtureIfExists('Purchaseorderrow', 333, doneWhenAllDone);
   });
 
   describe('should be allowed to delete owned', function() {
@@ -67,7 +40,7 @@ describe('Orderer', function() {
           .del('/api/Purchaseorders/222')
           .query({ access_token: accessToken.id })
           .expect(204)
-          .end(expectModelToBeDeleted('Purchaseorder', 222, done));
+          .end(testUtils.expectModelToBeDeleted('Purchaseorder', 222, done));
       });
     });
 
@@ -77,7 +50,7 @@ describe('Orderer', function() {
           .del('/api/Purchaseorders/3/order_rows/333')
           .query({ access_token: accessToken.id })
           .expect(204)
-          .end(expectModelToBeDeleted('Purchaseorderrow', 333, done));
+          .end(testUtils.expectModelToBeDeleted('Purchaseorderrow', 333, done));
       });
     });
   });
