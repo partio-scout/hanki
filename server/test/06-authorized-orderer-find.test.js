@@ -6,21 +6,6 @@ var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
 
-  function promiseFind(model, whereClause, includeClause) {
-    includeClause = includeClause || null;
-    what = { where: whereClause };
-    if (includeClause) {
-      what = { where: whereClause, include: includeClause };
-    }
-    return new Promise(function (resolve, reject) {
-      model.find(what, function(err, res) {
-        if (err) throw err;
-
-        resolve(res);
-      });
-    });
-  }
-
   describe('should be allowed to get list of', function() {
     describe('all', function() {
       it('Accounts', function(done) {
@@ -104,7 +89,7 @@ describe('Orderer', function() {
       it('Purchaseorders', function(done) {
         var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId });
+          return testUtils.promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId });
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
@@ -126,7 +111,7 @@ describe('Orderer', function() {
       it('Purchaseorderrows', function(done) {
         var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId }, 'order_rows');
+          return testUtils.promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId }, 'order_rows');
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
