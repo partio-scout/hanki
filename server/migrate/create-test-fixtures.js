@@ -14,6 +14,7 @@ var fixturesToImport = [
   'Purchaseorderrow',
   'RoleMapping'
 ];
+
 var closeDBConnectionIfImportComplete = _.after(fixturesToImport.length, function() {
   app.datasources.db.disconnect();
   console.log('Done.');
