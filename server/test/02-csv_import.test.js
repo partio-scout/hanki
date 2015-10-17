@@ -7,9 +7,6 @@ var fs = require('fs');
 var testUtils = require('./utils/test-utils.js');
 
 describe('DataImport', function() {
-  var username = 'procurementAdmin';
-  var userpass = 'salasana';
-
   afterEach(function(done) {
     app.models.Title.destroyAll(done);
   });
@@ -33,7 +30,7 @@ describe('DataImport', function() {
 
   function itShouldNotAcceptCSV(description, csv) {
     it('should return 422 when posted csv ' + description, function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         postCSV(accessToken, csv)
         .expect(422)
         .end(function(err, res) {
@@ -61,7 +58,7 @@ describe('DataImport', function() {
     });
 
     it('should grant access for authenticated users', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         request(app).post('/api/Titles/DataImport')
         .query({ access_token: accessToken.id })
         .expect(200)
@@ -73,7 +70,7 @@ describe('DataImport', function() {
   // test different input strings
   describe('Method', function() {
     it('should return empty array when posted null', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         postCSV(accessToken, '')
         .expect(200)
         .end(function(err, res) {
@@ -98,7 +95,7 @@ describe('DataImport', function() {
     itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
 
     it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,32,21,45,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
         .expect(200)
         .end(function(err, res) {
@@ -121,7 +118,7 @@ describe('DataImport', function() {
     it('should accept 100 line csv-file', function(done) {
       var csv = fs.readFileSync('./server/test/big_test_100.csv', 'utf-8');
       this.timeout(15000);
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         request(app).post('/api/Titles/DataImport')
         .query({ access_token: accessToken.id })
         .send({ csv: csv })

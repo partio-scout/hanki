@@ -4,12 +4,10 @@ var expect = require('chai').expect;
 var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var username = 'orderer';
-  var userpass = 'salasana';
 
   describe('should be allowed to update owned', function() {
     it('Purchaseorder', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         nameForOrder = 'Liikaa nauloja';
         var msg = {
           'orderId': 3,
@@ -31,7 +29,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrow', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         d = new Date().toISOString();
         var msg = {
           'modified': d
@@ -71,7 +69,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to update others', function() {
     it('Purchaseorders', function(done) {
-      testUtils.loginUser(username,userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'orderId': 1,
           'name': nameForOrder,
@@ -88,7 +86,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrows', function(done) {
-      testUtils.loginUser(username,userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'modified': d
         };
@@ -104,7 +102,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to update any', function() {
     it('Accounts', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'name': 'new title name'
         };
@@ -118,7 +116,7 @@ describe('Orderer', function() {
     });
 
     it('Costcenters', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'name': 'new costcenter name'
         };
@@ -132,7 +130,7 @@ describe('Orderer', function() {
     });
 
     it('Deliveries', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'description': 'new delivery name'
         };
@@ -146,7 +144,7 @@ describe('Orderer', function() {
     });
 
     it('Suppliers', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'name': 'new supplier name'
         };
@@ -160,7 +158,7 @@ describe('Orderer', function() {
     });
 
     it('Titlegroups', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'name': 'new titlegroup name'
         };
