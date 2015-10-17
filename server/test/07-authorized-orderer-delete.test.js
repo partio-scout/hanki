@@ -62,7 +62,7 @@ describe('Orderer', function() {
 
   describe('should be allowed to delete owned', function() {
     it('Purchaseorder', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/222')
           .query({ access_token: accessToken.id })
@@ -72,7 +72,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrow', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/3/order_rows/333')
           .query({ access_token: accessToken.id })
@@ -84,7 +84,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to delete others', function() {
     it('Purchaseorders', function(done) {
-      testUtils.loginUser(username,userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/1')
           .query({ access_token: accessToken.id })
@@ -94,7 +94,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrows', function(done) {
-      testUtils.loginUser(username,userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/1/order_rows/2')
           .query({ access_token: accessToken.id })
@@ -106,7 +106,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to delete any', function() {
     it('Accounts', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Accounts/1')
           .query({ access_token: accessToken.id })
@@ -116,7 +116,7 @@ describe('Orderer', function() {
     });
 
     it('Costcenters', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Costcenters/1')
           .query({ access_token: accessToken.id })
@@ -126,7 +126,7 @@ describe('Orderer', function() {
     });
 
     it('Deliveries', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Deliveries/1')
           .query({ access_token: accessToken.id })
@@ -136,7 +136,7 @@ describe('Orderer', function() {
     });
 
     it('Suppliers', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Suppliers/1')
           .query({ access_token: accessToken.id })
@@ -146,7 +146,7 @@ describe('Orderer', function() {
     });
 
     it('Titlegroups', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .del('/api/Titlegroups/1')
           .query({ access_token: accessToken.id })

@@ -5,8 +5,6 @@ var Promise = require('bluebird');
 var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var username = 'orderer';
-  var userpass = 'salasana';
 
   function promiseFind(model, whereClause, includeClause) {
     includeClause = includeClause || null;
@@ -26,7 +24,7 @@ describe('Orderer', function() {
   describe('should be allowed to get list of', function() {
     describe('all', function() {
       it('Accounts', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Accounts?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -34,7 +32,7 @@ describe('Orderer', function() {
       });
 
       it('Costcenters', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Costcenters?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -42,7 +40,7 @@ describe('Orderer', function() {
       });
 
       it('Deliveries', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Deliveries?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -50,7 +48,7 @@ describe('Orderer', function() {
       });
 
       it('Suppliers', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Suppliers?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -58,7 +56,7 @@ describe('Orderer', function() {
       });
 
       it('Titlegroups', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Titlegroups?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -66,7 +64,7 @@ describe('Orderer', function() {
       });
 
       it('Titles', function(done) {
-        testUtils.loginUser(username, userpass).then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Titles?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -78,7 +76,7 @@ describe('Orderer', function() {
     describe('owned', function() {
 
       it('Purchaseorders', function(done) {
-        var login = testUtils.loginUser(username, userpass);
+        var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
           return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId });
         });
@@ -100,7 +98,7 @@ describe('Orderer', function() {
       });
 
       it('Purchaseorderrows', function(done) {
-        var login = testUtils.loginUser(username, userpass);
+        var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
           return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId }, 'order_rows');
         });
@@ -121,7 +119,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to', function() {
     it('get all Purchaseorders', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .get('/api/Purchaseorders')
           .query({ access_token: accessToken.id })
@@ -131,7 +129,7 @@ describe('Orderer', function() {
     });
 
     it('get all Purchaseorderrows', function(done) {
-      testUtils.loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .get('/api/Purchaseorderrows')
           .query({ access_token: accessToken.id })
