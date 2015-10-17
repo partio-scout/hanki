@@ -98,6 +98,14 @@ describe('Orderer', function() {
     });
 
     describe('owned', function() {
+      it('Cost centres', function(done) {
+        loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).get('api/Purchaseusers/' + accessToken.userId + '/Costcenters?access_token=' + accessToken.id)
+          .expect(200)
+          .end(done);
+        });
+      });
 
       it('Purchaseorders', function(done) {
         var login = loginUser(username, userpass);
