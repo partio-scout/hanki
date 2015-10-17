@@ -1,28 +1,12 @@
 var app = require('../server');
 var request = require('supertest');
-//var assert = require('assert');
 var expect = require('chai').expect;
-var Promise = require('bluebird');
 var _ = require('lodash');
+var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var User = app.models.Purchaseuser;
-
   var username = 'orderer';
   var userpass = 'salasana';
-
-  function loginUser(username, userpass) {
-    return new Promise(function (resolve, reject) {
-      // log in as orderer
-      return User.login({
-        username: username,
-        password: userpass
-      }, function(err, accessToken) {
-        if (err) throw err;
-        resolve(accessToken);
-      });
-    });
-  }
 
   function createFixture(modelName, fixture, cb) {
     app.models[modelName].create(fixture, function(err, res) {
@@ -78,8 +62,7 @@ describe('Orderer', function() {
 
   describe('should be allowed to delete owned', function() {
     it('Purchaseorder', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/222')
           .query({ access_token: accessToken.id })
@@ -89,8 +72,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrow', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/3/order_rows/333')
           .query({ access_token: accessToken.id })
@@ -102,8 +84,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to delete others', function() {
     it('Purchaseorders', function(done) {
-      loginUser(username,userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username,userpass).then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/1')
           .query({ access_token: accessToken.id })
@@ -113,8 +94,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrows', function(done) {
-      loginUser(username,userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username,userpass).then(function(accessToken) {
         request(app)
           .del('/api/Purchaseorders/1/order_rows/2')
           .query({ access_token: accessToken.id })
@@ -126,8 +106,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to delete any', function() {
     it('Accounts', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Accounts/1')
           .query({ access_token: accessToken.id })
@@ -137,8 +116,7 @@ describe('Orderer', function() {
     });
 
     it('Costcenters', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Costcenters/1')
           .query({ access_token: accessToken.id })
@@ -148,8 +126,7 @@ describe('Orderer', function() {
     });
 
     it('Deliveries', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Deliveries/1')
           .query({ access_token: accessToken.id })
@@ -159,8 +136,7 @@ describe('Orderer', function() {
     });
 
     it('Suppliers', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Suppliers/1')
           .query({ access_token: accessToken.id })
@@ -170,8 +146,7 @@ describe('Orderer', function() {
     });
 
     it('Titlegroups', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser(username, userpass).then(function(accessToken) {
         request(app)
           .del('/api/Titlegroups/1')
           .query({ access_token: accessToken.id })
