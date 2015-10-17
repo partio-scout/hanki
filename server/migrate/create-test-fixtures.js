@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var app = require('../server.js');
+var Promise = require('bluebird');
 
 var fixturesToImport = [
   'Purchaseuser',
@@ -24,14 +25,19 @@ function getTestFixtures(modelName) {
 }
 
 function importFixturesFor(modelName) {
-  var fixtures = getTestFixtures(modelName);
-  app.models[modelName].create(fixtures, function(err, res) {
-    console.log('Create ' + fixtures.length + ' fixtures for ' + modelName + ': ' + (err ? ' FAILED' : 'OK'));
-    if (err) {
-      console.log(err);
-    }
-    closeDBConnectionIfImportComplete();
-  });
+  var fixtures = Promise.resolve(getTestFixtures(modelName));
+
+  var createFixture = Promise.promisify(app.models[modelName].create, app.models[modelName]);
+
+  fixtures.each(function(value) {
+    return createFixture(value);
+  }).then(function(createdFixtures) {
+    console.log('Create ' + createdFixtures.length + ' fixtures for ' + modelName + ': OK');
+  })
+  .catch(function(err) {
+    console.log('Failed to create fixtures for ' + modelName);
+    console.log(err);
+  }).finally(closeDBConnectionIfImportComplete);
 }
 
 _.each(fixturesToImport, function(model) {
