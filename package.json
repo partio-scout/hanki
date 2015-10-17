@@ -7,6 +7,7 @@
     "test": "NODE_ENV=test mocha -R spec server/test && wdio wdio.conf.js",
     "postinstall": "npm run deploy",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
+    "test-watch": "NODE_ENV=test mocha --watch -R spec",
     "dev-setup": "./scripts/dev-setup.sh",
     "dev-teardown": "./scripts/dev-teardown.sh",
     "reset-database": "./scripts/reset-db.sh",
