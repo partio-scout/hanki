@@ -37,7 +37,7 @@ var PurchaseOrderRowForm = React.createClass({
     return (
       <Modal show='true' onHide={ this.props.onCancel }>
         <Modal.Header closeButton>
-          <Modal.Title>Lisää tuote</Modal.Title>
+          <Modal.Title>{ this.props.title }</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="form-horizontal">
