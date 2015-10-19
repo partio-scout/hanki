@@ -17,6 +17,8 @@ var Router = require('react-router');
 
 var Price = require('./utils/Price.jsx');
 
+var otherProductId = '0';
+
 var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var newPurchaseOrderRow = React.createClass({
     mixins: [ Router.Navigation ],
@@ -50,6 +52,10 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       this.transitionTo('my_purchase_orders');
     },
 
+    isOtherProductSelected: function() {
+      return this.state.selectedTitleGroup === otherProductId;
+    },
+
     onSubmit: function() {
       var row = {
         titleId: this.state.selectedTitleId,
@@ -71,9 +77,15 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
     },
 
     onSelectedTitleGroupChange: function(event) {
+      var newTitleGroup = event.target.value;
+      var newTitleId = '';
+      if (newTitleGroup == otherProductId) {
+        newTitleId = otherProductId;
+      }
+
       this.setState({
-        selectedTitleGroup: event.target.value,
-        selectedTitleId: ''
+        selectedTitleGroup: newTitleGroup,
+        selectedTitleId: newTitleId
       });
     },
 
@@ -93,15 +105,30 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       this.setState({ memo: event.target.value });
     },
 
+    getTitleSelection: function() {
+      if (this.isOtherProductSelected()) {
+        return (
+          <Input wrapperClassName='col-xs-12'>
+            <div className='form-control'>Muu tuote</div>
+          </Input>);
+      } else {
+        var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
+        var titleOptions = _.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
+          return <option value={ title.titleId }>{ title.name }</option>
+        });
+
+        return (
+          <Input wrapperClassName='col-xs-12' value={ this.state.selectedTitleId } type='select' onChange={ this.onSelectedTitleChange }>
+            <option value="">Valitse tuote...</option>
+            { titleOptions }
+          </Input>);
+      }
+    },
+
     render: function () {
       var titlegroups = this.props.titles.titleGroups || { };
-      var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
       var selectedTitle = this.props.titles.titles[this.state.selectedTitleId] || { };
       var deliveries = this.props.deliveries.deliveries;
-
-      var titleOptions = _.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
-        return <option value={ title.titleId }>{ title.name }</option>
-      });
 
       var titlegroupOptions = _.map(titlegroups, function(group) {
         return <option value={ group.titlegroupId }>{ group.name }</option>
@@ -125,10 +152,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                   <option value="">Valitse tuoteryhmä...</option>
                   { titlegroupOptions }
                 </Input>
-                <Input value={ this.state.selectedTitleId } type='select' onChange={ this.onSelectedTitleChange } wrapperClassName='col-xs-12'>
-                  <option value="">Valitse tuote...</option>
-                  { titleOptions }
-                </Input>
+                { this.getTitleSelection() }
               </Static>
               <Input defaultValue='0'
                 onKeyUp={ this.onAmountChange }
