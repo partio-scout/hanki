@@ -30,13 +30,13 @@ var PurchaseOrderRow = React.createClass({
           { title.name }
         </td>
         <td>
-          { this.props.row.amount } { title.unit }
+          { row.amount } { title.unit }
         </td>
         <td>
           <Price value={ title.priceWithTax * row.amount } />
         </td>
         <td>
-
+          { row.memo }
         </td>
         <td>
 
