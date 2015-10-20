@@ -10,7 +10,9 @@
     "dev-setup": "./scripts/dev-setup.sh",
     "dev-teardown": "./scripts/dev-teardown.sh",
     "reset-database": "./scripts/reset-db.sh",
-    "dev-login": "node scripts/dev-login.js"
+    "dev-login": "node scripts/dev-login.js",
+    "console": "loopback-console .",
+    "update-schema": "node server/migrate/update-schema.js"
   },
   "engines": {
     "node": "0.12.x"
