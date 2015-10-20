@@ -44,6 +44,8 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         amount: 0,
         memo: '',
         deliveryId: 0,
+        nameOverride: '',
+        priceOverride: 0,
         validationErrors: [ ]
       }
     },
@@ -66,6 +68,11 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         orderId: this.props.params.purchaseOrder
       };
 
+      if (this.isOtherProductSelected()) {
+        row.nameOverride = this.state.nameOverride;
+        row.priceOverride = this.state.priceOverride;
+      }
+
       var validationErrors = validatePurchaseOrderRow(row);
 
       this.setState({ validationErrors: validationErrors });
@@ -78,15 +85,19 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
 
     onSelectedTitleGroupChange: function(event) {
       var newTitleGroup = event.target.value;
-      var newTitleId = '';
-      if (newTitleGroup == otherProductId) {
-        newTitleId = otherProductId;
+      var stateChange = {
+        selectedTitleGroup: newTitleGroup,
+      };
+
+      if (newTitleGroup === otherProductId) {
+        stateChange.selectedTitleId = otherProductId;
+      } else {
+        stateChange.selectedTitleId = '';
+        stateChange.nameOverride = '';
+        stateChange.priceOverride = 0;
       }
 
-      this.setState({
-        selectedTitleGroup: newTitleGroup,
-        selectedTitleId: newTitleId
-      });
+      this.setState(stateChange);
     },
 
     onSelectedTitleChange: function(event) {
@@ -105,12 +116,18 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       this.setState({ memo: event.target.value });
     },
 
+    onNameOverrideChange: function(event) {
+      this.setState({ nameOverride: event.target.value});
+    },
+
+    onPriceOverrideChange: function(event) {
+      this.setState({ priceOverride: event.target.value });
+    },
+
     getTitleSelection: function() {
       if (this.isOtherProductSelected()) {
         return (
-          <Input wrapperClassName='col-xs-12'>
-            <div className='form-control'>Muu tuote</div>
-          </Input>);
+          <Input wrapperClassName='col-xs-12' defaultValue='Muu tuote' type='text' onChange={ this.onNameOverrideChange } />);
       } else {
         var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
         var titleOptions = _.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
@@ -122,6 +139,23 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
             <option value="">Valitse tuote...</option>
             { titleOptions }
           </Input>);
+      }
+    },
+
+    getPriceControl: function(selectedTitlePrice) {
+      if (this.isOtherProductSelected()) {
+        return (
+          <Input label="Yksikköhinta"
+            labelClassName='col-xs-3'
+            wrapperClassName='col-xs-9'
+            defaultValue='0'
+            type='text'
+            onChange={ this.onPriceOverrideChange }/>);
+      } else {
+        return (
+          <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
+            <Price value={ selectedTitlePrice } />
+          </Static>);
       }
     },
 
@@ -154,18 +188,16 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                 </Input>
                 { this.getTitleSelection() }
               </Static>
-              <Input defaultValue='0'
+              <Input defaultValue={ this.state.amount }
                 onKeyUp={ this.onAmountChange }
                 type='text'
                 label='Määrä'
                 labelClassName='col-xs-3'
                 wrapperClassName='col-xs-9'
-                addonAfter={ selectedTitle.unit } />
-              <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <Price value={ selectedTitle.priceWithTax } />
-              </Static>
+                addonAfter={ (this.isOtherProductSelected() ? '' : selectedTitle.unit) } />
+              { this.getPriceControl(selectedTitle.priceWithTax) }
               <Static label="Yhteensä" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <Price value={ selectedTitle.priceWithTax * this.state.amount } />
+                <Price value={ (this.isOtherProductSelected() ? this.state.priceOverride : selectedTitle.priceWithTax) * this.state.amount } />
               </Static>
               <Input value={ this.state.deliveryId } onChange={ this.onDeliveryIdChange } type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
                 <option value="">Valitse toimitusajankohta...</option>
@@ -177,7 +209,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
                 label='Kommentti'
                 labelClassName='col-xs-3'
                 wrapperClassName='col-xs-9'
-                help='Vapaaehtoinen. Kerro tässä mikä valitsemasi "muu tuote" on ja esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
+                help='Vapaaehtoinen. Kerro tässä esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
             </form>
           </Modal.Body>
           <Modal.Footer>

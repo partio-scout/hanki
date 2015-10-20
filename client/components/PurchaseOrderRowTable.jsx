@@ -27,13 +27,13 @@ var PurchaseOrderRow = React.createClass({
           <ButtonLink bsStyle='link' className="delete" to="delete_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
             <Glyphicon glyph='remove' />
           </ButtonLink>
-          { title.name }
+          { (row.nameOverride || title.name) }
         </td>
         <td>
           { row.amount } { title.unit }
         </td>
         <td>
-          <Price value={ title.priceWithTax * row.amount } />
+          <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
         </td>
         <td>
           { row.memo }
