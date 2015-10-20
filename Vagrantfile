@@ -64,11 +64,13 @@ SCRIPT
 # This script will be run as the unprivileged development user.
 $install_project = <<SCRIPT
 cd /vagrant
-npm install -g strongloop
+npm install -g strongloop || exit 1
 
-npm install
+npm install || exit 1
 
-sudo -u postgres npm run dev-setup
+sudo -u postgres npm run dev-setup || exit 1
+
+exit 0
 SCRIPT
 
 Vagrant.configure(2) do |config|
