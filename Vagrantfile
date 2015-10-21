@@ -68,6 +68,7 @@ npm install -g strongloop || exit 1
 
 npm install || exit 1
 
+sudo -u postgres npm run dev-teardown || exit 1
 sudo -u postgres npm run dev-setup || exit 1
 
 exit 0
