@@ -19,20 +19,23 @@ The application will be available at http://localhost:3000/, from both the host 
 Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production slc run`.
 
 ### Creating users
-
-    npm run create-user <user email>
+```
+npm run create-user <user email>
+```
 
 ### Logging in
 
 You can obtain a login URL by running:
-
-    npm run dev-login <user email>
+```
+npm run dev-login <user email>
+```
 
 ### Resetting the dev database
 
 If you simply want to reset the development database contents you can:
-
-  npm run reset-database
+```
+npm run reset-database
+```
 
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
@@ -47,43 +50,48 @@ Node.JS and PostgreSQL
 Clone this repository.
 
 In the repository, install dependencies by running:
-
-  npm install
+```
+npm install
+```
 
 Make sure your local PostgreSQL installation is running, and set up dev environment with:
-
-  sudo -u postgres npm run dev-setup
+```
+sudo -u postgres npm run dev-setup
+```
 
 Or, if you're using OS X:
-
-  npm run dev-setup
-
+```
+npm run dev-setup
+```
 To remove development and test databases, you can run:
-
-  sudo -u postgres npm run dev-teardown
-
+```
+sudo -u postgres npm run dev-teardown
+```
 Or, if you're using OS X:
-
-  npm run dev-teardown
-
+```
+npm run dev-teardown
+```
 If you simply want to reset the development database contents you can:
-
-  npm run reset-database
-
+```
+npm run reset-database
+```
 ### Running the app
 
 Run the application with:
-
-    NODE_ENV=dev slc run
-
+```
+NODE_ENV=dev slc run
+```
 (then connect to localhost:3000 with your browser to see)
 
 ## Running tests
 
 Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
 
-	java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+```
+java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+```
 
 Tests include linter, API and interation tests. Run all tests and checks:
-
-	npm test
+```
+npm test
+```
