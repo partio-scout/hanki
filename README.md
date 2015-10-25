@@ -20,8 +20,9 @@ Note that the virtual machine has the `NODE_ENV`-environment variable set to `de
 
 ### Creating users
 ```
-npm run create-user <user email>
+npm run create-user <user email> <user role> [<user role>...]
 ```
+You will need to specify at least one role for the user. To see a list of roles, see [the role fixture file](common/fixtures/all/Role.json).
 
 ### Logging in
 
