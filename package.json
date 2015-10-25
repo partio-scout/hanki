@@ -70,7 +70,8 @@
     "react-bootstrap": "^0.24.2",
     "supertest": "^1.0.1",
     "webdriverio": "^3.2.1",
-    "webpack-dev-server": "^1.8.0"
+    "webpack-dev-server": "^1.8.0",
+    "commander": "~2.9.0"
   },
   "repository": {
     "type": "",

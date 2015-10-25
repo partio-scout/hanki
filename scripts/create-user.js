@@ -3,12 +3,16 @@ var serverPath = path.resolve(__dirname, '../server');
 var app = require(serverPath + '/server.js');
 var crypto = require('crypto');
 
-var email = process.argv[2]; // 0=node, 1=create-user.js
+var opts = require('commander')
+  .usage('Usage: npm run create-user <user email>')
+  .parse(process.argv);
 
-if (!email) {
-  console.log('Please provide the user\'s email: node create-user.js <email>');
+if (opts.args.length < 1) {
+  console.error('Please provide the user\'s email.');
   process.exit(1);
 }
+
+var email = opts.args[0];
 
 var password = crypto.randomBytes(24).toString('hex');
 
