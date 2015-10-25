@@ -12,7 +12,7 @@
     "reset-database": "./scripts/reset-db.sh",
     "dev-login": "node scripts/dev-login.js",
     "console": "loopback-console .",
-    "update-schema": "node server/migrate/update-schema.js"
+    "update-schema": "./scripts/update-db.sh"
   },
   "engines": {
     "node": "0.12.x"

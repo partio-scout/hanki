@@ -3,10 +3,10 @@ var db = app.datasources.db;
 
 // The order of these models is important for database row creation!
 var modelsToUpdate = [
-  //'ACL',
-  //'AccessToken',
-  //'Role',
-  //'RoleMapping',
+  'ACL',
+  'AccessToken',
+  'Role',
+  'RoleMapping',
   'Purchaseuser',
   'Title',
   'Titlegroup',
@@ -18,17 +18,13 @@ var modelsToUpdate = [
   'Purchaseorderrow'
 ];
 
+db.setMaxListeners(20);
 
-modelsToUpdate.map( function(model) {
-  db.isActual(model, function(err, actual) {
-    if (!actual) {
-      console.log('DB not actual - autoupdating model: ' + model + '.');
-      db.autoupdate(model, function(err, result) {
-        if (err) throw err;
-        console.log('Model: '+model+' update result:'+result)
-      });
-    }
-  });
+db.autoupdate(modelsToUpdate, function(err) {
+  if (err) {
+    console.log('Error: '+err+' when autoupdating models: '+modelsToUpdate);
+    throw err;
+  }
+  console.log('Models: '+modelsToUpdate+' updated.');
+  db.disconnect();
 });
-
-console.log('Checked following tables for update: ' + modelsToUpdate + '.');
