@@ -11,10 +11,7 @@
     "dev-setup": "./scripts/dev-setup.sh",
     "dev-teardown": "./scripts/dev-teardown.sh",
     "reset-database": "./scripts/reset-db.sh",
-<<<<<<< HEAD
     "create-user": "node scripts/create-user.js",
-=======
->>>>>>> 40e5c37a4b91dc0b9b96709d414fde8cba87e188
     "dev-login": "node scripts/dev-login.js",
     "console": "loopback-console .",
     "update-schema": "./scripts/update-db.sh"
