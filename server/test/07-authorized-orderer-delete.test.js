@@ -35,7 +35,7 @@ describe('Orderer', function() {
   }
 
   function deleteFixtureIfExists(modelName, id, cb) {
-    app.models[modelName].destroyById(id, cb());
+    app.models[modelName].destroyById(id, cb);
   }
 
   function expectModelToBeDeleted(modelName, id, cb) {
