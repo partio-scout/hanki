@@ -20,11 +20,12 @@ function collect(value, aggregate) {
 }
 
 var opts = require('commander')
-  .usage('Usage: npm run create-user <user email> <user role> [<user role>...]')
+  .usage('<user email> <user role> [<user role>...] [OPTIONS]')
   .option('--costcenter [code]', 'The code of the cost center this user is associated with.', collect, [])
   .parse(process.argv);
 
 if (opts.args.length < 2) {
+  opts.outputHelp();
   console.error('Please provide the user\'s email and at least one role.');
   process.exit(1);
 }
