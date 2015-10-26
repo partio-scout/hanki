@@ -146,6 +146,13 @@
     },
     {
       "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "create",
+      "accessType": "WRITE"
+    },
+    {
+      "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "create"
