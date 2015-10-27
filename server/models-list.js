@@ -12,6 +12,6 @@ module.exports = [
   'Delivery',
   'Costcenter',
   'Purchaseorder',
-  'Purchaseorderrow'
+  'Purchaseorderrow',
   'PurchaseuserCostcenter'
 ];
