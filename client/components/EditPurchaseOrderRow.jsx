@@ -1,38 +1,53 @@
 var _ = require('lodash');
 var React = require('react');
 var ReactAddons = require('react/addons').addons;
-var PurchaseOrderRowForm = require('./PurchaseOrderRowForm.jsx')
+var Router = require('react-router');
+
+var PurchaseOrderRowForm = require('./PurchaseOrderRowForm.jsx');
 
 var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var Router = require('react-router');
-
-var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
-  var newPurchaseOrderRow = React.createClass({
+var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
+  var EditPurchaseOrderRow = React.createClass({
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, TitleStore, DeliveryStore ]
+        return [ TitleStore, DeliveryStore ]
       },
 
       getPropsFromStores() {
         return {
-          purchaseOrders: PurchaseOrderStore.getState(),
           titles: TitleStore.getState(),
           deliveries: DeliveryStore.getState()
         }
       }
     },
 
+    transformState: function(state) {
+      var rows = state.purchaseOrderRows || { };
+      var rowState = rows[this.props.params.purchaseOrderRow] || { };
+      var selectedTitle = _.find(this.props.titles.titles, { titleId: rowState.titleId }) || { };
+      rowState.titlegroupId = selectedTitle.titlegroupId;
+      return rowState;
+    },
+
     getInitialState: function() {
-      return {
-        selectedTitleId: '',
-        amount: 0,
-        validationErrors: [ ]
-      }
+      return this.transformState(PurchaseOrderStore.getState());
+    },
+
+    componentDidMount: function() {
+      PurchaseOrderStore.listen(this.onOrderChange);
+    },
+
+    componentWillUnmount: function() {
+      PurchaseOrderStore.unlisten(this.onOrderChange);
+    },
+
+    onOrderChange: function(state) {
+      this.setState(this.transformState(state));
     },
 
     onCancel: function() {
@@ -41,12 +56,13 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
 
     onSave: function() {
       var row = {
-        titleId: this.state.selectedTitleId,
+        orderRowId: this.props.params.purchaseOrderRow,
+        titleId: this.state.titleId,
         amount: this.state.amount,
         approved: false,
-        deliveryId: this.state.delivery,
+        deliveryId: this.state.deliveryId,
         memo: this.state.memo,
-        orderId: this.props.params.purchaseOrder
+        orderId: this.state.orderId
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -54,24 +70,23 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       this.setState({ validationErrors: validationErrors });
 
       if (validationErrors.length === 0) {
-        PurchaseOrderActions.createPurchaseOrderRow(row);
+        PurchaseOrderActions.updatePurchaseOrderRow(row);
         this.transitionTo('my_purchase_orders');
       }
     },
 
     render: function () {
       var valueLinks = {
-        selectedTitleGroup: this.linkState('selectedTitleGroup'),
-        selectedTitleId: this.linkState('selectedTitleId'),
+        selectedTitleGroup: this.linkState('titlegroupId'),
+        selectedTitleId: this.linkState('titleId'),
         amount: this.linkState('amount'),
-        delivery: this.linkState('delivery'),
+        delivery: this.linkState('deliveryId'),
         memo: this.linkState('memo')
       };
 
       return (
         <PurchaseOrderRowForm
-          title="Lisää tuote"
-          purchaseOrders={ this.props.purchaseOrders.purchaseOrders }
+          title="Muokkaa tuotetta"
           titleGroups={ this.props.titles.titleGroups }
           titles={ this.props.titles.titles }
           deliveries={ this.props.deliveries.deliveries }
@@ -83,7 +98,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
     }
   });
 
-  return connectToStores(newPurchaseOrderRow);
+  return connectToStores(EditPurchaseOrderRow);
 };
 
-module.exports = getNewPurchaseOrderRow;
+module.exports = getEditPurchaseOrderRow;
