@@ -2,6 +2,7 @@ var _ = require('lodash');
 
 var validator = function(schema) {
   return function(model) {
+    console.log('VALIDATE: ', model)
     var errors = _(schema).map((rule) => {
       var prop = model[rule.property];
       if (!rule.test(prop)) {

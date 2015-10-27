@@ -1,27 +1,17 @@
 var _ = require('lodash');
 var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var ReactRouterBootstrap = require('react-router-bootstrap');
+var ReactAddons = require('react/addons').addons;
+var PurchaseOrderRowForm = require('./PurchaseOrderRowForm.jsx')
 
 var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var Modal = ReactBootstrap.Modal;
-var Input = ReactBootstrap.Input;
-var Static = ReactBootstrap.FormControls.Static;
-var Button = ReactBootstrap.Button;
-var ErrorMessages = require('./utils/ErrorMessages.jsx');
-
 var Router = require('react-router');
-
-var Price = require('./utils/Price.jsx');
-
-var otherProductId = '0';
 
 var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var newPurchaseOrderRow = React.createClass({
-    mixins: [ Router.Navigation ],
+    mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
@@ -37,6 +27,10 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       }
     },
 
+    isOtherProductSelected: function() {
+      return this.state.selectedTitleGroup === 0;
+    },
+
     getInitialState: function() {
       return {
         selectedTitleGroup: '',
@@ -50,25 +44,23 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       }
     },
 
-    onHide: function() {
+    onCancel: function() {
       this.transitionTo('my_purchase_orders');
     },
 
-    isOtherProductSelected: function() {
-      return this.state.selectedTitleGroup === otherProductId;
-    },
-
-    onSubmit: function() {
+    onSave: function() {
       var row = {
         titleId: this.state.selectedTitleId,
         amount: this.state.amount,
         approved: false,
-        deliveryId: this.state.deliveryId,
+        deliveryId: this.state.delivery,
         memo: this.state.memo,
         orderId: this.props.params.purchaseOrder
       };
 
+      //TODO Fix
       if (this.isOtherProductSelected()) {
+        row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
         row.priceOverride = this.state.priceOverride;
       }
@@ -83,147 +75,33 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       }
     },
 
-    onSelectedTitleGroupChange: function(event) {
-      var newTitleGroup = event.target.value;
-      var stateChange = {
-        selectedTitleGroup: newTitleGroup,
+    render: function () {
+      var valueLinks = {
+        selectedTitleGroup: this.linkState('selectedTitleGroup'),
+        selectedTitleId: this.linkState('selectedTitleId'),
+        nameOverride: this.linkState('nameOverride'),
+        priceOverride: this.linkState('priceOverride'),
+        amount: this.linkState('amount'),
+        delivery: this.linkState('delivery'),
+        memo: this.linkState('memo')
       };
 
-      if (newTitleGroup === otherProductId) {
-        stateChange.selectedTitleId = otherProductId;
-      } else {
-        stateChange.selectedTitleId = '';
-        stateChange.nameOverride = '';
-        stateChange.priceOverride = 0;
-      }
-
-      this.setState(stateChange);
-    },
-
-    onSelectedTitleChange: function(event) {
-      this.setState({ selectedTitleId: event.target.value });
-    },
-
-    onAmountChange: function(event) {
-      this.setState({ amount: event.target.value });
-    },
-
-    onDeliveryIdChange: function(event) {
-      this.setState({ deliveryId: event.target.value });
-    },
-
-    onMemoChange: function(event) {
-      this.setState({ memo: event.target.value });
-    },
-
-    onNameOverrideChange: function(event) {
-      this.setState({ nameOverride: event.target.value});
-    },
-
-    onPriceOverrideChange: function(event) {
-      this.setState({ priceOverride: event.target.value });
-    },
-
-    getTitleSelection: function() {
-      if (this.isOtherProductSelected()) {
-        return (
-          <Input wrapperClassName='col-xs-12' defaultValue='Muu tuote' type='text' onChange={ this.onNameOverrideChange } />);
-      } else {
-        var titlesByGroup = _.groupBy(this.props.titles.titles, 'titlegroupId');
-        var titleOptions = _.map(titlesByGroup[this.state.selectedTitleGroup], function(title) {
-          return <option value={ title.titleId }>{ title.name }</option>
-        });
-
-        return (
-          <Input wrapperClassName='col-xs-12' value={ this.state.selectedTitleId } type='select' onChange={ this.onSelectedTitleChange }>
-            <option value="">Valitse tuote...</option>
-            { titleOptions }
-          </Input>);
-      }
-    },
-
-    getPriceControl: function(selectedTitlePrice) {
-      if (this.isOtherProductSelected()) {
-        return (
-          <Input label="Yksikköhinta"
-            labelClassName='col-xs-3'
-            wrapperClassName='col-xs-9'
-            defaultValue='0'
-            type='text'
-            onChange={ this.onPriceOverrideChange }/>);
-      } else {
-        return (
-          <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-            <Price value={ selectedTitlePrice } />
-          </Static>);
-      }
-    },
-
-    render: function () {
-      var titlegroups = this.props.titles.titleGroups || { };
-      var selectedTitle = this.props.titles.titles[this.state.selectedTitleId] || { };
-      var deliveries = this.props.deliveries.deliveries;
-
-      var titlegroupOptions = _.map(titlegroups, function(group) {
-        return <option value={ group.titlegroupId }>{ group.name }</option>
-      });
-
-      var deliveryOptions = _.map(deliveries, function(delivery) {
-        return <option value={ delivery.deliveryId }>{ delivery.description }</option>
-      });
-
       return (
-        <Modal show='true' onHide={ this.onHide }>
-          <Modal.Header closeButton>
-            <Modal.Title>Lisää tuote</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form className="form-horizontal">
-              <ErrorMessages messages={ this.state.validationErrors } />
-
-              <Static label="Tuote" labelClassName='col-xs-3' wrapperClassName='col-xs-9 field'>
-                <Input value={ this.state.selectedTitleGroup } type='select' onChange={ this.onSelectedTitleGroupChange } wrapperClassName='col-xs-12'>
-                  <option value="">Valitse tuoteryhmä...</option>
-                  { titlegroupOptions }
-                </Input>
-                { this.getTitleSelection() }
-              </Static>
-              <Input defaultValue={ this.state.amount }
-                onKeyUp={ this.onAmountChange }
-                type='text'
-                label='Määrä'
-                labelClassName='col-xs-3'
-                wrapperClassName='col-xs-9'
-                addonAfter={ (this.isOtherProductSelected() ? '' : selectedTitle.unit) } />
-              { this.getPriceControl(selectedTitle.priceWithTax) }
-              <Static label="Yhteensä" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-                <Price value={ (this.isOtherProductSelected() ? this.state.priceOverride : selectedTitle.priceWithTax) * this.state.amount } />
-              </Static>
-              <Input value={ this.state.deliveryId } onChange={ this.onDeliveryIdChange } type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
-                <option value="">Valitse toimitusajankohta...</option>
-                { deliveryOptions }
-              </Input>
-              <Input
-                type='textarea'
-                onKeyUp={ this.onMemoChange }
-                label='Kommentti'
-                labelClassName='col-xs-3'
-                wrapperClassName='col-xs-9'
-                help='Vapaaehtoinen. Kerro tässä esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className='text-center'>
-              <Button onClick={ this.onSubmit } bsStyle='primary'>Tallenna</Button>
-              <Button onClick={ this.onHide }>Peruuta</Button>
-            </div>
-          </Modal.Footer>
-        </Modal>
+        <PurchaseOrderRowForm
+          title="Lisää tuote"
+          purchaseOrders={ this.props.purchaseOrders.purchaseOrders }
+          titleGroups={ this.props.titles.titleGroups }
+          titles={ this.props.titles.titles }
+          deliveries={ this.props.deliveries.deliveries }
+          valueLinks={ valueLinks }
+          validationErrors={ this.state.validationErrors }
+          onSave={ this.onSave }
+          onCancel={ this.onCancel } />
       );
     }
   });
 
   return connectToStores(newPurchaseOrderRow);
 };
-//
+
 module.exports = getNewPurchaseOrderRow;

@@ -1,24 +1,8 @@
 var app = require('../server.js');
 var db = app.datasources.db;
-
 var _ = require('lodash');
 
-// The order of these models is important for database row creation!
-var modelsToAutoMigrate = [
-  'ACL',
-  'AccessToken',
-  'Role',
-  'RoleMapping',
-  'Purchaseuser',
-  'Title',
-  'Titlegroup',
-  'Account',
-  'Supplier',
-  'Delivery',
-  'Costcenter',
-  'Purchaseorder',
-  'Purchaseorderrow'
-];
+var modelsToAutoMigrate = require('../models-list.js');
 
 var fixturesToImport = [
   'Role',

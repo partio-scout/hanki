@@ -48,6 +48,10 @@ function createRestfulResourceClass(request) {
     raw(method, path, cb) {
       request(method, this.path(path)).end(this._handleResponse(cb));
     }
+
+    rawWithBody(method, path, body, cb) {
+      request(method, this.path(path)).send(body).end(this._handleResponse(cb));
+    }
   }
 
   return RestfulResource;
