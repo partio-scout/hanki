@@ -101,9 +101,12 @@ describe('Orderer', function() {
       it('Cost centres', function(done) {
         loginUser(username, userpass)
         .then(function(accessToken) {
-          request(app).get('api/Purchaseusers/' + accessToken.userId + '/Costcenters?access_token=' + accessToken.id)
+          request(app).get('/api/Purchaseusers/' + accessToken.userId + '/costcenters?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
+          //.end(function(res) {
+            //console.log(res);
+          //})
         });
       });
 
