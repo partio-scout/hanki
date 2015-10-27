@@ -24,6 +24,9 @@ var PurchaseOrderRow = React.createClass({
     return (
       <tr>
         <td>
+          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
+            <Glyphicon glyph="pencil" />
+          </ButtonLink>
           <ButtonLink bsStyle='link' className="delete" to="delete_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
             <Glyphicon glyph='remove' />
           </ButtonLink>

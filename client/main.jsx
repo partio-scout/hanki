@@ -54,6 +54,7 @@ var EditPurchaseOrder = require('./components/EditPurchaseOrder.jsx')(PurchaseOr
 var DeletePurchaseOrder = require('./components/DeletePurchaseOrder.jsx')(PurchaseOrderActions, PurchaseOrderStore);
 
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
+var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 // Setup routes
@@ -72,6 +73,7 @@ var routes = (
       <Route name="edit_purchase_order" path=":purchaseOrder/edit" handler={ EditPurchaseOrder } />
       <Route name="delete_purchase_order" path=":purchaseOrder/delete" handler={ DeletePurchaseOrder } />
       <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
+      <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
   </Route>
