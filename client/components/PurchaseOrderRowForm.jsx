@@ -79,6 +79,9 @@ var PurchaseOrderRowForm = React.createClass({
       return <option value={ delivery.deliveryId }>{ delivery.description }</option>
     });
 
+    var unitPrice = this.isOtherProductSelected() ? this.props.valueLinks.priceOverride.value : selectedTitle.priceWithTax;
+    var rowTotalPrice = unitPrice * this.props.valueLinks.amount.value;
+
     return (
       <Modal show='true' onHide={ this.props.onCancel }>
         <Modal.Header closeButton>
@@ -99,7 +102,7 @@ var PurchaseOrderRowForm = React.createClass({
               type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
             { this.getPriceControl(selectedTitle.priceWithTax) }
             <Static label="Yhteensä" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-              <Price value={ selectedTitle.priceWithTax * this.props.valueLinks.amount.value } />
+              <Price value={ rowTotalPrice } />
             </Static>
             <Input valueLink={ this.props.valueLinks.delivery } type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
               <option value="">Valitse toimitusajankohta...</option>
