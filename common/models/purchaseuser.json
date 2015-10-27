@@ -251,6 +251,14 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__count__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__costcenters",
+      "AccessType": "READ"
+
     }
   ],
   "methods": []
