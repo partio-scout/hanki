@@ -104,9 +104,6 @@ describe('Orderer', function() {
           request(app).get('/api/Purchaseusers/' + accessToken.userId + '/costcenters?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
-          //.end(function(res) {
-            //console.log(res);
-          //})
         });
       });
 
