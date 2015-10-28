@@ -258,7 +258,20 @@
       "permission": "ALLOW",
       "property": "__get__costcenters",
       "AccessType": "READ"
-
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__isControllerOfCostcenter",
+      "AccessType": "READ"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__isApproverOfCostcenter",
+      "AccessType": "READ"
     }
   ],
   "methods": []
