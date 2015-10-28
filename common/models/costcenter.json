@@ -65,56 +65,39 @@
       "_selectable": false,
       "comments": "kustannuspaikan nimi"
     },
-    "master": {
+    "controllerUserId": {
       "type": "Number",
       "required": false,
       "length": null,
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "master",
+        "columnName": "controllerUserId",
         "dataType": "integer",
         "dataLength": null,
         "dataPrecision": 32,
         "dataScale": 0,
         "nullable": "YES"
       },
-      "_selectable": true,
-      "comments": "päällikkö"
+      "_selectable": false,
+      "comments": "Tämän kustannuspaikan controllerin käyttäjä-id"
     },
-    "provider": {
+    "approverUserId": {
       "type": "Number",
       "required": false,
       "length": null,
       "precision": 32,
       "scale": 0,
       "postgresql": {
-        "columnName": "provider",
+        "columnName": "approverUserId",
         "dataType": "integer",
         "dataLength": null,
         "dataPrecision": 32,
         "dataScale": 0,
         "nullable": "YES"
       },
-      "_selectable": true,
-      "comments": "hankkija"
-    },
-    "controller": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
-      "postgresql": {
-        "columnName": "controller",
-        "dataType": "integer",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
-        "nullable": "YES"
-      },
-      "_selectable": true,
-      "comments": "controller"
+      "_selectable": false,
+      "comments": "Tämän kustannuspaikan hyväksyjän käyttäjä-id"
     }
   },
   "validations": [],
@@ -124,20 +107,15 @@
       "model": "Purchaseorder",
       "foreignKey": "costcenterId"
     },
-    "master": {
+    "approver": {
       "type": "belongsTo",
       "model": "Purchaseuser",
-      "foreignKey": "master"
+      "foreignKey": "approverUserId"
     },
     "controller": {
       "type": "belongsTo",
       "model": "Purchaseuser",
-      "foreignKey": "controller"
-    },
-    "provider": {
-      "type": "belongsTo",
-      "model": "Purchaseuser",
-      "foreignKey": "provider"
+      "foreignKey": "controllerUserId"
     }
   },
   "acls": [
