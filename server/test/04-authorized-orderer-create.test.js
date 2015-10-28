@@ -57,4 +57,23 @@ describe('Orderer', function() {
       });
     });
   });
+
+  describe('should not be allowed to create new', function() {
+    it('Purchaseuser', function(done) {
+      loginUser(username, userpass)
+        .then(function(accessToken) {
+          request(app).post('/api/Purchaseusers?access_token=' + accessToken.id)
+            .send({
+              email: 'example@example.com',
+              password: 'password',
+              name: 'n/a',
+              phone: 'n/a',
+              enlistment: 'n/a',
+              userSection: 'n/a'
+            })
+            .expect(401)
+            .end(done);
+        });
+    });
+  });
 });
