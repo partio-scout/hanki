@@ -43,9 +43,13 @@ var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
+var ErrorActions = require('./actions/ErrorActions')(alt);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions);
+
 // Setup main views
 
-var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
+var ErrorNotification = require('./components/ErrorNotification.jsx')(ErrorActions, ErrorStore);
+var App = require('./components/AppComponent.jsx')(ErrorNotification, UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);

@@ -20,7 +20,7 @@ function createRestfulResourceClass(request) {
             status: res.status
           };
         }
-        res = res.hasOwnProperty('body') ? res.body : res;
+        res = res && res.hasOwnProperty('body') ? res.body : res;
         cb(err, res);
       };
     }
