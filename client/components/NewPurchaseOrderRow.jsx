@@ -28,7 +28,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
     },
 
     isOtherProductSelected: function() {
-      return this.state.selectedTitleGroup === 0;
+      return 1 * this.state.selectedTitleId === 0;
     },
 
     getInitialState: function() {
@@ -58,7 +58,6 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         orderId: this.props.params.purchaseOrder
       };
 
-      //TODO Fix
       if (this.isOtherProductSelected()) {
         row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
