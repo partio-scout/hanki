@@ -9,7 +9,7 @@ var ErrorMessages = require('./utils/ErrorMessages.jsx');
 
 var Price = require('./utils/Price.jsx');
 
-var otherProductId = '0';
+var otherProductId = 0;
 
 var PurchaseOrderRowForm = React.createClass({
   getDefaultProps: function() {
@@ -19,18 +19,7 @@ var PurchaseOrderRowForm = React.createClass({
   },
 
   isOtherProductSelected: function() {
-    return this.props.valueLinks.selectedTitleGroup.value === otherProductId;
-  },
-
-  onTitleGroupChange: function(e) {
-    if(e.target.value === '0') {
-      // Selected title group "Other product"
-      this.props.valueLinks.selectedTitleId.requestChange('0');
-      this.props.valueLinks.selectedTitleGroup.requestChange('0');
-    } else {
-      // Selected a real titlegroup
-      this.props.valueLinks.selectedTitleGroup.requestChange(e.target.value);
-    }
+    return 1 * this.props.valueLinks.selectedTitleGroup.value === otherProductId;
   },
 
   getTitleSelection: function() {
@@ -45,7 +34,7 @@ var PurchaseOrderRowForm = React.createClass({
 
       return (
         <Input wrapperClassName='col-xs-12' valueLink={ this.props.valueLinks.selectedTitleId } type='select' onChange={ this.onSelectedTitleChange }>
-          <option value="">Valitse tuote...</option>
+          <option value="-1">Valitse tuote...</option>
           { titleOptions }
         </Input>);
     }
@@ -92,8 +81,8 @@ var PurchaseOrderRowForm = React.createClass({
             <ErrorMessages messages={ this.props.validationErrors } />
 
             <Static label="Tuote" labelClassName='col-xs-3' wrapperClassName='col-xs-9 field'>
-              <Input type='select' onChange={ this.onTitleGroupChange } wrapperClassName='col-xs-12'>
-                <option value="">Valitse tuoteryhmä...</option>
+              <Input type='select' valueLink={ this.props.valueLinks.selectedTitleGroup } wrapperClassName='col-xs-12'>
+                <option value="-1">Valitse tuoteryhmä...</option>
                 { titlegroupOptions }
               </Input>
               { this.getTitleSelection() }

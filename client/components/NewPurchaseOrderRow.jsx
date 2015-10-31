@@ -28,13 +28,13 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
     },
 
     isOtherProductSelected: function() {
-      return 1 * this.state.selectedTitleId === 0;
+      return 1 * this.state.selectedTitleGroup === 0;
     },
 
     getInitialState: function() {
       return {
-        selectedTitleGroup: '',
-        selectedTitleId: '',
+        selectedTitleGroup: -1,
+        selectedTitleId: -1,
         amount: 0,
         memo: '',
         deliveryId: 0,
