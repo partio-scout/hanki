@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
+    "start": "node .",
     "pretest": "NODE_ENV=test eslint . && NODE_ENV=test npm run reset-database",
     "test": "NODE_ENV=test mocha -R spec server/test && wdio wdio.conf.js",
     "postinstall": "npm run deploy",
