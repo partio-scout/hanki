@@ -26,6 +26,10 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       }
     },
 
+    isOtherProductSelected: function() {
+      return 1 * this.state.titlegroupId === 0;
+    },
+
     transformState: function(state) {
       var rows = state.purchaseOrderRows || { };
       var rowState = rows[this.props.params.purchaseOrderRow] || { };
@@ -58,11 +62,19 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       var row = {
         orderRowId: this.props.params.purchaseOrderRow,
         titleId: this.state.titleId,
+        nameOverride: null,
+        priceOverride: null,
         amount: this.state.amount,
         approved: false,
         deliveryId: this.state.deliveryId,
         memo: this.state.memo,
         orderId: this.state.orderId
+      }
+
+      if(this.isOtherProductSelected()) {
+        row.titleId = 0;
+        row.nameOverride = this.state.nameOverride;
+        row.priceOverride = this.state.priceOverride;
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -79,6 +91,8 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       var valueLinks = {
         selectedTitleGroup: this.linkState('titlegroupId'),
         selectedTitleId: this.linkState('titleId'),
+        nameOverride: this.linkState('nameOverride'),
+        priceOverride: this.linkState('priceOverride'),
         amount: this.linkState('amount'),
         delivery: this.linkState('deliveryId'),
         memo: this.linkState('memo')

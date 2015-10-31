@@ -9,6 +9,8 @@ var ErrorMessages = require('./utils/ErrorMessages.jsx');
 
 var Price = require('./utils/Price.jsx');
 
+var otherProductId = 0;
+
 var PurchaseOrderRowForm = React.createClass({
   getDefaultProps: function() {
     return {
@@ -16,23 +18,58 @@ var PurchaseOrderRowForm = React.createClass({
     }
   },
 
+  isOtherProductSelected: function() {
+    return 1 * this.props.valueLinks.selectedTitleGroup.value === otherProductId;
+  },
+
+  getTitleSelection: function() {
+    if (this.isOtherProductSelected()) {
+      return (<Input wrapperClassName='col-xs-12' defaultValue='Muu tuote' type='text' valueLink={ this.props.valueLinks.nameOverride } />);
+    } else {
+      var selectedTitleGroup = this.props.valueLinks.selectedTitleGroup.value;
+      var titlesByGroup = _.groupBy(this.props.titles, 'titlegroupId');
+      var titleOptions = _.map(titlesByGroup[selectedTitleGroup], function(title) {
+        return <option value={ title.titleId }>{ title.name }</option>
+      });
+
+      return (
+        <Input wrapperClassName='col-xs-12' valueLink={ this.props.valueLinks.selectedTitleId } type='select' onChange={ this.onSelectedTitleChange }>
+          <option value="-1">Valitse tuote...</option>
+          { titleOptions }
+        </Input>);
+    }
+  },
+
+  getPriceControl: function(selectedTitlePrice) {
+    if (this.isOtherProductSelected()) {
+      return (
+        <Input label="Yksikköhinta"
+          labelClassName='col-xs-3'
+          wrapperClassName='col-xs-9'
+          defaultValue='0'
+          type='text'
+          valueLink={this.props.valueLinks.priceOverride} />);
+    } else {
+      return (
+        <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
+          <Price value={ selectedTitlePrice } />
+        </Static>);
+    }
+  },
+
   render: function () {
-    var titlegroups = this.props.titleGroups;
-    var titlesByGroup = _.groupBy(this.props.titles, 'titlegroupId');
     var selectedTitle = this.props.titles[this.props.valueLinks.selectedTitleId.value] || { };
-    var deliveries = this.props.deliveries;
 
-    var titleOptions = _.map(titlesByGroup[this.props.valueLinks.selectedTitleGroup.value], function(title) {
-      return <option value={ title.titleId }>{ title.name }</option>
-    });
-
-    var titlegroupOptions = _.map(titlegroups, function(group) {
+    var titlegroupOptions = _.map(this.props.titleGroups, function(group) {
       return <option value={ group.titlegroupId }>{ group.name }</option>
     });
 
-    var deliveryOptions = _.map(deliveries, function(delivery) {
+    var deliveryOptions = _.map(this.props.deliveries, function(delivery) {
       return <option value={ delivery.deliveryId }>{ delivery.description }</option>
     });
+
+    var unitPrice = this.isOtherProductSelected() ? this.props.valueLinks.priceOverride.value : selectedTitle.priceWithTax;
+    var rowTotalPrice = unitPrice * this.props.valueLinks.amount.value;
 
     return (
       <Modal show='true' onHide={ this.props.onCancel }>
@@ -45,20 +82,16 @@ var PurchaseOrderRowForm = React.createClass({
 
             <Static label="Tuote" labelClassName='col-xs-3' wrapperClassName='col-xs-9 field'>
               <Input type='select' valueLink={ this.props.valueLinks.selectedTitleGroup } wrapperClassName='col-xs-12'>
-                <option value="">Valitse tuoteryhmä...</option>
+                <option value="-1">Valitse tuoteryhmä...</option>
                 { titlegroupOptions }
               </Input>
-              <Input type='select' valueLink={ this.props.valueLinks.selectedTitleId } wrapperClassName='col-xs-12'>
-                <option value="">Valitse tuote...</option>
-                { titleOptions }
-              </Input>
+              { this.getTitleSelection() }
             </Static>
-            <Input valueLink={ this.props.valueLinks.amount } ref="amount" onKeyUp={ this.onAmountChange } type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
-            <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-              <Price value={ selectedTitle.priceWithTax } />
-            </Static>
+            <Input valueLink={ this.props.valueLinks.amount } ref="amount" onKeyUp={ this.onAmountChange }
+              type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
+            { this.getPriceControl(selectedTitle.priceWithTax) }
             <Static label="Yhteensä" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
-              <Price value={ selectedTitle.priceWithTax * this.props.valueLinks.amount.value } />
+              <Price value={ rowTotalPrice } />
             </Static>
             <Input valueLink={ this.props.valueLinks.delivery } type='select' label='Toimitus' labelClassName='col-xs-3' wrapperClassName='col-xs-5'>
               <option value="">Valitse toimitusajankohta...</option>

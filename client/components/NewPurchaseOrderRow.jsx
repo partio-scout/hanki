@@ -27,10 +27,19 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       }
     },
 
+    isOtherProductSelected: function() {
+      return 1 * this.state.selectedTitleGroup === 0;
+    },
+
     getInitialState: function() {
       return {
-        selectedTitleId: '',
+        selectedTitleGroup: -1,
+        selectedTitleId: -1,
         amount: 0,
+        memo: '',
+        deliveryId: 0,
+        nameOverride: '',
+        priceOverride: 0,
         validationErrors: [ ]
       }
     },
@@ -47,6 +56,12 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         deliveryId: this.state.delivery,
         memo: this.state.memo,
         orderId: this.props.params.purchaseOrder
+      };
+
+      if (this.isOtherProductSelected()) {
+        row.titleId = 0;
+        row.nameOverride = this.state.nameOverride;
+        row.priceOverride = this.state.priceOverride;
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -63,6 +78,8 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
       var valueLinks = {
         selectedTitleGroup: this.linkState('selectedTitleGroup'),
         selectedTitleId: this.linkState('selectedTitleId'),
+        nameOverride: this.linkState('nameOverride'),
+        priceOverride: this.linkState('priceOverride'),
         amount: this.linkState('amount'),
         delivery: this.linkState('delivery'),
         memo: this.linkState('memo')
