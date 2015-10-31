@@ -22,7 +22,7 @@ module.exports = function(Purchaseuser) {
           'principalId': user.id,
           'roleId': roleId
         });
-      })).catch(wrapError('Couldn\' create role mapping!'));
+      })).catch(wrapError('Couldn\'t create role mapping!'));
     }
 
     function attachCostCenters(user, costCenters) {
