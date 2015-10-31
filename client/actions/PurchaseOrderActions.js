@@ -101,7 +101,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       this.dispatch(row);
       PurchaseOrderRow.create(row, (err, savedRow) => {
         if (err) {
-          this.actions.savingPurchaseOrderRowFailed(err);
+          this.actions.creatingPurchaseOrderRowFailed(err);
         } else {
           this.actions.purchaseOrderRowCreated(savedRow);
         }
@@ -117,6 +117,10 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
           this.actions.purchaseOrderRowUpdated(savedRow);
         }
       });
+    }
+
+    creatingPurchaseOrderRowFailed(error) {
+      this.dispatch(error);
     }
 
     savingPurchaseOrderRowFailed(error) {
