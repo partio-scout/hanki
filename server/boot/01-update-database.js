@@ -2,7 +2,8 @@ var Promise = require('bluebird');
 
 module.exports = function updateDatabase(server, cb) {
   var isTest = process.env.NODE_ENV === 'test';
-  if (isTest) {
+  var skipDatabaseUpdate = process.env.SKIP_DATABASE_UPDATE;
+  if (isTest || skipDatabaseUpdate) {
     return cb();
   };
 
