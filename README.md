@@ -12,11 +12,11 @@ Clone this repository into a local directory. Enter the project directory on a c
 ### Running the app
 Enter the project directory. If you don't have the Vagrant virtual machine running, run `vagrant up` (you can check the status with `vagrant status`). Then run `vagrant ssh` to access the virtual machine.
 
-Inside the virtual machine run `slc run` inside the `/vagrant` directory.
+Inside the virtual machine run `npm start` inside the `/vagrant` directory.
 
 The application will be available at http://localhost:3000/, from both the host and guest operating systems.
 
-Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production slc run`.
+Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production npm start`.
 
 ### Creating users
 ```
@@ -79,7 +79,7 @@ npm run reset-database
 
 Run the application with:
 ```
-NODE_ENV=dev slc run
+NODE_ENV=dev npm start
 ```
 (then connect to localhost:3000 with your browser to see)
 
