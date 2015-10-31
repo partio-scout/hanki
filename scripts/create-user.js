@@ -7,11 +7,8 @@ var crypto = require('crypto');
 
 var purchaseUser = app.models.Purchaseuser;
 var role = app.models.Role;
-var roleMapping = app.models.RoleMapping;
 var costCenter = app.models.Costcenter;
-var createUser = Promise.promisify(purchaseUser.create, purchaseUser);
 var findRole = Promise.promisify(role.find, role);
-var createRoleMapping = Promise.promisify(roleMapping.create, roleMapping);
 var findCostCenter = Promise.promisify(costCenter.find, costCenter);
 
 function collect(value, aggregate) {
@@ -26,7 +23,6 @@ var opts = require('commander')
   .option('--costcenter [code]', 'The code of the cost center this user is associated with.', collect, [])
   .option('--controllerOf [code]', 'The code of the cost centers for which this user is the controller.', collect, [])
   .option('--approverOf [code]', 'The code of the cost centers for which this user is the approver.', collect, [])
-  .option('-f, --f', 'Force setting the user as the controller or approver of a cost center, even if it already has one.')
   .parse(process.argv);
 
 if (opts.args.length < 2) {
@@ -72,45 +68,11 @@ function getCostCenters(costCenterCodes) {
     });
 }
 
-function getCostCentersIfPropertyCanBeAssigned(costCenterCodes, property) {
-  return getCostCenters.map(function (costCenter) {
-    if (costCenter[property] && !opts.force) {
-      return Promise.reject(new Error('The cost center ' + costCenter.code + ' already has a ' + property + '. To override, use the -f option'));
-    }
-
-    return Promise.resolve(costCenter);
-  });
-}
-
-function createRoleMappings(user, roles) {
-  return Promise.all(roles.map(function (role) { return role.id; }).map(function (roleId) {
-    return createRoleMapping({
-      'principalType': 'USER',
-      'principalId': user.id,
-      'roleId': roleId
-    });
-  })).catch(wrapError('Couldn\' create role mapping!'));
-}
-
-function attachCostCenters(user, costCenters) {
-  if (costCenters === undefined || costCenters.length === 0) {
-    return Promise.resolve();
-  }
-
-  var addCostCenter = Promise.promisify(user.costcenters.add, user.costcenters);
-  return Promise.all(costCenters.map(addCostCenter))
-    .catch(wrapError('Couldn\'t add cost center to user.'));
-}
-
-var setCostCenterRelation = Promise.method(function(costCenter, relationName, relatedModel) {
-  costCenter[relationName](relatedModel);
-});
-
 Promise.join(
   getRoles(),
   getCostCenters(opts.costcenter),
-  getCostCentersIfPropertyCanBeAssigned(opts.approverOf, 'approver'),
-  getCostCentersIfPropertyCanBeAssigned(opts.controllerOf, 'controller'),
+  getCostCenters(opts.approverOf),
+  getCostCenters(opts.controllerOf),
   function (roles, costCenters, costCentersApproverOf, costCentersControllerOf) {
     var email = opts.args[0];
     var password = crypto.randomBytes(24).toString('hex');
@@ -123,16 +85,8 @@ Promise.join(
       userSection: 'n/a'
     };
 
-    return createUser(user).catch(wrapError('Couldn\'t create user!'))
-      .then(function(userInfo) { return [userInfo, roles, costCenters, costCentersApproverOf, costCentersControllerOf]; });
-  })
-  .spread(function (user, roles, costCenters, costCentersApproverOf, costCentersControllerOf) {
-    return Promise.join(
-      createRoleMappings(user, roles),
-      attachCostCenters(user, costCenters),
-      Promise.all(costCentersApproverOf.map(function(costCenter) { return setCostCenterRelation(costCenter, 'approver', user); })),
-      Promise.all(costCentersApproverOf.map(function(costCenter) { return setCostCenterRelation(costCenter, 'controller', user); })),
-      function() { return [user, roles]; });
+    return purchaseUser.createWithRolesAndCostcenters(user, roles, costCenters, costCentersApproverOf, costCentersControllerOf)
+      .then(function(userCreationInfo) { return [userCreationInfo, roles]; });
   })
   .spread(function (user, roles) {
     console.log('User created:\n', user);
