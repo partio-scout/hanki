@@ -14,7 +14,7 @@ var fixturesToImport = [
   'Costcenter',
   'Purchaseorder',
   'Purchaseorderrow',
-  'History'
+  'History',
 ];
 
 function getFixtures(modelName) {
