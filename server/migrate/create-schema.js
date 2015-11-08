@@ -15,7 +15,8 @@ var modelsToAutoMigrate = [
   'Delivery',
   'Costcenter',
   'Purchaseorder',
-  'Purchaseorderrow'
+  'Purchaseorderrow',
+  'History'
 ];
 
 db.automigrate(modelsToAutoMigrate, function(err) {
