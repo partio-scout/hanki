@@ -12,7 +12,8 @@ var fixturesToImport = [
   'Costcenter',
   'Purchaseorder',
   'Purchaseorderrow',
-  'RoleMapping'
+  'RoleMapping',
+  'History'
 ];
 
 var closeDBConnectionIfImportComplete = _.after(fixturesToImport.length, function() {

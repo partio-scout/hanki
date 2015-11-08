@@ -9,7 +9,12 @@ var fixturesToImport = [
   'Titlegroup',
   'Title',
   'Supplier',
-  'Account'
+  'Account',
+  'Delivery',
+  'Costcenter',
+  'Purchaseorder',
+  'Purchaseorderrow',
+  'History'
 ];
 
 function getFixtures(modelName) {

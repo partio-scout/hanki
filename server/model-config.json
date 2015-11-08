@@ -76,5 +76,9 @@
     "public": true,
     "$promise": {},
     "$resolved": true
+  },
+  "History": {
+    "dataSource": "db",
+    "public": true
   }
 }
