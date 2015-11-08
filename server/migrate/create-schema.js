@@ -9,11 +9,6 @@ var fixturesToImport = [
   'Titlegroup',
   'Title',
   'Supplier',
-  'Delivery',
-  'Costcenter',
-  'Purchaseorder',
-  'Purchaseorderrow',
-  'History',
   'Account'
 ];
 
