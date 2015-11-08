@@ -30,20 +30,20 @@
     "userSection": "Palvelut"
   },
   {
-  	"id": 4,
-  	"username": "procurementMaster",
-  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
-  	"name": "Pekka Päällikkö",
+    "id": 4,
+    "username": "procurementMaster",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "name": "Pekka Päällikkö",
     "phone": "040 3456789",
     "email": "pekka.paallikko@roihu2016.fi",
     "enlistment": "Päällikkö",
     "userSection": "Palvelut"
   },
   {
-  	"id": 5,
-  	"username": "procurementAdmin",
-  	"password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
-  	"email": "procurementAdmin@foo.fi",
+    "id": 5,
+    "username": "procurementAdmin",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "email": "procurementAdmin@foo.fi",
     "name": "Aatu Admin",
     "phone": "040 1234567",
     "enlistment": "Admin",

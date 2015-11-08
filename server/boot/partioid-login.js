@@ -1,11 +1,13 @@
 var fs = require('fs');
 var SAML = require('passport-saml').SAML;
 
+var useProductionPartioID = process.env.PARTIOID_USE_PRODUCTION === 'true';
+var partioIDRemoteName = useProductionPartioID ? 'id' : 'qaid';
 var conf = {
   path: '/auth/partioid',
   issuer: process.env.PARTIOID_SP_ISSUER || 'http://localhost:3000',
-  entryPoint: 'https://qaid.partio.fi/simplesaml/saml2/idp/SSOService.php',
-  cert: fs.readFileSync(__dirname + '/../../server/partioid-login/qaid.crt').toString()
+  entryPoint: 'https://' + partioIDRemoteName + '.partio.fi/simplesaml/saml2/idp/SSOService.php',
+  cert: fs.readFileSync(__dirname + '/../../server/partioid-login/' + partioIDRemoteName + '.crt').toString()
 };
 var partioid = new SAML(conf);
 

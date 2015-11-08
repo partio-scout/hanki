@@ -36,12 +36,17 @@ function getHomePage(UserStore, UserActions) {
         homeView = 'Loading...';
       } else if (this.state.currentUser === null) {
         homeView = (
-          <Button
-            href="/saml/login"
-            bsStyle='primary'
-            bsSize='large'>
-            Kirjaudu sisään Partio ID:llä
-          </Button>
+          <div>
+            <p>
+              <Button
+                href="/saml/login"
+                bsStyle='primary'
+                bsSize='large'>
+                Kirjaudu sisään Partio ID:llä
+              </Button>
+            </p>
+            <Alert bsSize="medium" bsStyle="info">Kirjautumalla hyväksyn henkilötietojeni luovutuksen käsiteltäväksi Euroopan Talousalueen ulkopuolelle.</Alert>
+          </div>
         );
       } else {
         // Redirect logged in users to My Purchase Orders page

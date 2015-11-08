@@ -52,4 +52,17 @@ describe('Unauthenticated user', function() {
       .end(done);
   });
 
+  it('should not be able to create new Purchaseuser', function(done) {
+    request(app).post('/api/Purchaseusers')
+      .send({
+        email: 'example@example.com',
+        password: 'password',
+        name: 'n/a',
+        phone: 'n/a',
+        enlistment: 'n/a',
+        userSection: 'n/a'
+      })
+      .expect(401)
+      .end(done);
+  });
 });

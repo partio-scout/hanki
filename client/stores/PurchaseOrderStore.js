@@ -11,6 +11,7 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
 
         handleUpdatePurchaseOrderRows: PurchaseOrderActions.UPDATE_PURCHASE_ORDER_ROWS,
         handlePurchaseOrderRowCreated: PurchaseOrderActions.PURCHASE_ORDER_ROW_CREATED,
+        handlePurchaseOrderRowUpdated: PurchaseOrderActions.PURCHASE_ORDER_ROW_UPDATED,
         handlePurchaseOrderRowDeleted: PurchaseOrderActions.PURCHASE_ORDER_ROW_DELETED
       });
     }
@@ -36,6 +37,11 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
     }
 
     handlePurchaseOrderRowCreated(row) {
+      this.purchaseOrderRows[row.orderRowId] = row;
+      this.handleUpdatePurchaseOrderRows(this.purchaseOrderRows);
+    }
+
+    handlePurchaseOrderRowUpdated(row) {
       this.purchaseOrderRows[row.orderRowId] = row;
       this.handleUpdatePurchaseOrderRows(this.purchaseOrderRows);
     }
