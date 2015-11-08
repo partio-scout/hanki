@@ -31,7 +31,7 @@ module.exports = function(Purchaseuser) {
       }
 
       var addCostCenter = Promise.promisify(user.costcenters.add, user.costcenters);
-      return Promise.all(costCenters.map(addCostCenter))
+      return Promise.all(costCenters.map(function(costCenter) { return addCostCenter(costCenter); }))
         .catch(wrapError('Couldn\'t add cost center to user.'));
     });
 
