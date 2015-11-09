@@ -25,6 +25,23 @@
       },
       "_selectable": false
     },
+    "accountId": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "user_id",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "muutoksen tekijä"
+    },
     "timestamp": { 
       "type": "String",
       "required": true,
@@ -61,6 +78,13 @@
     }
   },
   "validations": [],
+  "relations": {
+    "subject": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
