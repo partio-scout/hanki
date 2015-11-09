@@ -38,19 +38,10 @@ function expectModelToBeDeleted(modelName, id, cb) {
   };
 }
 
-function promiseFind(model, whereClause, includeClause) {
-  includeClause = includeClause || null;
-  what = { where: whereClause };
-  if (includeClause) {
-    what = { where: whereClause, include: includeClause };
-  }
-  return new Promise(function (resolve, reject) {
-    model.find(what, function(err, res) {
-      if (err) throw err;
-
-      resolve(res);
-    });
-  });
+function find(modelName, whereClause, includeClause) {
+  var what = { where: whereClause, include: includeClause };
+  var find = Promise.promisify(app.models[modelName].find, app.models[modelName]);
+  return find(what);
 }
 
 module.exports = {
@@ -58,5 +49,5 @@ module.exports = {
   createFixture: createFixture,
   deleteFixtureIfExists: deleteFixtureIfExists,
   expectModelToBeDeleted: expectModelToBeDeleted,
-  promiseFind: promiseFind
+  find: find
 };
