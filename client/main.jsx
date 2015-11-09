@@ -18,7 +18,7 @@ var User = new RestfulResource('/api/Purchaseusers', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 var MyPurchaseOrder = new RestfulResource('/api/Purchaseusers/' + userId + '/orders', accessToken);
 var PurchaseOrderRow = new RestfulResource('/api/Purchaseorderrows', accessToken);
-var CostCenter = new RestfulResource('/api/Costcenters', accessToken);
+var CostCenter = new RestfulResource('/api/Purchaseusers/' + userId + '/costcenters', accessToken);
 var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 var Delivery = new RestfulResource('/api/Deliveries', accessToken);
@@ -43,9 +43,13 @@ var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
+var ErrorActions = require('./actions/ErrorActions')(alt);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions);
+
 // Setup main views
 
-var App = require('./components/AppComponent.jsx')(UserStore, UserActions);
+var ErrorNotification = require('./components/ErrorNotification.jsx')(ErrorActions, ErrorStore);
+var App = require('./components/AppComponent.jsx')(ErrorNotification, UserStore, UserActions);
 var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
 
 var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
@@ -54,6 +58,7 @@ var EditPurchaseOrder = require('./components/EditPurchaseOrder.jsx')(PurchaseOr
 var DeletePurchaseOrder = require('./components/DeletePurchaseOrder.jsx')(PurchaseOrderActions, PurchaseOrderStore);
 
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
+var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 // Setup routes
@@ -72,6 +77,7 @@ var routes = (
       <Route name="edit_purchase_order" path=":purchaseOrder/edit" handler={ EditPurchaseOrder } />
       <Route name="delete_purchase_order" path=":purchaseOrder/delete" handler={ DeletePurchaseOrder } />
       <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
+      <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
   </Route>

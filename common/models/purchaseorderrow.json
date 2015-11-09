@@ -284,6 +284,41 @@
       },
       "_selectable": true,
       "comments": "osa-alueen hyväksyntä"
+    },
+    "nameOverride": {
+      "type": "String",
+      "required": false,
+      "index": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "name_override",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "Muu tuote -kategoriassa tuotteen nimi"
+    },
+    "priceOverride": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 53,
+      "scale": null,
+      "postgresql": {
+        "columnName": "price_override",
+        "dataType": "double precision",
+        "dataLength": null,
+        "dataPrecision": 53,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "Muu tuote -kategoriassa tuotteen yksikköhinta"
     }
   },
   "validations": [],

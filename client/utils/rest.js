@@ -20,33 +20,37 @@ function createRestfulResourceClass(request) {
             status: res.status
           };
         }
-        res = res.hasOwnProperty('body') ? res.body : res;
+        res = res && res.hasOwnProperty('body') ? res.body : res;
         cb(err, res);
       };
     }
 
     findAll(cb, filters) {
-      request.get(this.path('', filters)).end(this._handleResponse(cb));
+      request.get(this.path('', filters)).accept('application/json').end(this._handleResponse(cb));
     }
 
     findById(id, cb) {
-      request.get(this.path(id)).end(this._handleResponse(cb));
+      request.get(this.path(id)).accept('application/json').end(this._handleResponse(cb));
     }
 
     create(obj, cb) {
-      request.post(this.path('')).send(obj).end(this._handleResponse(cb));
+      request.post(this.path('')).accept('application/json').send(obj).end(this._handleResponse(cb));
     }
 
     update(id, obj, cb) {
-      request.put(this.path(id)).send(obj).end(this._handleResponse(cb));
+      request.put(this.path(id)).accept('application/json').send(obj).end(this._handleResponse(cb));
     }
 
     del(id, cb) {
-      request.del(this.path(id)).end(this._handleResponse(cb));
+      request.del(this.path(id)).accept('application/json').end(this._handleResponse(cb));
     }
 
     raw(method, path, cb) {
-      request(method, this.path(path)).end(this._handleResponse(cb));
+      request(method, this.path(path)).accept('application/json').end(this._handleResponse(cb));
+    }
+
+    rawWithBody(method, path, body, cb) {
+      request(method, this.path(path)).accept('application/json').send(body).end(this._handleResponse(cb));
     }
   }
 

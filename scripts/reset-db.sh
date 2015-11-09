@@ -2,5 +2,5 @@
 
 cd "$(dirname "$0")"
 
-node ../server/migrate/create-schema.js # drops tables before creating
-node ../server/migrate/create-test-fixtures.js
+SKIP_DATABASE_UPDATE="true" node ../server/migrate/create-schema.js # drops tables before creating
+SKIP_DATABASE_UPDATE="true" node ../server/migrate/create-test-fixtures.js

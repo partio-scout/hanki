@@ -1,15 +1,15 @@
 [
   {
     "supplierId": 0,
-    "name": "",
-    "address": "",
-    "contactPerson": "",
-    "phone": "",
-    "email": "",
-    "customerNumber": "",
-    "businessId": "",
-    "termsOfPayment": "",
-    "termsOfDelivery": "",
-    "methodOfDelivery": ""
+    "name": "Ei toimittajaa",
+    "address": "-",
+    "contactPerson": "-",
+    "phone": "-",
+    "email": "-",
+    "customerNumber": "-",
+    "businessId": "-",
+    "termsOfPayment": "-",
+    "termsOfDelivery": "-",
+    "methodOfDelivery": "-"
   }
 ]

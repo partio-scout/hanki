@@ -7,7 +7,7 @@ var Grid = ReactBootstrap.Grid;
 
 var Router = require('react-router');
 
-function getApp(UserStore, UserActions) {
+function getApp(ErrorNotification, UserStore, UserActions) {
   return React.createClass({
     mixins: [ Router.Navigation ],
 
@@ -52,6 +52,7 @@ function getApp(UserStore, UserActions) {
 
       return (
         <div>
+          <ErrorNotification></ErrorNotification>
           <Navbar brand='HANKI'>
             <Nav right>
               { nameItem }

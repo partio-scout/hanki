@@ -2,8 +2,7 @@
   {
     "code": "00000",
     "name": "Roihun johtoryhmä",
-    "controller": 3,
-    "provider": 4,
-    "master": 2
+    "approverUserId": 2,
+    "controllerUserId": 3
   }
 ]
