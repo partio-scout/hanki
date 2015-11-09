@@ -1,8 +1,45 @@
 var Promise = require('bluebird');
+var app = require('../../server/server');
 
 module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.subscriberId = ctx.req.accessToken.userId;
+    next();
+  });
+
+  Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
+    app.models.History.create(
+      {
+        'userId': ctx.req.accessToken.userId,
+        'comment':'Added a new purchase order',
+        'purchaseOrderId':purchaseOrder.orderId,
+      },
+      function(err,instance) {if (err) {throw err;} console.log(instance);}
+    );
+    next();
+  });
+
+  Purchaseorder.afterRemote('delete', function(ctx, purchaseOrder, next) {
+    app.models.History.create(
+      {
+        'userId': ctx.req.accessToken.userId,
+        'comment':'Removed a purchase order',
+        'purchaseOrderId':purchaseOrder.orderId,
+      },
+      function(err,instance) {if (err) {throw err;} console.log(instance);}
+    );
+    next();
+  });
+
+  Purchaseorder.afterRemote('update', function(ctx, purchaseOrder, next) {
+    app.models.History.create(
+      {
+        'userId': ctx.req.accessToken.userId,
+        'comment':'Updated a purchase order',
+        'purchaseOrderId':purchaseOrder.orderId,
+      },
+      function(err,instance) {if (err) {throw err;} console.log(instance);}
+    );
     next();
   });
 
