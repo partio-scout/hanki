@@ -2,35 +2,36 @@ var app = require('../server');
 var request = require('supertest');
 var _ = require('lodash');
 var testUtils = require('./utils/test-utils.js');
+var Promise = require('bluebird');
 
 describe('Orderer', function() {
 
   beforeEach(function(done) {
-    var doneWhenAllDone = _.after(2, done);
-
-    testUtils.createFixture('Purchaseorder', {
-      'name': 'delete me',
-      'costcenterId': 1,
-      'orderId': 222,
-      'subscriberId': 1
-    }, doneWhenAllDone);
-
-    testUtils.createFixture('Purchaseorderrow', {
-      'orderRowId': 333,
-      'titleId': 1,
-      'amount': 16,
-      'deliveryId': 1,
-      'orderId': 3,
-      'approved': false,
-      'finished': false,
-      'modified': (new Date()).toISOString()
-    }, doneWhenAllDone);
+    Promise.all([
+      testUtils.createFixture('Purchaseorder', {
+        'name': 'delete me',
+        'costcenterId': 1,
+        'orderId': 222,
+        'subscriberId': 1
+      }),
+      testUtils.createFixture('Purchaseorderrow', {
+        'orderRowId': 333,
+        'titleId': 1,
+        'amount': 16,
+        'deliveryId': 1,
+        'orderId': 3,
+        'approved': false,
+        'finished': false,
+        'modified': (new Date()).toISOString()
+      })
+    ]).then(_.ary(done, 0));
   });
 
   afterEach(function(done) {
-    var doneWhenAllDone = _.after(2, done);
-    testUtils.deleteFixtureIfExists('Purchaseorder', 222, doneWhenAllDone);
-    testUtils.deleteFixtureIfExists('Purchaseorderrow', 333, doneWhenAllDone);
+    Promise.all([
+      testUtils.deleteFixtureIfExists('Purchaseorder', 222),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', 333)
+    ]).then(_.ary(done, 0));
   });
 
   describe('should be allowed to delete owned', function() {
