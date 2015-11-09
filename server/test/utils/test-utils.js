@@ -11,18 +11,21 @@ function loginUser(username, userpass) {
   });
 }
 
-function createFixture(modelName, fixture, cb) {
-  app.models[modelName].create(fixture, function(err, res) {
-    if (err) {
-      throw new Error('Unable to create ' + modelName + ' fixture: ' + err);
-    } else {
-      cb();
-    }
+function createFixture(modelName, fixture) {
+  return new Promise(function(resolve, reject) {
+    app.models[modelName].create(fixture, function(err, res) {
+      if (err) {
+        reject(new Error('Unable to create ' + modelName + ' fixture: ' + err));
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
-function deleteFixtureIfExists(modelName, id, cb) {
-  app.models[modelName].destroyById(id, cb());
+function deleteFixtureIfExists(modelName, id) {
+  var del = Promise.promisify(app.models[modelName].destroyById, app.models[modelName]);
+  return del(id);
 }
 
 function expectModelToBeDeleted(modelName, id, cb) {
