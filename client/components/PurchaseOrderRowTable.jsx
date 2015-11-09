@@ -33,7 +33,7 @@ var PurchaseOrderRow = React.createClass({
           { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
         </td>
         <td>
-          { row.amount } { title.unit }
+          { row.amount } { row.unitOverride || title.unit }
         </td>
         <td>
           <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
