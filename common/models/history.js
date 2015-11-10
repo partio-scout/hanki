@@ -12,4 +12,19 @@ module.exports = function(History) {
       function(err,instance) {if (err) {throw err;} console.log(instance);}
     );
   };
+
+  History.remember.PurchaseOrderRow = function(ctx, purchaseorderrow, event_description) {
+    History.create(
+      {
+        'userId': ctx.req.accessToken.userId,
+        'eventtype': event_description,
+        'comment': '',
+        'purchaseOrderId': purchaseorderrow.orderId,
+        'timestamp':(new Date()).toISOString()
+      },
+      function(err,instance) {if (err) {throw err;} console.log(instance);}
+    );
+
+  };
+
 };
