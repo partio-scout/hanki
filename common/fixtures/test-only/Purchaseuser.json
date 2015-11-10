@@ -48,5 +48,15 @@
     "phone": "040 1234567",
     "enlistment": "Admin",
     "userSection": "Kaiken yläpuolella"
+  },
+  {
+    "memberNumber": "9999669",
+    "username": "roihu.testi",
+    "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
+    "email": "digitaaliset.palvelut+testi1@roihu2016.fi",
+    "name": "Reija Roihuaja",
+    "phone": "040 1234567",
+    "enlistment": "Hankkija",
+    "userSection": "Palvelut"
   }
 ]
