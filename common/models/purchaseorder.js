@@ -16,12 +16,17 @@ module.exports = function(Purchaseorder) {
     app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
     next();
   });
-  
+
+  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update row');
+    next();
+  });
+
   Purchaseorder.afterRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
     app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update');
     next();
   });
-  
+
   Purchaseorder.observe('before delete', function(ctx, next) {
     // Deletes all purchase order rows for the orders about to be deleted
 
