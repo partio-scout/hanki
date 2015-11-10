@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "username": "orderer",
     "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
     "name": "Teuvo Tilaaja",
@@ -10,7 +9,6 @@
     "userSection": "Palvelut"
   },
   {
-    "id": 2,
     "username": "approver",
     "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
     "name": "Heidi Hankkija",
@@ -20,7 +18,6 @@
     "userSection": "Palvelut"
   },
   {
-    "id": 3,
     "username": "controller",
     "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
     "name": "Kaisa Controller",
@@ -30,7 +27,6 @@
     "userSection": "Palvelut"
   },
   {
-    "id": 4,
     "username": "procurementMaster",
     "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
     "name": "Pekka Päällikkö",
@@ -40,7 +36,6 @@
     "userSection": "Palvelut"
   },
   {
-    "id": 5,
     "username": "procurementAdmin",
     "password": "$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC",
     "email": "procurementAdmin@foo.fi",
