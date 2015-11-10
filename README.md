@@ -20,9 +20,9 @@ Note that the virtual machine has the `NODE_ENV`-environment variable set to `de
 
 ### Creating users
 ```
-npm run create-user <user email> <user role> [<user role>...] [--costcenter <code>...] [--approverOf <code>...] [--controllerOf <code>...]
+npm run create-user <member number> <user email> <user role> [<user role>...] [--costcenter <code>...] [--approverOf <code>...] [--controllerOf <code>...]
 ```
-You will need to specify at least one role for the user. To see a list of roles, see [the role fixture file](common/fixtures/all/Role.json). Use the costcenter, approverOf and controllerOf flags to specify which cost centers the user can access, approve or control, respectively.
+Member number needs to be 7 characters long. You will need to specify at least one role for the user. To see a list of roles, see [the role fixture file](common/fixtures/all/Role.json). Use the costcenter, approverOf and controllerOf flags to specify which cost centers the user can access, approve or control, respectively.
 
 ### Logging in
 

@@ -19,15 +19,21 @@ function collect(value, aggregate) {
 }
 
 var opts = require('commander')
-  .usage('<user email> <user role> [<user role>...] [OPTIONS]')
+  .usage('<member number> <user email> <user role> [<user role>...] [OPTIONS]')
   .option('--costcenter [code]', 'The code of the cost center this user is associated with.', collect, [])
   .option('--controllerOf [code]', 'The code of the cost centers for which this user is the controller.', collect, [])
   .option('--approverOf [code]', 'The code of the cost centers for which this user is the approver.', collect, [])
   .parse(process.argv);
 
-if (opts.args.length < 2) {
+if (opts.args.length < 3) {
   opts.outputHelp();
-  console.error('Please provide the user\'s email and at least one role.');
+  console.error('Please provide the user\'s member number, email and at least one role.');
+  process.exit(1);
+}
+
+if (opts.args[0].length !== 7) {
+  opts.outputHelp();
+  console.error('The member number should be seven characters long.');
   process.exit(1);
 }
 
@@ -40,7 +46,7 @@ function wrapError(message) {
 }
 
 function getRoles() {
-  var roleNames = opts.args.slice(1);
+  var roleNames = opts.args.slice(2);
 
   return findRole({ where: { name: { inq: roleNames } }, fields: ['id','name'] }).catch(wrapError('Cannot query roles!'))
     .then(function (roles) {
@@ -74,9 +80,11 @@ Promise.join(
   getCostCenters(opts.approverOf),
   getCostCenters(opts.controllerOf),
   function (roles, costCenters, costCentersApproverOf, costCentersControllerOf) {
-    var email = opts.args[0];
+    var memberNumber = opts.args[0];
+    var email = opts.args[1];
     var password = crypto.randomBytes(24).toString('hex');
     var user = {
+      memberNumber: memberNumber,
       email: email,
       password: password,
       name: 'n/a',
