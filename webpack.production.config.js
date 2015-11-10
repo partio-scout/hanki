@@ -13,7 +13,10 @@ var config = {
     loaders: [{
       test: /\.js$|\.jsx$/,
       loader: 'babel',
-      exclude: [nodeModulesPath]
+      exclude: [nodeModulesPath],
+      query: {
+        presets: ['react', 'es2015']
+      }
     },{
       test: /\.css$/,
       loader: 'style!css'
