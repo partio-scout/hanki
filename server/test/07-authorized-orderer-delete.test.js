@@ -7,7 +7,7 @@ var Promise = require('bluebird');
 describe('Orderer', function() {
 
   beforeEach(function(done) {
-    Promise.all([
+    Promise.join(
       testUtils.createFixture('Purchaseorder', {
         'name': 'delete me',
         'costcenterId': 1,
@@ -23,15 +23,15 @@ describe('Orderer', function() {
         'approved': false,
         'finished': false,
         'modified': (new Date()).toISOString()
-      })
-    ]).then(_.ary(done, 0));
+      }))
+    .nodeify(done);
   });
 
   afterEach(function(done) {
-    Promise.all([
+    Promise.join(
       testUtils.deleteFixtureIfExists('Purchaseorder', 222),
-      testUtils.deleteFixtureIfExists('Purchaseorderrow', 333)
-    ]).then(_.ary(done, 0));
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', 333))
+    .nodeify(done);
   });
 
   describe('should be allowed to delete owned', function() {
