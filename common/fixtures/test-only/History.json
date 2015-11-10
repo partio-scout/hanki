@@ -1,10 +1,12 @@
 [
   {
     "timestamp": "2015-11-08T17:23:43.704Z",
-    "comment": "Editoitiin juttui"
+    "comment": "Editoitiin juttui",
+    "eventtype": "edit"
   },
   {
     "timestamp": "2015-11-08T17:31:28.850Z",
-    "comment": "Poistettiin vahingossa jotain"
+    "comment": "Poistettiin vahingossa jotain",
+    "eventtype": "delete"
   }
 ]
