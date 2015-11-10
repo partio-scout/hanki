@@ -33,7 +33,7 @@ var getErrorNotification = function(ErrorActions, ErrorStore) {
     },
 
     render: function() {
-      var error = this.props.errors.length && this.props.errors[0];
+      var error = this.props.errors.length && this.props.errors[this.props.errors.length - 1];
       const dialog = error ? (<ErrorDialog title="Virhe!" onHide={ this.onHide } onConfirm={ this.onConfirm } error={error}></ErrorDialog>) : '';
       return (
         <div>{ dialog }</div>
