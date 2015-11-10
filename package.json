@@ -58,7 +58,7 @@
     "webpack": "^1.12.3"
   },
   "optionalDependencies": {
-    "loopback-explorer": "^1.1.0"
+    "loopback-component-explorer": "^2.1.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",
