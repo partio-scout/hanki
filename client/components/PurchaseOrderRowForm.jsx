@@ -45,7 +45,7 @@ var PurchaseOrderRowForm = React.createClass({
       return (
         <Input label="Yksikköhinta"
           labelClassName='col-xs-3'
-          wrapperClassName='col-xs-9'
+          wrapperClassName='col-xs-5'
           defaultValue='0'
           type='text'
           valueLink={this.props.valueLinks.priceOverride} />);
@@ -60,7 +60,7 @@ var PurchaseOrderRowForm = React.createClass({
   getUnitOverrideControl: function() {
     if (this.isOtherProductSelected()) {
       return (
-        <Input type="select" wrapperClassName='col-xs-3' standalone valueLink={ this.props.valueLinks.unitOverride }>
+        <Input type="select" wrapperClassName='col-xs-4' standalone valueLink={ this.props.valueLinks.unitOverride }>
           <option value="">Valitse yksikkö...</option>
           <option value="kpl">kpl</option>
           <option value="l">l</option>
@@ -107,7 +107,7 @@ var PurchaseOrderRowForm = React.createClass({
             </Static>
             <div className="form-group">
               <Input valueLink={ this.props.valueLinks.amount } ref="amount" onKeyUp={ this.onAmountChange }
-                type='text' standalone label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-4' addonAfter={ selectedTitle.unit } />
+                type='text' standalone label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-5' addonAfter={ selectedTitle.unit } />
               { this.getUnitOverrideControl() }
             </div>
             { this.getPriceControl(selectedTitle.priceWithTax) }
