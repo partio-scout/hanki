@@ -24,7 +24,7 @@
     "node": "0.12.x"
   },
   "dependencies": {
-    "alt": "0.16.4",
+    "alt": "^0.17.8",
     "babel-core": "^6.1.0",
     "babel-loader": "^6.1.0",
     "babel-preset-es2015": "^6.1.0",
