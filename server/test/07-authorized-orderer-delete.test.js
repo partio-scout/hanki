@@ -1,6 +1,5 @@
 var app = require('../server');
 var request = require('supertest');
-var _ = require('lodash');
 var testUtils = require('./utils/test-utils.js');
 var Promise = require('bluebird');
 
