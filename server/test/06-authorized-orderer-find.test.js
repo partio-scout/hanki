@@ -1,49 +1,15 @@
 var app = require('../server');
 var request = require('supertest');
-//var assert = require('assert');
 var expect = require('chai').expect;
 var Promise = require('bluebird');
+var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var User = app.models.Purchaseuser;
-
-  var username = 'orderer';
-  var userpass = 'salasana';
-
-  function loginUser(username, userpass) {
-    return new Promise(function (resolve, reject) {
-      // log in as orderer
-      return User.login({
-        username: username,
-        password: userpass
-      }, function(err, accessToken) {
-        if (err) throw err;
-
-        resolve(accessToken);
-      });
-    });
-  }
-
-  function promiseFind(model, whereClause, includeClause) {
-    includeClause = includeClause || null;
-    what = { where: whereClause };
-    if (includeClause) {
-      what = { where: whereClause, include: includeClause };
-    }
-    return new Promise(function (resolve, reject) {
-      model.find(what, function(err, res) {
-        if (err) throw err;
-
-        resolve(res);
-      });
-    });
-  }
 
   describe('should be allowed to get list of', function() {
     describe('all', function() {
       it('Accounts', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Accounts?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -51,8 +17,7 @@ describe('Orderer', function() {
       });
 
       it('Costcenters', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Costcenters?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -60,8 +25,7 @@ describe('Orderer', function() {
       });
 
       it('Deliveries', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Deliveries?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -69,8 +33,7 @@ describe('Orderer', function() {
       });
 
       it('Suppliers', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Suppliers?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -78,8 +41,7 @@ describe('Orderer', function() {
       });
 
       it('Titlegroups', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Titlegroups?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -87,8 +49,7 @@ describe('Orderer', function() {
       });
 
       it('Titles', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Titles?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -99,8 +60,7 @@ describe('Orderer', function() {
 
     describe('owned', function() {
       it('Cost centres', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Purchaseusers/' + accessToken.userId + '/costcenters?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -108,8 +68,7 @@ describe('Orderer', function() {
       });
 
       it('Cost centres the user is a controller of', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Purchaseusers/' + accessToken.userId + '/isControllerOfCostcenter?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -117,8 +76,7 @@ describe('Orderer', function() {
       });
 
       it('Cost centres the user is an approver of', function(done) {
-        loginUser(username, userpass)
-        .then(function(accessToken) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app).get('/api/Purchaseusers/' + accessToken.userId + '/isApproverOfCostcenter?access_token=' + accessToken.id)
           .expect(200)
           .end(done);
@@ -126,9 +84,9 @@ describe('Orderer', function() {
       });
 
       it('Purchaseorders', function(done) {
-        var login = loginUser(username, userpass);
+        var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId });
+          return testUtils.find('Purchaseorder', { subscriberId: accessToken.userId });
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
@@ -148,9 +106,9 @@ describe('Orderer', function() {
       });
 
       it('Purchaseorderrows', function(done) {
-        var login = loginUser(username, userpass);
+        var login = testUtils.loginUser('orderer');
         var find = login.then(function(accessToken) {
-          return promiseFind(app.models.Purchaseorder, { subscriberId: accessToken.userId }, 'order_rows');
+          return testUtils.find('Purchaseorder', { subscriberId: accessToken.userId }, 'order_rows');
         });
         Promise.join(login, find, function(accessToken, template) {
           request(app)
@@ -169,8 +127,7 @@ describe('Orderer', function() {
 
   describe('should not be allowed to', function() {
     it('get all Purchaseorders', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .get('/api/Purchaseorders')
           .query({ access_token: accessToken.id })
@@ -180,8 +137,7 @@ describe('Orderer', function() {
     });
 
     it('get all Purchaseorderrows', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app)
           .get('/api/Purchaseorderrows')
           .query({ access_token: accessToken.id })
