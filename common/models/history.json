@@ -76,9 +76,26 @@
       "_selectable": false,
       "comments": "milloin tapahtui"
     },
-    "comment": {
+    "eventtype": {
       "type": "String",
       "required": true,
+      "length": 32,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "eventtype",
+        "dataType": "character varying",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable":false,
+      "comments":"mitä tapahtui yhdellä sanalla (esim add, edit, delete..)"
+    },
+    "comment": {
+      "type": "String",
+      "required": false, 
       "length": null,
       "precision": null,
       "scale": null,
