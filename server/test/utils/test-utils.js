@@ -12,15 +12,8 @@ function loginUser(username, userpass) {
 }
 
 function createFixture(modelName, fixture) {
-  return new Promise(function(resolve, reject) {
-    app.models[modelName].create(fixture, function(err, res) {
-      if (err) {
-        reject(new Error('Unable to create ' + modelName + ' fixture: ' + err));
-      } else {
-        resolve();
-      }
-    });
-  });
+  var create = Promise.promisify(app.models[modelName].create, app.models[modelName]);
+  return create(fixture);
 }
 
 function deleteFixtureIfExists(modelName, id) {
