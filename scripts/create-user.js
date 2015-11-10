@@ -31,12 +31,6 @@ if (opts.args.length < 3) {
   process.exit(1);
 }
 
-if (opts.args[0].length !== 7) {
-  opts.outputHelp();
-  console.error('The member number should be seven characters long.');
-  process.exit(1);
-}
-
 function wrapError(message) {
   return function(err) {
     var e = new Error(message);
