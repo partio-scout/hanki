@@ -68,13 +68,13 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
-    "eslint": "^1.2.0",
-    "eslint-plugin-react": "^3.2.3",
+    "eslint": "^1.9.0",
+    "eslint-plugin-react": "^3.8.0",
     "file-loader": "^0.8.4",
-    "http-proxy": "^1.10.1",
+    "http-proxy": "^1.12.0",
     "mocha": "^2.3.3",
-    "supertest": "^1.0.1",
-    "webdriverio": "^3.2.1",
+    "supertest": "^1.1.0",
+    "webdriverio": "^3.2.6",
     "webpack-dev-server": "^1.12.1"
   },
   "repository": {
