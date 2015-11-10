@@ -48,6 +48,7 @@ var PurchaseOrderRowForm = React.createClass({
           wrapperClassName='col-xs-5'
           defaultValue='0'
           type='text'
+          addonAfter='€'
           valueLink={this.props.valueLinks.priceOverride} />);
     } else {
       return (
