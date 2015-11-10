@@ -7,42 +7,21 @@ module.exports = function(Purchaseorder) {
     next();
   });
 
+  Purchaseorder.afterRemote('**', function(ctx, purchaseOrder, next) {
+    console.log(ctx.methodString);
+    next();
+  });
+
   Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
-    app.models.History.create(
-      {
-        'userId': ctx.req.accessToken.userId,
-        'comment':'Added a new purchase order',
-        'purchaseOrderId':purchaseOrder.orderId,
-      },
-      function(err,instance) {if (err) {throw err;} console.log(instance);}
-    );
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
     next();
   });
-
-  Purchaseorder.afterRemote('delete', function(ctx, purchaseOrder, next) {
-    app.models.History.create(
-      {
-        'userId': ctx.req.accessToken.userId,
-        'comment':'Removed a purchase order',
-        'purchaseOrderId':purchaseOrder.orderId,
-      },
-      function(err,instance) {if (err) {throw err;} console.log(instance);}
-    );
+  
+  Purchaseorder.afterRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update');
     next();
   });
-
-  Purchaseorder.afterRemote('update', function(ctx, purchaseOrder, next) {
-    app.models.History.create(
-      {
-        'userId': ctx.req.accessToken.userId,
-        'comment':'Updated a purchase order',
-        'purchaseOrderId':purchaseOrder.orderId,
-      },
-      function(err,instance) {if (err) {throw err;} console.log(instance);}
-    );
-    next();
-  });
-
+  
   Purchaseorder.observe('before delete', function(ctx, next) {
     // Deletes all purchase order rows for the orders about to be deleted
 
