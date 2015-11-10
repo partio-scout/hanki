@@ -98,6 +98,23 @@
       "_selectable": false,
       "comments": "pesti"
     },
+    "memberNumber": {
+      "type": "String",
+      "required": true,
+      "length": 7,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "membernumber",
+        "dataType": "character varying",
+        "dataLength": 7,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "pesti"
+    },
     "userSection": {
       "type": "String",
       "required": true,
