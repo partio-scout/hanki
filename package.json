@@ -66,13 +66,13 @@
     "loopback-explorer": "^1.1.0"
   },
   "devDependencies": {
-    "chai": "2.3.0",
+    "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
     "eslint": "^1.2.0",
     "eslint-plugin-react": "^3.2.3",
     "file-loader": "^0.8.4",
     "http-proxy": "^1.10.1",
-    "mocha": "2.0.1",
+    "mocha": "^2.3.3",
     "supertest": "^1.0.1",
     "webdriverio": "^3.2.1",
     "webpack-dev-server": "^1.12.1"
