@@ -38,6 +38,9 @@ If you simply want to reset the development database contents you can:
 npm run reset-database
 ```
 
+### Extra good stuff
+By default file change events do not propagate between the host and virtual machine. Therefore the webpack development server and test watcher won't function properly. The notification can be easily enabled though with a vagrant plugin. If you already have vagrant running, destroy your current virtual machine with `vagrant destroy`. Then run `vagrant plugin install vagrant-notify-forwarder`, then recreate the virtual machine with `vagrant up` and enjoy your file watchers!
+
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
 
