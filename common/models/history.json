@@ -132,13 +132,18 @@
   "relations": {
     "subject": {
       "type": "belongsTo",
-      "model": "Account",
+      "model": "Purchaseuser",
       "foreignKey": "accountId"
     },
     "object": {
       "type": "belongsTo",
       "model": "Purchaseorder",
       "foreignKey": "purchaseOrderId"
+    },
+    "objectrow": {
+      "type": "belongsTo",
+      "model": "Purchaseorderrow",
+      "foreignKey": "purchaseOrderRowId"
     }
   },
   "acls": [
