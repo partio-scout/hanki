@@ -7,6 +7,7 @@ module.exports = function(History) {
         'eventtype': event_description,
         'comment': purchaseorder.name,
         'purchaseOrderId': purchaseorder.orderId,
+        'purchaseOrderRowId': ctx.args.data.orderRowId,
         'timestamp':(new Date()).toISOString()
       },
       function(err,instance) {if (err) {throw err;} return;}
