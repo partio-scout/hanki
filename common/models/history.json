@@ -59,6 +59,23 @@
       "_selectable": false,
       "comments": "muutettu ostotilaus"
     },
+    "purchaseOrderRowId": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "purchase_orderrow_id",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "muutettu ostotilaus"
+    },
     "timestamp": { 
       "type": "String",
       "required": false,
