@@ -20,6 +20,7 @@ module.exports = function(History) {
         'eventtype': event_description,
         'comment': '',
         'purchaseOrderId': purchaseorderrow.orderId,
+        'purchaseOrderRowId': purchaseorderrow.orderRowId,
         'timestamp':(new Date()).toISOString()
       },
       function(err,instance) {if (err) {throw err;} console.log(instance);}
