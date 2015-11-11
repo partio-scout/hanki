@@ -7,11 +7,6 @@ module.exports = function(Purchaseorder) {
     next();
   });
 
-  Purchaseorder.afterRemote('**', function(ctx, purchaseOrder, next) {
-    console.log(ctx.methodString);
-    next();
-  });
-
   Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
     app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
     next();

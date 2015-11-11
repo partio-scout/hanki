@@ -11,9 +11,4 @@ module.exports = function(Purchaseorderrow) {
     next();
   });
 
-  Purchaseorderrow.afterRemote('**', function(ctx, purchaseOrder, next) {
-    console.log(ctx.methodString);
-    next();
-  });
-
 };
