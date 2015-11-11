@@ -9,7 +9,7 @@ module.exports = function(History) {
         'purchaseOrderId': purchaseorder.orderId,
         'timestamp':(new Date()).toISOString()
       },
-      function(err,instance) {if (err) {throw err;} console.log(instance);}
+      function(err,instance) {if (err) {throw err;} return;}
     );
   };
 
@@ -23,7 +23,7 @@ module.exports = function(History) {
         'purchaseOrderRowId': purchaseorderrow.orderRowId,
         'timestamp':(new Date()).toISOString()
       },
-      function(err,instance) {if (err) {throw err;} console.log(instance);}
+      function(err,instance) {if (err) {throw err;} return;}
     );
 
   };
