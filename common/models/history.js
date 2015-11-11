@@ -3,7 +3,7 @@ module.exports = function(History) {
   History.remember.PurchaseOrder = function(ctx, purchaseorder, event_description) {
     History.create(
       {
-        'userId': ctx.req.accessToken.userId,
+        'accountId': ctx.req.accessToken.userId,
         'eventtype': event_description,
         'comment': purchaseorder.name,
         'purchaseOrderId': purchaseorder.orderId,
@@ -16,7 +16,7 @@ module.exports = function(History) {
   History.remember.PurchaseOrderRow = function(ctx, purchaseorderrow, event_description) {
     History.create(
       {
-        'userId': ctx.req.accessToken.userId,
+        'accountId': ctx.req.accessToken.userId,
         'eventtype': event_description,
         'comment': '',
         'purchaseOrderId': purchaseorderrow.orderId,
