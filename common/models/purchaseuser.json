@@ -101,13 +101,13 @@
     "memberNumber": {
       "type": "String",
       "required": true,
-      "length": 7,
+      "length": 255,
       "precision": null,
       "scale": null,
       "postgresql": {
         "columnName": "membernumber",
         "dataType": "character varying",
-        "dataLength": 7,
+        "dataLength": 255,
         "dataPrecision": null,
         "dataScale": null,
         "nullable": "NO"
