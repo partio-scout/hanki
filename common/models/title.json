@@ -62,40 +62,6 @@
       "_selectable": false,
       "comments": "yksikkö"
     },
-    "priceWithoutTax": {
-      "type": "Number",
-      "required": true,
-      "length": null,
-      "precision": 53,
-      "scale": null,
-      "postgresql": {
-        "columnName": "price_without_tax",
-        "dataType": "double precision",
-        "dataLength": null,
-        "dataPrecision": 53,
-        "dataScale": null,
-        "nullable": "NO"
-      },
-      "_selectable": false,
-      "comments": "veroton hinta"
-    },
-    "vatPercent": {
-      "type": "Number",
-      "required": true,
-      "length": null,
-      "precision": 53,
-      "scale": null,
-      "postgresql": {
-        "columnName": "vat_percent",
-        "dataType": "double precision",
-        "dataLength": null,
-        "dataPrecision": 53,
-        "dataScale": null,
-        "nullable": "NO"
-      },
-      "_selectable": false,
-      "comments": "alv-%"
-    },
     "priceWithTax": {
       "type": "Number",
       "required": true,
