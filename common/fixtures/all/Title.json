@@ -4,8 +4,6 @@
     "name": "Muu tuote",
     "titlegroupId": 0,
     "unit": "kpl",
-    "priceWithoutTax": 0,
-    "vatPercent": 0,
     "priceWithTax": 0,
     "accountId": 0,
     "supplierId": 0
