@@ -90,13 +90,13 @@ describe('DataImport', function() {
     itShouldNotAcceptCSV('containing a single flawed line', ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0');
     itShouldNotAcceptCSV('containing many lines and one flawed', fs.readFileSync('./server/test/single_flawed_line.csv', 'utf-8'));
 
-    itShouldNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-    itShouldNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-    itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
 
     it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
       testUtils.loginUser('procurementAdmin').then(function(accessToken) {
-        postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,32,21,45,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
+        postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,32,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
         .expect(200)
         .end(function(err, res) {
           if (err) {
