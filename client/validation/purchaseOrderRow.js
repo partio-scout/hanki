@@ -5,8 +5,8 @@ var isPosititiveOrZeroInt = function(value) {
   return validator.isInt(value, { min: 0 });
 };
 
-var isUndefinedOrNonEmptyString = function(value) {
-  return value === undefined || validator.isLength(value, 1);
+var isUndefinedOrNullOrNonEmptyString = function(value) {
+  return value === undefined || value === null || validator.isLength(value, 1);
 };
 
 var schema = [
@@ -27,7 +27,7 @@ var schema = [
   },
   {
     property: 'nameOverride',
-    test: isUndefinedOrNonEmptyString,
+    test: isUndefinedOrNullOrNonEmptyString,
     message: 'Anna tuotteelle kuvaava nimi'
   }
 ];
