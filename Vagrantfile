@@ -11,7 +11,7 @@ SCRIPT
 
 # Installs absolute minimun for building/running
 $install_packages = <<SCRIPT
-curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash -
+curl --silent --location https://deb.nodesource.com/setup_4.x | sudo bash -
 apt-get install -y build-essential git postgresql nodejs
 SCRIPT
 
@@ -64,6 +64,7 @@ SCRIPT
 # This script will be run as the unprivileged development user.
 $install_project = <<SCRIPT
 cd /vagrant
+npm install -g npm || exit 1
 npm install -g strongloop || exit 1
 
 npm install || exit 1
