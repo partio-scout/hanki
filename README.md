@@ -92,7 +92,7 @@ NODE_ENV=dev npm start
 Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
 
 ```
-java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+npm run selenium
 ```
 
 Tests include linter, API and interation tests. Run all tests and checks:
