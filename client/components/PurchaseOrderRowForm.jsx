@@ -45,15 +45,34 @@ var PurchaseOrderRowForm = React.createClass({
       return (
         <Input label="Yksikköhinta"
           labelClassName='col-xs-3'
-          wrapperClassName='col-xs-9'
+          wrapperClassName='col-xs-5'
           defaultValue='0'
           type='text'
+          addonAfter='€'
           valueLink={this.props.valueLinks.priceOverride} />);
     } else {
       return (
         <Static label="Yksikköhinta" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
           <Price value={ selectedTitlePrice } />
         </Static>);
+    }
+  },
+
+  getUnitOverrideControl: function() {
+    if (this.isOtherProductSelected()) {
+      return (
+        <Input type="select" wrapperClassName='col-xs-4' standalone valueLink={ this.props.valueLinks.unitOverride }>
+          <option value="">Valitse yksikkö...</option>
+          <option value="kpl">kpl</option>
+          <option value="l">l</option>
+          <option value="kg">kg</option>
+          <option value="m">m</option>
+          <option value="m2">m2</option>
+          <option value="m3">m3</option>
+        </Input>
+      );
+    } else {
+      return null;
     }
   },
 
@@ -87,8 +106,11 @@ var PurchaseOrderRowForm = React.createClass({
               </Input>
               { this.getTitleSelection() }
             </Static>
-            <Input valueLink={ this.props.valueLinks.amount } ref="amount" onKeyUp={ this.onAmountChange }
-              type='text' label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-9' addonAfter={ selectedTitle.unit } />
+            <div className="form-group">
+              <Input valueLink={ this.props.valueLinks.amount } ref="amount" onKeyUp={ this.onAmountChange }
+                type='text' standalone label='Määrä' labelClassName='col-xs-3' wrapperClassName='col-xs-5' addonAfter={ selectedTitle.unit } />
+              { this.getUnitOverrideControl() }
+            </div>
             { this.getPriceControl(selectedTitle.priceWithTax) }
             <Static label="Yhteensä" labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
               <Price value={ rowTotalPrice } />
@@ -98,7 +120,7 @@ var PurchaseOrderRowForm = React.createClass({
               { deliveryOptions }
             </Input>
             <Input valueLink={ this.props.valueLinks.memo } type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
-              help='Vapaaehtoinen. Kerro tässä mikä valitsemasi "muu tuote" on ja esim. kuinka kauan tarvitset tuotetta tai tarvitsetko pystytystä tai muuta palvelua.' />
+              help='Vapaaehtoinen. Kerro tässä esim. kuinka kauan tarvitset tuotetta tai tarvitsetko sille pystytystä tai muuta palvelua. Voit myös lisätä muuta selventävää tietoa tähän kenttään.' />
           </form>
         </Modal.Body>
         <Modal.Footer>

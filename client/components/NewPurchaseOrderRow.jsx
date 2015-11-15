@@ -62,6 +62,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
         row.priceOverride = this.state.priceOverride;
+        row.unitOverride = this.state.unitOverride;
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -80,6 +81,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         selectedTitleId: this.linkState('selectedTitleId'),
         nameOverride: this.linkState('nameOverride'),
         priceOverride: this.linkState('priceOverride'),
+        unitOverride: this.linkState('unitOverride'),
         amount: this.linkState('amount'),
         delivery: this.linkState('delivery'),
         memo: this.linkState('memo')

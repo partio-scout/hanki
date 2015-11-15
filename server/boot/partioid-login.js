@@ -35,7 +35,7 @@ module.exports = function(app) {
       } else {
         var query = {
           where: {
-            email: samlResult.email
+            memberNumber: samlResult.membernumber
           }
         };
         app.models.Purchaseuser.findOne(query, function(err, user) {
@@ -43,7 +43,7 @@ module.exports = function(app) {
             res.send('Kirjautuminen epäonnistui tuntemattomasta syystä.');
             console.error(err);
           } else if (user === null) {
-            res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että Kuksassa on sama sähköpostiosoite kuin Hankissa.');
+            res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että käyttäjän jäsennumero on oikein.');
           } else {
             user.createAccessToken(3600, function(err, accessToken) {
               if (err) {

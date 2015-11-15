@@ -2,36 +2,14 @@
 
 var app = require('../server');
 var request = require('supertest');
-var Promise = require('bluebird');
 var expect = require('chai').expect;
 var fs = require('fs');
+var testUtils = require('./utils/test-utils.js');
 
 describe('DataImport', function() {
-  var User = app.models.Purchaseuser;
-  var username = 'procurementAdmin';
-  var userpass = 'salasana';
-
   afterEach(function(done) {
     app.models.Title.destroyAll(done);
   });
-
-  function loginUser(username, userpass) {
-    return new Promise(function (resolve, reject) {
-      return User.login({
-        username: username,
-        password: userpass
-      }, function(err, accessToken) {
-        if (err) {
-          throw err;
-        }
-        if (!accessToken) {
-          reject(err);
-        } else {
-          resolve(accessToken);
-        }
-      });
-    });
-  }
 
   function postCSV(accessToken, csv) {
     return request(app).post('/api/Titles/DataImport')
@@ -52,8 +30,7 @@ describe('DataImport', function() {
 
   function itShouldNotAcceptCSV(description, csv) {
     it('should return 422 when posted csv ' + description, function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         postCSV(accessToken, csv)
         .expect(422)
         .end(function(err, res) {
@@ -81,8 +58,7 @@ describe('DataImport', function() {
     });
 
     it('should grant access for authenticated users', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         request(app).post('/api/Titles/DataImport')
         .query({ access_token: accessToken.id })
         .expect(200)
@@ -94,8 +70,7 @@ describe('DataImport', function() {
   // test different input strings
   describe('Method', function() {
     it('should return empty array when posted null', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         postCSV(accessToken, '')
         .expect(200)
         .end(function(err, res) {
@@ -115,14 +90,13 @@ describe('DataImport', function() {
     itShouldNotAcceptCSV('containing a single flawed line', ',10,,32,14,45,22,19,Kukkakauppa,0,1,0,0,"lautaa voi käyttää rakentamiseen",0');
     itShouldNotAcceptCSV('containing many lines and one flawed', fs.readFileSync('./server/test/single_flawed_line.csv', 'utf-8'));
 
-    itShouldNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,100,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-    itShouldNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
-    itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,100,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing title group', '"Ruuvimeisseli","Työkalut",kpl,21,121,"Testitili 1","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing account', '"Ruuvimeisseli","Rautatavara",kpl,21,121,"Testitili jota ei ole","Tmi Toimittaja","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
+    itShouldNotAcceptCSV('with missing supplier', '"Ruuvimeisseli","Rautatavara",kpl,21,121,"Testitili 1","Olematon Oy","Rautatavarakauppa",1,1,0,1,"Rakenteluun",1');
 
     it('should save the titles with the correct titlegroupId, accountId and supplierId if they exist', function(done){
-      loginUser(username, userpass)
-      .then(function(accessToken) {
-        postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,32,21,45,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
+        postCSV(accessToken, '"Kakkosnelonen","Puutavara",m,21,45,"Testitili 1","Tmi Toimittaja","Lautakauppa",0,1,0,0,"lautaa voi käyttää rakentamiseen",0')
         .expect(200)
         .end(function(err, res) {
           if (err) {
@@ -144,7 +118,7 @@ describe('DataImport', function() {
     it('should accept 100 line csv-file', function(done) {
       var csv = fs.readFileSync('./server/test/big_test_100.csv', 'utf-8');
       this.timeout(15000);
-      loginUser(username, userpass).then(function(accessToken) {
+      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         request(app).post('/api/Titles/DataImport')
         .query({ access_token: accessToken.id })
         .send({ csv: csv })
