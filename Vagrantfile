@@ -36,16 +36,22 @@ SCRIPT
 # Download selenium and configure it to start at boot
 $configure_selenium = <<SCRIPT
 selenium_dir=/selenium
+selenium_version_minor="2.48"
+selenium_version_patch="2"
+
 echo "Removing old selenium directory and creating new"
 rm -rf "$selenium_dir"
 mkdir "$selenium_dir"
 cd "$selenium_dir"
+
 echo "Downloading selenium server"
-wget --no-verbose -O "selenium-server-standalone.jar" "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
+wget --no-verbose -O "selenium-server-standalone.jar" "http://selenium-release.storage.googleapis.com/$selenium_version_minor/selenium-server-standalone-$selenium_version_minor.$selenium_version_patch.jar"
 echo "Download complete"
+
 echo "Copying selenium service script"
 cp /vagrant/vagrant/selenium /etc/init.d/
 chmod a+x /etc/init.d/selenium
+
 echo "Set selenium to startup"
 update-rc.d selenium defaults
 echo "Starting selenium"
