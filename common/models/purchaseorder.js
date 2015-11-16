@@ -39,4 +39,31 @@ module.exports = function(Purchaseorder) {
       })
       .nodeify(next);
   });
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    // ensures that orderer can't approve
+    if (ctx.args.data && ctx.args.data.approved == true) {
+      // we are trying to approve it
+      var app = require('../../server/server');
+      var Role = app.models.Role;
+
+      var userInRole = Promise.promisify(Role.isInRole, Role);
+
+      principals = {
+        principalType: app.models.RoleMapping.USER,
+        principalId: ctx.req.accessToken.userId
+      };
+      userInRole('orderer', principals)
+      .then(function (inRole) {
+        if (inRole) {
+          console.log('User is in role!');
+          var newError = Error('Authorization Required');
+          newError.statusCode = 401;
+          next(newError);
+        }
+      });
+    }
+    next();
+  });
+
 };
