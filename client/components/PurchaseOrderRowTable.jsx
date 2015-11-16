@@ -42,7 +42,7 @@ var PurchaseOrderRow = React.createClass({
           { row.memo }
         </td>
         <td>
-          { row.requestService ? <Glyphicon glyph='ok' /> : null }
+          { row.requestService ? <Glyphicon glyph='ok' bsClass='glyphicon text-success' /> : null }
         </td>
         <td>
 
