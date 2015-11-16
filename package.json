@@ -18,8 +18,7 @@
     "reset-database": "./scripts/reset-db.sh",
     "create-user": "SKIP_DATABASE_UPDATE=true node scripts/create-user.js",
     "dev-login": "SKIP_DATABASE_UPDATE=true node scripts/dev-login.js",
-    "console": "loopback-console .",
-    "selenium": "java -jar e2e-tests/libs/selenium-server-standalone-2.48.2.jar"
+    "console": "loopback-console ."
   },
   "engines": {
     "node": "0.12.x"
