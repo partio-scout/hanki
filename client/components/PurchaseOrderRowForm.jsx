@@ -119,6 +119,7 @@ var PurchaseOrderRowForm = React.createClass({
               <option value="">Valitse toimitusajankohta...</option>
               { deliveryOptions }
             </Input>
+            <Input checkedLink={ this.props.valueLinks.requestService } type='checkbox' label='Tämä vaatii palvelua' wrapperClassName='col-xs-offset-3 col-xs-9' />
             <Input valueLink={ this.props.valueLinks.memo } type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
               help='Vapaaehtoinen. Kerro tässä esim. kuinka kauan tarvitset tuotetta tai tarvitsetko sille pystytystä tai muuta palvelua. Voit myös lisätä muuta selventävää tietoa tähän kenttään.' />
           </form>
