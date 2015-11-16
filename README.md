@@ -89,7 +89,7 @@ NODE_ENV=dev npm start
 
 ## Running tests
 
-Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
+If you are not using vagrant, make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
 
 ```
 npm run selenium
