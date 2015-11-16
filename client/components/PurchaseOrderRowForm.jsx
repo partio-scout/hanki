@@ -120,7 +120,7 @@ var PurchaseOrderRowForm = React.createClass({
               { deliveryOptions }
             </Input>
             <Input valueLink={ this.props.valueLinks.memo } type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
-              help='Vapaaehtoinen. Kerro tässä esim. kuinka kauan tarvitset tuotetta tai tarvitsetko sille pystytystä tai muuta palvelua. Voit myös lisätä muuta selventävää tietoa tähän kenttään.' />
+              help='Vapaaehtoinen. Kerro tässä, jos tarvitset tuotetta vain osan aikaa leiristä. Mikäli tarvitset palvelua, voit kertoa tässä millaista palvelua tarvitset (esim. pystytys teltalle tai suunnittelu ja rakennus leiriportille). Voit myös lisätä muuta selventävää tietoa esim. tuotteen ominaisuuksista tähän kenttään.' />
           </form>
         </Modal.Body>
         <Modal.Footer>
