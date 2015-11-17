@@ -13,7 +13,6 @@ module.exports = function(History) {
       function(err,instance) {if (err) {throw err;} return;}
     );
   };
-
   History.remember.PurchaseOrderRow = function(ctx, purchaseorderrow, event_description) {
     History.create(
       {
@@ -26,7 +25,5 @@ module.exports = function(History) {
       },
       function(err,instance) {if (err) {throw err;} return;}
     );
-
   };
-
 };
