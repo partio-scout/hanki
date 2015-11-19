@@ -13,6 +13,7 @@ SCRIPT
 $install_packages = <<SCRIPT
 curl --silent --location https://deb.nodesource.com/setup_4.x | sudo bash -
 apt-get install -y build-essential git postgresql nodejs
+npm install -g npm || exit 1
 SCRIPT
 
 # Some configuration changes need to be made to postgres to allow local
@@ -64,7 +65,6 @@ SCRIPT
 # This script will be run as the unprivileged development user.
 $install_project = <<SCRIPT
 cd /vagrant
-npm install -g npm || exit 1
 npm install -g strongloop || exit 1
 
 npm install || exit 1
@@ -85,7 +85,7 @@ Vagrant.configure(2) do |config|
   # more for some operations. This proved to be enough, though it might be
   # able to survive with less.
   config.vm.provider "virtualbox" do |v|
-    v.memory = 1536
+    v.memory = 2048
   end
   # Run provisioning scripts in this order.
   config.vm.provision "shell", inline: $generate_locales
