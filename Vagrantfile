@@ -64,7 +64,6 @@ SCRIPT
 # This script will be run as the unprivileged development user.
 $install_project = <<SCRIPT
 cd /vagrant
-npm install -g npm || exit 1
 npm install -g strongloop || exit 1
 
 npm install || exit 1
