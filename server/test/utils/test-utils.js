@@ -21,6 +21,11 @@ function deleteFixtureIfExists(modelName, id) {
   return del(id);
 }
 
+function deleteFixturesIfExist(modelName, whereClause) {
+  var del = Promise.promisify(app.models[modelName].destroyAll, app.models[modelName]);
+  return del(whereClause);
+}
+
 function expectModelToBeDeleted(modelName, id, cb) {
   return function() {
     app.models[modelName].findById(id, function(err, res) {
@@ -41,6 +46,7 @@ module.exports = {
   loginUser: loginUser,
   createFixture: createFixture,
   deleteFixtureIfExists: deleteFixtureIfExists,
+  deleteFixturesIfExist: deleteFixturesIfExist,
   expectModelToBeDeleted: expectModelToBeDeleted,
   find: find
 };
