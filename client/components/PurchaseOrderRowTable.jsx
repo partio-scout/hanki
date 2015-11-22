@@ -33,13 +33,16 @@ var PurchaseOrderRow = React.createClass({
           { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
         </td>
         <td>
-          { row.amount } { title.unit }
+          { row.amount } { row.unitOverride || title.unit }
         </td>
         <td>
           <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
         </td>
         <td>
           { row.memo }
+        </td>
+        <td>
+          { row.requestService ? <Glyphicon glyph='ok' bsClass='glyphicon text-success' /> : null }
         </td>
         <td>
 
@@ -74,6 +77,7 @@ var PurchaseOrderRowTable = React.createClass({
             <th rowSpan="2">Määrä</th>
             <th rowSpan="2">Summa</th>
             <th rowSpan="2">Huomiot</th>
+            <th rowSpan="2">Vaatii palvelua</th>
             <th rowSpan="2">Hyväksyt&shy;täväksi</th>
             <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
             <th rowSpan="2">Tilattu</th>

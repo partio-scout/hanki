@@ -35,6 +35,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       var rowState = rows[this.props.params.purchaseOrderRow] || { };
       var selectedTitle = _.find(this.props.titles.titles, { titleId: rowState.titleId }) || { };
       rowState.titlegroupId = selectedTitle.titlegroupId;
+      rowState.requestService = rowState.requestService;
       return rowState;
     },
 
@@ -64,17 +65,20 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         titleId: this.state.titleId,
         nameOverride: null,
         priceOverride: null,
+        unitOverride: null,
         amount: this.state.amount,
         approved: false,
         deliveryId: this.state.deliveryId,
         memo: this.state.memo,
-        orderId: this.state.orderId
+        orderId: this.state.orderId,
+        requestService: this.state.requestService
       }
 
       if(this.isOtherProductSelected()) {
         row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
         row.priceOverride = this.state.priceOverride;
+        row.unitOverride = this.state.unitOverride;
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -93,9 +97,11 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         selectedTitleId: this.linkState('titleId'),
         nameOverride: this.linkState('nameOverride'),
         priceOverride: this.linkState('priceOverride'),
+        unitOverride: this.linkState('unitOverride'),
         amount: this.linkState('amount'),
         delivery: this.linkState('deliveryId'),
-        memo: this.linkState('memo')
+        memo: this.linkState('memo'),
+        requestService: this.linkState('requestService')
       };
 
       return (

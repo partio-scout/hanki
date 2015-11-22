@@ -319,6 +319,42 @@
       },
       "_selectable": false,
       "comments": "Muu tuote -kategoriassa tuotteen yksikköhinta"
+    },
+    "unitOverride": {
+      "type": "String",
+      "required": false,
+      "index": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "unit_override",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "Muu tuote -kategoriassa tuotteen yksikkö"
+    },
+    "requestService": {
+      "type": "Boolean",
+      "required": false,
+      "default": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "request_service",
+        "dataType": "boolean",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "Pyydä palvelua -flagi"
     }
   },
   "validations": [],

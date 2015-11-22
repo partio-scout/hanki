@@ -44,7 +44,7 @@ var getDeletePurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStor
       var title = this.props.titles.titles[row && row.titleId] || { };
       return (
         <ConfirmDeleteDialog title="Poista tuote" onHide={ this.onHide } onConfirm={ this.onConfirm }>
-          Haluatko varmasti poistaa tuotteen "{ title.name } ({ row.amount } { title.unit })" tilauksestasi?
+          Haluatko varmasti poistaa tuotteen "{ row.nameOverride && 'Muu: ' + row.nameOverride || title.name } ({ row.amount } { row.unitOverride || title.unit })" tilauksestasi?
         </ConfirmDeleteDialog>
       );
     }

@@ -12,17 +12,17 @@ Clone this repository into a local directory. Enter the project directory on a c
 ### Running the app
 Enter the project directory. If you don't have the Vagrant virtual machine running, run `vagrant up` (you can check the status with `vagrant status`). Then run `vagrant ssh` to access the virtual machine.
 
-Inside the virtual machine run `slc run` inside the `/vagrant` directory.
+Inside the virtual machine run `npm start` inside the `/vagrant` directory.
 
 The application will be available at http://localhost:3000/, from both the host and guest operating systems.
 
-Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production slc run`.
+Note that the virtual machine has the `NODE_ENV`-environment variable set to `dev`, so to run in production mode, run with `NODE_ENV=production npm start`.
 
 ### Creating users
 ```
-npm run create-user <user email> <user role> [<user role>...] [--costcenter <code>...] [--approverOf <code>...] [--controllerOf <code>...]
+npm run create-user <member number> <user email> <user role> [<user role>...] [--costcenter <code>...] [--approverOf <code>...] [--controllerOf <code>...]
 ```
-You will need to specify at least one role for the user. To see a list of roles, see [the role fixture file](common/fixtures/all/Role.json). Use the costcenter, approverOf and controllerOf flags to specify which cost centers the user can access, approve or control, respectively.
+Member number needs to be 7 characters long. You will need to specify at least one role for the user. To see a list of roles, see [the role fixture file](common/fixtures/all/Role.json). Use the costcenter, approverOf and controllerOf flags to specify which cost centers the user can access, approve or control, respectively.
 
 ### Logging in
 
@@ -37,6 +37,9 @@ If you simply want to reset the development database contents you can:
 ```
 npm run reset-database
 ```
+
+### Extra good stuff
+By default file change events do not propagate between the host and virtual machine. Therefore the webpack development server and test watcher won't function properly. The notification can be easily enabled though with a vagrant plugin. If you already have vagrant running, destroy your current virtual machine with `vagrant destroy`. Then run `vagrant plugin install vagrant-notify-forwarder`, then recreate the virtual machine with `vagrant up` and enjoy your file watchers!
 
 ### Further reading
 For more information on the use of Vagrant, see [the Vagrant documentation](https://docs.vagrantup.com/v2/)
@@ -80,19 +83,22 @@ npm run reset-database
 
 Run the application with:
 ```
-NODE_ENV=dev slc run
+NODE_ENV=dev npm start
 ```
 (then connect to localhost:3000 with your browser to see)
 
 ## Running tests
 
-Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
+If you are not using vagrant, download the selenium standalone server and run it to be able to run the integration tests:
 
 ```
-java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+wget "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
+java -jar selenium-server-standalone-2.48.2.jar
 ```
 
 Tests include linter, API and interation tests. Run all tests and checks:
 ```
 npm test
 ```
+
+You can also run only the linter with `npm run linter`, API tests with `npm run test-backend` and integration tests with `npm run test-e2e`.

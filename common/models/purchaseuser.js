@@ -25,15 +25,15 @@ module.exports = function(Purchaseuser) {
       })).catch(wrapError('Couldn\'t create role mapping!'));
     }
 
-    function attachCostCenters(user, costCenters) {
+    var attachCostCenters = Promise.method(function(user, costCenters) {
       if (costCenters === undefined || costCenters.length === 0) {
-        return Promise.resolve();
+        return;
       }
 
       var addCostCenter = Promise.promisify(user.costcenters.add, user.costcenters);
-      return Promise.all(costCenters.map(addCostCenter))
+      return Promise.all(costCenters.map(function(costCenter) { return addCostCenter(costCenter); }))
         .catch(wrapError('Couldn\'t add cost center to user.'));
-    }
+    });
 
     function setProperty(model, propertyName, propertyValue) {
       var updateAttribute = Promise.promisify(model.updateAttribute, model);

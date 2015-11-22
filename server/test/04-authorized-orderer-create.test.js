@@ -1,32 +1,11 @@
 var app = require('../server');
 var request = require('supertest');
-//var assert = require('assert');
-//var expect = require('chai').expect;
-var Promise = require('bluebird');
+var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
-  var User = app.models.Purchaseuser;
-  var username = 'orderer';
-  var userpass = 'salasana';
-
-  function loginUser(username, userpass) {
-    return new Promise(function (resolve, reject) {
-      // log in as orderer
-      return User.login({
-        username: username,
-        password: userpass
-      }, function(err, accessToken) {
-        if (err) throw err;
-
-        resolve(accessToken);
-      });
-    });
-  }
-
   describe('should be allowed to create new', function() {
     it('Purchaseorder', function(done) {
-      loginUser(username, userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         request(app).post('/api/Purchaseorders?access_token=' + accessToken.id)
         .send({
           'name': 'Paljon nauloja',
@@ -39,8 +18,7 @@ describe('Orderer', function() {
     });
 
     it('Purchaseorderrow', function(done) {
-      loginUser(username,  userpass)
-      .then(function(accessToken) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
         d = new Date().toISOString();
         request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
         .send({
@@ -60,20 +38,19 @@ describe('Orderer', function() {
 
   describe('should not be allowed to create new', function() {
     it('Purchaseuser', function(done) {
-      loginUser(username, userpass)
-        .then(function(accessToken) {
-          request(app).post('/api/Purchaseusers?access_token=' + accessToken.id)
-            .send({
-              email: 'example@example.com',
-              password: 'password',
-              name: 'n/a',
-              phone: 'n/a',
-              enlistment: 'n/a',
-              userSection: 'n/a'
-            })
-            .expect(401)
-            .end(done);
-        });
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        request(app).post('/api/Purchaseusers?access_token=' + accessToken.id)
+          .send({
+            email: 'example@example.com',
+            password: 'password',
+            name: 'n/a',
+            phone: 'n/a',
+            enlistment: 'n/a',
+            userSection: 'n/a'
+          })
+          .expect(401)
+          .end(done);
+      });
     });
   });
 });

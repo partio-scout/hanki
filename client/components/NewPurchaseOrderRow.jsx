@@ -40,6 +40,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         deliveryId: 0,
         nameOverride: '',
         priceOverride: 0,
+        requestService: false,
         validationErrors: [ ]
       }
     },
@@ -55,13 +56,15 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         approved: false,
         deliveryId: this.state.delivery,
         memo: this.state.memo,
-        orderId: this.props.params.purchaseOrder
+        orderId: this.props.params.purchaseOrder,
+        requestService: this.state.requestService
       };
 
       if (this.isOtherProductSelected()) {
         row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
         row.priceOverride = this.state.priceOverride;
+        row.unitOverride = this.state.unitOverride;
       }
 
       var validationErrors = validatePurchaseOrderRow(row);
@@ -80,9 +83,11 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         selectedTitleId: this.linkState('selectedTitleId'),
         nameOverride: this.linkState('nameOverride'),
         priceOverride: this.linkState('priceOverride'),
+        unitOverride: this.linkState('unitOverride'),
         amount: this.linkState('amount'),
         delivery: this.linkState('delivery'),
-        memo: this.linkState('memo')
+        memo: this.linkState('memo'),
+        requestService: this.linkState('requestService')
       };
 
       return (
