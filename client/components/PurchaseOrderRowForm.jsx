@@ -119,6 +119,9 @@ var PurchaseOrderRowForm = React.createClass({
               <option value="">Valitse toimitusajankohta...</option>
               { deliveryOptions }
             </Input>
+            <Input label='Palvelutilaus' labelClassName='col-xs-3' wrapperClassName='col-xs-9'>
+              <Input checkedLink={ this.props.valueLinks.requestService } type='checkbox' wrapperClassName='col-xs-12' label='Tuotteeseen liittyy palvelutilaus' help='Palvelutilaus syötetään erillisellä palvelutilauslomakkeella' />
+            </Input>
             <Input valueLink={ this.props.valueLinks.memo } type='textarea' label='Kommentti' labelClassName='col-xs-3' wrapperClassName='col-xs-9'
               help='Vapaaehtoinen. Kerro tässä, jos tarvitset tuotetta vain osan aikaa leiristä. Mikäli tarvitset palvelua, voit kertoa tässä millaista palvelua tarvitset (esim. pystytys teltalle tai suunnittelu ja rakennus leiriportille). Voit myös lisätä muuta selventävää tietoa esim. tuotteen ominaisuuksista tähän kenttään.' />
           </form>
