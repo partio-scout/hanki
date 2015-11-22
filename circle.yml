@@ -11,6 +11,7 @@ deployment:
       appname: fj16-procurement-demo
 dependencies:
   post:
-    - java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar:
+    - wget --no-verbose -O "selenium-server-standalone.jar" "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
+    - java -jar selenium-server-standalone.jar:
         background: true
 
