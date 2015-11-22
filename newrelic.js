@@ -1,8 +1,10 @@
 /**
  * New Relic agent configuration.
  *
- * See lib/config.defaults.js in the agent distribution for a more complete
- * description of configuration variables and their potential values.
+ * Confugration is actually read from env variables, but this file is required for New Relic
+ * to function.
+ *
+ * See: https://docs.newrelic.com/docs/agents/nodejs-agent/installation-configuration/nodejs-agent-configuration
  */
 exports.config = {
   app_name: ['HANKI / Dev'],
