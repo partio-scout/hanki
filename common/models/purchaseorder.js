@@ -39,36 +39,4 @@ module.exports = function(Purchaseorder) {
       })
       .nodeify(next);
   });
-
-  Purchaseorder.CSVExport = function(cb) {
-    var toCSV = Promise.promisify(require('json2csv'));
-    var app = require('../../server/server');
-    var Purchaseorderrow = app.models.Purchaseorderrow;
-    var find_orderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
-    var find_all = Promise.promisify(Purchaseorder.find, Purchaseorder);
-    var find = find_all();
-
-    var fields = [ "orderId", "subscriberId", "name", "costcenterId" ];
-    var csv = "";
-
-    find
-      .then(function(orders) {
-        toCSV({ data: orders, fields: fields })
-          .then(function(csv) {
-            cb(null, csv);
-          })
-          .catch(function(err) {
-            throw err;
-          });
-      });
-
-
-  };
-  Purchaseorder.remoteMethod(
-    'CSVExport',
-    {
-      http: { path: '/CSVExport', verb: 'post' },
-      returns: { arg: 'csv', type: 'string' }
-    }
-  );
 };
