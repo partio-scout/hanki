@@ -9,14 +9,6 @@ describe('CSVExport', function() {
 
   var testId = 123;
 
-  function expectResultToHaveString(result, string, cb) {
-    return new Promise(function() {
-      Promise.resolve(expect(result).to.have.string(string));
-    }).then(function(err) {
-      cb(err);
-    });
-  }
-
   // REST API tests for unauthenticated and authenticated users (nothing posted)
   describe('REST API', function() {
 
