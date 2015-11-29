@@ -9,6 +9,14 @@ describe('CSVExport', function() {
 
   var testId = 123;
 
+  function expectResultToHaveString(result, string, cb) {
+    return new Promise(function() {
+      Promise.resolve(expect(result).to.have.string(string));
+    }).then(function(err) {
+      cb(err);
+    });
+  }
+
   // REST API tests for unauthenticated and authenticated users (nothing posted)
   describe('REST API', function() {
 
@@ -41,7 +49,7 @@ describe('CSVExport', function() {
       var purchaseorder = {
         'orderId': testId,
         'name': 'Testitilaus',
-        'costcenterId': 12,
+        'costcenterId': testId,
         'usageobjectId': 1,
         'subscriberId': 3
       };
@@ -74,7 +82,7 @@ describe('CSVExport', function() {
     });
 
     it('should add order name and costcenterId to purchaseorderrow', function(done) {
-      var expectedCSV = "amount','approved','confirmed','controllerApproval','delivered','deliveryId','finished','memo','modified','orderId','orderName','costCenterId','orderRowId','ordered','providerApproval','purchaseOrderNumber','titleId','userSectionApproval','nameOverride','priceOverride','unitOverride' 0,'false','false','false','false',0,'false','2015-07-26 13:40:15.002+03','n/a'," + testId + ",'Testitilaus'," + testId + ",'false','false',0,0,'false','n/a',0,'n/a'";
+      var expectedCSV = testId + ',"Testitilaus",' + testId + ',' + testId;
 
       testUtils.loginUser('procurementAdmin').then(function(accessToken) {
         testUtils.createFixture('Purchaseorderrow',
@@ -101,17 +109,19 @@ describe('CSVExport', function() {
           }).then(function() {
             request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
             .expect(200)
-            .expect(function(err, res) {
+            .end(function(err, res) {
               if (err) {
                 done(err);
               } else {
-                expect(res.body.csv).to.equal(expectedCSV);
+                try {
+                  expect(res.body.csv).to.have.string(expectedCSV);
+                  done();
+                } catch (e) {
+                  done(e);
+                }
               }
             });
           })
-        .then(function() {
-          done();
-        })
         .catch(function(err) {
           done(err);
         });
