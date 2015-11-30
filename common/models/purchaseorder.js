@@ -1,8 +1,24 @@
 var Promise = require('bluebird');
+var app = require('../../server/server');
 
 module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.subscriberId = ctx.req.accessToken.userId;
+    next();
+  });
+
+  Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
+    next();
+  });
+
+  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update row');
+    next();
+  });
+
+  Purchaseorder.afterRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update');
     next();
   });
 

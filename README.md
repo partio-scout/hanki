@@ -89,10 +89,11 @@ NODE_ENV=dev npm start
 
 ## Running tests
 
-Make sure Selenium server is runing berfore running integration tests. Run Selenium server with:
+If you are not using vagrant, download the selenium standalone server and run it to be able to run the integration tests:
 
 ```
-java -jar e2e-tests/libs/selenium-server-standalone-2.47.1.jar
+wget "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
+java -jar selenium-server-standalone-2.48.2.jar
 ```
 
 Tests include linter, API and interation tests. Run all tests and checks:

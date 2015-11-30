@@ -4,6 +4,7 @@ module.exports = [
   'AccessToken',
   'Role',
   'RoleMapping',
+  'History',
   'Purchaseuser',
   'Title',
   'Titlegroup',

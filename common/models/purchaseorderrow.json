@@ -337,6 +337,24 @@
       },
       "_selectable": false,
       "comments": "Muu tuote -kategoriassa tuotteen yksikkö"
+    },
+    "requestService": {
+      "type": "Boolean",
+      "required": false,
+      "default": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "request_service",
+        "dataType": "boolean",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "Pyydä palvelua -flagi"
     }
   },
   "validations": [],

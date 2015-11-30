@@ -7,7 +7,8 @@ var config = {
   entry: mainPath,
   output: {
     path: buildPath,
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: 'build/'
   },
   module: {
     loaders: [{
