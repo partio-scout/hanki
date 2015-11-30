@@ -63,6 +63,7 @@ var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(Purchase
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
+var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
 // Setup routes
 
@@ -82,7 +83,9 @@ var routes = (
       <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
-    <Route name="title_list" path="titles" handler={ TitleList } />
+    <Route name="title_list" path="titles" handler={ TitleList }>
+      <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
+    </Route>
   </Route>
 );
 

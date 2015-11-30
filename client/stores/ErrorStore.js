@@ -13,6 +13,7 @@ function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions,
           CostCenterActions.COST_CENTER_UPDATE_FAILED,
           TitleActions.TITLE_UPDATE_FAILED,
           TitleActions.TITLEGROUP_UPDATE_FAILED,
+          TitleActions.DELETE_TITLE_FAILED,
         ],
         popError: ErrorActions.CONFIRM_ERROR,
       });

@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
 var RouteHandler = require('react-router').RouteHandler;
 var connectToStores = require('alt/utils/connectToStores');
 
@@ -8,8 +9,18 @@ var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var Table = ReactBootstrap.Table;
 var Panel = ReactBootstrap.Panel;
+var Glyphicon = ReactBootstrap.Glyphicon;
+var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-function getTitleList(TitleActions, TitleStore) {
+function getTitleDeleteButton(title) {
+  return title.titleId !== 0 && title.order_rows.length === 0 && (
+    <ButtonLink bsStyle="link" className="delete" to="delete_title" params={ { titleId: title.titleId } }>
+      <Glyphicon glyph="remove" />
+    </ButtonLink>
+  );
+}
+
+function getTitleList(TitleStore) {
   return connectToStores(React.createClass({
     propTypes: {
       titles: React.PropTypes.object,
@@ -52,6 +63,7 @@ function getTitleList(TitleActions, TitleStore) {
                         _.map(titlesByGroup[titleGroup.titlegroupId], title =>
                           <tr>
                             <td>
+                              { getTitleDeleteButton(title) }
                               { title.name }
                             </td>
                             <td>

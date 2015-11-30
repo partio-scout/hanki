@@ -36,6 +36,24 @@ function getTitleActions(alt, Title, Titlegroup) {
         }
       }, 'filter={"include":{"relation":"order_rows","scope":{"fields":["orderRowId"]}}}');
     }
+
+    deleteTitleFailed(err) {
+      this.dispatch(err);
+    }
+
+    titleDeleted(title) {
+      this.dispatch(title);
+    }
+
+    deleteTitle(title) {
+      Title.del(title.titleId, (err) => {
+        if (err) {
+          this.actions.deleteTitleFailed(err);
+        } else {
+          this.actions.titleDeleted(title);
+        }
+      });
+    }
   }
   return alt.createActions(TitleActions);
 }
