@@ -20,7 +20,7 @@ module.exports = function(Purchaseorderrow) {
     var find_order = Promise.promisify(Purchaseorder.findById, Purchaseorder);
     var find_orderrows = find_all_orderrows();
 
-    var fields = [ 'amount', 'approved', 'confirmed', 'controllerApproval', 'delivered', 'deliveryId', 'finished', 'memo', 'modified', 'orderId', 'orderName', 'costCenterId', 'orderRowId', 'ordered', 'providerApproval', 'purchaseOrderNumber', 'titleId', 'userSectionApproval', 'nameOverride', 'priceOverride', 'unitOverride' ];
+    var fields = [ 'amount', 'approved', 'confirmed', 'controllerApproval', 'delivered', 'deliveryId', 'finished', 'memo', 'modified', 'orderId', 'orderName', 'costCenterId', 'orderRowId', 'ordered', 'providerApproval', 'purchaseOrderNumber', 'titleId', 'userSectionApproval', 'nameOverride', 'priceOverride', 'unitOverride', 'requestService' ];
 
     function replaceOrderIdWithNameAndAddCostCenter(orderrow) {
       return find_order(orderrow.orderId).then(function(order) {
