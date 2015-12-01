@@ -7,7 +7,7 @@ function loginUser(username, userpass) {
   var promiseUserLogin = Promise.promisify(app.models.Purchaseuser.login, app.models.Purchaseuser);
   return promiseUserLogin({
     username: username,
-    password: userpass
+    password: userpass,
   });
 }
 
@@ -48,5 +48,5 @@ module.exports = {
   deleteFixtureIfExists: deleteFixtureIfExists,
   deleteFixturesIfExist: deleteFixturesIfExist,
   expectModelToBeDeleted: expectModelToBeDeleted,
-  find: find
+  find: find,
 };

@@ -20,7 +20,7 @@ module.exports = function(Purchaseuser) {
         return createRoleMapping({
           'principalType': 'USER',
           'principalId': user.id,
-          'roleId': roleId
+          'roleId': roleId,
         });
       })).catch(wrapError('Couldn\'t create role mapping!'));
     }
@@ -41,7 +41,7 @@ module.exports = function(Purchaseuser) {
     }
 
     function setPropertyForAll(models, propertyName, propertyValue) {
-      return Promise.all(models.map(function(model) { return setProperty(model, propertyName, propertyValue); }));
+      return Promise.all(models.map(function(model) { return setProperty(model, propertyName, propertyValue); }));
     }
 
     return createUser(user).catch(wrapError('Couldn\'t create user!'))

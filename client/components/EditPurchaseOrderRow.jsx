@@ -3,7 +3,7 @@ var React = require('react');
 var ReactAddons = require('react/addons').addons;
 var Router = require('react-router');
 
-var PurchaseOrderRowForm = require('./PurchaseOrderRowForm.jsx');
+var PurchaseOrderRowForm = require('./PurchaseOrderRowForm');
 
 var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
@@ -11,19 +11,25 @@ var connectToStores = require('alt/utils/connectToStores');
 
 var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var EditPurchaseOrderRow = React.createClass({
+    propTypes: {
+      params: React.PropTypes.object,
+      titles: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
+    },
+
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
-        return [ TitleStore, DeliveryStore ]
+        return [ TitleStore, DeliveryStore ];
       },
 
       getPropsFromStores() {
         return {
           titles: TitleStore.getState(),
-          deliveries: DeliveryStore.getState()
-        }
-      }
+          deliveries: DeliveryStore.getState(),
+        };
+      },
     },
 
     isOtherProductSelected: function() {
@@ -71,10 +77,10 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         deliveryId: this.state.deliveryId,
         memo: this.state.memo,
         orderId: this.state.orderId,
-        requestService: this.state.requestService
-      }
+        requestService: this.state.requestService,
+      };
 
-      if(this.isOtherProductSelected()) {
+      if (this.isOtherProductSelected()) {
         row.titleId = 0;
         row.nameOverride = this.state.nameOverride;
         row.priceOverride = this.state.priceOverride;
@@ -101,7 +107,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         amount: this.linkState('amount'),
         delivery: this.linkState('deliveryId'),
         memo: this.linkState('memo'),
-        requestService: this.linkState('requestService')
+        requestService: this.linkState('requestService'),
       };
 
       return (
@@ -113,9 +119,10 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
           valueLinks={ valueLinks }
           validationErrors={ this.state.validationErrors }
           onSave={ this.onSave }
-          onCancel={ this.onCancel } />
+          onCancel={ this.onCancel }
+        />
       );
-    }
+    },
   });
 
   return connectToStores(EditPurchaseOrderRow);

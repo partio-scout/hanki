@@ -1,6 +1,6 @@
 var app = require('../server');
 var request = require('supertest');
-var testUtils = require('./utils/test-utils.js');
+var testUtils = require('./utils/test-utils');
 
 describe('Orderer', function() {
   describe('should be allowed to create new', function() {
@@ -10,7 +10,7 @@ describe('Orderer', function() {
         .send({
           'name': 'Paljon nauloja',
           'costcenterId': 1,
-          'subscriberId': accessToken.userId
+          'subscriberId': accessToken.userId,
         })
         .expect(200)
         .end(done);
@@ -19,7 +19,7 @@ describe('Orderer', function() {
 
     it('Purchaseorderrow', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
-        d = new Date().toISOString();
+        var d = new Date().toISOString();
         request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
         .send({
           'titleId': 1,
@@ -28,7 +28,7 @@ describe('Orderer', function() {
           'orderId': 3,
           'approved': false,
           'finished': false,
-          'modified': d
+          'modified': d,
         })
         .expect(200)
         .end(done);
@@ -46,7 +46,7 @@ describe('Orderer', function() {
             name: 'n/a',
             phone: 'n/a',
             enlistment: 'n/a',
-            userSection: 'n/a'
+            userSection: 'n/a',
           })
           .expect(401)
           .end(done);

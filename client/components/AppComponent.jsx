@@ -37,7 +37,7 @@ function getApp(ErrorNotification, UserStore, UserActions) {
     render() {
       var nameItem = '';
       var logoutItem = '';
-      if(this.state.currentUser) {
+      if (this.state.currentUser) {
         nameItem = (
           <NavItem>
             { this.state.currentUser.email }
@@ -52,8 +52,8 @@ function getApp(ErrorNotification, UserStore, UserActions) {
 
       return (
         <div>
-          <ErrorNotification></ErrorNotification>
-          <Navbar brand='HANKI'>
+          <ErrorNotification />
+          <Navbar brand="HANKI">
             <Nav right>
               { nameItem }
               { logoutItem }
@@ -64,7 +64,7 @@ function getApp(ErrorNotification, UserStore, UserActions) {
           </Grid>
         </div>
       );
-    }
+    },
   });
 }
 

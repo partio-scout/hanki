@@ -1,7 +1,7 @@
 var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
-var testUtils = require('./utils/test-utils.js');
+var testUtils = require('./utils/test-utils');
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -27,7 +27,7 @@ describe('History', function() {
           'orderId': 2,
           'approved': false,
           'finished': false,
-          'memo': 'Historiallinen tilausrivi'
+          'memo': 'Historiallinen tilausrivi',
         })
         .expect(200)
         .end(complete);
@@ -73,7 +73,7 @@ describe('History', function() {
         'eventtype': 'add',
         'accountId': 1,
         'purchaseOrderId': order.id,
-        'purchaseOrderRowId': null
+        'purchaseOrderRowId': null,
       }, done);
     });
   });
@@ -84,7 +84,7 @@ describe('History', function() {
         .send({
           'name': 'Historiallinen muokkaus',
           'costcenterId': 1,
-          'subscriberId': accessToken.userId
+          'subscriberId': accessToken.userId,
         })
         .end(function() {
           expectHistoryToEventuallyExist({
@@ -92,7 +92,7 @@ describe('History', function() {
             'eventtype': 'update',
             'accountId': 1,
             'purchaseOrderId': order.orderId,
-            'purchaseOrderRowId': null
+            'purchaseOrderRowId': null,
           }, done);
         });
     });
@@ -121,7 +121,7 @@ describe('History', function() {
           'orderId': 2,
           'approved': false,
           'finished': false,
-          'memo': 'Historiallinen tilausrivi'
+          'memo': 'Historiallinen tilausrivi',
         })
         .end(function() {
           expectHistoryToEventuallyExist({
@@ -129,7 +129,7 @@ describe('History', function() {
             'purchaseOrderRowId': row.orderRowId,
             'eventtype': 'update row',
             'comment': null,
-            'accountId': 1
+            'accountId': 1,
           }, done);
         });
     });

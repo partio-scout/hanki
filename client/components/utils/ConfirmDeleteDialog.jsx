@@ -3,11 +3,16 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 
 var Modal = ReactBootstrap.Modal;
-var Input = ReactBootstrap.Input;
-var Static = ReactBootstrap.FormControls.Static;
 var Button = ReactBootstrap.Button;
 
 var ConfirmDeleteDialog = React.createClass({
+  propTypes: {
+    onConfirm: React.PropTypes.func,
+    onHide: React.PropTypes.func,
+    title: React.PropTypes.string,
+    children: React.PropTypes.node,
+  },
+
   render: function() {
     return (
       <Modal show="true" onHide={ this.props.onHide || _.noop }>
@@ -25,7 +30,7 @@ var ConfirmDeleteDialog = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  }
+  },
 });
 
 module.exports = ConfirmDeleteDialog;

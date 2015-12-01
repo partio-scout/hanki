@@ -15,7 +15,14 @@ var config = {
   output: {
     path: buildPath,
     filename: 'bundle.js',
-    publicPath: '/build/'
+    publicPath: '/build/',
+  },
+  resolve: {
+    extensions: [
+      '',
+      '.js',
+      '.jsx',
+    ],
   },
   module: {
     loaders: [{
@@ -23,23 +30,23 @@ var config = {
       loader: 'babel',
       exclude: [nodeModulesPath],
       query: {
-        presets: ['react', 'es2015']
-      }
+        presets: ['react', 'es2015'],
+      },
     }, {
       test: /\.css$/,
-      loader: 'style!css'
+      loader: 'style!css',
     }, {
       test: /\.scss$/,
-      loader: 'style!css!sass?outputStyle=expanded'
+      loader: 'style!css!sass?outputStyle=expanded',
     },
     { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url?limit=10000&minetype=application/font-woff' },
     { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,  loader: 'url?limit=10000&minetype=application/font-woff' },
     { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=application/octet-stream' },
     { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file' },
-    { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=image/svg+xml' }
-    ]
+    { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&minetype=image/svg+xml' },
+    ],
   },
-  plugins: [new Webpack.HotModuleReplacementPlugin()]
+  plugins: [new Webpack.HotModuleReplacementPlugin()],
 };
 
 module.exports = config;

@@ -54,13 +54,13 @@ function getRoles() {
 }
 
 function getCostCenters(costCenterCodes) {
-  if (costCenterCodes === undefined || costCenterCodes.length === 0) {
+  if (costCenterCodes === undefined || costCenterCodes.length === 0) {
     return Promise.resolve([]);
   }
 
   return findCostCenter({ where: { code: { inq: costCenterCodes } } }).catch(wrapError('Cannot query cost centers!'))
     .then(function (costCenters) {
-      if (!costCenters || costCenters.length !== costCenterCodes.length) {
+      if (!costCenters || costCenters.length !== costCenterCodes.length) {
         throw new Error('Not all of the given cost centers were found. Given codes: ' + costCenterCodes +
           ', found codes: ' + costCenters.map(function (costCenter) { return costCenter.code; }));
       }
@@ -84,7 +84,7 @@ Promise.join(
       name: 'n/a',
       phone: 'n/a',
       enlistment: 'n/a',
-      userSection: 'n/a'
+      userSection: 'n/a',
     };
 
     return purchaseUser.createWithRolesAndCostcenters(user, roles, costCenters, costCentersApproverOf, costCentersControllerOf)
