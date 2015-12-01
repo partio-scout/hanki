@@ -21,7 +21,8 @@
     "console": "loopback-console ."
   },
   "engines": {
-    "node": "0.12.x"
+    "node": "~4.2.2",
+    "npm": "~2.14.7"
   },
   "dependencies": {
     "alt": "^0.17.8",
