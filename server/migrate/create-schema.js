@@ -1,8 +1,8 @@
-var app = require('../server.js');
+var app = require('../server');
 var db = app.datasources.db;
 var _ = require('lodash');
 
-var modelsToAutoMigrate = require('../models-list.js');
+var modelsToAutoMigrate = require('../models-list');
 
 var fixturesToImport = [
   'Role',

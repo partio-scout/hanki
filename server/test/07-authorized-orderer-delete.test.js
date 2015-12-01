@@ -1,6 +1,6 @@
 var app = require('../server');
 var request = require('supertest');
-var testUtils = require('./utils/test-utils.js');
+var testUtils = require('./utils/test-utils');
 var Promise = require('bluebird');
 
 describe('Orderer', function() {

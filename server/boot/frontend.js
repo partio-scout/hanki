@@ -12,7 +12,7 @@ module.exports = function(server) {
         ws: true,
       });
 
-      var bundle = require('../frontend/bundle.js');
+      var bundle = require('../frontend/bundle');
       bundle();
       server.all('/build/*', function (req, res) {
         proxy.web(req, res, {
