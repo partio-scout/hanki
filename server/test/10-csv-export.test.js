@@ -58,18 +58,15 @@ describe('CSVExport', function() {
       testUtils.createFixture('Costcenter', costcenter)
       .then(function(ccenter) {
         costcenterId = ccenter.costcenterId;
-        testUtils.createFixture('Purchaseorder', {
+        return testUtils.createFixture('Purchaseorder', {
           'name': 'Testitilaus',
           'costcenterId': costcenterId,
           'usageobjectId': 1,
           'subscriberId': 3
-        }).then(function(order) {
-          purchaseorderId = order.orderId;
-          done();
         });
-      }).catch(function(err) {
-        done(err);
-      });
+      }).then(function(order) {
+        purchaseorderId = order.orderId;
+      }).nodeify(done);
     });
 
     afterEach(function(done) {
@@ -77,17 +74,14 @@ describe('CSVExport', function() {
         testUtils.deleteFixtureIfExists('Costcenter', costcenterId),
         testUtils.deleteFixtureIfExists('Purchaseorder', purchaseorderId),
         testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId)
-      ).then(function() {
-        done();
-      }).catch(function(err) {
-        done(err);
-      });
+      ).nodeify(done);
     });
 
     it('should add order name and costcenterId to purchaseorderrow', function(done) {
+      var login = testUtils.loginUser('procurementAdmin');
 
-      testUtils.loginUser('procurementAdmin').then(function(accessToken) {
-        testUtils.createFixture('Purchaseorderrow',
+      login.then(function(accessToken) {
+        return testUtils.createFixture('Purchaseorderrow',
           {
             'amount': 0,
             'approved': false,
@@ -108,27 +102,21 @@ describe('CSVExport', function() {
             'priceOverride': 0,
             'unitOverride': 'n/a'
           }
-        ).then(function(orderrow) {
-          orderrowId = orderrow.orderRowId;
-          var expectedCSV = purchaseorderId + ',"Testitilaus",' + costcenterId + ',' + orderrowId;
-          request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              done(err);
-            } else {
-              try {
-                expect(res.body.csv).to.have.string(expectedCSV);
-                done();
-              } catch (e) {
-                done(e);
-              }
-            }
-          });
+        );
+      })
+      .then(function(orderrow) {
+        orderrowId = orderrow.orderRowId;
+        var expectedCSV = purchaseorderId + ',"Testitilaus",' + costcenterId + ',' + orderrowId;
+        request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + login.value().id )
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            done(err);
+          } else {
+            expect(res.body.csv).to.have.string(expectedCSV);
+          }
         });
-      }).catch(function(err) {
-        done(err);
-      });
+      }).nodeify(done);
     });
   });
 });
