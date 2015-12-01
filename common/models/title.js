@@ -31,7 +31,7 @@ module.exports = function(Title) {
       } else { // passed function not a function
         cb('flawed function', null);
       }
-    };
+    }
 
     // options for Parse function:
     var options = { columns: [ 'name', 'titlegroupId', 'unit', 'vatPercent', 'priceWithTax', 'accountId', 'supplierId', 'supplierTitlecode', 'toResold', 'toRent', 'toBought', 'toSignedFor', 'memo', 'selectable' ], skip_empty_lines: true, auto_parse: true, delimiter: ',', rowDelimiter: '\n' };

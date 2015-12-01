@@ -19,7 +19,7 @@ describe('Orderer', function() {
 
     it('Purchaseorderrow', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
-        d = new Date().toISOString();
+        var d = new Date().toISOString();
         request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
         .send({
           'titleId': 1,

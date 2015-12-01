@@ -115,7 +115,9 @@ exports.config = {
     Using expect is a reference to expect function, but executing Should() function extends
     Object.prototype Should does not work with IE. See for more: http://chaijs.com/guide/styles/
     */
-    expect = chai.expect;
+
+    // Some eslint rules disabled for the next line, since it is the wdio recommended way of initializing chai
+    expect = chai.expect; // eslint-disable-line no-unused-vars, no-undef
     chai.Should();
   },
 };
