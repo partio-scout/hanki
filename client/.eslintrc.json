@@ -9,6 +9,7 @@
     "react"
   ],
   "rules": {
+    "no-console": 2,
     "jsx-quotes": 2,
     "react/display-name": 0,
     "react/forbid-prop-types": 0,

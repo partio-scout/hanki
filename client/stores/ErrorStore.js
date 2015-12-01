@@ -19,7 +19,6 @@ function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions,
     }
 
     pushError(error) {
-      console.log('Pushing errors: ', error);
       this.errors.push(error);
     }
 
