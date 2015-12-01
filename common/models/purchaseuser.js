@@ -20,7 +20,7 @@ module.exports = function(Purchaseuser) {
         return createRoleMapping({
           'principalType': 'USER',
           'principalId': user.id,
-          'roleId': roleId
+          'roleId': roleId,
         });
       })).catch(wrapError('Couldn\'t create role mapping!'));
     }

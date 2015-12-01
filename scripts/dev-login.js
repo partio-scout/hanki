@@ -11,8 +11,8 @@ if (!email) {
 
 var query = {
   where: {
-    email: email
-  }
+    email: email,
+  },
 };
 
 app.models.Purchaseuser.findOne(query, function(err, user) {

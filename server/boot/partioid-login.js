@@ -7,7 +7,7 @@ var conf = {
   path: '/auth/partioid',
   issuer: process.env.PARTIOID_SP_ISSUER || 'http://localhost:3000',
   entryPoint: 'https://' + partioIDRemoteName + '.partio.fi/simplesaml/saml2/idp/SSOService.php',
-  cert: fs.readFileSync(__dirname + '/../../server/partioid-login/' + partioIDRemoteName + '.crt').toString()
+  cert: fs.readFileSync(__dirname + '/../../server/partioid-login/' + partioIDRemoteName + '.crt').toString(),
 };
 var partioid = new SAML(conf);
 
@@ -35,8 +35,8 @@ module.exports = function(app) {
       } else {
         var query = {
           where: {
-            memberNumber: samlResult.membernumber
-          }
+            memberNumber: samlResult.membernumber,
+          },
         };
         app.models.Purchaseuser.findOne(query, function(err, user) {
           if (err) {

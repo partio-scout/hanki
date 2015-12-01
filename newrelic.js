@@ -10,6 +10,6 @@ exports.config = {
   app_name: ['HANKI / Dev'],
   license_key: '',
   logging: {
-    level: 'info'
-  }
+    level: 'info',
+  },
 };

@@ -11,7 +11,7 @@ describe('Orderer', function() {
         'name': 'delete me',
         'costcenterId': 1,
         'orderId': 222,
-        'subscriberId': 1
+        'subscriberId': 1,
       }),
       testUtils.createFixture('Purchaseorderrow', {
         'orderRowId': 333,
@@ -21,7 +21,7 @@ describe('Orderer', function() {
         'orderId': 3,
         'approved': false,
         'finished': false,
-        'modified': (new Date()).toISOString()
+        'modified': (new Date()).toISOString(),
       }))
     .nodeify(done);
   });

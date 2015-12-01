@@ -10,7 +10,7 @@ describe('Orderer', function() {
         .send({
           'name': 'Paljon nauloja',
           'costcenterId': 1,
-          'subscriberId': accessToken.userId
+          'subscriberId': accessToken.userId,
         })
         .expect(200)
         .end(done);
@@ -28,7 +28,7 @@ describe('Orderer', function() {
           'orderId': 3,
           'approved': false,
           'finished': false,
-          'modified': d
+          'modified': d,
         })
         .expect(200)
         .end(done);
@@ -46,7 +46,7 @@ describe('Orderer', function() {
             name: 'n/a',
             phone: 'n/a',
             enlistment: 'n/a',
-            userSection: 'n/a'
+            userSection: 'n/a',
           })
           .expect(401)
           .end(done);
