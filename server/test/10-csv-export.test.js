@@ -4,6 +4,7 @@ var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
 var testUtils = require('./utils/test-utils.js');
+var Promise = require('bluebird');
 
 describe('CSVExport', function() {
 
@@ -45,8 +46,9 @@ describe('CSVExport', function() {
   });
 
   describe('method', function() {
+    var purchaseorderId, costcenterId, orderrowId;
 
-    before(function(done) {
+    beforeEach(function(done) {
       var costcenter = {
         'code': '00001',
         'name': 'Testikustannuspaikka',
@@ -55,93 +57,76 @@ describe('CSVExport', function() {
       };
       testUtils.createFixture('Costcenter', costcenter)
       .then(function(ccenter) {
+        costcenterId = ccenter.costcenterId;
         testUtils.createFixture('Purchaseorder', {
           'name': 'Testitilaus',
-          'costcenterId': ccenter.costcenterId,
+          'costcenterId': costcenterId,
           'usageobjectId': 1,
           'subscriberId': 3
+        }).then(function(order) {
+          purchaseorderId = order.orderId;
+          done();
         });
-      }).then(function() {
-        done();
-      })
-      .catch(function(err) {
-        done(err);
-      });
-    });
-
-    after(function(done) {
-      testUtils.find('Costcenter', { 'name': 'Testikustannuspaikka' })
-      .then(function(costcenter) {
-        testUtils.find('Purchaseorder', { 'name': 'Testitilaus' })
-        .then(function(purchaseorder) {
-          testUtils.deleteFixtureIfExists('Costcenter', costcenter.costcenterId)
-          .then(
-            testUtils.deleteFixtureIfExists('Purchaseorder', purchaseorder.orderId)
-          );
-        });
-      }).then(function() {
-        done();
-      },function(err) {
+      }).catch(function(err) {
         done(err);
       });
     });
 
     afterEach(function(done) {
-      testUtils.find('Purchaseorderrow', { 'memo': 'Tämä on testi csv-exporttia varten' })
-      .then(function(orderrow) {
-        app.models.Purchaseorderrow.destroyById(orderrow[0].orderRowId, done);
+      Promise.join(
+        testUtils.deleteFixtureIfExists('Costcenter', costcenterId),
+        testUtils.deleteFixtureIfExists('Purchaseorder', purchaseorderId),
+        testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId)
+      ).then(function() {
+        done();
+      }).catch(function(err) {
+        done(err);
       });
     });
 
     it('should add order name and costcenterId to purchaseorderrow', function(done) {
 
       testUtils.loginUser('procurementAdmin').then(function(accessToken) {
-        testUtils.find('Costcenter', { 'name': 'Testikustannuspaikka' })
-        .then(function(costcenter) {
-          testUtils.find('Purchaseorder', { 'name': 'Testitilaus' })
-          .then(function(purchaseorder) {
-            testUtils.createFixture('Purchaseorderrow',
-              {
-                'amount': 0,
-                'approved': false,
-                'confirmed': false,
-                'controllerApproval': false,
-                'delivered': false,
-                'deliveryId': 0,
-                'finished': false,
-                'memo': 'Tämä on testi csv-exporttia varten',
-                'modified': '2015-07-26 13:40:15.002+03',
-                'orderId': purchaseorder[0].orderId,
-                'ordered': false,
-                'providerApproval': false,
-                'purchaseOrderNumber': 0,
-                'titleId': 0,
-                'userSectionApproval': false,
-                'nameOverride': 'n/a',
-                'priceOverride': 0,
-                'unitOverride': 'n/a'
+        testUtils.createFixture('Purchaseorderrow',
+          {
+            'amount': 0,
+            'approved': false,
+            'confirmed': false,
+            'controllerApproval': false,
+            'delivered': false,
+            'deliveryId': 0,
+            'finished': false,
+            'memo': 'Tämä on testi csv-exporttia varten',
+            'modified': '2015-07-26 13:40:15.002+03',
+            'orderId': purchaseorderId,
+            'ordered': false,
+            'providerApproval': false,
+            'purchaseOrderNumber': 0,
+            'titleId': 0,
+            'userSectionApproval': false,
+            'nameOverride': 'n/a',
+            'priceOverride': 0,
+            'unitOverride': 'n/a'
+          }
+        ).then(function(orderrow) {
+          orderrowId = orderrow.orderRowId;
+          var expectedCSV = purchaseorderId + ',"Testitilaus",' + costcenterId + ',' + orderrowId;
+          request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              done(err);
+            } else {
+              try {
+                expect(res.body.csv).to.have.string(expectedCSV);
+                done();
+              } catch (e) {
+                done(e);
               }
-            ).then(function(orderrow) {
-              var expectedCSV = purchaseorder[0].orderId + ',"Testitilaus",' + costcenter[0].costcenterId + ',' + orderrow.orderRowId;
-              request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
-              .expect(200)
-              .end(function(err, res) {
-                if (err) {
-                  done(err);
-                } else {
-                  try {
-                    expect(res.body.csv).to.have.string(expectedCSV);
-                    done();
-                  } catch (e) {
-                    done(e);
-                  }
-                }
-              });
-            });
+            }
           });
         });
-      })
-      .catch(function(err) {
+      }).catch(function(err) {
         done(err);
       });
     });
