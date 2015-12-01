@@ -1,7 +1,6 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactAddons = require('react/addons').addons;
-var PurchaseOrderRowForm = require('./PurchaseOrderRowForm.jsx')
+var PurchaseOrderRowForm = require('./PurchaseOrderRowForm');
 
 var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
@@ -11,20 +10,27 @@ var Router = require('react-router');
 
 var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
   var newPurchaseOrderRow = React.createClass({
+    propTypes: {
+      purchaseOrders: React.PropTypes.object,
+      titles: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
+      params: React.PropTypes.object,
+    },
+
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, TitleStore, DeliveryStore ]
+        return [ PurchaseOrderStore, TitleStore, DeliveryStore ];
       },
 
       getPropsFromStores() {
         return {
           purchaseOrders: PurchaseOrderStore.getState(),
           titles: TitleStore.getState(),
-          deliveries: DeliveryStore.getState()
-        }
-      }
+          deliveries: DeliveryStore.getState(),
+        };
+      },
     },
 
     isOtherProductSelected: function() {
@@ -41,8 +47,8 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         nameOverride: '',
         priceOverride: 0,
         requestService: false,
-        validationErrors: [ ]
-      }
+        validationErrors: [ ],
+      };
     },
 
     onCancel: function() {
@@ -57,7 +63,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         deliveryId: this.state.delivery,
         memo: this.state.memo,
         orderId: this.props.params.purchaseOrder,
-        requestService: this.state.requestService
+        requestService: this.state.requestService,
       };
 
       if (this.isOtherProductSelected()) {
@@ -87,7 +93,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
         amount: this.linkState('amount'),
         delivery: this.linkState('delivery'),
         memo: this.linkState('memo'),
-        requestService: this.linkState('requestService')
+        requestService: this.linkState('requestService'),
       };
 
       return (
@@ -100,9 +106,10 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           valueLinks={ valueLinks }
           validationErrors={ this.state.validationErrors }
           onSave={ this.onSave }
-          onCancel={ this.onCancel } />
+          onCancel={ this.onCancel }
+        />
       );
-    }
+    },
   });
 
   return connectToStores(newPurchaseOrderRow);

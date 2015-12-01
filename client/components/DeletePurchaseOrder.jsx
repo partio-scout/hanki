@@ -1,27 +1,31 @@
-var _ = require('lodash');
 var React = require('react');
 var connectToStores = require('alt/utils/connectToStores');
-var ConfirmDeleteDialog = require('./utils/ConfirmDeleteDialog.jsx');
+var ConfirmDeleteDialog = require('./utils/ConfirmDeleteDialog');
 var Router = require('react-router');
 
 var getDeletePurchaseOrder = function(PurchaseOrderActions, PurchaseOrderStore) {
   var deletePurchaseOrder = React.createClass({
+    propTypes: {
+      myPurchaseOrders: React.PropTypes.object,
+      params: React.PropTypes.object,
+    },
+
     mixins: [ Router.Navigation ],
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore ]
+        return [ PurchaseOrderStore ];
       },
 
       getPropsFromStores() {
-        return PurchaseOrderStore.getState()
-      }
+        return PurchaseOrderStore.getState();
+      },
     },
 
     getDefaultProps: function() {
       return {
-        myPurchaseOrders: { }
-      }
+        myPurchaseOrders: { },
+      };
     },
 
     onHide: function() {
@@ -41,7 +45,7 @@ var getDeletePurchaseOrder = function(PurchaseOrderActions, PurchaseOrderStore) 
           Haluatko varmasti poistaa tilauksen "{ order.name }"?
         </ConfirmDeleteDialog>
       );
-    }
+    },
   });
 
   return connectToStores(deletePurchaseOrder);

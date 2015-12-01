@@ -1,27 +1,30 @@
-var _ = require('lodash');
 var React = require('react');
 var connectToStores = require('alt/utils/connectToStores');
-var ErrorDialog = require('./utils/ErrorDialog.jsx');
+var ErrorDialog = require('./utils/ErrorDialog');
 var Router = require('react-router');
 
 var getErrorNotification = function(ErrorActions, ErrorStore) {
   var errorNotification = React.createClass({
+    propTypes: {
+      errors: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Error)),
+    },
+
     mixins: [ Router.Navigation ],
 
     statics: {
       getStores() {
-        return [ ErrorStore ]
+        return [ ErrorStore ];
       },
 
       getPropsFromStores() {
-        return ErrorStore.getState()
-      }
+        return ErrorStore.getState();
+      },
     },
 
     getDefaultProps: function() {
       return {
-        errors: [ ]
-      }
+        errors: [ ],
+      };
     },
 
     onHide: function() {
@@ -34,11 +37,11 @@ var getErrorNotification = function(ErrorActions, ErrorStore) {
 
     render: function() {
       var error = this.props.errors.length && this.props.errors[this.props.errors.length - 1];
-      const dialog = error ? (<ErrorDialog title="Virhe!" onHide={ this.onHide } onConfirm={ this.onConfirm } error={error}></ErrorDialog>) : '';
+      const dialog = error ? (<ErrorDialog title="Virhe!" onHide={ this.onHide } onConfirm={ this.onConfirm } error={ error } />) : '';
       return (
         <div>{ dialog }</div>
       );
-    }
+    },
   });
 
   return connectToStores(errorNotification);

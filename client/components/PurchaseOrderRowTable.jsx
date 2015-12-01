@@ -4,17 +4,23 @@ var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
 
 var Table = ReactBootstrap.Table;
-var Price = require('./utils/Price.jsx');
+var Price = require('./utils/Price');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var PurchaseOrderRow = React.createClass({
+  propTypes: {
+    row: React.PropTypes.object,
+    titles: React.PropTypes.object,
+    deliveries: React.PropTypes.object,
+  },
+
   getDefaultProps: function() {
     return {
       titles: { },
       row: { },
-      deliveries: { }
-    }
+      deliveries: { },
+    };
   },
 
   render: function () {
@@ -24,11 +30,11 @@ var PurchaseOrderRow = React.createClass({
     return (
       <tr>
         <td>
-          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
+          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="pencil" />
           </ButtonLink>
-          <ButtonLink bsStyle='link' className="delete" to="delete_purchase_order_row" params={{ purchaseOrderRow: row.orderRowId }}>
-            <Glyphicon glyph='remove' />
+          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
+            <Glyphicon glyph="remove" />
           </ButtonLink>
           { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
         </td>
@@ -42,7 +48,7 @@ var PurchaseOrderRow = React.createClass({
           { row.memo }
         </td>
         <td>
-          { row.requestService ? <Glyphicon glyph='ok' bsClass='glyphicon text-success' /> : null }
+          { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }
         </td>
         <td>
 
@@ -64,10 +70,16 @@ var PurchaseOrderRow = React.createClass({
         </td>
       </tr>
     );
-  }
+  },
 });
 
 var PurchaseOrderRowTable = React.createClass({
+  propTypes: {
+    purchaseOrderRows: React.PropTypes.object,
+    titles: React.PropTypes.object,
+    deliveries: React.PropTypes.object,
+  },
+
   render: function() {
     return (
       <Table striped>
@@ -90,13 +102,13 @@ var PurchaseOrderRowTable = React.createClass({
           </tr>
         </thead>
         <tbody>
-          {_.map(this.props.purchaseOrderRows, (row) => {
-            return <PurchaseOrderRow row={ row } titles={ this.props.titles } deliveries={ this.props.deliveries } />
-          })}
+          {
+            _.map(this.props.purchaseOrderRows, row => <PurchaseOrderRow row={ row } titles={ this.props.titles } deliveries={ this.props.deliveries } />)
+          }
         </tbody>
       </Table>
     );
-  }
+  },
 });
 
 module.exports = PurchaseOrderRowTable;
