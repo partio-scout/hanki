@@ -25,7 +25,9 @@
   "plugins": [
     "react"
   ],
+  "extends": "eslint:recommended",
   "rules": {
+    "no-console": 0,
     "comma-dangle": [2, "always-multiline"],
     "strict": 0,
     "no-throw-literal": 2,

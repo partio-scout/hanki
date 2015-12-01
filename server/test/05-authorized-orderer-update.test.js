@@ -4,11 +4,11 @@ var expect = require('chai').expect;
 var testUtils = require('./utils/test-utils.js');
 
 describe('Orderer', function() {
+  var nameForOrder = 'Liikaa nauloja';
 
   describe('should be allowed to update owned', function() {
     it('Purchaseorder', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
-        nameForOrder = 'Liikaa nauloja';
         var msg = {
           'orderId': 3,
           'name': nameForOrder,
@@ -30,7 +30,7 @@ describe('Orderer', function() {
 
     it('Purchaseorderrow', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
-        d = new Date().toISOString();
+        var d = new Date().toISOString();
         var msg = {
           'modified': d,
         };
@@ -86,6 +86,7 @@ describe('Orderer', function() {
 
     it('Purchaseorderrows', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
+        var d = new Date().toISOString();
         var msg = {
           'modified': d,
         };
