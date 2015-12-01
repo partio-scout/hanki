@@ -1,9 +1,8 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactAddons = require('react/addons').addons;
 var Router = require('react-router');
 
-var PurchaseOrderForm = require('./PurchaseOrderForm.jsx');
+var PurchaseOrderForm = require('./PurchaseOrderForm');
 
 var validatePurchaseOrder = require('../validation/purchaseOrder');
 
@@ -11,18 +10,23 @@ var connectToStores = require('alt/utils/connectToStores');
 
 var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore) {
   var EditPurchaseOrder = React.createClass({
+    propTypes: {
+      params: React.PropTypes.object,
+      costCenters: React.PropTypes.object,
+    },
+
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
-        return [ CostCenterStore ]
+        return [ CostCenterStore ];
       },
 
       getPropsFromStores() {
         return {
           costCenters: CostCenterStore.getState(),
-        }
-      }
+        };
+      },
     },
 
     transformState: function(state) {
@@ -55,8 +59,8 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
       var purchaseOrder = {
         orderId: this.state.orderId,
         name: this.state.name,
-        costcenterId: this.state.costcenterId
-      }
+        costcenterId: this.state.costcenterId,
+      };
 
       var validationErrors = validatePurchaseOrder(purchaseOrder);
 
@@ -71,8 +75,8 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
     render: function () {
       var valueLinks = {
         name: this.linkState('name'),
-        costcenterId: this.linkState('costcenterId')
-      }
+        costcenterId: this.linkState('costcenterId'),
+      };
 
       return (
         <PurchaseOrderForm
@@ -81,9 +85,10 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }
-          validationErrors={ this.state.validationErrors } />
+          validationErrors={ this.state.validationErrors }
+        />
       );
-    }
+    },
   });
 
   return connectToStores(EditPurchaseOrder);
