@@ -17,6 +17,13 @@ var config = {
     filename: 'bundle.js',
     publicPath: '/build/',
   },
+  resolve: {
+    extensions: [
+      '',
+      '.js',
+      '.jsx',
+    ],
+  },
   module: {
     loaders: [{
       test: /\.js$|\.jsx$/,

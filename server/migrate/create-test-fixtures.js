@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var app = require('../server.js');
+var app = require('../server');
 var Promise = require('bluebird');
 
 var fixturesToImport = [

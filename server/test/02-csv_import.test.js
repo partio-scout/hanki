@@ -4,7 +4,7 @@ var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
 var fs = require('fs');
-var testUtils = require('./utils/test-utils.js');
+var testUtils = require('./utils/test-utils');
 
 describe('DataImport', function() {
   afterEach(function(done) {
