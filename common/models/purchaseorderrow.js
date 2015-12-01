@@ -16,14 +16,14 @@ module.exports = function(Purchaseorderrow) {
     var toCSV = Promise.promisify(require('json2csv'));
     var app = require('../../server/server');
     var Purchaseorder = app.models.Purchaseorder;
-    var find_all_orderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
-    var find_order = Promise.promisify(Purchaseorder.findById, Purchaseorder);
-    var find_orderrows = find_all_orderrows();
+    var findAllOrderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
+    var findOrder = Promise.promisify(Purchaseorder.findById, Purchaseorder);
+    var findOrderrows = findAllOrderrows();
 
-    var fields = [ 'amount', 'approved', 'confirmed', 'controllerApproval', 'delivered', 'deliveryId', 'finished', 'memo', 'modified', 'orderId', 'orderName', 'costCenterId', 'orderRowId', 'ordered', 'providerApproval', 'purchaseOrderNumber', 'titleId', 'userSectionApproval', 'nameOverride', 'priceOverride', 'unitOverride', 'requestService' ];
+
 
     function replaceOrderIdWithNameAndAddCostCenter(orderrow) {
-      return find_order(orderrow.orderId).then(function(order) {
+      return findOrder(orderrow.orderId).then(function(order) {
         if (order === null) {
           var err = new Error('Could not find order with id ' + orderrow.id);
           err.status = 422;
@@ -34,21 +34,18 @@ module.exports = function(Purchaseorderrow) {
           o.costCenterId = order.costcenterId;
           return o;
         }
-      }, function(err) {
-        cb(err,null);
       });
     }
 
-    find_orderrows.map(function(orderrow) {
-      return replaceOrderIdWithNameAndAddCostCenter(orderrow);
-    }).then(function(orderrows) {
-      toCSV({ data: orderrows, fields: fields })
-        .then(function(csv) {
-          cb(null, csv);
-        });
-    }).catch(function(err) {
-      cb(err);
-    });
+    function orderrowsToCSV(orderrows) {
+      var fields = [ 'amount', 'approved', 'confirmed', 'controllerApproval', 'delivered', 'deliveryId', 'finished', 'memo', 'modified', 'orderId', 'orderName', 'costCenterId', 'orderRowId', 'ordered', 'providerApproval', 'purchaseOrderNumber', 'titleId', 'userSectionApproval', 'nameOverride', 'priceOverride', 'unitOverride', 'requestService' ];
+      return toCSV({ data: orderrows, fields: fields });
+    }
+
+    findOrderrows.map(replaceOrderIdWithNameAndAddCostCenter)
+    .then(orderrowsToCSV)
+    .nodeify(cb);
+
   };
   Purchaseorderrow.remoteMethod(
     'CSVExport',
