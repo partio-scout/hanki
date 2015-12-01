@@ -1,5 +1,3 @@
-/* global browser, expect */
-
 // Function expression creating child process is saved to a variable
 var spawn = require('child_process').spawn;
 
