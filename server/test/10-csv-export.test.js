@@ -16,8 +16,26 @@ describe('CSVExport', function() {
       .end(done);
     });
 
-    it('should grant access for authenticated users', function(done) {
+    it('should grant access for procurementAdmin', function(done) {
       testUtils.loginUser('procurementAdmin').then(function(accessToken) {
+        request(app).post('/api/Purchaseorderrows/CSVExport')
+        .query({ access_token: accessToken.id })
+        .expect(200)
+        .end(done);
+      });
+    });
+
+    it('should grant access for controller', function(done) {
+      testUtils.loginUser('controller').then(function(accessToken) {
+        request(app).post('/api/Purchaseorderrows/CSVExport')
+        .query({ access_token: accessToken.id })
+        .expect(200)
+        .end(done);
+      });
+    });
+
+    it('should grant access for procurementMaster', function(done) {
+      testUtils.loginUser('procurementMaster').then(function(accessToken) {
         request(app).post('/api/Purchaseorderrows/CSVExport')
         .query({ access_token: accessToken.id })
         .expect(200)
