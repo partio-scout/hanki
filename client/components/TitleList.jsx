@@ -12,6 +12,14 @@ var Panel = ReactBootstrap.Panel;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
+function getTitleEditButton(title) {
+  return title.titleId !== 0 && (
+    <ButtonLink bsStyle="link" className="edit" to="edit_title" params={ { titleId: title.titleId } }>
+      <Glyphicon glyph="pencil" />
+    </ButtonLink>
+  );
+}
+
 function getTitleDeleteButton(title) {
   return title.titleId !== 0 && title.order_rows.length === 0 && (
     <ButtonLink bsStyle="link" className="delete" to="delete_title" params={ { titleId: title.titleId } }>
@@ -63,6 +71,7 @@ function getTitleList(TitleStore) {
                         _.map(titlesByGroup[titleGroup.titlegroupId], title =>
                           <tr>
                             <td>
+                              { getTitleEditButton(title) }
                               { getTitleDeleteButton(title) }
                               { title.name }
                             </td>

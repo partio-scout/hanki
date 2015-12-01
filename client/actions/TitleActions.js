@@ -54,6 +54,21 @@ function getTitleActions(alt, Title, Titlegroup) {
         }
       });
     }
+
+    saveTitleFailed(err) {
+      this.dispatch(err);
+    }
+
+    updateTitle(title) {
+      this.dispatch(title);
+      Title.update(title.titleId, title, (err) => {
+        if (err) {
+          this.actions.saveTitleFailed(err);
+        } else {
+          this.actions.fetchTitles();
+        }
+      });
+    }
   }
   return alt.createActions(TitleActions);
 }
