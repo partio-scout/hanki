@@ -4,7 +4,7 @@ function getDeliveryStore(alt, DeliveryActions) {
       this.deliveries = [ ];
 
       this.bindListeners({
-        handleUpdateDeliveries: DeliveryActions.UPDATE_DELIVERIES
+        handleUpdateDeliveries: DeliveryActions.UPDATE_DELIVERIES,
       });
     }
 

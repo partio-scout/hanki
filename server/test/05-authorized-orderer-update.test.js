@@ -13,7 +13,7 @@ describe('Orderer', function() {
           'orderId': 3,
           'name': nameForOrder,
           'costcenterId': 1,
-          'subscriberId': accessToken.userId
+          'subscriberId': accessToken.userId,
         };
         request(app)
           .put('/api/Purchaseorders/3')
@@ -32,7 +32,7 @@ describe('Orderer', function() {
       testUtils.loginUser('orderer').then(function(accessToken) {
         d = new Date().toISOString();
         var msg = {
-          'modified': d
+          'modified': d,
         };
         request(app)
           .put('/api/Purchaseorders/2/order_rows/1')
@@ -55,7 +55,7 @@ describe('Orderer', function() {
           'orderId': 1,
           'name': nameForOrder,
           'costcenterId': 1,
-          'subscriberId': accessToken.userId
+          'subscriberId': accessToken.userId,
         };
         request(app)
           .put('/api/Purchaseorders/1')
@@ -69,7 +69,7 @@ describe('Orderer', function() {
     it('Purchaseorderrows', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'modified': d
+          'modified': d,
         };
         request(app)
           .put('/api/Purchaseorders/1/order_rows/2')
@@ -85,7 +85,7 @@ describe('Orderer', function() {
     it('Accounts', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'name': 'new title name'
+          'name': 'new title name',
         };
         request(app)
           .put('/api/Accounts/1')
@@ -99,7 +99,7 @@ describe('Orderer', function() {
     it('Costcenters', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'name': 'new costcenter name'
+          'name': 'new costcenter name',
         };
         request(app)
           .put('/api/Costcenters/1')
@@ -113,7 +113,7 @@ describe('Orderer', function() {
     it('Deliveries', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'description': 'new delivery name'
+          'description': 'new delivery name',
         };
         request(app)
           .put('/api/Deliveries/1')
@@ -127,7 +127,7 @@ describe('Orderer', function() {
     it('Suppliers', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'name': 'new supplier name'
+          'name': 'new supplier name',
         };
         request(app)
           .put('/api/Suppliers/1')
@@ -141,7 +141,7 @@ describe('Orderer', function() {
     it('Titlegroups', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
-          'name': 'new titlegroup name'
+          'name': 'new titlegroup name',
         };
         request(app)
           .put('/api/Titlegroups/1')

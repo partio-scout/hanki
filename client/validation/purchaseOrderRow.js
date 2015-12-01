@@ -13,23 +13,23 @@ var schema = [
   {
     property: 'titleId',
     test: isPosititiveOrZeroInt,
-    message: 'Valitse tuote'
+    message: 'Valitse tuote',
   },
   {
     property: 'amount',
     test: isPosititiveOrZeroInt,
-    message: 'Syötä määrä kokonaislukuna'
+    message: 'Syötä määrä kokonaislukuna',
   },
   {
     property: 'deliveryId',
     test: isPosititiveOrZeroInt,
-    message: 'Valitse toimitusajankohta'
+    message: 'Valitse toimitusajankohta',
   },
   {
     property: 'nameOverride',
     test: isUndefinedOrNullOrNonEmptyString,
-    message: 'Anna tuotteelle kuvaava nimi'
-  }
+    message: 'Anna tuotteelle kuvaava nimi',
+  },
 ];
 
 module.exports = getModelValidator(schema);

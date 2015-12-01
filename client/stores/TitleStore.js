@@ -6,7 +6,7 @@ function getTitleStore(alt, TitleActions) {
 
       this.bindListeners({
         handleUpdateTitles: TitleActions.UPDATE_TITLES,
-        handleUpdateTitlegroups: TitleActions.UPDATE_TITLEGROUPS
+        handleUpdateTitlegroups: TitleActions.UPDATE_TITLEGROUPS,
       });
     }
 

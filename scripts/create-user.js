@@ -84,7 +84,7 @@ Promise.join(
       name: 'n/a',
       phone: 'n/a',
       enlistment: 'n/a',
-      userSection: 'n/a'
+      userSection: 'n/a',
     };
 
     return purchaseUser.createWithRolesAndCostcenters(user, roles, costCenters, costCentersApproverOf, costCentersControllerOf)

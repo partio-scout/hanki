@@ -8,7 +8,7 @@ module.exports = function(History) {
         'comment': purchaseorder.name,
         'purchaseOrderId': purchaseorder.orderId,
         'purchaseOrderRowId': ctx.args.data.orderRowId,
-        'timestamp':(new Date()).toISOString()
+        'timestamp':(new Date()).toISOString(),
       },
       function(err,instance) {if (err) {throw err;} return;}
     );
@@ -21,7 +21,7 @@ module.exports = function(History) {
         'comment': '',
         'purchaseOrderId': purchaseorderrow.orderId,
         'purchaseOrderRowId': purchaseorderrow.orderRowId,
-        'timestamp':(new Date()).toISOString()
+        'timestamp':(new Date()).toISOString(),
       },
       function(err,instance) {if (err) {throw err;} return;}
     );

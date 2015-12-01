@@ -9,19 +9,19 @@ module.exports = function(server) {
       var httpProxy = require('http-proxy');
       var proxy = httpProxy.createProxyServer({
         changeOrigin: true,
-        ws: true
+        ws: true,
       });
 
       var bundle = require('../frontend/bundle.js');
       bundle();
       server.all('/build/*', function (req, res) {
         proxy.web(req, res, {
-          target: 'http://127.0.0.1:3001'
+          target: 'http://127.0.0.1:3001',
         });
       });
       server.all('/socket.io*', function (req, res) {
         proxy.web(req, res, {
-          target: 'http://127.0.0.1:3001'
+          target: 'http://127.0.0.1:3001',
         });
       });
 

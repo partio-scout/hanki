@@ -13,7 +13,7 @@ var fixturesToImport = [
   'Purchaseorder',
   'Purchaseorderrow',
   'RoleMapping',
-  'History'
+  'History',
 ];
 
 var closeDBConnectionIfImportComplete = _.after(fixturesToImport.length, function() {

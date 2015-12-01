@@ -6,7 +6,7 @@ describe('User should be allowed to log in as', function() {
     request(app).post('/api/Purchaseusers/login')
       .send({
         'username': 'orderer',
-        'password': 'salasana'
+        'password': 'salasana',
       })
       .expect(200)
       .end(done);

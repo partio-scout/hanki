@@ -4,7 +4,7 @@ function getCostCenterStore(alt, CostCenterActions) {
       this.costCenters = [ ];
 
       this.bindListeners({
-        handleUpdateCostCenters: CostCenterActions.UPDATE_COST_CENTERS
+        handleUpdateCostCenters: CostCenterActions.UPDATE_COST_CENTERS,
       });
     }
 
