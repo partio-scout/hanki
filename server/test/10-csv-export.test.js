@@ -46,7 +46,7 @@ describe('CSVExport', function() {
   });
 
   describe('method', function() {
-    var purchaseorderId, costcenterId, orderrowId;
+    var purchaseorderId, costcenterId, orderrowId, costcenterCode;
 
     beforeEach(function(done) {
       var costcenter = {
@@ -58,6 +58,7 @@ describe('CSVExport', function() {
       testUtils.createFixture('Costcenter', costcenter)
       .then(function(ccenter) {
         costcenterId = ccenter.costcenterId;
+        costcenterCode = ccenter.code;
         return testUtils.createFixture('Purchaseorder', {
           'name': 'Testitilaus',
           'costcenterId': costcenterId,
@@ -106,7 +107,7 @@ describe('CSVExport', function() {
       })
       .then(function(orderrow) {
         orderrowId = orderrow.orderRowId;
-        var expectedCSV = purchaseorderId + ',"Testitilaus",' + costcenterId + ',' + orderrowId;
+        var expectedCSV = purchaseorderId + ',"Testitilaus",' + costcenterCode + ',' + orderrowId;
         request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + login.value().id )
         .expect(200)
         .end(function(err, res) {
