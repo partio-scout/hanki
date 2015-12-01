@@ -25,7 +25,6 @@ module.exports = function(Purchaseorderrow) {
     function replaceOrderIdWithNameAndAddCostCenter(orderrow) {
       return find_order(orderrow.orderId).then(function(order) {
         if (order === null) {
-          //res.status(422);
           var err = new Error('Could not find order with id ' + orderrow.id);
           err.status = 422;
           throw err;
