@@ -13,16 +13,26 @@ var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
 function getTitleEditButton(title) {
-  return title.titleId !== 0 && (
-    <ButtonLink bsStyle="link" className="edit" to="edit_title" params={ { titleId: title.titleId } }>
+  return (
+    <ButtonLink
+      bsStyle="link"
+      className="edit"
+      to="edit_title"
+      params={ { titleId: title.titleId } }
+      disabled={ title.titleId === 0 }>
       <Glyphicon glyph="pencil" />
     </ButtonLink>
   );
 }
 
 function getTitleDeleteButton(title) {
-  return title.titleId !== 0 && title.order_rows.length === 0 && (
-    <ButtonLink bsStyle="link" className="delete" to="delete_title" params={ { titleId: title.titleId } }>
+  return (
+    <ButtonLink
+      bsStyle="link"
+      className="delete"
+      to="delete_title"
+      params={ { titleId: title.titleId } }
+      disabled={ title.titleId === 0 || title.order_rows.length !== 0 }>
       <Glyphicon glyph="remove" />
     </ButtonLink>
   );
