@@ -20,26 +20,43 @@ module.exports = function(Purchaseorderrow) {
     var Title = app.models.Title;
     var Titlegroup = app.models.Titlegroup;
     var Delivery = app.models.Delivery;
+    var Purchaseuser = app.models.Purchaseuser;
     var findAllOrderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
     var findOrder = Promise.promisify(Purchaseorder.findById, Purchaseorder);
     var findTitle = Promise.promisify(Title.findById, Title);
     var findTitlegroup = Promise.promisify(Titlegroup.findById, Titlegroup);
     var findDelivery = Promise.promisify(Delivery.findById, Delivery);
     var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
+    var findPurchaseuser = Promise.promisify(Purchaseuser.findById, Purchaseuser);
     var findOrderrows = findAllOrderrows();
 
-    function replaceOrderIdWithNameAndAddCostCenter(orderrow) {
+    function couldNotFindModelWithId(model, id) {
+      var err = new Error('Could not find ' + model + ' with id ' + id);
+      err.status = 422;
+      return err;
+    }
+
+    function replaceOrderIdWithNameAndAddCostCenterAndEmail(orderrow) {
       return findOrder(orderrow.orderId).then(function(order) {
         if (order === null) {
-          var err = new Error('Could not find order with id ' + orderrow.orderId);
-          err.status = 422;
-          throw err;
+          couldNotFindModelWithId('order', orderrow.orderId);
         } else {
           return findCostcenter(order.costcenterId).then(function(costcenter) {
-            var o = orderrow.toObject();
-            o.orderName = order.name;
-            o.costCenterCode = costcenter.code;
-            return o;
+            if (costcenter === null) {
+                couldNotFindModelWithId('costcenter', order.costcenterId);
+            } else {
+              return findPurchaseuser(order.subscriberId).then(function(purchaseuser) {
+                if (purchaseuser === null) {
+                  couldNotFindModelWithId('purchaseuser', order.subscriberId);
+                } else {
+                var o = orderrow.toObject();
+                o.orderName = order.name;
+                o.costcenterCode = costcenter.code;
+                o.ordererEmail = purchaseuser.email;
+                return o;
+                }
+              });
+            }
           });
         }
       });
@@ -48,20 +65,24 @@ module.exports = function(Purchaseorderrow) {
     function addTitleNameAndUnitAndTitlegroupName(orderrow) {
       return findTitle(orderrow.titleId).then(function(title) {
         if (title === null) {
-          var err = new Error('Could not find title with id ' + orderrow.titleId);
-          err.status = 422;
-          throw err;
+          couldNotFindModelWithId('title', orderrow.titleId);
         } else {
           return findTitlegroup(title.titlegroupId).then(function(titlegroup) {
-            orderrow.titlegroupName = titlegroup.name;
-            if (title.titlegroupId === 0) { // Muu tuote: nimi ja yksikkö tilausrivistä
-              orderrow.titleName = orderrow.nameOverride;
-              orderrow.titleUnit = unitOverride;
+            if (titlegroup === null) {
+              couldNotFindModelWithId('titlegroup', title.titlegroupId);
             } else {
-              orderrow.titleName = title.name;
-              orderrow.titleUnit = title.unit;
-            }
+              orderrow.titlegroupName = titlegroup.name;
+              if (title.titlegroupId === 0) { // Muu tuote: nimi ja yksikkö tilausrivistä
+                orderrow.titleName = orderrow.nameOverride;
+                orderrow.titleUnit = orderrow.unitOverride;
+                orderrow.price = orderrow.priceOverride;
+              } else {
+                orderrow.titleName = title.name;
+                orderrow.titleUnit = title.unit;
+                orderrow.price = title.priceWithTax;
+              }
             return orderrow;
+            }
           });
         }
       });
@@ -70,9 +91,7 @@ module.exports = function(Purchaseorderrow) {
     function addDeliveryDescription(orderrow) {
       return findDelivery(orderrow.deliveryId).then(function(delivery) {
         if (delivery === null) {
-          var err = new Error('Could not find delivery with id ' + orderrow.deliveryId);
-          err.status = 422;
-          throw err;
+          couldNotFindModelWithId('delivery', orderrow.deliveryId);
         } else {
           orderrow.deliveryDescription = delivery.description;
           return orderrow;
@@ -81,11 +100,11 @@ module.exports = function(Purchaseorderrow) {
     }
 
     function orderrowsToCSV(orderrows) {
-      var fields = [ 'amount', 'approved', 'confirmed', 'controllerApproval', 'delivered', 'deliveryId', 'finished', 'memo', 'modified', 'orderId', 'orderName', 'costCenterCode', 'orderRowId', 'ordered', 'providerApproval', 'purchaseOrderNumber', 'titleId', 'titleName', 'titleUnit', 'titlegroupName', 'userSectionApproval', 'nameOverride', 'priceOverride', 'unitOverride', 'requestService', 'deliveryDescription' ];
+      var fields = [ 'orderRowId',	'costcenterCode',	'orderName', 'ordererEmail',	'titlegroupName',	'titleId',	'titleName', 'amount',	'titleUnit', 'price',	'deliveryDescription',	'confirmed',	'providerApproval',	'controllerApproval',	'userSectionApproval',	'ordered',	'purchaseOrderNumber',	'requestService',	'delivered',	'modified',	'memo' ];
       return toCSV({ data: orderrows, fields: fields });
     }
 
-    findOrderrows.map(replaceOrderIdWithNameAndAddCostCenter)
+    findOrderrows.map(replaceOrderIdWithNameAndAddCostCenterAndEmail)
     .map(addTitleNameAndUnitAndTitlegroupName)
     .map(addDeliveryDescription)
     .then(orderrowsToCSV)
