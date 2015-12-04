@@ -43,17 +43,17 @@ module.exports = function(Purchaseorderrow) {
         } else {
           return findCostcenter(order.costcenterId).then(function(costcenter) {
             if (costcenter === null) {
-                couldNotFindModelWithId('costcenter', order.costcenterId);
+              couldNotFindModelWithId('costcenter', order.costcenterId);
             } else {
               return findPurchaseuser(order.subscriberId).then(function(purchaseuser) {
                 if (purchaseuser === null) {
                   couldNotFindModelWithId('purchaseuser', order.subscriberId);
                 } else {
-                var o = orderrow.toObject();
-                o.orderName = order.name;
-                o.costcenterCode = costcenter.code;
-                o.ordererEmail = purchaseuser.email;
-                return o;
+                  var o = orderrow.toObject();
+                  o.orderName = order.name;
+                  o.costcenterCode = costcenter.code;
+                  o.ordererEmail = purchaseuser.email;
+                  return o;
                 }
               });
             }
@@ -81,7 +81,7 @@ module.exports = function(Purchaseorderrow) {
                 orderrow.titleUnit = title.unit;
                 orderrow.price = title.priceWithTax;
               }
-            return orderrow;
+              return orderrow;
             }
           });
         }
