@@ -62,7 +62,7 @@ module.exports = function(Purchaseorderrow) {
       });
     }
 
-    function addTitleNameAndUnitAndTitlegroupName(orderrow) {
+    function addTitleNameAndUnitAndPriceAndTitlegroupName(orderrow) {
       return findTitle(orderrow.titleId).then(function(title) {
         if (title === null) {
           couldNotFindModelWithId('title', orderrow.titleId);
@@ -105,7 +105,7 @@ module.exports = function(Purchaseorderrow) {
     }
 
     findOrderrows.map(replaceOrderIdWithNameAndAddCostCenterAndEmail)
-    .map(addTitleNameAndUnitAndTitlegroupName)
+    .map(addTitleNameAndUnitAndPriceAndTitlegroupName)
     .map(addDeliveryDescription)
     .then(orderrowsToCSV)
     .nodeify(cb);
