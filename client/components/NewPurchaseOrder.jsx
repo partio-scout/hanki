@@ -1,8 +1,7 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactAddons = require('react/addons').addons;
 var Router = require('react-router');
-var PurchaseOrderForm = require('./PurchaseOrderForm.jsx');
+var PurchaseOrderForm = require('./PurchaseOrderForm');
 
 var validatePurchaseOrder = require('../validation/purchaseOrder');
 
@@ -33,14 +32,14 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
     onSave: function() {
       var purchaseOrder = {
         name: this.state.name,
-        costcenterId: this.state.costcenterId
+        costcenterId: this.state.costcenterId,
       };
 
       var validationErrors = validatePurchaseOrder(purchaseOrder);
 
       this.setState({ validationErrors: validationErrors });
 
-      if(validationErrors.length === 0) {
+      if (validationErrors.length === 0) {
         PurchaseOrderActions.createPurchaseOrder(purchaseOrder);
         this.transitionTo('my_purchase_orders');
       }
@@ -49,8 +48,8 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
     render: function () {
       var valueLinks = {
         name: this.linkState('name'),
-        costcenterId: this.linkState('costcenterId')
-      }
+        costcenterId: this.linkState('costcenterId'),
+      };
 
       return (
         <PurchaseOrderForm
@@ -59,9 +58,10 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }
-          validationErrors={ this.state.validationErrors } />
+          validationErrors={ this.state.validationErrors }
+        />
       );
-    }
+    },
   });
 };
 

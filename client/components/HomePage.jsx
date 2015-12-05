@@ -6,7 +6,6 @@ var Navigation = Router.Navigation;
 var ReactBootstrap = require('react-bootstrap');
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
-var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Button = ReactBootstrap.Button;
 var Alert = ReactBootstrap.Alert;
 
@@ -40,8 +39,8 @@ function getHomePage(UserStore, UserActions) {
             <p>
               <Button
                 href="/saml/login"
-                bsStyle='primary'
-                bsSize='large'>
+                bsStyle="primary"
+                bsSize="large">
                 Kirjaudu sisään Partio ID:llä
               </Button>
             </p>
@@ -65,9 +64,8 @@ function getHomePage(UserStore, UserActions) {
           </Col>
         </Row>
       );
-    }
-
+    },
   });
-};
+}
 
 module.exports = getHomePage;

@@ -10,7 +10,7 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    './e2e-tests/**/*.js'
+    './e2e-tests/**/*.js',
   ],
   // Patterns to exclude.
   exclude: [
@@ -30,7 +30,7 @@ exports.config = {
   // https://docs.saucelabs.com/reference/platforms-configurator
   //
   capabilities: [{
-    browserName: 'firefox'
+    browserName: 'firefox',
   }],
   //
   // ===================
@@ -92,7 +92,7 @@ exports.config = {
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
-    ui: 'bdd'
+    ui: 'bdd',
   },
 
   //
@@ -115,7 +115,9 @@ exports.config = {
     Using expect is a reference to expect function, but executing Should() function extends
     Object.prototype Should does not work with IE. See for more: http://chaijs.com/guide/styles/
     */
-    expect = chai.expect;
+
+    // Some eslint rules disabled for the next line, since it is the wdio recommended way of initializing chai
+    expect = chai.expect; // eslint-disable-line no-unused-vars, no-undef
     chai.Should();
-  }
+  },
 };

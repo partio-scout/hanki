@@ -5,7 +5,7 @@ function getUserStore(alt, UserActions) {
       this.currentUser = undefined;
 
       this.bindListeners({
-        handleUpdateCurrentUser: UserActions.UPDATE_CURRENT_USER
+        handleUpdateCurrentUser: UserActions.UPDATE_CURRENT_USER,
       });
     }
 

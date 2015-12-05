@@ -11,13 +11,20 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrderList = require('./PurchaseOrderList.jsx');
+var PurchaseOrderList = require('./PurchaseOrderList');
 
 var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
   var myPurchaseOrders = React.createClass({
+    propTypes: {
+      purchaseOrders: React.PropTypes.object,
+      costCenters: React.PropTypes.object,
+      titles: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
+    },
+
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ]
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ];
       },
 
       getPropsFromStores() {
@@ -25,9 +32,9 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
           purchaseOrders: PurchaseOrderStore.getState(),
           costCenters: CostCenterStore.getState(),
           titles: TitleStore.getState(),
-          deliveries: DeliveryStore.getState()
-        }
-      }
+          deliveries: DeliveryStore.getState(),
+        };
+      },
     },
 
     render: function () {
@@ -49,11 +56,12 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
               costCenters={ this.props.costCenters.costCenters }
               titles={ this.props.titles.titles }
-              deliveries={ this.props.deliveries.deliveries } />
+              deliveries={ this.props.deliveries.deliveries }
+            />
           </Col>
         </Row>
       );
-    }
+    },
   });
 
   return connectToStores(myPurchaseOrders);

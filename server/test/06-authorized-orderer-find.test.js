@@ -2,7 +2,7 @@ var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
 var Promise = require('bluebird');
-var testUtils = require('./utils/test-utils.js');
+var testUtils = require('./utils/test-utils');
 
 describe('Orderer', function() {
 

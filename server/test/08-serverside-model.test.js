@@ -26,14 +26,14 @@ var purchaseOrders = [
     'orderId': 11,
     'name': '11',
     'subscriberId': 1,
-    'costcenterId': 1
+    'costcenterId': 1,
   },
   {
     'orderId': 22,
     'name': '22',
     'subscriberId': 1,
-    'costcenterId': 1
-  }
+    'costcenterId': 1,
+  },
 ];
 
 var purchaseOrderRows = [
@@ -45,7 +45,7 @@ var purchaseOrderRows = [
     'orderId': 11,
     'approved': false,
     'finished': false,
-    'modified': (new Date()).toISOString()
+    'modified': (new Date()).toISOString(),
   },
   {
     'orderRowId': 222,
@@ -55,8 +55,8 @@ var purchaseOrderRows = [
     'orderId': 22,
     'approved': false,
     'finished': false,
-    'modified': (new Date()).toISOString()
-  }
+    'modified': (new Date()).toISOString(),
+  },
 ];
 
 describe('Purchaseorder', function() {

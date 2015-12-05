@@ -1,10 +1,14 @@
 var React = require('react');
 
 var Price = React.createClass({
+  propTypes: {
+    value: React.PropTypes.number,
+  },
+
   getDefaultProps: function() {
     return {
-      value: 0
-    }
+      value: 0,
+    };
   },
 
   render: function() {
@@ -18,7 +22,7 @@ var Price = React.createClass({
         { price } €
       </span>
     );
-  }
+  },
 });
 
 module.exports = Price;
