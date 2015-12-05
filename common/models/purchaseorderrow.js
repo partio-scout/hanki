@@ -121,7 +121,7 @@ module.exports = function(Purchaseorderrow) {
     'CSVExport',
     {
       http: { path: '/CSVExport', verb: 'post' },
-      returns: { arg: 'csv', type: 'string' }
+      returns: { arg: 'csv', type: 'string' },
     }
   );
 };

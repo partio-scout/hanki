@@ -14,12 +14,12 @@ describe('CSVExport', function() {
       'code': '0313',
       'name': 'Testikustannuspaikka',
       'approverUserId': 2,
-      'controllerUserId': 3
+      'controllerUserId': 3,
     };
     var delivery = {
       'name': 'Testitoimitus',
       'description': 'Testitoimitus tulee milloin tulee',
-      'address': 'n/a'
+      'address': 'n/a',
     };
     var purchaseuser = {
       'memberNumber': '0000001',
@@ -29,7 +29,7 @@ describe('CSVExport', function() {
       'phone': '0000000000',
       'email': 'testi@testitilaaja.com',
       'enlistment': 'n/a',
-      'userSection': 'n/a'
+      'userSection': 'n/a',
     };
     testUtils.createFixture('Purchaseuser', purchaseuser)
     .then(function(purchaseuser) {
@@ -41,7 +41,7 @@ describe('CSVExport', function() {
         'name': 'Testitilaus',
         'costcenterId': costcenterId,
         'usageobjectId': 1,
-        'subscriberId': ordererId
+        'subscriberId': ordererId,
       });
     }).then(function(order) {
       purchaseorderId = order.orderId;
@@ -105,7 +105,7 @@ describe('CSVExport', function() {
           'userSectionApproval': false,
           'nameOverride': 'n/a',
           'priceOverride': 0,
-          'unitOverride': 'n/a'
+          'unitOverride': 'n/a',
         });
     }).then(function(orderrow) {
       orderrowId1 = orderrow.orderRowId;
@@ -128,7 +128,7 @@ describe('CSVExport', function() {
           'userSectionApproval': false,
           'nameOverride': 'Tuntematon tuote',
           'priceOverride': 107,
-          'unitOverride': 'kappale'
+          'unitOverride': 'kappale',
         });
     }).then(function(orderrow) {
       orderrowId2 = orderrow.orderRowId;
