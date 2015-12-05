@@ -33,21 +33,24 @@ module.exports = function(Purchaseorderrow) {
     function couldNotFindModelWithId(model, id) {
       var err = new Error('Could not find ' + model + ' with id ' + id);
       err.status = 422;
-      return err;
+      throw err;
     }
 
     function replaceOrderIdWithNameAndAddCostCenterAndEmail(orderrow) {
       return findOrder(orderrow.orderId).then(function(order) {
         if (order === null) {
           couldNotFindModelWithId('order', orderrow.orderId);
+          return orderrow;
         } else {
           return findCostcenter(order.costcenterId).then(function(costcenter) {
             if (costcenter === null) {
               couldNotFindModelWithId('costcenter', order.costcenterId);
+              return orderrow;
             } else {
               return findPurchaseuser(order.subscriberId).then(function(purchaseuser) {
                 if (purchaseuser === null) {
                   couldNotFindModelWithId('purchaseuser', order.subscriberId);
+                  return orderrow;
                 } else {
                   var o = orderrow.toObject();
                   o.orderName = order.name;
@@ -66,10 +69,12 @@ module.exports = function(Purchaseorderrow) {
       return findTitle(orderrow.titleId).then(function(title) {
         if (title === null) {
           couldNotFindModelWithId('title', orderrow.titleId);
+          return orderrow;
         } else {
           return findTitlegroup(title.titlegroupId).then(function(titlegroup) {
             if (titlegroup === null) {
               couldNotFindModelWithId('titlegroup', title.titlegroupId);
+              return orderrow;
             } else {
               orderrow.titlegroupName = titlegroup.name;
               if (title.titlegroupId === 0) { // Muu tuote: nimi ja yksikkö tilausrivistä
@@ -92,6 +97,7 @@ module.exports = function(Purchaseorderrow) {
       return findDelivery(orderrow.deliveryId).then(function(delivery) {
         if (delivery === null) {
           couldNotFindModelWithId('delivery', orderrow.deliveryId);
+          return orderrow;
         } else {
           orderrow.deliveryDescription = delivery.description;
           return orderrow;
