@@ -12,6 +12,12 @@ module.exports = function(Purchaseorderrow) {
     next();
   });
 
+  Purchaseorderrow.afterRemote('CSVExport', function(ctx, orderrow, next) {
+    ctx.res.attachment('orders.csv');
+
+    ctx.res.send(ctx.result.csv);
+  });
+
   Purchaseorderrow.CSVExport = function(cb) {
     var toCSV = Promise.promisify(require('json2csv'));
     var app = require('../../server/server');
