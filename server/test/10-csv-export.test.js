@@ -188,7 +188,7 @@ describe('CSVExport', function() {
             } else {
               try {
                 expect(err).to.be.null;
-                expect(res.body.csv).to.have.string(expectedString);
+                expect(res.text).to.have.string(expectedString);
                 done();
               } catch (e) {
                 done(e);
