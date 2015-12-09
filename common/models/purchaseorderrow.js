@@ -112,7 +112,7 @@ module.exports = function(Purchaseorderrow) {
     }
 
     function orderrowsToCSV(orderrows) {
-      var fields = [ 'orderRowId',	'costcenterCode',	'orderName', 'ordererEmail',	'titlegroupName',	'titleId',	'titleName', 'amount',	'titleUnit', 'price',	'deliveryDescription',	'confirmed',	'providerApproval',	'controllerApproval',	'userSectionApproval',	'ordered',	'purchaseOrderNumber',	'requestService',	'delivered',	'modified',	'memo' ];
+      var fields = [ 'orderRowId', 'titlegroupName',	'titleId',	'titleName', 'amount',	'titleUnit', 'price',	'deliveryDescription',	'costcenterCode',	'orderName', 'ordererEmail',	'confirmed',	'providerApproval',	'controllerApproval',	'userSectionApproval',	'ordered',	'purchaseOrderNumber',	'requestService',	'delivered',	'modified',	'memo' ];
       return toCSV({ data: orderrows, fields: fields });
     }
 
