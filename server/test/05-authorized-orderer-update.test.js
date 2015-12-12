@@ -51,7 +51,7 @@ describe('Orderer', function() {
   describe('should not be allowed to', function() {
     it('approve own purchaseorderrow', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
-        d = new Date().toISOString();
+        var d = new Date().toISOString();
         var msg = {
           'modified': d,
           'approved': true,
