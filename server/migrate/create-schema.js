@@ -41,3 +41,4 @@ db.automigrate(modelsToAutoMigrate, function(err) {
 });
 
 console.log('Created following tables: ' + modelsToAutoMigrate + '. If they existed earlier, they were dropped and recreated.');
+
