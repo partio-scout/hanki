@@ -34,6 +34,39 @@ function getTitleActions(alt, Title, Titlegroup) {
         } else {
           this.actions.updateTitles(_.indexBy(titles, 'titleId'));
         }
+      }, 'filter={"include":{"relation":"order_rows","scope":{"fields":["orderRowId"]}}}');
+    }
+
+    deleteTitleFailed(err) {
+      this.dispatch(err);
+    }
+
+    titleDeleted(title) {
+      this.dispatch(title);
+    }
+
+    deleteTitle(title) {
+      Title.del(title.titleId, (err) => {
+        if (err) {
+          this.actions.deleteTitleFailed(err);
+        } else {
+          this.actions.titleDeleted(title);
+        }
+      });
+    }
+
+    saveTitleFailed(err) {
+      this.dispatch(err);
+    }
+
+    updateTitle(title) {
+      this.dispatch(title);
+      Title.update(title.titleId, title, (err) => {
+        if (err) {
+          this.actions.saveTitleFailed(err);
+        } else {
+          this.actions.fetchTitles();
+        }
       });
     }
   }
