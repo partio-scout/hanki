@@ -28,7 +28,7 @@ var PurchaseOrder = React.createClass({
   render: function () {
     var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
       var title = this.props.titles[row.titleId] || { };
-      var titlePrice = row.priceOverride || this.props.titles[row.titleId].priceWithTax;
+      var titlePrice = row.priceOverride || title.priceWithTax || 0;
       return total + row.amount * titlePrice;
     }, 0);
 
