@@ -4,6 +4,12 @@ var app = require(serverPath + '/server.js');
 
 var email = process.argv[2];
 
+var timeToLive = 8*3600;
+
+if (process.argv[3]) {
+  timeToLive = process.argv[3];
+}
+
 if (!email) {
   console.log('Please provide the user\'s email: node dev-login.js <email>');
   process.exit(1);
@@ -23,7 +29,7 @@ app.models.Purchaseuser.findOne(query, function(err, user) {
     console.error('Can\'t find user:', email);
     process.exit(0);
   } else {
-    user.createAccessToken(8*3600, function(err, accessToken) {
+    user.createAccessToken(timeToLive, function(err, accessToken) {
       if (err) {
         console.error('Can\'t generate access token:', err);
       } else {
