@@ -41,6 +41,7 @@
     "csv-parse": "~1.0.0",
     "errorhandler": "^1.4.2",
     "js-cookie": "^2.0.4",
+    "json2csv": "^3.0.1",
     "lodash": "^3.10.1",
     "loopback": "^2.23.0",
     "loopback-boot": "^2.14.0",
