@@ -43,7 +43,7 @@ module.exports = function(app) {
             res.send('Kirjautuminen epäonnistui tuntemattomasta syystä.');
             console.error(err);
           } else if (user === null) {
-            res.send('PartioID:llä ei löytynyt käyttäjää - varmista, että käyttäjän jäsennumero on oikein.');
+            res.send('Sinulla ei vaikuta olevan käyttöoikeuksia tähän järjestelmään. Olethan muistanut tilata oikeudet?');
           } else {
             user.createAccessToken(3600, function(err, accessToken) {
               if (err) {
