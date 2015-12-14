@@ -7,7 +7,9 @@ var Grid = ReactBootstrap.Grid;
 
 var Router = require('react-router');
 
-function getApp(ErrorNotification, UserStore, UserActions) {
+function getApp(ErrorNotification, restrictToRoles, UserStore, UserActions) {
+  var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
+
   return React.createClass({
     mixins: [ Router.Navigation ],
 
@@ -34,10 +36,20 @@ function getApp(ErrorNotification, UserStore, UserActions) {
       UserActions.logoutCurrentUser();
     },
 
+    navigateToTitles() {
+      this.transitionTo('title_list');
+    },
+
     render() {
+      var titlesLink = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
+        titlesLink = (
+          <AdminNavItem onClick={ this.navigateToTitles }>
+            Tuotteet
+          </AdminNavItem>
+        );
         nameItem = (
           <NavItem>
             { this.state.currentUser.email }
@@ -55,6 +67,7 @@ function getApp(ErrorNotification, UserStore, UserActions) {
           <ErrorNotification />
           <Navbar brand="HANKI">
             <Nav right>
+              { titlesLink }
               { nameItem }
               { logoutItem }
             </Nav>

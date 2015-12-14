@@ -49,7 +49,8 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 // Setup main views
 
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
-var App = require('./components/AppComponent')(ErrorNotification, UserStore, UserActions);
+var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
+var App = require('./components/AppComponent')(ErrorNotification, restrictToRoles, UserStore, UserActions);
 var HomePage = require('./components/HomePage')(UserStore, UserActions);
 
 var MyPurchaseOrders = require('./components/MyPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
@@ -60,6 +61,10 @@ var DeletePurchaseOrder = require('./components/DeletePurchaseOrder')(PurchaseOr
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
+
+var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
+var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
+var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
 // Setup routes
 
@@ -79,6 +84,10 @@ var routes = (
       <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
+    <Route name="title_list" path="titles" handler={ TitleList }>
+      <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
+      <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
+    </Route>
   </Route>
 );
 
@@ -95,7 +104,7 @@ if (accessToken) {
   accessTokenValid = accessToken.ttl > elapsedSeconds;
 }
 
-if (accessToken && accessToken.userId && accessTokenValid ) {
+if (accessToken && accessToken.userId && accessTokenValid) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
   CostCenterActions.fetchCostCenters();

@@ -254,6 +254,13 @@
       "permission": "ALLOW",
       "property": "__get__isApproverOfCostcenter",
       "AccessType": "READ"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "accessType": "EXECUTE",
+      "property": "getRoles"
     }
   ],
   "methods": []
