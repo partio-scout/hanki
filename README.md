@@ -102,4 +102,3 @@ npm test
 ```
 
 You can also run only the linter with `npm run linter`, API tests with `npm run test-backend` and integration tests with `npm run test-e2e`.
-
