@@ -10,7 +10,16 @@ function getUserActions(alt, User, deleteLocalAccessToken) {
         if (err) {
           this.actions.updateCurrentUser(null);
         } else {
-          this.actions.updateCurrentUser(user);
+          User.raw('get', id + '/roles', (err, roles) => {
+            if (err) {
+              this.actions.updateCurrentUser(null);
+            } else {
+              user.hasRole = function(role) {
+                return roles.roles.indexOf(role) !== -1;
+              };
+              this.actions.updateCurrentUser(user);
+            }
+          });
         }
       });
     }
