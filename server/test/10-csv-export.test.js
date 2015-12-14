@@ -154,7 +154,7 @@ describe('CSVExport', function() {
     function itShouldGrantAccessFor(role) {
       it('should grant access for ' + role, function(done) {
         testUtils.loginUser(role).then(function(accessToken) {
-          request(app).post('/api/Purchaseorderrows/CSVExport')
+          request(app).get('/api/Purchaseorderrows/CSVExport')
           .query({ access_token: accessToken.id })
           .expect(200)
           .end(done);
@@ -163,7 +163,7 @@ describe('CSVExport', function() {
     }
 
     it('should decline access for unauthenticated users', function(done) {
-      request(app).post('/api/Purchaseorderrows/CSVExport')
+      request(app).get('/api/Purchaseorderrows/CSVExport')
       .expect(401)
       .end(done);
     });
@@ -180,7 +180,7 @@ describe('CSVExport', function() {
     function itShould(description, expectedString) {
       it('should ' + description, function(done) {
         login.then(function(accessToken) {
-          request(app).post('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
+          request(app).get('/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id )
           .expect(200)
           .end(function(err, res) {
             if (err) {

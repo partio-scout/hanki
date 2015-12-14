@@ -126,7 +126,7 @@ module.exports = function(Purchaseorderrow) {
   Purchaseorderrow.remoteMethod(
     'CSVExport',
     {
-      http: { path: '/CSVExport', verb: 'post' },
+      http: { path: '/CSVExport', verb: 'get' },
       returns: { arg: 'csv', type: 'string' },
     }
   );
