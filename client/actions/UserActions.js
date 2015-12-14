@@ -6,13 +6,17 @@ function getUserActions(alt, User, deleteLocalAccessToken) {
 
     fetchCurrentUser(id) {
       this.dispatch();
-      User.findById(id, (err, user) => {
-        if (err) {
-          this.actions.updateCurrentUser(null);
-        } else {
-          this.actions.updateCurrentUser(user);
-        }
-      });
+      if (!id){
+        this.actions.updateCurrentUser(null);
+      } else {
+        User.findById(id, (err, user) => {
+          if (err) {
+            this.actions.updateCurrentUser(null);
+          } else {
+            this.actions.updateCurrentUser(user);
+          }
+        });
+      }
     }
 
     logoutCurrentUser() {

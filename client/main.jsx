@@ -88,12 +88,20 @@ Router.run(routes, function (Handler) {
 
 // Check if current user seems to be logged in and start loading content
 
-if (accessToken && accessToken.userId) {
+var accessTokenValid = false;
+if (accessToken) {
+  var accessTokenCreated = new Date(accessToken.created);
+  var elapsedSeconds = (Date.now() - accessTokenCreated) / 1000;
+  accessTokenValid = accessToken.ttl > elapsedSeconds;
+}
+
+if (accessToken && accessToken.userId && accessTokenValid ) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
   CostCenterActions.fetchCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
 } else {
+  deleteAccessToken();
   UserActions.fetchCurrentUser();
 }
