@@ -49,8 +49,9 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 // Setup main views
 
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
+var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
 var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
-var App = require('./components/AppComponent')(ErrorNotification, restrictToRoles, UserStore, UserActions);
+var App = require('./components/AppComponent')(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions);
 var HomePage = require('./components/HomePage')(UserStore, UserActions);
 
 var MyPurchaseOrders = require('./components/MyPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
