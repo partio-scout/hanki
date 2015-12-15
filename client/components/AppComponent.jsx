@@ -7,7 +7,7 @@ var Grid = ReactBootstrap.Grid;
 
 var Router = require('react-router');
 
-function getApp(ErrorNotification, restrictToRoles, UserStore, UserActions) {
+function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
   var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
 
   return React.createClass({
@@ -64,6 +64,7 @@ function getApp(ErrorNotification, restrictToRoles, UserStore, UserActions) {
 
       return (
         <div>
+          <SessionTimeoutNotification />
           <ErrorNotification />
           <Navbar brand="HANKI">
             <Nav right>
