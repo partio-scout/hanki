@@ -85,10 +85,10 @@ var routes = (
       <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
-    <Route name="title_list" path="titles" handler={ TitleList }>
-      <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
-      <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
-    </Route>
+//    <Route name="title_list" path="titles" handler={ TitleList }>
+//      <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
+//      <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
+//    </Route>
   </Route>
 );
 

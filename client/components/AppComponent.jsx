@@ -45,11 +45,11 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
-        titlesLink = (
-          <AdminNavItem onClick={ this.navigateToTitles }>
-            Tuotteet
-          </AdminNavItem>
-        );
+        //titlesLink = (
+          //<AdminNavItem onClick={ this.navigateToTitles }>
+          //  Tuotteet
+          //</AdminNavItem>
+        //);
         nameItem = (
           <NavItem>
             { this.state.currentUser.email }
