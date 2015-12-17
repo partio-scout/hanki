@@ -8,7 +8,7 @@ var Grid = ReactBootstrap.Grid;
 var Router = require('react-router');
 
 function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
-  var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
+  //var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
 
   return React.createClass({
     mixins: [ Router.Navigation ],
