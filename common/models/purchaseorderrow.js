@@ -144,7 +144,6 @@ module.exports = function(Purchaseorderrow) {
       include: {
         relation: 'costcenters',
         scope: {
-          fields: ['code'],
           include: {
             relation: 'orders',
             scope: {
