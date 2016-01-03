@@ -130,4 +130,47 @@ module.exports = function(Purchaseorderrow) {
       returns: { arg: 'csv', type: 'string' },
     }
   );
+
+  Purchaseorderrow.beforeRemote('getUsersCostcentersWithOrders', function(ctx, orderrow, next) {
+    ctx.args.userId = ctx.req.accessToken.userId;
+    next();
+  });
+
+  Purchaseorderrow.getUsersCostcentersWithOrders = function(userId, cb) {
+    var User = app.models.Purchaseuser;
+    var findUserWithCostcenters = Promise.promisify(User.findById, User);
+    var filter = {
+      fields: ['id'],
+      include: {
+        relation: 'costcenters',
+        scope: {
+          fields: ['code'],
+          include: {
+            relation: 'orders',
+            scope: {
+              include: {
+                relation: 'order_rows',
+              },
+            },
+          },
+        },
+      },
+    };
+
+    findUserWithCostcenters(userId, filter)
+    .then(function(user) {
+      user = user.toObject();
+      return user.costcenters;
+    })
+    .nodeify(cb);
+  };
+
+  Purchaseorderrow.remoteMethod(
+    'getUsersCostcentersWithOrders',
+    {
+      http: { path: '/getUsersCostcentersWithOrders', verb: 'get' },
+      accepts: { arg: 'userId', type: 'string', 'http': { source: 'req' } },
+      returns: { arg: 'costcenters', type: 'Array' },
+    }
+  );
 };
