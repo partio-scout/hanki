@@ -45,7 +45,7 @@ module.exports = function(app) {
           } else if (user === null) {
             res.send('Sinulla ei vaikuta olevan käyttöoikeuksia tähän järjestelmään. Olethan muistanut tilata oikeudet?');
           } else {
-            user.createAccessToken(10*3600, function(err, accessToken) {
+            user.createAccessToken(3*3600, function(err, accessToken) {
               if (err) {
                 processError(req, res, err);
               } else {
