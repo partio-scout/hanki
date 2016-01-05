@@ -138,7 +138,7 @@ module.exports = function(Purchaseorderrow) {
 
   Purchaseorderrow.getUsersCostcentersWithOrders = function(userId, cb) {
     var User = app.models.Purchaseuser;
-    var findUserWithCostcenters = Promise.promisify(User.findById, User);
+    var findUserById = Promise.promisify(User.findById, User);
     var filter = {
       fields: ['id'],
       include: {
@@ -155,13 +155,21 @@ module.exports = function(Purchaseorderrow) {
         },
       },
     };
+    var orders = [];
 
-    findUserWithCostcenters(userId, filter)
+    findUserById(userId, filter)
     .then(function(user) {
       user = user.toObject();
       return user.costcenters;
-    })
-    .nodeify(cb);
+    }).map(function(costcenter) {
+      for (var i = 0; i < costcenter.orders.length; i++) {
+        orders.push(costcenter.orders[i]);
+      }
+    }).then(function() {
+      cb(null, orders);
+    }).catch(function(error) {
+      cb(error);
+    });
   };
 
   Purchaseorderrow.remoteMethod(
@@ -169,7 +177,7 @@ module.exports = function(Purchaseorderrow) {
     {
       http: { path: '/getUsersCostcentersWithOrders', verb: 'get' },
       accepts: { arg: 'userId', type: 'string', 'http': { source: 'req' } },
-      returns: { arg: 'costcenters', type: 'Array' },
+      returns: { arg: 'orders', type: 'Array' },
     }
   );
 };
