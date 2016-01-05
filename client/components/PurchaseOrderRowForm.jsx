@@ -68,7 +68,9 @@ var PurchaseOrderRowForm = React.createClass({
           labelClassName="col-xs-3"
           wrapperClassName="col-xs-5"
           defaultValue="0"
-          type="text"
+          type="number"
+          lang="nb"
+          step="0.01"
           addonAfter="€"
           valueLink={ this.props.valueLinks.priceOverride }
         />);
