@@ -55,4 +55,29 @@ module.exports = function(Purchaseorder) {
       })
       .nodeify(next);
   });
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    // ensures that orderer can't approve rows
+    if (ctx.args.data && ctx.args.data.approved == true) {
+      // we are trying to approve it
+      var app = require('../../server/server');
+      var Role = app.models.Role;
+
+      var userIsOwner = Promise.promisify(Role.isOwner, Role);
+      // actually need only check, that user is not approving own order
+      // because updating others orders is blocked with different ACL rule
+
+      userIsOwner(Purchaseorder, ctx.instance.orderId, ctx.req.accessToken.userId)
+      .then(function (owner) {
+        if (owner){
+          var newError = Error('Authorization Required');
+          newError.statusCode = 401;
+          next(newError);
+        }
+      });
+
+    }
+    next();
+  });
+
 };

@@ -48,6 +48,24 @@ describe('Orderer', function() {
     });
   });
 
+  describe('should not be allowed to', function() {
+    it('approve own purchaseorderrow', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        var d = new Date().toISOString();
+        var msg = {
+          'modified': d,
+          'approved': true,
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(401)
+          .end(done);
+      });
+    });
+  });
+
   describe('should not be allowed to update others', function() {
     it('Purchaseorders', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
