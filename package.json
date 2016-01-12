@@ -47,7 +47,7 @@
     "loopback-boot": "^2.14.0",
     "loopback-connector-postgresql": "^2.4.0",
     "loopback-console": "^0.2.2",
-    "loopback-datasource-juggler": "^2.41.1",
+    "loopback-datasource-juggler": "^2.44.0",
     "newrelic": "^1.23.1",
     "node-sass": "^3.4.1",
     "passport-saml": "^0.12.0",
