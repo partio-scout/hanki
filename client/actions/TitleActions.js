@@ -34,8 +34,7 @@ function getTitleActions(alt, Title, Titlegroup) {
         } else {
           this.actions.updateTitles(_.indexBy(titles, 'titleId'));
         }
-      //}, 'filter={"include":{"relation":"order_rows","scope":{"fields":["orderRowId"]}}}');
-      });
+      }, 'filter={"include":{"relation":"order_rows","scope":{"fields":["orderRowId"]}}}');
     }
 
     deleteTitleFailed(err) {
