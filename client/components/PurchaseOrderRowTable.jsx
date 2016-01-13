@@ -36,15 +36,17 @@ var PurchaseOrderRow = React.createClass({
           <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="remove" />
           </ButtonLink>
+          <span className="purchase_order_row_name">
           { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+          </span>
         </td>
         <td>
-          { row.amount } { row.unitOverride || title.unit }
+            { row.amount } { row.unitOverride || title.unit }
         </td>
-        <td>
+        <td className="price">
           <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
         </td>
-        <td>
+        <td className="memo">
           { row.memo }
         </td>
         <td>

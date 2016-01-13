@@ -66,6 +66,21 @@ td {
   vertical-align: top;
 }
 
+td span.purchase_order_row_name {
+  white-space: nowrap;
+}
+
+td.memo {
+  white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.price {
+  white-space: nowrap;
+}
+
 .field p.form-control-static {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
 }
