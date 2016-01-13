@@ -8,7 +8,7 @@ var Grid = ReactBootstrap.Grid;
 var Router = require('react-router');
 
 function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
-  //var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
+  var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
 
   return React.createClass({
     mixins: [ Router.Navigation ],
@@ -45,11 +45,11 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
-        //titlesLink = (
-          //<AdminNavItem onClick={ this.navigateToTitles }>
-          //  Tuotteet
-          //</AdminNavItem>
-        //);
+        titlesLink = (
+          <AdminNavItem onClick={ this.navigateToTitles }>
+            Tuotteet
+          </AdminNavItem>
+        );
         nameItem = (
           <NavItem>
             { this.state.currentUser.email }
