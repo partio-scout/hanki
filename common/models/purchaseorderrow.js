@@ -131,12 +131,14 @@ module.exports = function(Purchaseorderrow) {
     }
   );
 
-  Purchaseorderrow.beforeRemote('getUsersCostcentersWithOrders', function(ctx, orderrow, next) {
-    ctx.args.userId = ctx.req.accessToken.userId;
-    next();
-  });
+  Purchaseorderrow.getUsersCostcentersWithOrders = function(cb) {
+    var loopback = require('loopback');
 
-  Purchaseorderrow.getUsersCostcentersWithOrders = function(userId, cb) {
+    // Get current user id from context
+    var ctx = loopback.getCurrentContext();
+    var accessToken = ctx.get('accessToken');
+    var userId = accessToken.userId;
+
     var User = app.models.Purchaseuser;
     var findUserById = Promise.promisify(User.findById, User);
     var filter = {
@@ -176,7 +178,6 @@ module.exports = function(Purchaseorderrow) {
     'getUsersCostcentersWithOrders',
     {
       http: { path: '/getUsersCostcentersWithOrders', verb: 'get' },
-      accepts: { arg: 'userId', type: 'string', 'http': { source: 'req' } },
       returns: { arg: 'orders', type: 'Array' },
     }
   );
