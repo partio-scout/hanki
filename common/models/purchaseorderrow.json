@@ -418,13 +418,6 @@
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "CSVExport"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "getUsersCostcentersWithOrders"
     }
   ],
   "methods": {}
