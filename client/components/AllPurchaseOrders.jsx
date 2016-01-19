@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
+var _ = require('lodash');
 
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
@@ -15,8 +16,6 @@ var RouteHandler = require('react-router').RouteHandler;
 
 var Reactable = require('reactable');
 var Table = Reactable.Table;
-var Thead = Reactable.Thead;
-var Th = Reactable.Th;
 var Tr = Reactable.Tr;
 var Td = Reactable.Td;
 
