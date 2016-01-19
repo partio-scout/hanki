@@ -40,11 +40,21 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       this.transitionTo('title_list');
     },
 
+    navigateToOrders() {
+      this.transitionTo('all_purchase_orders');
+    },
+
     render() {
+      var ordersItem = '';
       var titlesLink = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
+        ordersItem = (
+          <AdminNavItem onClick={ this.navigateToOrders }>
+            Tilaukset
+          </AdminNavItem>
+        );
         titlesLink = (
           <AdminNavItem onClick={ this.navigateToTitles }>
             Tuotteet
@@ -68,6 +78,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
           <ErrorNotification />
           <Navbar brand="HANKI">
             <Nav right>
+              { ordersItem }
               { titlesLink }
               { nameItem }
               { logoutItem }

@@ -70,3 +70,9 @@ td {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
 }
 
+.reactable-page-button, .reactable-previous-page, .reactable-next-page {
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px 0 0;
+}
+
