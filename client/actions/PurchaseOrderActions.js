@@ -27,6 +27,23 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
     }
 
+    fetchAllPurchasseOrders() {
+      this.dispatch();
+
+      PurchaseOrderRow.findAll((err, orderRows) =>  {
+        if (err) {
+          this.actions.loadingPurchaseOrdersFailed(err);
+        } else {
+          var finalizedRows = _.indexBy(orderRows, 'orderRowId');
+          this.actions.updatePurchaseOrderRows(finalizedRows);
+        }
+      });
+    }
+
+    loadingPurchaseOrdersFailed(error) {
+      this.dispatch(error);
+    }
+
     loadingMyPurchaseOrdersFailed(error) {
       this.dispatch(error);
     }
