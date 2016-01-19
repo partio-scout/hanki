@@ -72,7 +72,14 @@ td {
 
 .reactable-page-button, .reactable-previous-page, .reactable-next-page {
   display: inline-block;
-  padding: 5px;
+  padding: 5px 10px;
   margin: 0 5px 0 0;
+}
+
+.reactable-current-page, a.reactable-current-page:hover, a.reactable-current-page:focus {
+  background: $blue;
+  color: $white;
+  border-radius: $border-radius-base;
+  text-decoration: none;
 }
 
