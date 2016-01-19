@@ -83,3 +83,14 @@ td {
   text-decoration: none;
 }
 
+th.reactable-header-sortable:focus {
+  outline: 0;
+}
+
+th.reactable-header-sort-asc::after {
+  content: " ▲";
+}
+
+th.reactable-header-sort-desc::after {
+  content: " ▼";
+}
