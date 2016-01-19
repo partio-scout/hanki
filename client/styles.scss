@@ -83,6 +83,18 @@ td.memo {
   text-overflow: ellipsis;
 }
 
+@media (max-width: 1050px) {
+  td.memo {
+    max-width: 50px;
+  }
+}
+
+@media (max-width: 950px) {
+  td.purchase_order_row_name {
+    max-width: 180px;
+  }
+}
+
 td.price {
   white-space: nowrap;
 }
