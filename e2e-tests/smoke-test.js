@@ -1,4 +1,3 @@
-
 // Function expression creating child process is saved to a variable
 var spawn = require('child_process').spawn;
 
@@ -6,7 +5,7 @@ var spawn = require('child_process').spawn;
 The new process will get the same enviromental variables as the current
 process, but the PORT is different.
 */
-options = process.env;
+var options = process.env;
 options.PORT = 3005;
 
 // A separate process is spawned for tests

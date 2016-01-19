@@ -13,7 +13,7 @@ var deleteAccessToken = function() {
 var userId = accessToken && accessToken.userId || 0;
 
 var request = require('superagent');
-var RestfulResource = require('./utils/rest.js')(request);
+var RestfulResource = require('./utils/rest')(request);
 var User = new RestfulResource('/api/Purchaseusers', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 var MyPurchaseOrder = new RestfulResource('/api/Purchaseusers/' + userId + '/orders', accessToken);
@@ -48,24 +48,29 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 
 // Setup main views
 
-var ErrorNotification = require('./components/ErrorNotification.jsx')(ErrorActions, ErrorStore);
-var App = require('./components/AppComponent.jsx')(ErrorNotification, UserStore, UserActions);
-var HomePage = require('./components/HomePage.jsx')(UserStore, UserActions);
+var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
+var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
+var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
+var App = require('./components/AppComponent')(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions);
+var HomePage = require('./components/HomePage')(UserStore, UserActions);
 
-var MyPurchaseOrders = require('./components/MyPurchaseOrders.jsx')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
-var NewPurchaseOrder = require('./components/NewPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore);
-var EditPurchaseOrder = require('./components/EditPurchaseOrder.jsx')(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore);
-var DeletePurchaseOrder = require('./components/DeletePurchaseOrder.jsx')(PurchaseOrderActions, PurchaseOrderStore);
+var MyPurchaseOrders = require('./components/MyPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
+var NewPurchaseOrder = require('./components/NewPurchaseOrder')(PurchaseOrderActions, CostCenterStore);
+var EditPurchaseOrder = require('./components/EditPurchaseOrder')(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore);
+var DeletePurchaseOrder = require('./components/DeletePurchaseOrder')(PurchaseOrderActions, PurchaseOrderStore);
 
-var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
-var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
-var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow.jsx')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
+var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
+var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
+var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
+
+var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
+var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
+var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
 // Setup routes
 
 var React = require('react');
 var Router = require('react-router');
-var RouteHandler = Router.RouteHandler;
 var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
 
@@ -80,6 +85,10 @@ var routes = (
       <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
+    <Route name="title_list" path="titles" handler={ TitleList }>
+      <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
+      <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
+    </Route>
   </Route>
 );
 
@@ -89,12 +98,20 @@ Router.run(routes, function (Handler) {
 
 // Check if current user seems to be logged in and start loading content
 
-if (accessToken && accessToken.userId) {
+var accessTokenValid = false;
+if (accessToken) {
+  var accessTokenCreated = new Date(accessToken.created);
+  var elapsedSeconds = (Date.now() - accessTokenCreated) / 1000;
+  accessTokenValid = accessToken.ttl > elapsedSeconds;
+}
+
+if (accessToken && accessToken.userId && accessTokenValid) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
   CostCenterActions.fetchCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
 } else {
+  deleteAccessToken();
   UserActions.fetchCurrentUser();
 }

@@ -7,7 +7,7 @@ function loginUser(username, userpass) {
   var promiseUserLogin = Promise.promisify(app.models.Purchaseuser.login, app.models.Purchaseuser);
   return promiseUserLogin({
     username: username,
-    password: userpass
+    password: userpass,
   });
 }
 
@@ -19,6 +19,11 @@ function createFixture(modelName, fixture) {
 function deleteFixtureIfExists(modelName, id) {
   var del = Promise.promisify(app.models[modelName].destroyById, app.models[modelName]);
   return del(id);
+}
+
+function deleteFixturesIfExist(modelName, whereClause) {
+  var del = Promise.promisify(app.models[modelName].destroyAll, app.models[modelName]);
+  return del(whereClause);
 }
 
 function expectModelToBeDeleted(modelName, id, cb) {
@@ -41,6 +46,7 @@ module.exports = {
   loginUser: loginUser,
   createFixture: createFixture,
   deleteFixtureIfExists: deleteFixtureIfExists,
+  deleteFixturesIfExist: deleteFixturesIfExist,
   expectModelToBeDeleted: expectModelToBeDeleted,
-  find: find
+  find: find,
 };

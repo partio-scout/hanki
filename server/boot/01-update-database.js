@@ -3,13 +3,13 @@ var Promise = require('bluebird');
 module.exports = function updateDatabase(server, cb) {
   if (!server.get('standalone')) {
     return cb();
-  };
+  }
 
   var db = server.datasources.db;
   var isActual = Promise.promisify(db.isActual, db);
   var autoupdate = Promise.promisify(db.autoupdate, db);
 
-  var modelsToUpdate = require('../models-list.js');
+  var modelsToUpdate = require('../models-list');
 
   db.setMaxListeners(40);
   isActual(modelsToUpdate).then(function(actual) {

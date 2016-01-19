@@ -27,7 +27,7 @@ describe('Unauthenticated user', function() {
         name: 'n/a',
         phone: 'n/a',
         enlistment: 'n/a',
-        userSection: 'n/a'
+        userSection: 'n/a',
       })
       .expect(401)
       .end(done);

@@ -4,10 +4,14 @@ var ReactBootstrap = require('react-bootstrap');
 var Alert = ReactBootstrap.Alert;
 
 var ErrorMessages = React.createClass({
+  propTypes: {
+    messages: React.PropTypes.arrayOf(React.PropTypes.string),
+  },
+
   getDefaultProps: function() {
     return {
-      messages: [ ]
-    }
+      messages: [ ],
+    };
   },
 
   render: function() {
@@ -17,13 +21,13 @@ var ErrorMessages = React.createClass({
     return (
       <Alert bsStyle="danger">
         <ul>
-          {_.map(this.props.messages, (message) => {
-            return <li>{ message }</li>
-          })}
+          {
+            _.map(this.props.messages, message => <li>{ message }</li>)
+          }
         </ul>
       </Alert>
     );
-  }
+  },
 });
 
 module.exports = ErrorMessages;

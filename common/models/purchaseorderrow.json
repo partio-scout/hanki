@@ -185,7 +185,6 @@
       "id": true,
       "generated": true,
       "required": false,
-      "generated": true,
       "length": null,
       "precision": 32,
       "scale": 0,
@@ -412,7 +411,14 @@
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "CSVExport"
     }
   ],
-  "methods": []
+  "methods": {}
 }

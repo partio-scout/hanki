@@ -17,7 +17,7 @@ function createRestfulResourceClass(request) {
         if (!err && res.status >= 400) {
           err = {
             message: 'REST Error: ' + res.req.url + ' returned HTTP ' + res.status,
-            status: res.status
+            status: res.status,
           };
         }
         res = res && res.hasOwnProperty('body') ? res.body : res;

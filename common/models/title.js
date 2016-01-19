@@ -31,7 +31,7 @@ module.exports = function(Title) {
       } else { // passed function not a function
         cb('flawed function', null);
       }
-    };
+    }
 
     // options for Parse function:
     var options = { columns: [ 'name', 'titlegroupId', 'unit', 'vatPercent', 'priceWithTax', 'accountId', 'supplierId', 'supplierTitlecode', 'toResold', 'toRent', 'toBought', 'toSignedFor', 'memo', 'selectable' ], skip_empty_lines: true, auto_parse: true, delimiter: ',', rowDelimiter: '\n' };
@@ -45,7 +45,7 @@ module.exports = function(Title) {
             replaceNameInPropertyWithId(title, titlegroup_findOne, 'titlegroupId'),
             replaceNameInPropertyWithId(title, account_findOne, 'accountId'),
             replaceNameInPropertyWithId(title, supplier_findOne, 'supplierId'),
-            title
+            title,
           ]).then(function(array) {
             return title_create(title, { transaction: tx });
           });
@@ -69,7 +69,7 @@ module.exports = function(Title) {
     {
       http: { path: '/DataImport', verb: 'post' },
       accepts: { arg: 'csv', type: 'string' },
-      returns: { arg: 'result', type: 'string' }
+      returns: { arg: 'result', type: 'string' },
     }
   );
 };

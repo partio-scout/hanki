@@ -4,6 +4,7 @@ module.exports = [
   'AccessToken',
   'Role',
   'RoleMapping',
+  'History',
   'Purchaseuser',
   'Title',
   'Titlegroup',
@@ -13,5 +14,5 @@ module.exports = [
   'Costcenter',
   'Purchaseorder',
   'Purchaseorderrow',
-  'PurchaseuserCostcenter'
+  'PurchaseuserCostcenter',
 ];

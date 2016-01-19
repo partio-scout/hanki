@@ -3,11 +3,15 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 
 var Modal = ReactBootstrap.Modal;
-var Input = ReactBootstrap.Input;
-var Static = ReactBootstrap.FormControls.Static;
 var Button = ReactBootstrap.Button;
 
 var ErrorDialog = React.createClass({
+  propTypes: {
+    onHide: React.PropTypes.func,
+    title: React.PropTypes.string,
+    error: React.PropTypes.instanceOf(Error),
+  },
+
   render: function() {
     return (
       <Modal show="true" onHide={ this.props.onHide || _.noop }>
@@ -24,7 +28,7 @@ var ErrorDialog = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  }
+  },
 });
 
 module.exports = ErrorDialog;

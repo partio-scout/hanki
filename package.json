@@ -9,9 +9,9 @@
     "test-e2e": "NODE_ENV=test wdio wdio.conf.js",
     "pretest-backend": "NODE_ENV=test npm run reset-database",
     "test-backend": "NODE_ENV=test mocha -R spec server/test",
-    "linter": "NODE_ENV=test eslint .",
+    "linter": "NODE_ENV=test eslint --ext js --ext jsx .",
     "postinstall": "npm run deploy",
-    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
+    "deploy": "npm rebuild node-sass && NODE_ENV=production webpack -p --config webpack.production.config.js",
     "test-watch": "NODE_ENV=test mocha --watch -R spec",
     "dev-setup": "./scripts/dev-setup.sh",
     "dev-teardown": "./scripts/dev-teardown.sh",
@@ -21,7 +21,8 @@
     "console": "loopback-console ."
   },
   "engines": {
-    "node": "0.12.x"
+    "node": "~4.2.2",
+    "npm": "~2.14.7"
   },
   "dependencies": {
     "alt": "^0.17.8",
@@ -40,12 +41,13 @@
     "csv-parse": "~1.0.0",
     "errorhandler": "^1.4.2",
     "js-cookie": "^2.0.4",
+    "json2csv": "^3.0.1",
     "lodash": "^3.10.1",
     "loopback": "^2.23.0",
     "loopback-boot": "^2.14.0",
     "loopback-connector-postgresql": "^2.4.0",
     "loopback-console": "^0.2.2",
-    "loopback-datasource-juggler": "^2.41.1",
+    "loopback-datasource-juggler": "^2.44.0",
     "newrelic": "^1.23.1",
     "node-sass": "^3.4.1",
     "passport-saml": "^0.12.0",

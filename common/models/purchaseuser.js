@@ -20,7 +20,7 @@ module.exports = function(Purchaseuser) {
         return createRoleMapping({
           'principalType': 'USER',
           'principalId': user.id,
-          'roleId': roleId
+          'roleId': roleId,
         });
       })).catch(wrapError('Couldn\'t create role mapping!'));
     }
@@ -41,7 +41,7 @@ module.exports = function(Purchaseuser) {
     }
 
     function setPropertyForAll(models, propertyName, propertyValue) {
-      return Promise.all(models.map(function(model) { return setProperty(model, propertyName, propertyValue); }));
+      return Promise.all(models.map(function(model) { return setProperty(model, propertyName, propertyValue); }));
     }
 
     return createUser(user).catch(wrapError('Couldn\'t create user!'))
@@ -53,4 +53,26 @@ module.exports = function(Purchaseuser) {
           .then(function() { return userCreationInfo; });
       });
   };
+
+  Purchaseuser.getRoles = function(id, cb) {
+    var app = require('../../server/server');
+    var Role = app.models.Role;
+    var RoleMapping = app.models.RoleMapping;
+
+    var getRoles = Promise.promisify(Role.getRoles, Role);
+    var find = Promise.promisify(Role.find, Role);
+
+    getRoles({ principalType: RoleMapping.USER, principalId: id })
+      .then(function(roles) { return find({ where: { id: { inq: roles.filter(function(role) { return !isNaN(parseInt(role, 10)); }) } }, fields: { name: true } }); })
+      .then(function(roles) { return roles.map(function(role) { return role.name; }); })
+      .nodeify(cb);
+  };
+
+  Purchaseuser.remoteMethod(
+    'getRoles',
+    {
+      accepts: { arg: 'id', type: 'number', required: 'true', http: { source: 'path' } },
+      returns: { arg: 'roles', type: 'array' },
+      http: { path: '/:id/roles', verb: 'get' },
+    });
 };
