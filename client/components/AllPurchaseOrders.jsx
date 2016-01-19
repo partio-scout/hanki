@@ -68,7 +68,7 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
                 var title = titles[row.titleId] || { };
                 var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
                 var price = (row.priceOverride || title.priceWithTax) * row.amount;
-                var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name
+                var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name;
                 return (
                   <Tr key={ row.orderRowId }>
                     //TODO Add orderer name column
