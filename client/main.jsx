@@ -18,7 +18,8 @@ var User = new RestfulResource('/api/Purchaseusers', accessToken);
 var PurchaseOrder = new RestfulResource('/api/Purchaseorders', accessToken);
 var MyPurchaseOrder = new RestfulResource('/api/Purchaseusers/' + userId + '/orders', accessToken);
 var PurchaseOrderRow = new RestfulResource('/api/Purchaseorderrows', accessToken);
-var CostCenter = new RestfulResource('/api/Purchaseusers/' + userId + '/costcenters', accessToken);
+var CostCenter = new RestfulResource('/api/Costcenters/', accessToken);
+var OwnCostCenter = new RestfulResource('/api/Purchaseusers/' + userId + '/costcenters', accessToken);
 var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 var Delivery = new RestfulResource('/api/Deliveries', accessToken);
@@ -34,7 +35,7 @@ var UserStore = require('./stores/UserStore')(alt, UserActions);
 var PurchaseOrderActions = require('./actions/PurchaseOrderActions')(alt, PurchaseOrder, PurchaseOrderRow, MyPurchaseOrder);
 var PurchaseOrderStore = require('./stores/PurchaseOrderStore')(alt, PurchaseOrderActions);
 
-var CostCenterActions = require('./actions/CostCenterActions')(alt, CostCenter);
+var CostCenterActions = require('./actions/CostCenterActions')(alt, OwnCostCenter, CostCenter);
 var CostCenterStore = require('./stores/CostCenterStore')(alt, CostCenterActions);
 
 var DeliveryActions = require('./actions/DeliveryActions')(alt, Delivery);
@@ -67,7 +68,7 @@ var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], requi
 var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
 var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
-var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
+var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
 
 // Setup routes
 
@@ -114,7 +115,7 @@ if (accessToken) {
 if (accessToken && accessToken.userId && accessTokenValid) {
   UserActions.fetchCurrentUser(accessToken.userId);
   PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
-  CostCenterActions.fetchCostCenters();
+  CostCenterActions.fetchOwnCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
 } else {
