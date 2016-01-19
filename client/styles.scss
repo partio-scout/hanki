@@ -30,6 +30,9 @@ $border-radius-base: 3px;
 $border-radius-large: 0;
 $border-radius-small: 0;
 
+$container-sm: 100%;
+$container-desktop: 100%;
+
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
 .delete {
@@ -66,13 +69,16 @@ td {
   vertical-align: top;
 }
 
-td span.purchase_order_row_name {
+td.purchase_order_row_name {
   white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 td.memo {
   white-space: nowrap;
-  max-width: 250px;
+  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
 }

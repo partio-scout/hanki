@@ -29,16 +29,14 @@ var PurchaseOrderRow = React.createClass({
     var delivery = this.props.deliveries[row.deliveryId] || { };
     return (
       <tr>
-        <td>
+        <td className="purchase_order_row_name">
           <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="pencil" />
           </ButtonLink>
           <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="remove" />
           </ButtonLink>
-          <span className="purchase_order_row_name">
           { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
-          </span>
         </td>
         <td>
             { row.amount } { row.unitOverride || title.unit }
