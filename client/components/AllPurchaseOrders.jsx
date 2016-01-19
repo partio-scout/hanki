@@ -52,6 +52,7 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
       var titles = this.props.titles.titles || { };
       var orderRows = _.values(this.props.purchaseOrders.purchaseOrderRows || { });
       var purchaseOrders = this.props.purchaseOrders.allPurchaseOrders || { };
+
       return (
         <Row>
           <Col>
@@ -59,7 +60,8 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
             <h1>
               Kaikki tilaukset
             </h1>
-            <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }>
+            <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }
+              filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
               { _.map(orderRows, (row) => {
                 var purchaseOrder = purchaseOrders[row.orderId] || {};
                 var costCenter = this.props.costCenters.costCenters[purchaseOrder.costcenterId] || { };
@@ -68,7 +70,7 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
                 var price = (row.priceOverride || title.priceWithTax) * row.amount;
                 var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name
                 return (
-                  <Tr>
+                  <Tr key={ row.orderRowId }>
                     //TODO Add orderer name column
                     <Td column="Kohde" value={ costCenter.code + ' ' + purchaseOrder.name }>
                       <div>
@@ -91,7 +93,7 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
                     </Td>
                     <Td column="Määrä" value={ row.amount }><span>{ row.amount } { row.unitOverride || title.unit }</span></Td>
                     <Td column="Summa" value={ price }><Price value={ price } /></Td>
-                    <Td column="Toimitus" value={ delivery.deliveryId }>{ delivery.name }</Td>
+                    <Td column="Toimitus" value={ delivery.deliveryId }><span>{ delivery.name }</span></Td>
                   </Tr>
                 );
               }) }
