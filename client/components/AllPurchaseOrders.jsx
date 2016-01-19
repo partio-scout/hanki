@@ -59,22 +59,24 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
             <h1>
               Kaikki tilaukset
             </h1>
-            <Table className="table table-striped" itemsPerPage={ 20 }>
+            <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }>
               { _.map(orderRows, (row) => {
                 var purchaseOrder = purchaseOrders[row.orderId] || {};
                 var costCenter = this.props.costCenters.costCenters[purchaseOrder.costcenterId] || { };
                 var title = titles[row.titleId] || { };
                 var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
+                var price = (row.priceOverride || title.priceWithTax) * row.amount;
+                var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name
                 return (
                   <Tr>
                     //TODO Add orderer name column
-                    <Td column="Kohde">
+                    <Td column="Kohde" value={ costCenter.code + ' ' + purchaseOrder.name }>
                       <div>
                         <div>{ costCenter.code }</div>
                         <div>{ purchaseOrder.name }</div>
                       </div>
                     </Td>
-                    <Td column="Tuote">
+                    <Td column="Tuote" value={ titleName }>
                       <span>
                         <ButtonLink bsStyle="link" className="edit" to="all_purchase_orders_edit_row" params={ { purchaseOrderRow: row.orderRowId } }>
                           <Glyphicon glyph="pencil" />
@@ -83,13 +85,13 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
                           <Glyphicon glyph="remove" />
                         </ButtonLink>
                         <span>
-                          { title.titleId !== 0 ? title.name : row.nameOverride }
+                          { titleName }
                         </span>
                       </span>
                     </Td>
-                    <Td column="Määrä"><span>{ row.amount } { row.unitOverride || title.unit }</span></Td>
-                    <Td column="Summa"><Price value={ (row.priceOverride || title.priceWithTax) * row.amount } /></Td>
-                    <Td column="Toimitus"><span>{ delivery.name }</span></Td>
+                    <Td column="Määrä" value={ row.amount }><span>{ row.amount } { row.unitOverride || title.unit }</span></Td>
+                    <Td column="Summa" value={ price }><Price value={ price } /></Td>
+                    <Td column="Toimitus" value={ delivery.deliveryId }>{ delivery.name }</Td>
                   </Tr>
                 );
               }) }
