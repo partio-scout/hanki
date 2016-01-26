@@ -103,3 +103,49 @@ td.price {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
 }
 
+.all-orders-table {
+  .order {
+    width: 20%;
+  }
+
+  .title {
+    width: 45%;
+  }
+
+  .amount {
+    width: 10%;
+  }
+
+  .price {
+    width: 10%;
+  }
+
+  .delivery {
+    width: 15%;
+  }
+}
+
+.reactable-page-button, .reactable-previous-page, .reactable-next-page {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px 0 0;
+}
+
+.reactable-current-page, a.reactable-current-page:hover, a.reactable-current-page:focus {
+  background: $blue;
+  color: $white;
+  border-radius: $border-radius-base;
+  text-decoration: none;
+}
+
+th.reactable-header-sortable:focus {
+  outline: 0;
+}
+
+th.reactable-header-sort-asc::after {
+  content: " ▲";
+}
+
+th.reactable-header-sort-desc::after {
+  content: " ▼";
+}

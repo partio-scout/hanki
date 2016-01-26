@@ -4,6 +4,7 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
       this.purchaseOrderRows = { };
 
       this.bindListeners({
+        handleUpdatePurchaseOrders: PurchaseOrderActions.UPDATE_PURCHASE_ORDERS,
         handleUpdateMyPurchaseOrders: PurchaseOrderActions.UPDATE_MY_PURCHASE_ORDERS,
         handlePurchaseOrderCreated: PurchaseOrderActions.PURCHASE_ORDER_CREATED,
         handlePurchaseOrderUpdated: PurchaseOrderActions.PURCHASE_ORDER_UPDATED,
@@ -14,6 +15,10 @@ function getPurchaseOrderStore(alt, PurchaseOrderActions) {
         handlePurchaseOrderRowUpdated: PurchaseOrderActions.PURCHASE_ORDER_ROW_UPDATED,
         handlePurchaseOrderRowDeleted: PurchaseOrderActions.PURCHASE_ORDER_ROW_DELETED,
       });
+    }
+
+    handleUpdatePurchaseOrders(purchaseOrders) {
+      this.allPurchaseOrders = purchaseOrders;
     }
 
     handleUpdateMyPurchaseOrders(myPurchaseOrders) {
