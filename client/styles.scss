@@ -71,7 +71,16 @@ td {
 
 td.purchase_order_row_name {
   white-space: nowrap;
-  max-width: 250px;
+}
+td.purchase_order_row_name > a.btn.btn-link {
+  padding-top: 0px;
+}
+
+td.purchase_order_row_name > div.product-name {
+  display: inline-block;
+  vertical-align: inherit;
+  white-space: nowrap;
+  max-width: 170px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -90,8 +99,8 @@ td.memo {
 }
 
 @media (max-width: 950px) {
-  td.purchase_order_row_name {
-    max-width: 180px;
+  td.purchase_order_row_name > div.product-name {
+    max-width: 100px;
   }
 }
 

@@ -36,7 +36,9 @@ var PurchaseOrderRow = React.createClass({
           <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="remove" />
           </ButtonLink>
-          { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+           <div className="product-name">
+            { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+          </div>
         </td>
         <td>
             { row.amount } { row.unitOverride || title.unit }
