@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var app = require('../../server/server');
+var _ = require('lodash');
 
 module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
@@ -57,26 +58,56 @@ module.exports = function(Purchaseorder) {
   });
 
   Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
-    // ensures that orderer can't approve rows
-    if (ctx.args.data && ctx.args.data.approved == true) {
-      // we are trying to approve it
-      var app = require('../../server/server');
-      var Role = app.models.Role;
+    // Allow order approving only for costcenter approvers
+    if (ctx.args.data && (ctx.args.data.approved == true || ctx.args.data.approved == false)) {
+      // changing state of approval
 
-      var userIsOwner = Promise.promisify(Role.isOwner, Role);
-      // actually need only check, that user is not approving own order
-      // because updating others orders is blocked with different ACL rule
+      var User = app.models.Purchaseuser;
+      var Costcenter = app.models.Costcenter;
+      var findUser = Promise.promisify(User.findById, User);
+      var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
 
-      userIsOwner(Purchaseorder, ctx.instance.orderId, ctx.req.accessToken.userId)
-      .then(function (owner) {
-        if (owner){
-          var newError = Error('Authorization Required');
-          newError.statusCode = 401;
-          next(newError);
+      var foundUser = findUser(ctx.req.accessToken.userId, {
+        include: [{
+          relation: 'isApproverOfCostcenter',
+        }],
+      });
+      var foundCostcenter = findCostcenter(ctx.instance.costcenterId);
+
+      Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
+        if (err) {
+          throw401(err);
+        }
+
+        var userCostcenter = user.isApproverOfCostcenter();
+
+        // allow user to be approver on multiple costcenters
+        var allowed = false;
+        _.forEach(userCostcenter, function (cs) {
+          if (JSON.stringify(costcenter) == JSON.stringify(cs)) {
+            allowed = true;
+          }
+        });
+
+        if (allowed) {
+          // user is approver of costcenter
+          console.log('Allowed to update');
+          next();
+        } else {
+          console.log('NOT Allowed to update');
+          throw401();
         }
       });
 
     }
+
+    function throw401(err) {
+      var newError = new Error('Authorization Required');
+      newError.statusCode = 401;
+      newError.originalError = err;
+      next(newError);
+    }
+
     next();
   });
 

@@ -178,6 +178,13 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__count__order_rows"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "approver",
+      "permission": "ALLOW",
+      "property": "__updateById__order_rows"
     }
   ],
   "methods": []
