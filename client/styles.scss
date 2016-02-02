@@ -72,41 +72,58 @@ td {
 td.purchase_order_row_name {
   white-space: nowrap;
 }
-td.purchase_order_row_name > a.btn.btn-link {
-  padding-top: 0px;
+td.purchase_order_row_name > a.edit.btn.btn-link {
+  padding: 0px 12px 6px 0px;
+}
+
+td.purchase_order_row_name > a.delete.btn.btn-link {
+  padding: 0px 6px 6px 12px;
 }
 
 td.purchase_order_row_name > div.product-name {
   display: inline-block;
   vertical-align: inherit;
-  white-space: nowrap;
   max-width: 170px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 td.memo {
   white-space: nowrap;
+  width: 100px;
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@media (max-width: 1050px) {
+td.price {
+  white-space: nowrap;
+}
+
+td.delivery {
+  width: 136px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1130px) {
   td.memo {
     max-width: 50px;
   }
+
+  td.delivery {
+    max-width: 100px;
+  }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1000px) {
   td.purchase_order_row_name > div.product-name {
     max-width: 100px;
   }
 }
 
-td.price {
-  white-space: nowrap;
-}
 
 .field p.form-control-static {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row

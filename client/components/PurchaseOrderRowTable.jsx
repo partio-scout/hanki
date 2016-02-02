@@ -67,7 +67,7 @@ var PurchaseOrderRow = React.createClass({
         <td>
 
         </td>
-        <td>
+        <td className="delivery">
           { delivery.name }
         </td>
       </tr>
