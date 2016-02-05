@@ -7,7 +7,7 @@ var testUtils = require('./utils/test-utils.js');
 var Promise = require('bluebird');
 
 describe('CSVExport', function() {
-  var purchaseorderId, costcenterId, orderrowId1, orderrowId2, titleId1, titleId2, ordererId, deliveryId;
+  var purchaseorderId, costcenterId, orderrowId1, orderrowId2, titleId, ordererId, deliveryId;
 
   beforeEach(function(done) {
     var costcenter = {
@@ -63,29 +63,9 @@ describe('CSVExport', function() {
         'toSignedFor': false,
         'memo': '',
         'selectable': true,
-        'titleId': 1,
-      });
-    }).then(function(title) {
-      titleId1 = title.titleId;
-      return testUtils.createFixture('Title', {
-        'name': 'Muu tuote',
-        'titlegroupId': 0,
-        'unit': 'n/a',
-        'vatPercent': 0.24,
-        'priceWithTax': 0,
-        'accountId': 1,
-        'supplierId': 0,
-        'supplierTitleCode': '',
-        'toResold': false,
-        'toRent': false,
-        'toBought': true,
-        'toSignedFor': false,
-        'memo': '',
-        'selectable': true,
-        'titleId': 0,
       });
     }).then(function(title) { //TODO Fix CSV import tests and then remove this
-      titleId2 = title.titleId;
+      titleId = title.titleId;
       return testUtils.createFixture('Purchaseorderrow',
         {
           'amount': 89,
@@ -101,7 +81,7 @@ describe('CSVExport', function() {
           'ordered': false,
           'providerApproval': false,
           'purchaseOrderNumber': 0,
-          'titleId': titleId1,
+          'titleId': titleId,
           'userSectionApproval': false,
           'nameOverride': 'n/a',
           'priceOverride': 0,
@@ -124,7 +104,7 @@ describe('CSVExport', function() {
           'ordered': false,
           'providerApproval': false,
           'purchaseOrderNumber': 0,
-          'titleId': titleId2,
+          'titleId': 0,
           'userSectionApproval': false,
           'nameOverride': 'Tuntematon tuote',
           'priceOverride': 107,
@@ -141,8 +121,7 @@ describe('CSVExport', function() {
       testUtils.deleteFixtureIfExists('Costcenter', costcenterId),
       testUtils.deleteFixtureIfExists('Purchaseorder', purchaseorderId),
       testUtils.deleteFixtureIfExists('Delivery', deliveryId),
-      testUtils.deleteFixtureIfExists('Title', titleId1),
-      testUtils.deleteFixtureIfExists('Title', titleId2),
+      testUtils.deleteFixtureIfExists('Title', titleId),
       testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId1), //TODO Fix CSV import tests and then remove this
       testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId2) //TODO Fix CSV import tests and then remove this
     ).nodeify(done);
