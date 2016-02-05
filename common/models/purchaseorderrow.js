@@ -36,15 +36,14 @@ module.exports = function(Purchaseorderrow) {
 
     function organizeOrderrowsForExport(orderrow) {
       orderrow = orderrow.toObject();
-      console.log(orderrow);
 
-      orderrow.titlegroupName = orderrow.title.titlegroup.name;
-
-      if (orderrow.title.titlegroupId === 0) { // Muu tuote: nimi ja yksikkö tilausrivistä
+      if (orderrow.titleId === 0) {
+        orderrow.titlegroupName = 'Muu tuote';
         orderrow.titleName = orderrow.nameOverride;
         orderrow.titleUnit = orderrow.unitOverride;
         orderrow.price = orderrow.priceOverride;
       } else {
+        orderrow.titlegroupName = orderrow.title.titlegroup.name;
         orderrow.titleName = orderrow.title.name;
         orderrow.titleUnit = orderrow.title.unit;
         orderrow.price = orderrow.title.priceWithTax;
