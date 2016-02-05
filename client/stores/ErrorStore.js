@@ -5,6 +5,7 @@ function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions,
 
       this.bindListeners({
         pushError: [
+          PurchaseOrderActions.LOADING_PURCHASE_ORDERS_FAILED,
           PurchaseOrderActions.LOADING_MY_PURCHASE_ORDERS_FAILED,
           PurchaseOrderActions.SAVING_PURCHASE_ORDER_FAILED,
           PurchaseOrderActions.DELETING_PURCHASE_ORDER_FAILED,

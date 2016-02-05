@@ -9,6 +9,7 @@ var Router = require('react-router');
 
 function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
   var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
+  var OrdererNavItem = restrictToRoles(['orderer'], NavItem);
 
   return React.createClass({
     mixins: [ Router.Navigation ],
@@ -40,15 +41,35 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       this.transitionTo('title_list');
     },
 
+    navigateToOrders() {
+      this.transitionTo('all_purchase_orders');
+    },
+
+    navigateToMyOrders() {
+      this.transitionTo('my_purchase_orders');
+    },
+
     render() {
+      var ordersItem = '';
       var titlesLink = '';
+      var myOrdersItem = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
+        ordersItem = (
+          <AdminNavItem onClick={ this.navigateToOrders }>
+            Tilaukset
+          </AdminNavItem>
+        );
         titlesLink = (
           <AdminNavItem onClick={ this.navigateToTitles }>
             Tuotteet
           </AdminNavItem>
+        );
+        myOrdersItem = (
+          <OrdererNavItem onClick={ this.navigateToMyOrders }>
+            Omat tilaukset
+          </OrdererNavItem>
         );
         nameItem = (
           <NavItem>
@@ -68,7 +89,9 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
           <ErrorNotification />
           <Navbar brand="HANKI">
             <Nav right>
+              { ordersItem }
               { titlesLink }
+              { myOrdersItem }
               { nameItem }
               { logoutItem }
             </Nav>
