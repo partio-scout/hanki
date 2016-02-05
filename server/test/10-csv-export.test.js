@@ -64,7 +64,7 @@ describe('CSVExport', function() {
         'memo': '',
         'selectable': true,
       });
-    }).then(function(title) { 
+    }).then(function(title) {
       titleId = title.titleId;
       return testUtils.createFixture('Purchaseorderrow',
         {
