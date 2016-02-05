@@ -7,8 +7,19 @@ var fs = require('fs');
 var testUtils = require('./utils/test-utils');
 
 describe('DataImport', function() {
+  var originalTitleCount = 0;
+
+  beforeEach(function(done) {
+    app.models.Title.count(function(err, count) {
+      originalTitleCount = count;
+      done(err);
+    });
+  });
+
   afterEach(function(done) {
-    app.models.Title.destroyAll(done);
+    app.models.Title.destroyAll({
+      titleId: { gte: originalTitleCount },
+    }, done);
   });
 
   function postCSV(accessToken, csv) {
@@ -38,7 +49,7 @@ describe('DataImport', function() {
             done(err);
           } else {
             expect(res.body.result).to.be.empty;
-            expectTitleCountInDatabaseToBe(0, done);
+            expectTitleCountInDatabaseToBe(originalTitleCount, done);
           }
         });
       })
@@ -106,7 +117,7 @@ describe('DataImport', function() {
             expect(res.body.result[0]).to.have.deep.property('titlegroupId', 2);
             expect(res.body.result[0]).to.have.deep.property('accountId', 1);
             expect(res.body.result[0]).to.have.deep.property('supplierId', 1);
-            expectTitleCountInDatabaseToBe(1, done);
+            expectTitleCountInDatabaseToBe(originalTitleCount + 1, done);
           }
         });
       })
@@ -124,7 +135,7 @@ describe('DataImport', function() {
         .send({ csv: csv })
         .expect(200)
         .end(function() {
-          expectTitleCountInDatabaseToBe(100, done);
+          expectTitleCountInDatabaseToBe(originalTitleCount + 100, done);
         });
       });
     });
