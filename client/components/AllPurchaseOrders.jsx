@@ -61,9 +61,9 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
             <h1>
               Kaikki tilaukset
             </h1>
-            <Button href={"/api/Purchaseorderrows/CSVExport?access_token=" + accessToken.id} bsStyle="primary">
+            <Button href={ '/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id } bsStyle="primary">
               <Glyphicon glyph="download-alt" />
-              <span> Lataa kaikki tilaukset </span> 
+              <span> Lataa kaikki tilaukset</span>
             </Button>
             <Table className="table table-striped all-orders-table" itemsPerPage={ 60 } sortable={ true }
               filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
