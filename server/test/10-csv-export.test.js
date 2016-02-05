@@ -64,7 +64,7 @@ describe('CSVExport', function() {
         'memo': '',
         'selectable': true,
       });
-    }).then(function(title) { //TODO Fix CSV import tests and then remove this
+    }).then(function(title) { 
       titleId = title.titleId;
       return testUtils.createFixture('Purchaseorderrow',
         {
@@ -87,7 +87,7 @@ describe('CSVExport', function() {
           'priceOverride': 0,
           'unitOverride': 'n/a',
         });
-    }).then(function(orderrow) { //TODO Fix CSV import tests and then remove this
+    }).then(function(orderrow) {
       orderrowId1 = orderrow.orderRowId;
       return testUtils.createFixture('Purchaseorderrow',
         {
@@ -122,8 +122,8 @@ describe('CSVExport', function() {
       testUtils.deleteFixtureIfExists('Purchaseorder', purchaseorderId),
       testUtils.deleteFixtureIfExists('Delivery', deliveryId),
       testUtils.deleteFixtureIfExists('Title', titleId),
-      testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId1), //TODO Fix CSV import tests and then remove this
-      testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId2) //TODO Fix CSV import tests and then remove this
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId1),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId2)
     ).nodeify(done);
   });
 
