@@ -7,10 +7,13 @@ var connectToStores = require('alt/utils/connectToStores');
 
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
-var Table = ReactBootstrap.Table;
-var Panel = ReactBootstrap.Panel;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
+
+var Reactable = require('reactable');
+var Table = Reactable.Table;
+var Tr = Reactable.Tr;
+var Td = Reactable.Td;
 
 function getTitleEditButton(title) {
   return (
@@ -53,14 +56,12 @@ function getTitleList(TitleStore) {
       getPropsFromStores() {
         return {
           titles: TitleStore.getState().titles,
-          titleGroups: _.filter(TitleStore.getState().titleGroups, titlegroup => titlegroup.titlegroupId !== 0),
+          titleGroups: TitleStore.getState().titleGroups,
         };
       },
     },
 
     render() {
-      var titlesByGroup = _.groupBy(this.props.titles, 'titlegroupId');
-
       return (
         <Row>
           <Col>
@@ -69,32 +70,33 @@ function getTitleList(TitleStore) {
               Tuotteet
             </h1>
             {
-              _.map(this.props.titleGroups, titleGroup =>
-                <Panel>
-                  <h2>{ titleGroup.name }</h2>
-                  <Table striped>
-                    <thead>
-                      <tr><th>Nimi</th><th>Tilauksien määrä</th></tr>
-                    </thead>
-                    <tbody>
-                      {
-                        _.map(titlesByGroup[titleGroup.titlegroupId], title =>
-                          <tr>
-                            <td>
-                              { getTitleEditButton(title) }
-                              { getTitleDeleteButton(title) }
-                              { title.name }
-                            </td>
-                            <td>
+              <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }
+                filterable={ [ 'Tuoteryhmä', 'Nimi' ] } filterPlaceholder="Etsi tuotteita">
+                {
+                  _(this.props.titles)
+                    .filter(title => title.titleId !== 0)
+                    .map(title => {
+                      var titlegroup = this.props.titleGroups[title.titlegroupId] || {};
+                      return (
+                        <Tr>
+                            <Td column="Tuoteryhmä">
+                              { titlegroup.name || '?' }
+                            </Td>
+                            <Td column="Nimi" value={ title.name }>
+                              <span>
+                                { getTitleEditButton(title) }
+                                { getTitleDeleteButton(title) }
+                                { title.name }
+                              </span>
+                            </Td>
+                            <Td column="Tilausrivien määrä">
                               { title.order_rows.length }
-                            </td>
-                          </tr>
-                        )
-                      }
-                    </tbody>
-                  </Table>
-                </Panel>
-              )
+                            </Td>
+                        </Tr>
+                      );
+                    }).value()
+                }
+              </Table>
             }
           </Col>
         </Row>
