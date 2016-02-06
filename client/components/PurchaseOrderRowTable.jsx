@@ -68,6 +68,10 @@ var PurchaseOrderRow = React.createClass({
         <td>
           { delivery.name }
         </td>
+        <td>
+          { row.finalized ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }
+        </td>
+
       </tr>
     );
   },
@@ -94,6 +98,7 @@ var PurchaseOrderRowTable = React.createClass({
             <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
             <th rowSpan="2">Tilattu</th>
             <th rowSpan="2">Toimitus</th>
+            <th rowSpan="2">Lopullinen</th>
           </tr>
           <tr>
             <th>päällikkö</th>
