@@ -5,29 +5,39 @@ var isPosititiveOrZeroInt = function(value) {
   return validator.isInt(value, { min: 0 });
 };
 
+var isPosititiveOrZeroFloat = function(value) {
+  return validator.isFloat(value, { min: 0.0 });
+};
+
 var isNonEmptyString = function(value) {
   return validator.isLength(value, 1);
 };
 
-var isUndefinedOrNonEmptyString = function(value) {
-  return value === undefined || value === null || validator.isLength(value, 1);
-};
-
 var schema = [
-  {
-    property: 'titlegroupId',
-    test: isPosititiveOrZeroInt,
-    message: 'Valitse tuoteryhmä',
-  },
   {
     property: 'name',
     test: isNonEmptyString,
     message: 'Syötä nimi',
   },
   {
+    property: 'titlegroupId',
+    test: isPosititiveOrZeroInt,
+    message: 'Valitse tuoteryhmä',
+  },
+  {
     property: 'unit',
-    test: isUndefinedOrNonEmptyString,
+    test: isNonEmptyString,
     message: 'Syötä yksikkö',
+  },
+  {
+    test: isPosititiveOrZeroFloat,
+    property: 'vatPercent',
+    message: 'Valitse ALV-prosentti',
+  },
+  {
+    property: 'priceWithTax',
+    test: isPosititiveOrZeroInt,
+    message: 'Syötä hinta, joka on vähintään 0 €',
   },
 ];
 
