@@ -46,6 +46,41 @@ describe('Orderer', function() {
           .end(done);
       });
     });
+
+    it('Purchaseorderrow', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        var msg = {
+          'finalized': true,
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(200)
+          .expect(function(res) {
+            expect(res.body.finalized).to.equal(true);
+          })
+          .end(done);
+      });
+    });
+
+    it('Purchaseorderrow', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        var msg = {
+          'finalized': false,
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(200)
+          .expect(function(res) {
+            expect(res.body.finalized).to.equal(false);
+          })
+          .end(done);
+      });
+    });
+
   });
 
   describe('should not be allowed to update others', function() {
