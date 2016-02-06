@@ -24,6 +24,7 @@ var PurchaseOrderRowForm = React.createClass({
       nameOverride: React.PropTypes.object,
       priceOverride: React.PropTypes.object,
       unitOverride: React.PropTypes.object,
+      finalized: React.PropTypes.object,
     }),
     titles: React.PropTypes.object,
     titleGroups: React.PropTypes.object,
@@ -150,6 +151,9 @@ var PurchaseOrderRowForm = React.createClass({
             <Input valueLink={ this.props.valueLinks.memo } type="textarea" label="Kommentti" labelClassName="col-xs-3" wrapperClassName="col-xs-9"
               help="Vapaaehtoinen. Kerro tässä, jos tarvitset tuotetta vain osan aikaa leiristä. Mikäli tarvitset palvelua, voit kertoa tässä millaista palvelua tarvitset (esim. pystytys teltalle tai suunnittelu ja rakennus leiriportille). Voit myös lisätä muuta selventävää tietoa esim. tuotteen ominaisuuksista tähän kenttään."
             />
+            <Input label="Viimeistelty" labelClassName="col-xs-3" wrapperClassName="col-xs-9">
+              <Input checkedLink={ this.props.valueLinks.finalized } type="checkbox" wrapperClassName="col-xs-12" label="Tilauksen viimeistely" help="Viimeistely kertoo hankkijalle, että tämän tilauksen voi laittaa eteenpäin." />
+            </Input>
           </form>
         </Modal.Body>
         <Modal.Footer>
