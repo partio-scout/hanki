@@ -7,6 +7,8 @@ var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
+var Tooltip = ReactBootstrap.Tooltip;
+var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 
 var PurchaseOrderRow = React.createClass({
   propTypes: {
@@ -27,6 +29,19 @@ var PurchaseOrderRow = React.createClass({
     var row = this.props.row;
     var title = this.props.titles[row.titleId] || { };
     var delivery = this.props.deliveries[row.deliveryId] || { };
+
+    var memoTooltip = (
+      <Tooltip>{ row.memo }</Tooltip>
+    );
+    var comment = '';
+    if (row.memo) {
+      comment = (
+        <OverlayTrigger placement="top" overlay={ memoTooltip }>
+          <Glyphicon glyph="comment" />
+        </OverlayTrigger>
+      );
+    }
+
     return (
       <tr>
         <td className="purchase_order_row_name">
@@ -47,7 +62,7 @@ var PurchaseOrderRow = React.createClass({
           <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
         </td>
         <td className="memo">
-          { row.memo }
+          { comment }
         </td>
         <td>
           { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }

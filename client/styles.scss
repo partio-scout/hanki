@@ -83,22 +83,19 @@ td.purchase_order_row_name > a.delete.btn.btn-link {
 td.purchase_order_row_name > div.product-name {
   display: inline-block;
   vertical-align: inherit;
-  max-width: 170px;
+  max-width: 200px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-td.memo {
-  white-space: nowrap;
-  width: 100px;
-  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 td.price {
   white-space: nowrap;
+}
+
+td.memo {
+  text-align: center;
+  color: $blue;
 }
 
 td.delivery {
@@ -108,13 +105,9 @@ td.delivery {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 1130px) {
-  td.memo {
-    max-width: 50px;
-  }
-
+@media (max-width: 1180px) {
   td.delivery {
-    max-width: 100px;
+    max-width: 130px;
   }
 }
 
@@ -123,7 +116,6 @@ td.delivery {
     max-width: 100px;
   }
 }
-
 
 .field p.form-control-static {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
