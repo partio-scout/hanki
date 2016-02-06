@@ -5,10 +5,6 @@ var isPosititiveOrZeroInt = function(value) {
   return validator.isInt(value, { min: 0 });
 };
 
-var isPosititiveOrZeroFloat = function(value) {
-  return validator.isFloat(value, { min: 0.0 });
-};
-
 var isNonEmptyString = function(value) {
   return validator.isLength(value, 1);
 };
@@ -30,8 +26,8 @@ var schema = [
     message: 'Syötä yksikkö',
   },
   {
-    test: isPosititiveOrZeroFloat,
     property: 'vatPercent',
+    test: isPosititiveOrZeroInt,
     message: 'Valitse ALV-prosentti',
   },
   {

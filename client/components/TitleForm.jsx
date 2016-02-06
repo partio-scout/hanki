@@ -53,9 +53,9 @@ module.exports = React.createClass({
             <Input label="Yksikkö" type="text" disabled={ this.props.unitSelectionDisabled } valueLink={ this.props.valueLinks.unit } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
             <Input label="ALV-prosentti" type="select" valueLink={ this.props.valueLinks.vatPercent } labelClassName="col-xs-3" wrapperClassName="col-xs-9">
               <option value="">Valitse...</option>
-              <option value="0.24">24%</option>
-              <option value="0.14">14%</option>
-              <option value="0.1">10%</option>
+              <option value="24">24%</option>
+              <option value="14">14%</option>
+              <option value="10">10%</option>
               <option value="0">0%</option>
             </Input>
             <Input label="Hinta (sis. alv)" type="number" valueLink={ this.props.valueLinks.priceWithTax } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
