@@ -78,6 +78,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         memo: this.state.memo,
         orderId: this.state.orderId,
         requestService: this.state.requestService,
+        finalized: this.state.finalized,
       };
 
       if (this.isOtherProductSelected()) {
@@ -108,6 +109,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         delivery: this.linkState('deliveryId'),
         memo: this.linkState('memo'),
         requestService: this.linkState('requestService'),
+        finalized: this.linkState('finalized'),
       };
 
       return (
