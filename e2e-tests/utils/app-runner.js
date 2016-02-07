@@ -29,4 +29,4 @@ function halt(cb) {
 module.exports = {
   run: run,
   halt: halt,
-}
+};
