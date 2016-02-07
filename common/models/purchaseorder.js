@@ -73,7 +73,7 @@ module.exports = function(Purchaseorder) {
             relation: 'isApproverOfCostcenter',
           }],
         }),
-        findCostcenter(ctx.instance.costcenterId), 
+        findCostcenter(ctx.instance.costcenterId),
         function (user, costcenter, err) {
           if (err) throw401();
           var userCostcenter = user.isApproverOfCostcenter();
@@ -92,7 +92,7 @@ module.exports = function(Purchaseorder) {
             relation: 'isControllerOfCostcenter',
           }],
         }),
-        findCostcenter(ctx.instance.costcenterId), 
+        findCostcenter(ctx.instance.costcenterId),
         function (user, costcenter, err) {
           if (err) throw401();
           var userCostcenter = user.isControllerOfCostcenter();
