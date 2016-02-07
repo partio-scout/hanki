@@ -77,6 +77,7 @@ module.exports = function(Purchaseorder) {
       });
 
       Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
+        if (err) throw401();
         var userCostcenter = user.isApproverOfCostcenter();
         rowApprovalCheck(userCostcenter, costcenter);
       });
@@ -93,6 +94,7 @@ module.exports = function(Purchaseorder) {
       });
 
       Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
+        if (err) throw401();
         var userCostcenter = user.isControllerOfCostcenter();
         rowApprovalCheck(userCostcenter, costcenter);
       });
