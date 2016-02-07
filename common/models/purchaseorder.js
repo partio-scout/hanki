@@ -58,47 +58,44 @@ module.exports = function(Purchaseorder) {
   });
 
   Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    var User = app.models.Purchaseuser;
+    var Costcenter = app.models.Costcenter;
+    var findUser = Promise.promisify(User.findById, User);
+    var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
+
+    var foundCostcenter = findCostcenter(ctx.instance.costcenterId);
+    var foundUser;
+
     // Allow order approving only for costcenter approvers
     if (ctx.args.data && (ctx.args.data.approved == true || ctx.args.data.approved == false)) {
       // changing state of approval
 
-      var User = app.models.Purchaseuser;
-      var Costcenter = app.models.Costcenter;
-      var findUser = Promise.promisify(User.findById, User);
-      var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
-
-      var foundUser = findUser(ctx.req.accessToken.userId, {
+      foundUser = findUser(ctx.req.accessToken.userId, {
         include: [{
           relation: 'isApproverOfCostcenter',
         }],
       });
-      var foundCostcenter = findCostcenter(ctx.instance.costcenterId);
 
       Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
-        if (err) {
-          throw401(err);
-        }
-
         var userCostcenter = user.isApproverOfCostcenter();
-
-        // allow user to be approver on multiple costcenters
-        var allowed = false;
-        _.forEach(userCostcenter, function (cs) {
-          if (JSON.stringify(costcenter) == JSON.stringify(cs)) {
-            allowed = true;
-          }
-        });
-
-        if (allowed) {
-          // user is approver of costcenter
-          console.log('Allowed to update');
-          next();
-        } else {
-          console.log('NOT Allowed to update');
-          throw401();
-        }
+        rowApprovalCheck(userCostcenter, costcenter);
       });
 
+    }
+
+    if (ctx.args.data && (ctx.args.data.controllerApproval == true || ctx.args.data.controllerApproval == false)) {
+      // changing state of ControllerApproval
+
+      foundUser = findUser(ctx.req.accessToken.userId, {
+        include: [{
+          relation: 'isControllerOfCostcenter',
+        }],
+      });
+
+      Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
+        var userCostcenter = user.isControllerOfCostcenter();
+        rowApprovalCheck(userCostcenter, costcenter);
+      });
     }
 
     function throw401(err) {
@@ -106,6 +103,23 @@ module.exports = function(Purchaseorder) {
       newError.statusCode = 401;
       newError.originalError = err;
       next(newError);
+    }
+
+    function rowApprovalCheck(userCostcenter, rowCostcenter) {
+
+      var allowed = false;
+      _.forEach(userCostcenter, function (cs) {
+        if (JSON.stringify(rowCostcenter) == JSON.stringify(cs)) {
+          allowed = true;
+        }
+      });
+
+      if (allowed) {
+        // user is allowed to approve rows for costcenter
+        next();
+      } else {
+        throw401();
+      }
     }
 
     next();

@@ -185,6 +185,13 @@
       "principalId": "approver",
       "permission": "ALLOW",
       "property": "__updateById__order_rows"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "__updateById__order_rows"
     }
   ],
   "methods": []

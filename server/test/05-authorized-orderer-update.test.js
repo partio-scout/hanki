@@ -49,12 +49,28 @@ describe('Orderer', function() {
   });
 
   describe('should not be allowed to', function() {
-    it('approve own purchaseorderrow', function(done) {
+    it('approve purchaseorderrow', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var d = new Date().toISOString();
         var msg = {
           'modified': d,
           'approved': true,
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(401)
+          .end(done);
+      });
+    });
+
+    it('make controller approval to purchaseorderrow', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        var d = new Date().toISOString();
+        var msg = {
+          'modified': d,
+          'controllerApproval': true,
         };
         request(app)
           .put('/api/Purchaseorders/2/order_rows/1')
