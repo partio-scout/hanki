@@ -63,41 +63,42 @@ module.exports = function(Purchaseorder) {
     var findUser = Promise.promisify(User.findById, User);
     var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
 
-    var foundCostcenter = findCostcenter(ctx.instance.costcenterId);
-    var foundUser;
-
     // Allow order approving only for costcenter approvers
     if (ctx.args.data && (ctx.args.data.approved == true || ctx.args.data.approved == false)) {
       // changing state of approval
 
-      foundUser = findUser(ctx.req.accessToken.userId, {
-        include: [{
-          relation: 'isApproverOfCostcenter',
-        }],
-      });
-
-      Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
-        if (err) throw401();
-        var userCostcenter = user.isApproverOfCostcenter();
-        rowApprovalCheck(userCostcenter, costcenter);
-      });
+      Promise.join(
+        findUser(ctx.req.accessToken.userId, {
+          include: [{
+            relation: 'isApproverOfCostcenter',
+          }],
+        }),
+        findCostcenter(ctx.instance.costcenterId), 
+        function (user, costcenter, err) {
+          if (err) throw401();
+          var userCostcenter = user.isApproverOfCostcenter();
+          rowApprovalCheck(userCostcenter, costcenter);
+        }
+      );
 
     }
 
     if (ctx.args.data && (ctx.args.data.controllerApproval == true || ctx.args.data.controllerApproval == false)) {
       // changing state of ControllerApproval
 
-      foundUser = findUser(ctx.req.accessToken.userId, {
-        include: [{
-          relation: 'isControllerOfCostcenter',
-        }],
-      });
-
-      Promise.join(foundUser, foundCostcenter, function (user, costcenter, err) {
-        if (err) throw401();
-        var userCostcenter = user.isControllerOfCostcenter();
-        rowApprovalCheck(userCostcenter, costcenter);
-      });
+      Promise.join(
+        findUser(ctx.req.accessToken.userId, {
+          include: [{
+            relation: 'isControllerOfCostcenter',
+          }],
+        }),
+        findCostcenter(ctx.instance.costcenterId), 
+        function (user, costcenter, err) {
+          if (err) throw401();
+          var userCostcenter = user.isControllerOfCostcenter();
+          rowApprovalCheck(userCostcenter, costcenter);
+        }
+      );
     }
 
     function throw401(err) {
