@@ -65,6 +65,7 @@ var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(Purchase
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
+var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewTitle')(TitleActions, TitleStore));
 var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
 var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
@@ -89,6 +90,7 @@ var routes = (
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
     <Route name="title_list" path="titles" handler={ TitleList }>
+      <Route name="new_title" path="new" handler={ NewTitle } />
       <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
       <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
     </Route>

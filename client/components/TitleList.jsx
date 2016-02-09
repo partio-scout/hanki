@@ -57,8 +57,8 @@ function getTitleList(TitleStore) {
 
       getPropsFromStores() {
         return {
-          titles: TitleStore.getState().titles,
           titleGroups: TitleStore.getState().titleGroups,
+          titles: _.sortBy(TitleStore.getState().titles, title => -title.titleId),
         };
       },
     },
@@ -71,6 +71,12 @@ function getTitleList(TitleStore) {
             <h1>
               Tuotteet
             </h1>
+            <div className="toolBar">
+              <ButtonLink to="new_title" bsStyle="primary">
+                <Glyphicon glyph="plus" />
+                <span> Uusi tuote</span>
+              </ButtonLink>
+            </div>
             {
               <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }
                 filterable={ [ 'Tuoteryhmä', 'Nimi' ] } filterPlaceholder="Etsi tuotteita">
