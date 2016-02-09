@@ -30,6 +30,9 @@ $border-radius-base: 3px;
 $border-radius-large: 0;
 $border-radius-small: 0;
 
+$container-sm: 100%;
+$container-desktop: 100%;
+
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
 .delete {
@@ -63,7 +66,55 @@ table {
 }
 
 td {
-  vertical-align: middle !important;
+  vertical-align: top;
+}
+
+td.purchase_order_row_name {
+  white-space: nowrap;
+}
+td.purchase_order_row_name > a.edit.btn.btn-link {
+  padding: 0px 12px 6px 0px;
+}
+
+td.purchase_order_row_name > a.delete.btn.btn-link {
+  padding: 0px 6px 6px 12px;
+}
+
+td.purchase_order_row_name > div.product-name {
+  display: inline-block;
+  vertical-align: inherit;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.price {
+  white-space: nowrap;
+}
+
+td.memo {
+  text-align: center;
+  color: $blue;
+}
+
+td.delivery {
+  width: 136px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1180px) {
+  td.delivery {
+    max-width: 130px;
+  }
+}
+
+@media (max-width: 1000px) {
+  td.purchase_order_row_name > div.product-name {
+    max-width: 100px;
+  }
 }
 
 .field p.form-control-static {
