@@ -15,6 +15,8 @@ var Table = Reactable.Table;
 var Tr = Reactable.Tr;
 var Td = Reactable.Td;
 
+var Price = require('./utils/Price');
+
 function getTitleEditButton(title) {
   return (
     <ButtonLink
@@ -88,6 +90,9 @@ function getTitleList(TitleStore) {
                                 { getTitleDeleteButton(title) }
                                 { title.name }
                               </span>
+                            </Td>
+                            <Td column="Hinta" value={ title.priceWithTax }>
+                              <Price value={ title.priceWithTax } />
                             </Td>
                             <Td column="Tilausrivien määrä">
                               { title.order_rows.length }
