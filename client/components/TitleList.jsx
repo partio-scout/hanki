@@ -52,7 +52,7 @@ function getTitleList(TitleStore) {
 
       getPropsFromStores() {
         return {
-          titles: TitleStore.getState().titles,
+          titles: _.sortBy(TitleStore.getState().titles, title => -title.titleId),
           titleGroups: _.filter(TitleStore.getState().titleGroups, titlegroup => titlegroup.titlegroupId !== 0),
         };
       },
@@ -68,6 +68,12 @@ function getTitleList(TitleStore) {
             <h1>
               Tuotteet
             </h1>
+            <div className="toolBar">
+              <ButtonLink to="new_title" bsStyle="primary">
+                <Glyphicon glyph="plus" />
+                <span> Uusi tuote</span>
+              </ButtonLink>
+            </div>
             {
               _.map(this.props.titleGroups, titleGroup =>
                 <Panel>

@@ -59,6 +59,17 @@ function getTitleActions(alt, Title, Titlegroup) {
       this.dispatch(err);
     }
 
+    createTitle(title) {
+      this.dispatch(title);
+      Title.create(title, (err) => {
+        if (err) {
+          this.actions.saveTitleFailed(err);
+        } else {
+          this.actions.fetchTitles();
+        }
+      });
+    }
+
     updateTitle(title) {
       this.dispatch(title);
       Title.update(title.titleId, title, (err) => {
