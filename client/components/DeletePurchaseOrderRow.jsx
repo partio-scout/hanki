@@ -30,14 +30,14 @@ var getDeletePurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStor
     },
 
     onHide: function() {
-      this.transitionTo('my_purchase_orders');
+      this.goBack();
     },
 
     onConfirm: function() {
       var rowId = this.props.params.purchaseOrderRow;
       var row = this.props.purchaseOrders.purchaseOrderRows[rowId];
       PurchaseOrderActions.deletePurchaseOrderRow(row);
-      this.transitionTo('my_purchase_orders');
+      this.goBack();
     },
 
     render: function() {
