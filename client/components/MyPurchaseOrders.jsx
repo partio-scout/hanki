@@ -54,7 +54,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
             <PurchaseOrderList
               purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
-              costCenters={ this.props.costCenters.costCenters }
+              costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
             />

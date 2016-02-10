@@ -4,12 +4,17 @@ function getCostCenterStore(alt, CostCenterActions) {
       this.costCenters = [ ];
 
       this.bindListeners({
-        handleUpdateCostCenters: CostCenterActions.UPDATE_COST_CENTERS,
+        handleUpdateOwnCostCenters: CostCenterActions.UPDATE_OWN_COST_CENTERS,
+        handleUpdateAllCostCenters: CostCenterActions.UPDATE_ALL_COST_CENTERS,
       });
     }
 
-    handleUpdateCostCenters(costCenters) {
-      this.costCenters = costCenters;
+    handleUpdateOwnCostCenters(costCenters) {
+      this.ownCostCenters = costCenters;
+    }
+
+    handleUpdateAllCostCenters(costCenters) {
+      this.allCostCenters = costCenters;
     }
   }
 
