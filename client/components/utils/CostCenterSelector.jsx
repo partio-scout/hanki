@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Input = ReactBootstrap.Input;

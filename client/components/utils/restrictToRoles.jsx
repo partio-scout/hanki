@@ -4,7 +4,7 @@ var React = require('react');
 var EmptyComponent = React.createClass({
   render: function() {
     return false;
-  }
+  },
 });
 
 module.exports = function getRestrictRoles(UserStore) {
@@ -29,7 +29,7 @@ module.exports = function getRestrictRoles(UserStore) {
       },
 
       render() {
-        if(this.state.currentUser && _.some(roles, role => this.state.currentUser.hasRole(role))) {
+        if (this.state.currentUser && _.some(roles, role => this.state.currentUser.hasRole(role))) {
           return <Component {...this.props} />;
         } else {
           return <EmptyComponent />;
