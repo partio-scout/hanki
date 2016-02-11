@@ -5,6 +5,10 @@ var isPosititiveOrZeroInt = function(value) {
   return validator.isInt(value, { min: 0 });
 };
 
+var isPosititiveOrZeroFloat = function(value) {
+  return validator.isFloat(value, { min: 0.0 });
+};
+
 var isNonEmptyString = function(value) {
   return validator.isLength(value, 1);
 };
@@ -32,7 +36,7 @@ var schema = [
   },
   {
     property: 'priceWithTax',
-    test: isPosititiveOrZeroInt,
+    test: isPosititiveOrZeroFloat,
     message: 'Syötä hinta, joka on vähintään 0 €',
   },
 ];
