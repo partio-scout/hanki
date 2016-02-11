@@ -44,6 +44,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       var ordersItem = '';
       var titlesLink = '';
       var myOrdersItem = '';
+      var costcenterPurchaseOrdersItem = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
@@ -61,6 +62,11 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
           <OrdererNavItemLink to="my_purchase_orders">
             Omat tilaukset
           </OrdererNavItemLink>
+        );
+        costcenterPurchaseOrdersItem = (
+          <NavItemLink to="costcenter_purchase_orders">
+            Tilaukset kustannuspaikoittain
+          </NavItemLink>
         );
         nameItem = (
           <NavItem>
@@ -82,6 +88,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
             <Nav right>
               { ordersItem }
               { titlesLink }
+              { costcenterPurchaseOrdersItem }
               { myOrdersItem }
               { nameItem }
               { logoutItem }
