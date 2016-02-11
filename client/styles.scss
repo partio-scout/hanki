@@ -168,3 +168,11 @@ th.reactable-header-sort-asc::after {
 th.reactable-header-sort-desc::after {
   content: " ▼";
 }
+
+.form-horizontal .control-label.text-left {
+  text-align: left;
+}
+
+.filter-well .form-group {
+  margin: 0;
+}

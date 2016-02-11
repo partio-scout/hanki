@@ -19,6 +19,10 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    if (this.props.purchaseOrders && this.props.purchaseOrders.length === 0) {
+      return <div>Ei tilauksia.</div>
+    }
+
     return (
       <div>
         {
