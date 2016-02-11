@@ -30,7 +30,6 @@ function getHomePage(UserStore, UserActions) {
     },
 
     render: function () {
-      console.log(this.state)
       var homeView = '';
       if (this.state.currentUser === undefined) {
         homeView = 'Loading...';
@@ -48,7 +47,7 @@ function getHomePage(UserStore, UserActions) {
             <Alert bsSize="medium" bsStyle="info">Kirjautumalla hyväksyn henkilötietojeni luovutuksen käsiteltäväksi Euroopan Talousalueen ulkopuolelle.</Alert>
           </div>
         );
-      } else if(this.state.currentUser.hasRole('orderer')) {
+      } else if (this.state.currentUser.hasRole('orderer')) {
         this.replaceWith('my_purchase_orders');
       } else {
         this.replaceWith('costcenter_purchase_orders');
