@@ -10,11 +10,13 @@ module.exports = React.createClass({
     titles: React.PropTypes.object,
     costCenters: React.PropTypes.object,
     deliveries: React.PropTypes.object,
+    readOnly: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
       purchaseOrders: [],
+      readOnly: false,
     };
   },
 
@@ -44,6 +46,7 @@ module.exports = React.createClass({
                   costCenter={ costCenter }
                   titles={ titles }
                   deliveries={ deliveries }
+                  readOnly={ this.props.readOnly }
                 />
               );
             })

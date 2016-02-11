@@ -15,6 +15,7 @@ var PurchaseOrderRow = React.createClass({
     row: React.PropTypes.object,
     titles: React.PropTypes.object,
     deliveries: React.PropTypes.object,
+    readOnly: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
@@ -22,6 +23,7 @@ var PurchaseOrderRow = React.createClass({
       titles: { },
       row: { },
       deliveries: { },
+      readOnly: false,
     };
   },
 
@@ -45,10 +47,12 @@ var PurchaseOrderRow = React.createClass({
     return (
       <tr>
         <td className="purchase_order_row_name">
-          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
+          <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row"
+            disabled={ this.props.readOnly } params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="pencil" />
           </ButtonLink>
-          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row" params={ { purchaseOrderRow: row.orderRowId } }>
+          <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row"
+            disabled={ this.props.readOnly } params={ { purchaseOrderRow: row.orderRowId } }>
             <Glyphicon glyph="remove" />
           </ButtonLink>
            <div className="product-name">
@@ -95,6 +99,13 @@ var PurchaseOrderRowTable = React.createClass({
     purchaseOrderRows: React.PropTypes.object,
     titles: React.PropTypes.object,
     deliveries: React.PropTypes.object,
+    readOnly: React.PropTypes.bool,
+  },
+
+  getDefaultProps: function() {
+    return {
+      readOnly: false,
+    };
   },
 
   render: function() {
@@ -120,7 +131,14 @@ var PurchaseOrderRowTable = React.createClass({
         </thead>
         <tbody>
           {
-            _.map(this.props.purchaseOrderRows, row => <PurchaseOrderRow row={ row } titles={ this.props.titles } deliveries={ this.props.deliveries } />)
+            _.map(this.props.purchaseOrderRows, row =>
+              <PurchaseOrderRow
+                row={ row }
+                titles={ this.props.titles }
+                deliveries={ this.props.deliveries }
+                readOnly={ this.props.readOnly }
+              />
+            )
           }
         </tbody>
       </Table>

@@ -74,6 +74,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
           titles={ titles }
           costCenters={ this.props.costCenters.allCostCenters }
           deliveries={ this.props.deliveries.deliveries }
+          readOnly={ true }
         />
       );
 
