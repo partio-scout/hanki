@@ -30,7 +30,8 @@ function getHomePage(UserStore, UserActions) {
     },
 
     render: function () {
-      var homeView;
+      console.log(this.state)
+      var homeView = '';
       if (this.state.currentUser === undefined) {
         homeView = 'Loading...';
       } else if (this.state.currentUser === null) {
@@ -47,10 +48,10 @@ function getHomePage(UserStore, UserActions) {
             <Alert bsSize="medium" bsStyle="info">Kirjautumalla hyväksyn henkilötietojeni luovutuksen käsiteltäväksi Euroopan Talousalueen ulkopuolelle.</Alert>
           </div>
         );
-      } else {
-        // Redirect logged in users to My Purchase Orders page
+      } else if(this.state.currentUser.hasRole('orderer')) {
         this.replaceWith('my_purchase_orders');
-        homeView = '';
+      } else {
+        this.replaceWith('costcenter_purchase_orders');
       }
 
       return (
