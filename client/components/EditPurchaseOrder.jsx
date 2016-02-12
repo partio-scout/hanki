@@ -81,7 +81,7 @@ var getEditPurchaseOrder = function(PurchaseOrderActions, CostCenterStore, Purch
       return (
         <PurchaseOrderForm
           title="Muokkaa tilausta"
-          costCenters={ this.props.costCenters.costCenters }
+          costCenters={ this.props.costCenters.ownCostCenters }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }

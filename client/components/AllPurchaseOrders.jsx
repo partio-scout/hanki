@@ -68,8 +68,9 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
             <Table className="table table-striped all-orders-table" itemsPerPage={ 60 } sortable={ true }
               filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
               { _.map(orderRows, (row) => {
-                var purchaseOrder = purchaseOrders[row.orderId] || {};
-                var costCenter = this.props.costCenters.costCenters[purchaseOrder.costcenterId] || { };
+                var purchaseOrder = purchaseOrders[row.orderId] || { };
+                var costCenters = this.props.costCenters.allCostCenters || { };
+                var costCenter = costCenters[purchaseOrder.costcenterId] || { };
                 var title = titles[row.titleId] || { };
                 var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
                 var price = (row.priceOverride || title.priceWithTax) * row.amount;

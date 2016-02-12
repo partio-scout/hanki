@@ -54,7 +54,7 @@ var getNewPurchaseOrder = function(PurchaseOrderActions, CostCenterStore) {
       return (
         <PurchaseOrderForm
           title="Uusi tilaus"
-          costCenters={ this.state.costCenters }
+          costCenters={ this.state.ownCostCenters }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }

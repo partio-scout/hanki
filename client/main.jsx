@@ -71,6 +71,8 @@ var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], req
 
 var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
 
+var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
+
 // Setup routes
 
 var React = require('react');
@@ -98,6 +100,7 @@ var routes = (
       <Route name="all_purchase_orders_edit_row" path=":purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="all_purchase_orders_delete_row" path=":purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
+    <Route name="costcenter_purchase_orders" path="costCenterPurchaseOrders" handler={ CostcenterPurchaseOrders } />
   </Route>
 );
 
