@@ -60,11 +60,13 @@ module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
     var User = app.models.Purchaseuser;
     var Costcenter = app.models.Costcenter;
+    var Role = app.models.Role;
+    var RoleMapping = app.models.RoleMapping;
     var findUser = Promise.promisify(User.findById, User);
     var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
 
     // Allow order approving only for costcenter approvers
-    if (ctx.args.data && (ctx.args.data.approved == true || ctx.args.data.approved == false)) {
+    if (ctx.args.data && (_.isBoolean(ctx.args.data.approved))) {
       // changing state of approval
 
       Promise.join(
@@ -77,28 +79,23 @@ module.exports = function(Purchaseorder) {
         function (user, costcenter, err) {
           if (err) throw401();
           var userCostcenter = user.isApproverOfCostcenter();
-          rowApprovalCheck(userCostcenter, costcenter);
+          proceedIfApprovalAllowed(userCostcenter, costcenter);
         }
       );
 
     }
 
-    if (ctx.args.data && (ctx.args.data.controllerApproval == true || ctx.args.data.controllerApproval == false)) {
+    if (ctx.args.data && (_.isBoolean(ctx.args.data.controllerApproval))) {
       // changing state of ControllerApproval
-
-      Promise.join(
-        findUser(ctx.req.accessToken.userId, {
-          include: [{
-            relation: 'isControllerOfCostcenter',
-          }],
-        }),
-        findCostcenter(ctx.instance.costcenterId),
-        function (user, costcenter, err) {
-          if (err) throw401();
-          var userCostcenter = user.isControllerOfCostcenter();
-          rowApprovalCheck(userCostcenter, costcenter);
+      // check if user is controller
+      Role.isInRole('controller', { principalType: RoleMapping.USER, principalId: ctx.req.accessToken.userId }, function (err, inRole) {
+        if (err) console.log(err);
+        if (inRole) {
+          next();
+        } else {
+          throw401();
         }
-      );
+      });
     }
 
     function throw401(err) {
@@ -108,15 +105,9 @@ module.exports = function(Purchaseorder) {
       next(newError);
     }
 
-    function rowApprovalCheck(userCostcenter, rowCostcenter) {
+    function proceedIfApprovalAllowed(userCostcenter, rowCostcenter) {
 
-      var allowed = false;
-      _.forEach(userCostcenter, function (cs) {
-        if (JSON.stringify(rowCostcenter) == JSON.stringify(cs)) {
-          allowed = true;
-        }
-      });
-
+      var allowed = _.some(userCostcenter, { 'costcenterId': rowCostcenter.costcenterId });
       if (allowed) {
         // user is allowed to approve rows for costcenter
         next();
