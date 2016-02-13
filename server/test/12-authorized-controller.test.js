@@ -20,7 +20,7 @@ describe('Controller', function() {
     });
   });
 
-  it('should be allowed to make controller approval to own costcenter purchaseorders', function(done) {
+  it('should be allowed to make controller approval to purchaseorders', function(done) {
     testUtils.loginUser('controller').then(function(accessToken) {
       var d = new Date().toISOString();
       var msg = {
