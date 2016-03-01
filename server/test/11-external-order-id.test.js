@@ -20,7 +20,7 @@ describe('External order', function() {
     .nodeify(done);
   });
 
-  it('should have id over 4 characters long', function(done) {
+  it('should have code over 4 characters long', function(done) {
     testUtils.loginUser('procurementAdmin').then(function(accessToken) {
       request(app).get('/api/Externalorders')
       .query({ access_token: accessToken.id })
@@ -31,7 +31,7 @@ describe('External order', function() {
         } else {
           try {
             expect(err).to.be.null;
-            expect(res.body[0].externalorderId).to.have.length.least(4);
+            expect(res.body[0].externalorderCode).to.have.length.least(4);
             done();
           } catch (e) {
             done(e);

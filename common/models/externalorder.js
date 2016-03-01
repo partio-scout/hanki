@@ -11,13 +11,13 @@ module.exports = function(Externalorder) {
       if (_.isArray(ctx.result)) {
         ctx.result = _.map(ctx.result, function(order) {
           order = order.toObject();
-          order.externalorderId = pad(order.externalorderId, 4);
+          order.externalorderCode = pad(order.externalorderId, 4);
           return order;
         });
         next();
       } else {
         ctx.result = ctx.result.toObject();
-        ctx.result.externalorderId = pad(ctx.result.externalorderId, 4);
+        ctx.result.externalorderCode = pad(ctx.result.externalorderId, 4);
         next();
       }
     }
