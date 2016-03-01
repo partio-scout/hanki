@@ -20,95 +20,42 @@ module.exports = function(Purchaseorderrow) {
 
   Purchaseorderrow.CSVExport = function(cb) {
     var toCSV = Promise.promisify(require('json2csv'));
-    var app = require('../../server/server');
-    var Purchaseorder = app.models.Purchaseorder;
-    var Costcenter = app.models.Costcenter;
-    var Title = app.models.Title;
-    var Titlegroup = app.models.Titlegroup;
-    var Delivery = app.models.Delivery;
-    var Purchaseuser = app.models.Purchaseuser;
     var findAllOrderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
-    var findOrder = Promise.promisify(Purchaseorder.findById, Purchaseorder);
-    var findTitle = Promise.promisify(Title.findById, Title);
-    var findTitlegroup = Promise.promisify(Titlegroup.findById, Titlegroup);
-    var findDelivery = Promise.promisify(Delivery.findById, Delivery);
-    var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
-    var findPurchaseuser = Promise.promisify(Purchaseuser.findById, Purchaseuser);
-    var findOrderrows = findAllOrderrows();
 
-    function couldNotFindModelWithId(model, id) {
-      var err = new Error('Could not find ' + model + ' with id ' + id);
-      err.status = 422;
-      throw err;
-    }
+    var filter = {
+      include: [
+        'delivery',
+        {
+          title: 'titlegroup',
+        },
+        {
+          Order: ['costcenter', 'subscriber'],
+        },
+      ],
+    };
 
-    function replaceOrderIdWithNameAndAddCostCenterAndEmail(orderrow) {
-      return findOrder(orderrow.orderId).then(function(order) {
-        if (order === null) {
-          couldNotFindModelWithId('order', orderrow.orderId);
-          return orderrow;
-        } else {
-          return findCostcenter(order.costcenterId).then(function(costcenter) {
-            if (costcenter === null) {
-              couldNotFindModelWithId('costcenter', order.costcenterId);
-              return orderrow;
-            } else {
-              return findPurchaseuser(order.subscriberId).then(function(purchaseuser) {
-                if (purchaseuser === null) {
-                  couldNotFindModelWithId('purchaseuser', order.subscriberId);
-                  return orderrow;
-                } else {
-                  var o = orderrow.toObject();
-                  o.orderName = order.name;
-                  o.costcenterCode = costcenter.code;
-                  o.ordererEmail = purchaseuser.email;
-                  return o;
-                }
-              });
-            }
-          });
-        }
-      });
-    }
+    function organizeOrderrowsForExport(orderrow) {
+      orderrow = orderrow.toObject();
 
-    function addTitleNameAndUnitAndPriceAndTitlegroupName(orderrow) {
-      return findTitle(orderrow.titleId).then(function(title) {
-        if (title === null) {
-          couldNotFindModelWithId('title', orderrow.titleId);
-          return orderrow;
-        } else {
-          return findTitlegroup(title.titlegroupId).then(function(titlegroup) {
-            if (titlegroup === null) {
-              couldNotFindModelWithId('titlegroup', title.titlegroupId);
-              return orderrow;
-            } else {
-              orderrow.titlegroupName = titlegroup.name;
-              if (title.titlegroupId === 0) { // Muu tuote: nimi ja yksikkö tilausrivistä
-                orderrow.titleName = orderrow.nameOverride;
-                orderrow.titleUnit = orderrow.unitOverride;
-                orderrow.price = orderrow.priceOverride;
-              } else {
-                orderrow.titleName = title.name;
-                orderrow.titleUnit = title.unit;
-                orderrow.price = title.priceWithTax;
-              }
-              return orderrow;
-            }
-          });
-        }
-      });
-    }
+      if (orderrow.titleId === 0) {
+        orderrow.titlegroupName = 'Muu tuote';
+        orderrow.titleName = orderrow.nameOverride;
+        orderrow.titleUnit = orderrow.unitOverride;
+        orderrow.price = orderrow.priceOverride;
+      } else {
+        orderrow.titlegroupName = orderrow.title.titlegroup.name;
+        orderrow.titleName = orderrow.title.name;
+        orderrow.titleUnit = orderrow.title.unit;
+        orderrow.price = orderrow.title.priceWithTax;
+      }
 
-    function addDeliveryDescription(orderrow) {
-      return findDelivery(orderrow.deliveryId).then(function(delivery) {
-        if (delivery === null) {
-          couldNotFindModelWithId('delivery', orderrow.deliveryId);
-          return orderrow;
-        } else {
-          orderrow.deliveryDescription = delivery.description;
-          return orderrow;
-        }
-      });
+      orderrow.orderName = orderrow.Order.name;
+      orderrow.costcenterCode = orderrow.Order.costcenter.code;
+      orderrow.ordererEmail = orderrow.Order.subscriber.email;
+
+      orderrow.deliveryDescription = orderrow.delivery.description;
+
+      return orderrow;
     }
 
     function orderrowsToCSV(orderrows) {
@@ -116,13 +63,12 @@ module.exports = function(Purchaseorderrow) {
       return toCSV({ data: orderrows, fields: fields });
     }
 
-    findOrderrows.map(replaceOrderIdWithNameAndAddCostCenterAndEmail)
-    .map(addTitleNameAndUnitAndPriceAndTitlegroupName)
-    .map(addDeliveryDescription)
+    findAllOrderrows(filter)
+    .map(organizeOrderrowsForExport)
     .then(orderrowsToCSV)
     .nodeify(cb);
-
   };
+
   Purchaseorderrow.remoteMethod(
     'CSVExport',
     {

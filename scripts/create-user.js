@@ -25,9 +25,9 @@ var opts = require('commander')
   .option('--approverOf [code]', 'The code of the cost centers for which this user is the approver.', collect, [])
   .parse(process.argv);
 
-if (opts.args.length < 3) {
+if (opts.args.length < 2) {
   opts.outputHelp();
-  console.error('Please provide the user\'s member number, email and at least one role.');
+  console.error('Please provide the user\'s member number and email.');
   process.exit(1);
 }
 
@@ -40,7 +40,7 @@ function wrapError(message) {
 }
 
 function getRoles() {
-  var roleNames = opts.args.slice(2);
+  var roleNames = opts.args.slice(2) || [ ];
 
   return findRole({ where: { name: { inq: roleNames } }, fields: ['id','name'] }).catch(wrapError('Cannot query roles!'))
     .then(function (roles) {

@@ -6,6 +6,7 @@ var _ = require('lodash');
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
+var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var Price = require('./utils/Price');
@@ -19,7 +20,7 @@ var Table = Reactable.Table;
 var Tr = Reactable.Tr;
 var Td = Reactable.Td;
 
-var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
+var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
   var allPurchaseOrders = React.createClass({
     propTypes: {
       purchaseOrders: React.PropTypes.object,
@@ -60,11 +61,16 @@ var getAllPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, Pur
             <h1>
               Kaikki tilaukset
             </h1>
+            <Button href={ '/api/Purchaseorderrows/CSVExport?access_token=' + accessToken.id } bsStyle="primary">
+              <Glyphicon glyph="download-alt" />
+              <span> Lataa kaikki tilaukset</span>
+            </Button>
             <Table className="table table-striped all-orders-table" itemsPerPage={ 60 } sortable={ true }
               filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
               { _.map(orderRows, (row) => {
-                var purchaseOrder = purchaseOrders[row.orderId] || {};
-                var costCenter = this.props.costCenters.costCenters[purchaseOrder.costcenterId] || { };
+                var purchaseOrder = purchaseOrders[row.orderId] || { };
+                var costCenters = this.props.costCenters.allCostCenters || { };
+                var costCenter = costCenters[purchaseOrder.costcenterId] || { };
                 var title = titles[row.titleId] || { };
                 var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
                 var price = (row.priceOverride || title.priceWithTax) * row.amount;
