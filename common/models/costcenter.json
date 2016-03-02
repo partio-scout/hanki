@@ -149,6 +149,13 @@
       "principalType": "ROLE",
       "principalId": "procurementAdmin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "§authenticated",
+      "permission": "ALLOW",
+      "property": "getTotalPriceOfOrders"
     }
   ],
   "methods": []
