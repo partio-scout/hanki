@@ -46,7 +46,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               Omat tilaukset
             </h1>
             <div className="toolBar">
-              <ButtonLink to="new_purchase_order" bsStyle="primary">
+              <ButtonLink to="new_purchase_order" bsStyle="primary" disabled={ true }>
                 <Glyphicon glyph="plus" />
                 <span> Uusi tilaus</span>
               </ButtonLink>
@@ -57,6 +57,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
+              readOnly={ true }
             />
           </Col>
         </Row>
