@@ -110,6 +110,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
           validationErrors={ this.state.validationErrors }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
+          disableEdit={ false }
         />
       );
     },

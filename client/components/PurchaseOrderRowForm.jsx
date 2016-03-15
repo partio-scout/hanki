@@ -26,6 +26,7 @@ var PurchaseOrderRowForm = React.createClass({
       unitOverride: React.PropTypes.object,
       finalized: React.PropTypes.object,
     }),
+    disableEdit: React.PropTypes.object,
     titles: React.PropTypes.object,
     titleGroups: React.PropTypes.object,
     deliveries: React.PropTypes.object,
@@ -59,6 +60,16 @@ var PurchaseOrderRowForm = React.createClass({
           { titleOptions }
         </Input>
       );
+    }
+  },
+
+  finalizedAlreadyWarning: function() {
+    if (this.props.disableEdit) {
+      return (
+          <div>Tämä tilaus on lähetetty hyväksyttäväksi, joten sitä ei voi enää muokata.</div>
+        );
+    } else {
+      return null;
     }
   },
 
@@ -101,6 +112,14 @@ var PurchaseOrderRowForm = React.createClass({
     }
   },
 
+  getSaveButton: function() {
+    if (this.props.disableEdit) {
+      return <Button disabled>Tallenna</Button>;
+    } else {
+      return <Button onClick={ this.props.onSave } bsStyle="primary">Tallenna</Button>;
+    }
+  },
+
   render: function () {
     var selectedTitle = this.props.titles[this.props.valueLinks.selectedTitleId.value] || { };
 
@@ -115,12 +134,16 @@ var PurchaseOrderRowForm = React.createClass({
     var unitPrice = this.isOtherProductSelected() ? this.props.valueLinks.priceOverride.value : selectedTitle.priceWithTax;
     var rowTotalPrice = unitPrice * this.props.valueLinks.amount.value;
 
+    var warning = this.finalizedAlreadyWarning();
+    var saveButton = this.getSaveButton();
+
     return (
       <Modal show="true" onHide={ this.props.onCancel }>
         <Modal.Header closeButton>
           <Modal.Title>{ this.props.title }</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          { warning }
           <form className="form-horizontal">
             <ErrorMessages messages={ this.props.validationErrors } />
 
@@ -152,13 +175,13 @@ var PurchaseOrderRowForm = React.createClass({
               help="Vapaaehtoinen. Kerro tässä, jos tarvitset tuotetta vain osan aikaa leiristä. Mikäli tarvitset palvelua, voit kertoa tässä millaista palvelua tarvitset (esim. pystytys teltalle tai suunnittelu ja rakennus leiriportille). Voit myös lisätä muuta selventävää tietoa esim. tuotteen ominaisuuksista tähän kenttään."
             />
             <Input label="Viimeistelty" labelClassName="col-xs-3" wrapperClassName="col-xs-9">
-              <Input checkedLink={ this.props.valueLinks.finalized } type="checkbox" wrapperClassName="col-xs-12" label="Tilauksen viimeistely" help="Viimeistely kertoo hankkijalle, että tämän tilauksen voi laittaa eteenpäin." />
+              <Input checkedLink={ this.props.valueLinks.finalized } type="checkbox" wrapperClassName="col-xs-12" label="Tilaus on lopullinen." help="Viimeistely kertoo hankkijalle, että tämän tilauksen voi käsitellä. Viimeistelyn jälkeen tuotteiden tietoja ei voi enää muokata." />
             </Input>
           </form>
         </Modal.Body>
         <Modal.Footer>
           <div className="text-center">
-            <Button onClick={ this.props.onSave } bsStyle="primary">Tallenna</Button>
+            { saveButton }
             <Button onClick={ this.props.onCancel }>Peruuta</Button>
           </div>
         </Modal.Footer>
