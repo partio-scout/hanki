@@ -14,6 +14,7 @@ describe('Orderer', function() {
           'name': nameForOrder,
           'costcenterId': 1,
           'subscriberId': accessToken.userId,
+          'finalized': true,
         };
         request(app)
           .put('/api/Purchaseorders/3')
@@ -23,6 +24,8 @@ describe('Orderer', function() {
           .expect(function(res) {
             // Make sure that things really happened
             expect(res.body.name).to.equal(nameForOrder);
+            expect(res.body.orderId).to.equal(3);
+            expect(res.body.finalized).to.equal(true);
           })
           .end(done);
       });
@@ -42,40 +45,6 @@ describe('Orderer', function() {
           .expect(function(res) {
             // Make sure that it really has changed
             expect(res.body.modified).to.equal(d);
-          })
-          .end(done);
-      });
-    });
-
-    it('Purchaseorderrow', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        var msg = {
-          'finalized': true,
-        };
-        request(app)
-          .put('/api/Purchaseorders/2/order_rows/1')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(200)
-          .expect(function(res) {
-            expect(res.body.finalized).to.equal(true);
-          })
-          .end(done);
-      });
-    });
-
-    it('Purchaseorderrow', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        var msg = {
-          'finalized': false,
-        };
-        request(app)
-          .put('/api/Purchaseorders/2/order_rows/1')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(200)
-          .expect(function(res) {
-            expect(res.body.finalized).to.equal(false);
           })
           .end(done);
       });
@@ -132,6 +101,36 @@ describe('Orderer', function() {
       });
     });
 
+    describe('finalized orders', function() {
+      it('Purchaseorderrow', function(done) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
+          var msg = {
+            'finalized': true,
+          };
+
+          var msg2 = {
+            'modified': new Date().toISOString(),
+            'name': "twilight sparkle",
+          };
+
+          request(app)
+            .put('/api/Purchaseorders/2/order_rows/1')
+            .query({ access_token: accessToken.id })
+            .send(msg)
+            .expect(200)
+            .expect(function(res) {
+              expect(res.body.finalized).to.equal(true);
+            });
+
+          request(app)
+            .put('/api/Purchaseorders/2/order_rows/1')
+            .query({ access_token: accessToken.id })
+            .send(msg2)
+            .expect(401)
+            .end(done);
+        });
+      });
+    });
     it('Costcenters', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
