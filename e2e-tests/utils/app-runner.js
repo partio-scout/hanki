@@ -21,9 +21,8 @@ function run(cb) {
   });
 }
 
-function halt(cb) {
+function halt() {
   procSysProcess.kill();
-  cb();
 }
 
 module.exports = {

@@ -15,7 +15,7 @@ describe('HANKI', function() {
     appRunner.run(done);
   });
 
-  after(function(done) {
-    appRunner.halt(done);
+  after(function() {
+    appRunner.halt();
   });
 });
