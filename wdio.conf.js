@@ -120,6 +120,6 @@ exports.config = {
     expect = chai.expect; // eslint-disable-line no-unused-vars, no-undef
     chai.Should();
 
-    chaiAsPromised.transferPromiseness = browser.transferPromiseness;
+    chaiAsPromised.transferPromiseness = browser.transferPromiseness; // eslint-disable-line no-undef
   },
 };
