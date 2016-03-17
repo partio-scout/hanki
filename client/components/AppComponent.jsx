@@ -1,15 +1,18 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
+
 var Navbar = ReactBootstrap.Navbar;
 var Nav = ReactBootstrap.Nav;
 var NavItem = ReactBootstrap.NavItem;
+var NavItemLink = ReactRouterBootstrap.NavItemLink;
 var Grid = ReactBootstrap.Grid;
 
 var Router = require('react-router');
 
 function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
-  var AdminNavItem = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItem);
-  var OrdererNavItem = restrictToRoles(['orderer'], NavItem);
+  var AdminNavItemLink = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItemLink);
+  var OrdererNavItemLink = restrictToRoles(['orderer'], NavItemLink);
 
   return React.createClass({
     mixins: [ Router.Navigation ],
@@ -37,39 +40,33 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       UserActions.logoutCurrentUser();
     },
 
-    navigateToTitles() {
-      this.transitionTo('title_list');
-    },
-
-    navigateToOrders() {
-      this.transitionTo('all_purchase_orders');
-    },
-
-    navigateToMyOrders() {
-      this.transitionTo('my_purchase_orders');
-    },
-
     render() {
       var ordersItem = '';
       var titlesLink = '';
       var myOrdersItem = '';
+      var costcenterPurchaseOrdersItem = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
         ordersItem = (
-          <AdminNavItem onClick={ this.navigateToOrders }>
+          <AdminNavItemLink to="all_purchase_orders">
             Tilaukset
-          </AdminNavItem>
+          </AdminNavItemLink>
         );
         titlesLink = (
-          <AdminNavItem onClick={ this.navigateToTitles }>
+          <AdminNavItemLink to="title_list">
             Tuotteet
-          </AdminNavItem>
+          </AdminNavItemLink>
         );
         myOrdersItem = (
-          <OrdererNavItem onClick={ this.navigateToMyOrders }>
+          <OrdererNavItemLink to="my_purchase_orders">
             Omat tilaukset
-          </OrdererNavItem>
+          </OrdererNavItemLink>
+        );
+        costcenterPurchaseOrdersItem = (
+          <NavItemLink to="costcenter_purchase_orders">
+            Tilaukset kustannuspaikoittain
+          </NavItemLink>
         );
         nameItem = (
           <NavItem>
@@ -91,6 +88,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
             <Nav right>
               { ordersItem }
               { titlesLink }
+              { costcenterPurchaseOrdersItem }
               { myOrdersItem }
               { nameItem }
               { logoutItem }

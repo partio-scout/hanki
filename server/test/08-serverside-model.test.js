@@ -13,6 +13,8 @@ var createPurchaseOrderRow = Promise.promisify(Purchaseorderrow.create, Purchase
 var destroyPurchaseOrderRowById = Promise.promisify(Purchaseorderrow.destroyById, Purchaseorderrow);
 var findPurchaseOrderRowById = Promise.promisify(Purchaseorderrow.findById, Purchaseorderrow);
 
+var Purchaseuser = app.models.Purchaseuser;
+
 function expectPurchaseOrderRowToBeDeleted(id) {
   return findPurchaseOrderRowById(id).then(function(res) { expect(res).to.be.null; });
 }
@@ -116,5 +118,54 @@ describe('Purchaseorder', function() {
         .then(function() { return expectPurchaseOrderRowToExist('222'); })
         .nodeify(done);
     });
+  });
+
+  describe('Purchaseuser.addCostcenterByCode', function(done) {
+    var userId;
+
+    beforeEach(function(done) {
+      Purchaseuser.create({
+        'memberNumber': '12345',
+        'username': 'testuser',
+        'password': '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC',
+        'name': 'Aasd Asad',
+        'phone': '041 79396930',
+        'email': 'example@roihu2016.fi',
+        'enlistment': 'Testi',
+        'userSection': 'Testi',
+      }, function(err, res) {
+        userId = res.id;
+        done(err);
+      });
+    });
+
+    afterEach(function(done) {
+      Purchaseuser.destroyById(userId, done);
+    });
+
+    it('should add cost center to user', function(done) {
+      Purchaseuser.addCostcenterByCode('example@roihu2016.fi', '00000', function() {
+        Purchaseuser.findById(userId, { include: 'costcenters' }).then(function(user) {
+          expect(user.costcenters()).to.have.length(1);
+          expect(user.costcenters()[0].toObject()).to.have.property('code', '00000');
+          done();
+        }).catch(done);
+      });
+    });
+
+    it('should report error when user is not found', function(done) {
+      Purchaseuser.addCostcenterByCode('nonexistent@roihu2016.fi', '00000', function(err, res) {
+        expect(err).to.be.an('Error');
+        done();
+      });
+    });
+
+    it('should report error when cost center is not found', function(done) {
+      Purchaseuser.addCostcenterByCode('example@roihu2016.fi', '99999', function(err, res) {
+        expect(err).to.be.an('Error');
+        done();
+      });
+    });
+
   });
 });

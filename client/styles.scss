@@ -24,6 +24,7 @@ $navbar-default-brand-hover-color: $white;
 $navbar-border-radius: 0;
 $navbar-default-link-color: $white;
 $navbar-default-link-hover-color: $white;
+$navbar-default-link-active-color: $white;
 $navbar-default-link-hover-bg: darken($green, 3%);
 
 $border-radius-base: 3px;
@@ -166,4 +167,12 @@ th.reactable-header-sort-asc::after {
 
 th.reactable-header-sort-desc::after {
   content: " ▼";
+}
+
+.form-horizontal .control-label.text-left {
+  text-align: left;
+}
+
+.filter-well .form-group {
+  margin: 0;
 }

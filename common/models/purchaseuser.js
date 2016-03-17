@@ -68,6 +68,24 @@ module.exports = function(Purchaseuser) {
       .nodeify(cb);
   };
 
+  Purchaseuser.addCostcenterByCode = function(email, code, cb) {
+    var app = require('../../server/server');
+    var Costcenter = app.models.Costcenter;
+
+    Promise.join(
+      Purchaseuser.findOne({ where: { email: email }, include: 'costcenters' }),
+      Costcenter.findOne({ where: { code: code } }),
+      function(user, costCenter) {
+        if (!user) {
+          throw new Error('No such user');
+        }
+        if (!costCenter) {
+          throw new Error('No such cost center');
+        }
+        return user.costcenters.add(costCenter);
+      }).nodeify(cb);
+  };
+
   Purchaseuser.remoteMethod(
     'getRoles',
     {

@@ -7,11 +7,8 @@ var TitleForm = require('./TitleForm');
 
 var validateTitle = require('../validation/title');
 
-module.exports = function getEditTitle(TitleActions, TitleStore) {
+module.exports = function getNewTitle(TitleActions, TitleStore) {
   return React.createClass({
-    propTypes: {
-      params: React.PropTypes.object,
-    },
 
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
@@ -20,8 +17,7 @@ module.exports = function getEditTitle(TitleActions, TitleStore) {
     },
 
     transformState: function (titleStoreState) {
-      const titles = titleStoreState.titles || { };
-      let state = titles[this.props.params.titleId] || { };
+      let state = { };
       state.titleGroups = _.filter(titleStoreState.titleGroups, titlegroup => titlegroup.titlegroupId !== 0);
       state.validationErrors = [];
       return state;
@@ -43,35 +39,28 @@ module.exports = function getEditTitle(TitleActions, TitleStore) {
       this.transitionTo('title_list');
     },
 
-    unitSelectionDisabled() {
-      return this.state.order_rows.length > 0;
-    },
-
     getTitleFromState() {
-      const title = {
-        titleId: this.state.titleId,
+      return {
         name: this.state.name,
         titlegroupId: this.state.titlegroupId,
         unit: this.state.unit,
         vatPercent: this.state.vatPercent,
         priceWithTax: this.state.priceWithTax,
         memo: this.state.memo,
-        accountId: this.state.accountId,
-        supplierId: this.state.supplierId,
+        accountId: 0, // Default account
+        supplierId: 0, // Default supplier
       };
-
-      return title;
     },
 
     onSave: function() {
-      const newTitle = this.getTitleFromState();
+      const title = this.getTitleFromState();
 
-      const validationErrors = validateTitle(newTitle);
+      const validationErrors = validateTitle(title);
 
       this.setState({ validationErrors });
 
       if (validationErrors.length === 0) {
-        TitleActions.updateTitle(newTitle);
+        TitleActions.createTitle(title);
         this.transitionTo('title_list');
       }
     },
@@ -87,10 +76,10 @@ module.exports = function getEditTitle(TitleActions, TitleStore) {
       };
       return (
         <TitleForm
-          formTitle="Muokkaa tuotetta"
+          formTitle="Uusi tuote"
           titleGroups={ this.state.titleGroups }
           validationErrors={ this.state.validationErrors }
-          unitSelectionDisabled={ this.unitSelectionDisabled() }
+          unitSelectionDisabled={ false }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }
@@ -99,3 +88,4 @@ module.exports = function getEditTitle(TitleActions, TitleStore) {
     },
   });
 };
+
