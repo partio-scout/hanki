@@ -15,7 +15,7 @@ if (!email) {
 }
 
 app.models.Purchaseuser.getDevLoginUrl(email, opts, function(err, url) {
-  if(err) {
+  if (err) {
     console.error(err);
     process.exit(1);
   } else {
