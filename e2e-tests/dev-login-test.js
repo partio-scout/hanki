@@ -11,13 +11,9 @@ describe('dev-login', function() {
       .click('=Kirjaudu ulos');
   });
 
-  before(function(done) {
-    appRunner.run(done);
-  });
+  before(appRunner.run);
 
-  after(function() {
-    appRunner.halt();
-  });
+  after(appRunner.halt);
 
   beforeEach(function(done) {
     devLogin('teuvo@tilaa.ja', function(err, url) {

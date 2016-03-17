@@ -9,12 +9,6 @@ describe('HANKI', function() {
       .should.eventually.be.ok;
   });
 
-  // According to Mochas hook syntax, be
-  before(function(done) {
-    appRunner.run(done);
-  });
-
-  after(function() {
-    appRunner.halt();
-  });
+  before(appRunner.run);
+  after(appRunner.halt);
 });
