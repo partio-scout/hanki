@@ -5,10 +5,10 @@ describe('dev-login', function() {
   var loginUrl;
 
   it('should log a user in', function() {
-    var h1 = browser
-      .url(loginUrl)
-      .selectByVisibleText('h1', 'Omat tilaukset');
-    return expect(h1).to.be.ok;
+    return browser.url(loginUrl)
+      .waitForVisible('h1=Omat tilaukset')
+      .getText('h1=Omat tilaukset').should.eventually.be.ok
+      .click('=Kirjaudu ulos');
   });
 
   before(function(done) {

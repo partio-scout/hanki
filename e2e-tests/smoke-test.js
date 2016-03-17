@@ -3,11 +3,10 @@ var appRunner = require('./utils/app-runner');
 describe('HANKI', function() {
 
   it('should contain a login button', function() {
-
-    var loginButton = browser
+    return browser
       .url('/')
-      .selectByVisibleText('.btn', 'Kirjaudu');
-    return expect(loginButton).to.be.ok;
+      .getText('.btn=Kirjaudu sisään Partio ID:llä')
+      .should.eventually.be.ok;
   });
 
   // According to Mochas hook syntax, be
