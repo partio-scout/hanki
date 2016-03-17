@@ -1,4 +1,5 @@
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 
 /*
 The new process will get the same enviromental variables as the current
@@ -21,6 +22,10 @@ function run(cb) {
   });
 }
 
+function resetDatabase(cb) {
+  exec('npm run reset-database', cb);
+}
+
 function halt() {
   procSysProcess.kill();
 }
@@ -28,4 +33,5 @@ function halt() {
 module.exports = {
   run: run,
   halt: halt,
+  resetDatabase: resetDatabase,
 };
