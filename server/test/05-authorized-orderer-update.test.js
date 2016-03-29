@@ -158,7 +158,6 @@ describe('Orderer', function() {
     });
   });
 
-
   describe('Should not be allowed to change after finalize', function() {
     it('Finalize an order', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
