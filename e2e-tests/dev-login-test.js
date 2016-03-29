@@ -8,7 +8,8 @@ describe('dev-login', function() {
     return browser.url(loginUrl)
       .waitForVisible('h1=Omat tilaukset')
       .getText('h1=Omat tilaukset').should.eventually.be.ok
-      .click('=Kirjaudu ulos');
+      .click('=Kirjaudu ulos')
+      .waitForVisible('.btn*=Kirjaudu sisään');
   });
 
   before(appRunner.run);

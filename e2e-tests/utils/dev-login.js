@@ -4,7 +4,7 @@ function devLogin(email, cb) {
   var opts = {
     port: 3005,
   };
-  app.models.Purchaseuser.getDevLoginUrl('teuvo@tilaa.ja', opts, cb);
+  app.models.Purchaseuser.getDevLoginUrl(email, opts, cb);
 }
 
 module.exports = devLogin;
