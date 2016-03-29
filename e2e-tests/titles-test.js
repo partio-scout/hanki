@@ -53,7 +53,6 @@ describe('Titles', function() {
 
   it('should be possible to edit', function() {
     return createTitle(browser, 'Muokattava tuote', '15') //TODO Use price with comma
-      .saveScreenshot('screenshot.png')
       .waitForVisible('span=Muokattava tuote')
       // Newly-created item should be first in the list
       .click('.edit')
