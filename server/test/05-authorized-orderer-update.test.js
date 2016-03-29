@@ -158,8 +158,8 @@ describe('Orderer', function() {
     });
   });
 
-  describe('Should not be allowed to change after finalize', function() {
-    it('Finalize an order', function(done) {
+  describe('Changing after finalize', function() {
+    it('should be able to finalize an order', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
         var msg = {
           'finalized': true,
@@ -177,7 +177,7 @@ describe('Orderer', function() {
       });
     });
 
-    it('Finalized order', function(done) {
+    it('orderer should not be able to edit', function(done) {
       testUtils.loginUser('orderer').then(function(accessToken) {
 
         var msg2 = {
@@ -191,6 +191,21 @@ describe('Orderer', function() {
           .expect(function(res) {
             expect(res.statusCode).to.equal(401);
           })
+          .end(done);
+      });
+    });
+
+    it('procurementMaster should be able to edit', function(done) {
+      testUtils.loginUser('procurementMaster').then(function(accessToken) {
+
+        var msg = {
+          'modified': new Date().toISOString()
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(200)
           .end(done);
       });
     });
