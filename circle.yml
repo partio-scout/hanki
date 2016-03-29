@@ -11,6 +11,14 @@ deployment:
     branch: demo
     heroku:
       appname: fj16-procurement-demo
+  staging-then-production:
+    branch: master
+    commands:
+      - git push git@heroku.com:fj16-procurement-staging.git $CIRCLE_SHA1:refs/heads/master
+      - npm run validate-deploy https://fj16-procurement-staging.herokuapp.com
+      - heroku pg:backups capture --app fj16-procurement-production
+      - git push git@heroku.com:fj16-procurement-production.git $CIRCLE_SHA1:refs/heads/master
+      - npm run validate-deploy https://hanki.roihu2016.fi
 dependencies:
   post:
     - wget --no-verbose -O "selenium-server-standalone.jar" "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
