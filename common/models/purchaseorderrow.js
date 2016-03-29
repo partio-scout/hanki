@@ -18,6 +18,16 @@ module.exports = function(Purchaseorderrow) {
     ctx.res.send(ctx.result.csv);
   });
 
+  Purchaseorderrow.observe('before save', function(ctx, next) {
+    if (ctx.currentInstance && ctx.currentInstance.finalized) {
+      var err = new Error('Cannot edit finalized orders.');
+      err.statusCode = 401;
+      next(err);
+    } else {
+      next();
+    }
+  });
+
   Purchaseorderrow.CSVExport = function(cb) {
     var toCSV = Promise.promisify(require('json2csv'));
     var app = require('../../server/server');
