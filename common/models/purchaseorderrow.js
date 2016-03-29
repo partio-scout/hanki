@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var app = require('../../server/server');
+var loopback = require('loopback');
 
 module.exports = function(Purchaseorderrow) {
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
@@ -19,10 +20,25 @@ module.exports = function(Purchaseorderrow) {
   });
 
   Purchaseorderrow.observe('before save', function(ctx, next) {
-    if (ctx.currentInstance && ctx.currentInstance.finalized) {
-      var err = new Error('Cannot edit finalized orders.');
-      err.statusCode = 401;
+    var sendError = function(message, code) {
+      var err = new Error(message);
+      err.statusCode = code;
       next(err);
+    }
+
+    if (ctx.currentInstance && ctx.currentInstance.finalized) {
+      var access = loopback.getCurrentContext().get('accessToken');
+      var RoleMapping = app.models.RoleMapping;
+
+      app.models.Role.isInRole('procurementMaster',{principalType: RoleMapping.USER, principalId: access.userId}, 
+        function(err,isMaster) {
+          if (isMaster) {
+            next();
+          } else {
+            sendError('Cannot edit finalized orders.',401);
+          }
+        }
+      );
     } else {
       next();
     }
