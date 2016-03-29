@@ -23,12 +23,27 @@ describe('All orders', function() {
       .getText('div=Leirin tavarat - controller').should.eventually.be.ok;
   });
 
+  it('should allow adding order rows', function() {
+    return browser.url(loginUrl)
+      .waitForVisible('=Tilaukset')
+      .click('=Tilaukset')
+      .waitForVisible('.btn.new')
+      .click('.btn.new')
+      .selectByVisibleText('select.titlegroup-selection', 'Puutavara')
+      .selectByVisibleText('select.title-selection', 'Kakkoskakkonen')
+      .setValue('input[label=Määrä]', 222)
+      .selectByVisibleText('select[label=Toimitus]', 'Toimitus rakennusleirin alkuun mennessä')
+      .click('button=Tallenna')
+      .waitForVisible('h1=Kaikki tilaukset')
+      .waitForVisible('span=222');
+  });
+
   it('should allow editing order rows', function() {
     return browser.url(loginUrl)
       .waitForVisible('=Tilaukset')
       .click('=Tilaukset')
       .waitForVisible('span=Iso naula')
-      .click('.btn.edit')
+      .click('tr:nth-child(2) .btn.edit')
       .waitForVisible('h4=Muokkaa tuotetta')
       .setValue('input[label=Määrä]', 3)
       .selectByVisibleText('select[label=Toimitus]', 'Toimitus leirin alkuun mennessä')
@@ -43,7 +58,7 @@ describe('All orders', function() {
       .waitForVisible('=Tilaukset')
       .click('=Tilaukset')
       .waitForVisible('span=Iso naula')
-      .click('tr:nth-child(2) .btn.delete')
+      .click('tr:nth-child(3) .btn.delete')
       .waitForVisible('h4=Poista tuote')
       .click('button=Kyllä')
       .waitForVisible('h1=Kaikki tilaukset')
