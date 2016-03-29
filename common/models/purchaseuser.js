@@ -86,6 +86,34 @@ module.exports = function(Purchaseuser) {
       }).nodeify(cb);
   };
 
+  Purchaseuser.getDevLoginUrl = function(email, opts, cb) {
+    var timeToLive = opts.timeToLive || 8*3600;
+    var port = opts.port || '3000';
+
+    var query = {
+      where: {
+        email: email,
+      },
+    };
+
+    Purchaseuser.findOne(query, function(err, user) {
+      if (err) {
+        cb(err);
+      } else if (user === null) {
+        cb(new Error('Can\'t find user: ' + email));
+      } else {
+        user.createAccessToken(timeToLive, function(err, accessToken) {
+          if (err) {
+            cb(err);
+          } else {
+            var url = 'http://localhost:' + port + '/dev-login/' + accessToken.id;
+            cb(null, url);
+          }
+        });
+      }
+    });
+  };
+
   Purchaseuser.remoteMethod(
     'getRoles',
     {
