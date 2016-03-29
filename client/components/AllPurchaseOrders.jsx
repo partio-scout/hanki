@@ -51,9 +51,9 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
 
     render: function () {
       var titles = this.props.titles.titles || { };
-      var orderRows = _.values(this.props.purchaseOrders.purchaseOrderRows || { });
+      var orderRows = _(this.props.purchaseOrders.purchaseOrderRows || { })
+        .values().sortBy('orderId').reverse().value();
       var purchaseOrders = this.props.purchaseOrders.allPurchaseOrders || { };
-
       return (
         <Row>
           <Col>
@@ -80,8 +80,16 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
                     //TODO Add orderer name column
                     <Td column="Kohde" value={ costCenter.code + ' ' + purchaseOrder.name } className="order">
                       <div>
-                        <div>{ costCenter.code }</div>
-                        <div>{ purchaseOrder.name }</div>
+                        <div className="pull-left">
+                          <div>{ costCenter.code }</div>
+                          <div>{ purchaseOrder.name }</div>
+                        </div>
+                        <div className="pull-right">
+                          <ButtonLink bsStyle="link" className="new" title="Luo uusi rivi tilaukseen"
+                            to="all_purchase_orders_create_row" params={ { purchaseOrder: row.orderId } }>
+                            <Glyphicon glyph="plus" />
+                          </ButtonLink>
+                        </div>
                       </div>
                     </Td>
                     <Td column="Tuote" value={ titleName } className="title">

@@ -52,7 +52,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
     },
 
     onCancel: function() {
-      this.transitionTo('my_purchase_orders');
+      this.goBack();
     },
 
     onSave: function() {
@@ -79,7 +79,7 @@ var getNewPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, 
 
       if (validationErrors.length === 0) {
         PurchaseOrderActions.createPurchaseOrderRow(row);
-        this.transitionTo('my_purchase_orders');
+        this.goBack();
       }
     },
 
