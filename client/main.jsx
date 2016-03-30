@@ -65,10 +65,13 @@ var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(Purchase
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
+var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewTitle')(TitleActions, TitleStore));
 var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
 var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
-var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
+var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
+
+var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
 
 // Setup routes
 
@@ -89,13 +92,16 @@ var routes = (
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
     <Route name="title_list" path="titles" handler={ TitleList }>
+      <Route name="new_title" path="new" handler={ NewTitle } />
       <Route name="edit_title" path=":titleId/edit" handler={ EditTitle } />
       <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
     </Route>
     <Route name="all_purchase_orders" path="allOrders" handler={ AllPurchaseOrders }>
+      <Route name="all_purchase_orders_create_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
       <Route name="all_purchase_orders_edit_row" path=":purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="all_purchase_orders_delete_row" path=":purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
+    <Route name="costcenter_purchase_orders" path="costCenterPurchaseOrders" handler={ CostcenterPurchaseOrders } />
   </Route>
 );
 

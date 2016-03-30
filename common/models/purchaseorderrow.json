@@ -400,6 +400,12 @@
       "permission": "DENY"
     },
     {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "admin",

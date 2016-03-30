@@ -68,6 +68,52 @@ module.exports = function(Purchaseuser) {
       .nodeify(cb);
   };
 
+  Purchaseuser.addCostcenterByCode = function(email, code, cb) {
+    var app = require('../../server/server');
+    var Costcenter = app.models.Costcenter;
+
+    Promise.join(
+      Purchaseuser.findOne({ where: { email: email }, include: 'costcenters' }),
+      Costcenter.findOne({ where: { code: code } }),
+      function(user, costCenter) {
+        if (!user) {
+          throw new Error('No such user');
+        }
+        if (!costCenter) {
+          throw new Error('No such cost center');
+        }
+        return user.costcenters.add(costCenter);
+      }).nodeify(cb);
+  };
+
+  Purchaseuser.getDevLoginUrl = function(email, opts, cb) {
+    var timeToLive = opts.timeToLive || 8*3600;
+    var port = opts.port || '3000';
+
+    var query = {
+      where: {
+        email: email,
+      },
+    };
+
+    Purchaseuser.findOne(query, function(err, user) {
+      if (err) {
+        cb(err);
+      } else if (user === null) {
+        cb(new Error('Can\'t find user: ' + email));
+      } else {
+        user.createAccessToken(timeToLive, function(err, accessToken) {
+          if (err) {
+            cb(err);
+          } else {
+            var url = 'http://localhost:' + port + '/dev-login/' + accessToken.id;
+            cb(null, url);
+          }
+        });
+      }
+    });
+  };
+
   Purchaseuser.remoteMethod(
     'getRoles',
     {

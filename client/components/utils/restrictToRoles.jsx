@@ -1,19 +1,17 @@
 var _ = require('lodash');
 var React = require('react');
 
+var EmptyComponent = React.createClass({
+  render: function() {
+    return false;
+  },
+});
+
 module.exports = function getRestrictRoles(UserStore) {
-  return function restrictRoles(roles, Component) {
+  return function restrictRoles(roles, Component, AlternativeComponent) {
+    AlternativeComponent = AlternativeComponent || EmptyComponent;
+
     return React.createClass({
-      statics: {
-        willTransitionTo(transition) {
-          const currentUser = UserStore.getState().currentUser;
-
-          if (!currentUser || !_.some(roles, role => currentUser.hasRole(role))) {
-            transition.redirect('home');
-          }
-        },
-      },
-
       getInitialState() {
         return UserStore.getState();
       },
@@ -31,7 +29,11 @@ module.exports = function getRestrictRoles(UserStore) {
       },
 
       render() {
-        return this.state.currentUser && _.some(roles, role => this.state.currentUser.hasRole(role)) && <Component {...this.props} />;
+        if (this.state.currentUser && _.some(roles, role => this.state.currentUser.hasRole(role))) {
+          return <Component {...this.props} />;
+        } else {
+          return <AlternativeComponent />;
+        }
       },
     });
   };

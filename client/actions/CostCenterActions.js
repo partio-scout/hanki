@@ -2,7 +2,11 @@ var _ = require('lodash');
 
 function getCostCenterActions(alt, OwnCostCenter, CostCenter) {
   class CostCenterActions {
-    updateCostCenters(costCenters) {
+    updateOwnCostCenters(costCenters) {
+      this.dispatch(costCenters);
+    }
+
+    updateAllCostCenters(costCenters) {
       this.dispatch(costCenters);
     }
 
@@ -16,7 +20,7 @@ function getCostCenterActions(alt, OwnCostCenter, CostCenter) {
         if (err) {
           this.actions.costCenterUpdateFailed(null);
         } else {
-          this.actions.updateCostCenters(_.indexBy(costCenters, 'costcenterId'));
+          this.actions.updateOwnCostCenters(_.indexBy(costCenters, 'costcenterId'));
         }
       });
     }
@@ -27,7 +31,7 @@ function getCostCenterActions(alt, OwnCostCenter, CostCenter) {
         if (err) {
           this.actions.costCenterUpdateFailed(null);
         } else {
-          this.actions.updateCostCenters(_.indexBy(costCenters, 'costcenterId'));
+          this.actions.updateAllCostCenters(_.indexBy(costCenters, 'costcenterId'));
         }
       });
     }
