@@ -9,7 +9,7 @@ var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
+var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore, UserStore) {
   var EditPurchaseOrderRow = React.createClass({
     propTypes: {
       params: React.PropTypes.object,
@@ -43,7 +43,17 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       var selectedTitle = _.find(this.props.titles.titles, { titleId: rowState.titleId }) || { };
       rowState.titlegroupId = selectedTitle.titlegroupId;
       rowState.requestService = rowState.requestService;
-      this.disableEdit = rowState.finalized;
+
+      var user = UserStore.getState().currentUser;
+      console.log(user.hasRole('procurementMaster'));
+      if (user && user.hasRole('procurementMaster')) {
+        //if procurementMaster is asking, allow edits
+        this.disableEdit = false;
+      } else {
+        //if normal people ask, allow edits if not finalized
+        this.disableEdit = rowState.finalized;
+      }
+
       return rowState;
     },
 
