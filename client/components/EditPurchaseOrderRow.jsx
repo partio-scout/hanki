@@ -45,7 +45,6 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       rowState.requestService = rowState.requestService;
 
       var user = UserStore.getState().currentUser;
-      console.log(user.hasRole('procurementMaster'));
       if (user && user.hasRole('procurementMaster')) {
         //if procurementMaster is asking, allow edits
         this.disableEdit = false;

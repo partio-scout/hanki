@@ -24,14 +24,15 @@ module.exports = function(Purchaseorderrow) {
       var err = new Error(message);
       err.statusCode = code;
       next(err);
-    }
+    };
 
     if (ctx.currentInstance && ctx.currentInstance.finalized) {
       var access = loopback.getCurrentContext().get('accessToken');
       var RoleMapping = app.models.RoleMapping;
 
-      app.models.Role.isInRole('procurementMaster',{principalType: RoleMapping.USER, principalId: access.userId}, 
+      app.models.Role.isInRole('procurementMaster',{ principalType: RoleMapping.USER, principalId: access.userId },
         function(err,isMaster) {
+          if (err) {sendError('Cannot verify user',500);}
           if (isMaster) {
             next();
           } else {

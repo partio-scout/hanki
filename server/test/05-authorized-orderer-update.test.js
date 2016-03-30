@@ -199,7 +199,7 @@ describe('Orderer', function() {
       testUtils.loginUser('procurementMaster').then(function(accessToken) {
 
         var msg = {
-          'modified': new Date().toISOString()
+          'modified': new Date().toISOString(),
         };
         request(app)
           .put('/api/Purchaseorders/2/order_rows/1')
