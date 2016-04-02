@@ -28,7 +28,7 @@ describe('All orders', function() {
       .waitForVisible('=Tilaukset')
       .click('=Tilaukset')
       .waitForVisible('span=Iso naula')
-      .click('tr:nth-child(2) .btn.new')
+      .click('tr:nth-child(1) .btn.new')
       .selectByVisibleText('select.titlegroup-selection', 'Puutavara')
       .selectByVisibleText('select.title-selection', 'Kakkoskakkonen')
       .setValue('input[label=Määrä]', 222)
