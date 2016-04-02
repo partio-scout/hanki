@@ -46,23 +46,14 @@ var PurchaseOrderRowForm = React.createClass({
 
   getTitleSelection: function() {
     if (this.isOtherProductSelected()) {
-      return (
-        <Input
-          wrapperClassName="col-xs-12"
-          defaultValue="Muu tuote"
-          type="text"
-          valueLink={ this.props.valueLinks.nameOverride }
-          className="title-name"
-        />
-      );
+      return (<Input wrapperClassName="col-xs-12" defaultValue="Muu tuote" type="text" valueLink={ this.props.valueLinks.nameOverride } />);
     } else {
       var selectedTitleGroup = this.props.valueLinks.selectedTitleGroup.value;
       var titlesByGroup = _.groupBy(this.props.titles, 'titlegroupId');
       var titleOptions = _.map(titlesByGroup[selectedTitleGroup], title => <option value={ title.titleId }>{ title.name }</option>);
 
       return (
-        <Input wrapperClassName="col-xs-12" valueLink={ this.props.valueLinks.selectedTitleId }
-          type="select" onChange={ this.onSelectedTitleChange } className="title-selection">
+        <Input wrapperClassName="col-xs-12" valueLink={ this.props.valueLinks.selectedTitleId } type="select" onChange={ this.onSelectedTitleChange }>
           <option value="-1">Valitse tuote...</option>
           { titleOptions }
         </Input>
@@ -133,8 +124,7 @@ var PurchaseOrderRowForm = React.createClass({
             <ErrorMessages messages={ this.props.validationErrors } />
 
             <Static label="Tuote" labelClassName="col-xs-3" wrapperClassName="col-xs-9 field">
-              <Input type="select" valueLink={ this.props.valueLinks.selectedTitleGroup }
-                wrapperClassName="col-xs-12" className="titlegroup-selection">
+              <Input type="select" valueLink={ this.props.valueLinks.selectedTitleGroup } wrapperClassName="col-xs-12">
                 <option value="-1">Valitse tuoteryhmä...</option>
                 { titlegroupOptions }
               </Input>
