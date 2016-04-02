@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var app = require('../../server/server');
+var _ = require('lodash');
 
 module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
@@ -54,5 +55,74 @@ module.exports = function(Purchaseorder) {
         throw newError;
       })
       .nodeify(next);
+  });
+
+  Purchaseorder.checkIfUserHasCostcenter = function(costcenterRelation, costcenterId, accessToken) {
+    var User = app.models.Purchaseuser;
+    var Costcenter = app.models.Costcenter;
+    var findUser = Promise.promisify(User.findById, User);
+    var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
+
+    function checkUserCostcenter(userCostcenters, costcenter) {
+      return _.some(userCostcenters, { 'costcenterId': costcenter.costcenterId });
+    }
+
+    return Promise.join(
+      findUser(accessToken.userId, {
+        include: [{
+          relation: costcenterRelation,
+        }],
+      }),
+      findCostcenter(costcenterId),
+      function(user, costcenter, err) {
+        if (err) {
+          throw new Error(err);
+        } else {
+          var usersCostcenters = user[costcenterRelation]();
+          return checkUserCostcenter(usersCostcenters, costcenter);
+        }
+      }
+    );
+  };
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    function proceedIfEverythingAllowed(userIsAllowed) {
+      if (userIsAllowed) {
+        next();
+      } else {
+        var newError = new Error('Authorization Required');
+        newError.statusCode = 401;
+        next(newError);
+      }
+    }
+
+    if (ctx.args.data) {
+      // Check that user is orderer of the costcenter of order
+      return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
+      .then(proceedIfEverythingAllowed);
+    } else {
+      next();
+    }
+  });
+
+  Purchaseorder.beforeRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
+    function proceedIfEverythingAllowed(userIsAllowed) {
+
+      if (userIsAllowed) {
+        next();
+      } else {
+        var newError = new Error('Authorization Required');
+        newError.statusCode = 401;
+        next(newError);
+      }
+    }
+
+    if (ctx.args.data) {
+      // Check that user is orderer of the costcenter of order
+      return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
+      .then(proceedIfEverythingAllowed);
+    } else {
+      next();
+    }
   });
 };

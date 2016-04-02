@@ -2,83 +2,218 @@ var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
 var testUtils = require('./utils/test-utils');
+var Promise = require('bluebird');
 
 describe('Orderer', function() {
   var nameForOrder = 'Liikaa nauloja';
+  var userId, ownedOrderId, ownedOrderrowId, otherOrderId, otherCcOrderId, otherOrderrowId, otherCcOrderrowId, accessToken;
 
-  describe('should be allowed to update owned', function() {
-    it('Purchaseorder', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        var msg = {
-          'orderId': 3,
-          'name': nameForOrder,
+  var purchaseUser = app.models.Purchaseuser;
+  var findCostcenter = Promise.promisify(app.models.Costcenter.find, app.models.Costcenter);
+  var findRole = Promise.promisify(app.models.Role.find, app.models.Role);
+
+  beforeEach(function(done) {
+    var orderFromOwnedCc = {
+      'name': 'Jonkun toisen tilaus',
+      'costcenterId': 1,
+      'subscriberId': 1,
+    };
+    var orderFromOtherCc = {
+      'name': 'Tähän ei pitäisi olla oikeutta',
+      'costcenterId': 2,
+      'subscriberId': 1,
+    };
+
+    return Promise.join(
+      findCostcenter({ where: { code: '00000' } }),
+      findRole({ where: { name: 'orderer' } }),
+      function (ccs, roles) {
+        return purchaseUser.createWithRolesAndCostcenters({
+          memberNumber: '0000010',
+          username: 'newOrderer',
+          password: 'salasana',
+          name: 'Tanja Tilaaja',
+          phone: '050 2345678',
+          email: 'tanja@tilaa.ja',
+          enlistment: 'Ostaja',
+          userSection: 'Palvelut',
+        }, roles, ccs, [], []);
+      }).then(function(user) {
+        userId = user.id;
+        return testUtils.loginUser('newOrderer');
+      }).then(function(newAccessToken) {
+        accessToken = newAccessToken;
+        return request(app).post('/api/Purchaseorders?access_token=' + accessToken.id)
+        .send({
+          'name': 'Uusi tilaus',
           'costcenterId': 1,
           'subscriberId': accessToken.userId,
+        })
+        .expect(200)
+        .expect(function(res) {
+          ownedOrderId = res.body.orderId;
+        });
+      }).then(function() {
+        var d = new Date().toISOString();
+        return request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
+        .send({
+          'titleId': 1,
+          'amount': 16,
+          'deliveryId': 1,
+          'orderId': ownedOrderId,
+          'approved': false,
+          'finished': false,
+          'modified': d,
+        })
+        .expect(200)
+        .expect(function(res) {
+          ownedOrderrowId = res.body.orderRowId;
+        });
+      }).then(function() {
+        return testUtils.createFixture('Purchaseorder', [orderFromOwnedCc, orderFromOtherCc]);
+      }).then(function(orders) {
+        otherOrderId = orders[0].orderId;
+        otherCcOrderId = orders[1].orderId;
+
+        var d = new Date().toISOString();
+        return testUtils.createFixture('Purchaseorderrow', [{
+          'titleId': 1,
+          'amount': 16,
+          'deliveryId': 1,
+          'orderId': otherOrderId,
+          'approved': false,
+          'finished': false,
+          'modified': d,
+        }, {
+          'titleId': 1,
+          'amount': 16,
+          'deliveryId': 1,
+          'orderId': otherCcOrderId,
+          'approved': false,
+          'finished': false,
+          'modified': d,
+        }]);
+      }).then(function(orderrows) {
+        otherOrderrowId = orderrows[0].orderRowId;
+        otherCcOrderrowId = orderrows[1].orderRowId;
+      }).nodeify(done);
+  });
+
+  afterEach(function(done) {
+    Promise.join(
+      testUtils.deleteFixtureIfExists('Purchaseuser', userId),
+      testUtils.deleteFixtureIfExists('Purchaseorder', ownedOrderId),
+      testUtils.deleteFixtureIfExists('Purchaseorder', otherOrderId),
+      testUtils.deleteFixtureIfExists('Purchaseorder', otherCcOrderId),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', ownedOrderrowId),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', otherOrderrowId),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', otherCcOrderrowId)
+    ).nodeify(done);
+  });
+
+  describe('should be allowed update owned', function() {
+    it('Purchaseorder', function(done) {
+      var nameForOrder = 'Muutettu tilaus';
+      testUtils.loginUser('newOrderer').then(function(accessToken) {
+        var msg = {
+          'name': nameForOrder,
         };
         request(app)
-          .put('/api/Purchaseorders/3')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(200)
-          .expect(function(res) {
+        .put('/api/Purchaseorders/' + ownedOrderId)
+        .query({ 'access_token': accessToken.id })
+        .send(msg)
+        .expect(200)
+        .expect(function(res) {
             // Make sure that things really happened
             expect(res.body.name).to.equal(nameForOrder);
-          })
-          .end(done);
+        })
+        .end(done);
       });
     });
 
     it('Purchaseorderrow', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        var d = new Date().toISOString();
-        var msg = {
-          'modified': d,
-        };
-        request(app)
-          .put('/api/Purchaseorders/2/order_rows/1')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(200)
-          .expect(function(res) {
-            // Make sure that it really has changed
-            expect(res.body.modified).to.equal(d);
-          })
-          .end(done);
-      });
+      var d = new Date().toISOString();
+      var msg = {
+        'modified': d,
+      };
+      request(app)
+      .put('/api/Purchaseorders/' + ownedOrderId + '/order_rows/' + ownedOrderrowId)
+      .query({ access_token: accessToken.id })
+      .send(msg)
+      .expect(200)
+      .expect(function(res) {
+        // Make sure that it really has changed
+        expect(res.body.modified).to.equal(d);
+      })
+      .end(done);
     });
   });
 
-  describe('should not be allowed to update others', function() {
-    it('Purchaseorders', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
+  describe('should be allowed to update from costcenter they are orderer of', function() {
+    it('Purchaseorder', function(done) {
+      var nameForOrder = 'Muutettu tilaus';
+      testUtils.loginUser('newOrderer').then(function(accessToken) {
         var msg = {
-          'orderId': 1,
           'name': nameForOrder,
-          'costcenterId': 1,
-          'subscriberId': accessToken.userId,
         };
         request(app)
-          .put('/api/Purchaseorders/1')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(401)
-          .end(done);
+        .put('/api/Purchaseorders/' + otherOrderId)
+        .query({ 'access_token': accessToken.id })
+        .send(msg)
+        .expect(200)
+        .expect(function(res) {
+            // Make sure that things really happened
+            expect(res.body.name).to.equal(nameForOrder);
+        })
+        .end(done);
       });
     });
 
-    it('Purchaseorderrows', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        var d = new Date().toISOString();
+    it('Purchaseorderrow', function(done) {
+      var d = new Date().toISOString();
+      var msg = {
+        'modified': d,
+      };
+      request(app)
+      .put('/api/Purchaseorders/' + otherOrderId + '/order_rows/' + otherOrderrowId)
+      .query({ access_token: accessToken.id })
+      .send(msg)
+      .expect(200)
+      .expect(function(res) {
+        // Make sure that it really has changed
+        expect(res.body.modified).to.equal(d);
+      })
+      .end(done);
+    });
+  });
+
+  describe('should not be allowed to update from costcenter they are not orderer of', function() {
+    it('Purchaseorder', function(done) {
+      var nameForOrder = 'Muutettu tilaus';
+      testUtils.loginUser('newOrderer').then(function(accessToken) {
         var msg = {
-          'modified': d,
+          'name': nameForOrder,
         };
         request(app)
-          .put('/api/Purchaseorders/1/order_rows/2')
-          .query({ access_token: accessToken.id })
-          .send(msg)
-          .expect(401)
-          .end(done);
+        .put('/api/Purchaseorders/' + otherCcOrderId)
+        .query({ 'access_token': accessToken.id })
+        .send(msg)
+        .expect(401)
+        .end(done);
       });
+    });
+
+    it('Purchaseorderrow', function(done) {
+      var d = new Date().toISOString();
+      var msg = {
+        'modified': d,
+      };
+      request(app)
+      .put('/api/Purchaseorders/' + otherCcOrderId + '/order_rows/' + otherCcOrderrowId)
+      .query({ access_token: accessToken.id })
+      .send(msg)
+      .expect(401)
+      .end(done);
     });
   });
 
