@@ -54,7 +54,6 @@ describe('All orders', function() {
   });
 
   it('should allow deleting order rows', function() {
-    this.timeout(15000);
     return browser.url(loginUrl)
       .waitForVisible('=Tilaukset')
       .click('=Tilaukset')
