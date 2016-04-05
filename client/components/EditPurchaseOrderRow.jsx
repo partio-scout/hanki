@@ -9,12 +9,13 @@ var validatePurchaseOrderRow = require('../validation/purchaseOrderRow');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore) {
+var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore, UserStore) {
   var EditPurchaseOrderRow = React.createClass({
     propTypes: {
       params: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      disableEdit: React.PropTypes.func,
     },
 
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
@@ -42,6 +43,16 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
       var selectedTitle = _.find(this.props.titles.titles, { titleId: rowState.titleId }) || { };
       rowState.titlegroupId = selectedTitle.titlegroupId;
       rowState.requestService = rowState.requestService;
+
+      var user = UserStore.getState().currentUser;
+      if (user && user.hasRole('procurementMaster')) {
+        //if procurementMaster is asking, allow edits
+        this.disableEdit = false;
+      } else {
+        //if normal people ask, allow edits if not finalized
+        this.disableEdit = rowState.finalized;
+      }
+
       return rowState;
     },
 
@@ -78,6 +89,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         memo: this.state.memo,
         orderId: this.state.orderId,
         requestService: this.state.requestService,
+        finalized: this.state.finalized,
       };
 
       if (this.isOtherProductSelected()) {
@@ -108,6 +120,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
         delivery: this.linkState('deliveryId'),
         memo: this.linkState('memo'),
         requestService: this.linkState('requestService'),
+        finalized: this.linkState('finalized'),
       };
 
       return (
@@ -120,6 +133,7 @@ var getEditPurchaseOrderRow = function(PurchaseOrderActions, PurchaseOrderStore,
           validationErrors={ this.state.validationErrors }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
+          disableEdit={ this.disableEdit }
         />
       );
     },

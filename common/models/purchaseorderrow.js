@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var app = require('../../server/server');
+var loopback = require('loopback');
 
 module.exports = function(Purchaseorderrow) {
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
@@ -16,6 +17,32 @@ module.exports = function(Purchaseorderrow) {
     ctx.res.attachment('orders.csv');
 
     ctx.res.send(ctx.result.csv);
+  });
+
+  Purchaseorderrow.observe('before save', function(ctx, next) {
+    var sendError = function(message, code) {
+      var err = new Error(message);
+      err.statusCode = code;
+      next(err);
+    };
+
+    if (ctx.currentInstance && ctx.currentInstance.finalized) {
+      var access = loopback.getCurrentContext().get('accessToken');
+      var RoleMapping = app.models.RoleMapping;
+
+      app.models.Role.isInRole('procurementMaster',{ principalType: RoleMapping.USER, principalId: access.userId },
+        function(err,isMaster) {
+          if (err) {sendError('Cannot verify user',500);}
+          if (isMaster) {
+            next();
+          } else {
+            sendError('Cannot edit finalized orders.',401);
+          }
+        }
+      );
+    } else {
+      next();
+    }
   });
 
   Purchaseorderrow.CSVExport = function(cb) {

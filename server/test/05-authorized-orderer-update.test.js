@@ -14,6 +14,7 @@ describe('Orderer', function() {
           'name': nameForOrder,
           'costcenterId': 1,
           'subscriberId': accessToken.userId,
+          'finalized': true,
         };
         request(app)
           .put('/api/Purchaseorders/3')
@@ -23,6 +24,8 @@ describe('Orderer', function() {
           .expect(function(res) {
             // Make sure that things really happened
             expect(res.body.name).to.equal(nameForOrder);
+            expect(res.body.orderId).to.equal(3);
+            expect(res.body.finalized).to.equal(true);
           })
           .end(done);
       });
@@ -46,6 +49,7 @@ describe('Orderer', function() {
           .end(done);
       });
     });
+
   });
 
   describe('should not be allowed to update others', function() {
@@ -149,6 +153,59 @@ describe('Orderer', function() {
           .query({ access_token: accessToken.id })
           .send(msg)
           .expect(401)
+          .end(done);
+      });
+    });
+  });
+
+  describe('Changing after finalize', function() {
+    it('should be able to finalize an order', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+        var msg = {
+          'finalized': true,
+        };
+
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(200)
+          .expect(function(res) {
+            expect(res.body.finalized).to.equal(true);
+          })
+          .end(done);
+      });
+    });
+
+    it('orderer should not be able to edit', function(done) {
+      testUtils.loginUser('orderer').then(function(accessToken) {
+
+        var msg2 = {
+          'modified': new Date().toISOString(),
+          'name': 'lopullinen juttu',
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg2)
+          .expect(function(res) {
+            expect(res.statusCode).to.equal(401);
+          })
+          .end(done);
+      });
+    });
+
+    it('procurementMaster should be able to edit', function(done) {
+      testUtils.loginUser('procurementMaster').then(function(accessToken) {
+
+        var msg = {
+          'modified': new Date().toISOString(),
+        };
+        request(app)
+          .put('/api/Purchaseorders/2/order_rows/1')
+          .query({ access_token: accessToken.id })
+          .send(msg)
+          .expect(200)
           .end(done);
       });
     });

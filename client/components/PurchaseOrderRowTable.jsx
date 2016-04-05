@@ -72,7 +72,7 @@ var PurchaseOrderRow = React.createClass({
           { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }
         </td>
         <td>
-
+          { row.finalized ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }
         </td>
         <td>
 
@@ -89,6 +89,7 @@ var PurchaseOrderRow = React.createClass({
         <td className="delivery">
           { delivery.name }
         </td>
+
       </tr>
     );
   },

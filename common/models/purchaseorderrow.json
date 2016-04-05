@@ -354,6 +354,24 @@
       },
       "_selectable": true,
       "comments": "Pyydä palvelua -flagi"
+    },
+    "finalized": {
+      "type": "Boolean",
+      "required": false,
+      "default": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "finalized",
+        "dataType": "boolean",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": true,
+      "comments": "Tilaaja on varmistanut - Hankkija voi pistää tilauksen käytäntöön"
     }
   },
   "validations": [],
