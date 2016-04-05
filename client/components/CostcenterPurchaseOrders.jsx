@@ -8,6 +8,7 @@ var Col = ReactBootstrap.Col;
 var Well = ReactBootstrap.Well;
 var PurchaseOrderList = require('./PurchaseOrderList');
 var CostCenterSelector = require('./utils/CostCenterSelector');
+var Price = require('./utils/Price');
 
 var connectToStores = require('alt/utils/connectToStores');
 
@@ -51,6 +52,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
       var orderRows = _.values(this.props.purchaseOrders.purchaseOrderRows || { });
       var allPurchaseOrders = this.props.purchaseOrders.allPurchaseOrders || { };
       var shownPurchaseOrders = _.filter(allPurchaseOrders, { costcenterId: +this.state.costcenterId });
+      var totalPrice = (_.find(this.props.costCenters.allCostCenters, { costcenterId: +this.state.costcenterId }) || {}).totalPrice;
 
       var costCenterLink = this.linkState('costcenterId');
 
@@ -85,6 +87,9 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
                 />
               </form>
             </Well>
+            <div>
+              Yhteensä: <Price value={ totalPrice } />
+            </div>
             { list }
           </Col>
         </Row>
