@@ -19,7 +19,7 @@ module.exports = function(server) {
           target: 'http://127.0.0.1:3001',
         });
       });
-      server.all('/socket.io*', function (req, res) {
+      server.all('/sockjs-node/*', function (req, res) {
         proxy.web(req, res, {
           target: 'http://127.0.0.1:3001',
         });
