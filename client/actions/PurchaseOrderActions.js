@@ -27,8 +27,38 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       }, 'filter[order]=orderId%20DESC&filter[include]=order_rows');
     }
 
+    fetchAllPurchaseOrders() {
+      this.dispatch();
+
+      PurchaseOrder.findAll((err, res) =>  {
+        if (err) {
+          this.actions.loadingPurchaseOrdersFailed(err);
+        } else {
+          var purchaseOrders = _.indexBy(res, 'orderId');
+          this.actions.updatePurchaseOrders(purchaseOrders);
+        }
+      });
+
+      PurchaseOrderRow.findAll((err, orderRows) =>  {
+        if (err) {
+          this.actions.loadingPurchaseOrdersFailed(err);
+        } else {
+          var finalizedRows = _.indexBy(orderRows, 'orderRowId');
+          this.actions.updatePurchaseOrderRows(finalizedRows);
+        }
+      });
+    }
+
+    loadingPurchaseOrdersFailed(error) {
+      this.dispatch(error);
+    }
+
     loadingMyPurchaseOrdersFailed(error) {
       this.dispatch(error);
+    }
+
+    updatePurchaseOrders(purchaseOrders) {
+      this.dispatch(purchaseOrders);
     }
 
     updateMyPurchaseOrders(myPurchaseOrders) {
@@ -101,7 +131,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       this.dispatch(row);
       PurchaseOrderRow.create(row, (err, savedRow) => {
         if (err) {
-          this.actions.creatingPurchaseOrderRowFailed(err);
+          this.actions.savingPurchaseOrderRowFailed(err);
         } else {
           this.actions.purchaseOrderRowCreated(savedRow);
         }
@@ -117,10 +147,6 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
           this.actions.purchaseOrderRowUpdated(savedRow);
         }
       });
-    }
-
-    creatingPurchaseOrderRowFailed(error) {
-      this.dispatch(error);
     }
 
     savingPurchaseOrderRowFailed(error) {

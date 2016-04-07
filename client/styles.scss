@@ -24,11 +24,15 @@ $navbar-default-brand-hover-color: $white;
 $navbar-border-radius: 0;
 $navbar-default-link-color: $white;
 $navbar-default-link-hover-color: $white;
+$navbar-default-link-active-color: $white;
 $navbar-default-link-hover-bg: darken($green, 3%);
 
 $border-radius-base: 3px;
 $border-radius-large: 0;
 $border-radius-small: 0;
+
+$container-sm: 100%;
+$container-desktop: 100%;
 
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
@@ -63,10 +67,112 @@ table {
 }
 
 td {
-  vertical-align: middle !important;
+  vertical-align: top;
+}
+
+td.purchase_order_row_name {
+  white-space: nowrap;
+}
+td.purchase_order_row_name > a.edit.btn.btn-link {
+  padding: 0px 12px 6px 0px;
+}
+
+td.purchase_order_row_name > a.delete.btn.btn-link {
+  padding: 0px 6px 6px 12px;
+}
+
+td.purchase_order_row_name > div.product-name {
+  display: inline-block;
+  vertical-align: inherit;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.price {
+  white-space: nowrap;
+}
+
+td.memo {
+  text-align: center;
+  color: $blue;
+}
+
+td.delivery {
+  width: 136px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1180px) {
+  td.delivery {
+    max-width: 130px;
+  }
+}
+
+@media (max-width: 1000px) {
+  td.purchase_order_row_name > div.product-name {
+    max-width: 100px;
+  }
 }
 
 .field p.form-control-static {
   display: none; // this is a dirty hack - we use FormControls.Static to hold several fields on one row
 }
 
+.all-orders-table {
+  .order {
+    width: 20%;
+  }
+
+  .title {
+    width: 45%;
+  }
+
+  .amount {
+    width: 10%;
+  }
+
+  .price {
+    width: 10%;
+  }
+
+  .delivery {
+    width: 15%;
+  }
+}
+
+.reactable-page-button, .reactable-previous-page, .reactable-next-page {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px 0 0;
+}
+
+.reactable-current-page, a.reactable-current-page:hover, a.reactable-current-page:focus {
+  background: $blue;
+  color: $white;
+  border-radius: $border-radius-base;
+  text-decoration: none;
+}
+
+th.reactable-header-sortable:focus {
+  outline: 0;
+}
+
+th.reactable-header-sort-asc::after {
+  content: " ▲";
+}
+
+th.reactable-header-sort-desc::after {
+  content: " ▼";
+}
+
+.form-horizontal .control-label.text-left {
+  text-align: left;
+}
+
+.filter-well .form-group {
+  margin: 0;
+}

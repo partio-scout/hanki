@@ -1,13 +1,19 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
+
 var Navbar = ReactBootstrap.Navbar;
 var Nav = ReactBootstrap.Nav;
 var NavItem = ReactBootstrap.NavItem;
+var NavItemLink = ReactRouterBootstrap.NavItemLink;
 var Grid = ReactBootstrap.Grid;
 
 var Router = require('react-router');
 
-function getApp(ErrorNotification, UserStore, UserActions) {
+function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions) {
+  var AdminNavItemLink = restrictToRoles(['procurementAdmin', 'procurementMaster'], NavItemLink);
+  var OrdererNavItemLink = restrictToRoles(['orderer'], NavItemLink);
+
   return React.createClass({
     mixins: [ Router.Navigation ],
 
@@ -35,9 +41,33 @@ function getApp(ErrorNotification, UserStore, UserActions) {
     },
 
     render() {
+      var ordersItem = '';
+      var titlesLink = '';
+      var myOrdersItem = '';
+      var costcenterPurchaseOrdersItem = '';
       var nameItem = '';
       var logoutItem = '';
       if (this.state.currentUser) {
+        ordersItem = (
+          <AdminNavItemLink to="all_purchase_orders">
+            Tilaukset
+          </AdminNavItemLink>
+        );
+        titlesLink = (
+          <AdminNavItemLink to="title_list">
+            Tuotteet
+          </AdminNavItemLink>
+        );
+        myOrdersItem = (
+          <OrdererNavItemLink to="my_purchase_orders">
+            Omat tilaukset
+          </OrdererNavItemLink>
+        );
+        costcenterPurchaseOrdersItem = (
+          <NavItemLink to="costcenter_purchase_orders">
+            Tilaukset kustannuspaikoittain
+          </NavItemLink>
+        );
         nameItem = (
           <NavItem>
             { this.state.currentUser.email }
@@ -52,9 +82,14 @@ function getApp(ErrorNotification, UserStore, UserActions) {
 
       return (
         <div>
+          <SessionTimeoutNotification />
           <ErrorNotification />
           <Navbar brand="HANKI">
             <Nav right>
+              { ordersItem }
+              { titlesLink }
+              { costcenterPurchaseOrdersItem }
+              { myOrdersItem }
               { nameItem }
               { logoutItem }
             </Nav>

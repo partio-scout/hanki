@@ -185,7 +185,6 @@
       "id": true,
       "generated": true,
       "required": false,
-      "generated": true,
       "length": null,
       "precision": 32,
       "scale": 0,
@@ -355,6 +354,23 @@
       },
       "_selectable": true,
       "comments": "Pyydä palvelua -flagi"
+    },
+    "externalorderId": {
+      "type": "number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "externalorder_id",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "ulkoisen tilauksen numero"
     }
   },
   "validations": [],
@@ -373,6 +389,11 @@
       "type": "belongsTo",
       "model": "Purchaseorder",
       "foreignKey": "orderId"
+    },
+    "Externalorder": {
+      "type": "belongsTo",
+      "model": "Externalorder",
+      "foreignKey": "externalorderId"
     }
   },
   "acls": [
@@ -381,6 +402,12 @@
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
     },
     {
       "accessType": "*",
@@ -412,7 +439,14 @@
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "CSVExport"
     }
   ],
-  "methods": []
+  "methods": {}
 }

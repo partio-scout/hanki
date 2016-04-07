@@ -15,4 +15,5 @@ module.exports = [
   'Purchaseorder',
   'Purchaseorderrow',
   'PurchaseuserCostcenter',
+  'Externalorder',
 ];

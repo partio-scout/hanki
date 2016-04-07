@@ -80,5 +80,9 @@
   "History": {
     "dataSource": "db",
     "public": true
+  },
+  "Externalorder": {
+    "dataSource": "db",
+    "public": true
   }
 }

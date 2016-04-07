@@ -56,6 +56,25 @@ describe('Orderer', function() {
         });
       });
 
+      it('Purchaseorders', function(done) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
+          request(app)
+            .get('/api/Purchaseorders')
+            .query({ access_token: accessToken.id })
+            .expect(200)
+            .end(done);
+        });
+      });
+
+      it('Purchaseorderrows', function(done) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
+          request(app)
+            .get('/api/Purchaseorderrows')
+            .query({ access_token: accessToken.id })
+            .expect(200)
+            .end(done);
+        });
+      });
     });
 
     describe('owned', function() {
@@ -121,28 +140,6 @@ describe('Orderer', function() {
             })
             .end(done);
         });
-      });
-    });
-  });
-
-  describe('should not be allowed to', function() {
-    it('get all Purchaseorders', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        request(app)
-          .get('/api/Purchaseorders')
-          .query({ access_token: accessToken.id })
-          .expect(401)
-          .end(done);
-      });
-    });
-
-    it('get all Purchaseorderrows', function(done) {
-      testUtils.loginUser('orderer').then(function(accessToken) {
-        request(app)
-          .get('/api/Purchaseorderrows')
-          .query({ access_token: accessToken.id })
-          .expect(401)
-          .end(done);
       });
     });
   });
