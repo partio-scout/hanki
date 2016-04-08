@@ -1,4 +1,5 @@
 var Promise = require('bluebird');
+var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorderrow) {
@@ -69,11 +70,80 @@ module.exports = function(Purchaseorderrow) {
     .nodeify(cb);
   };
 
+  //Don't expose this directly over API - allows overwriting any field
+  Purchaseorderrow.approve = function(approvalType, ids, cb) {
+    Purchaseorderrow.findByIds(ids).then(function(rows) {
+      var updates = _.map(rows, function(row) {
+        return Promise.fromNode(function(callback) {
+          row.modified = (new Date()).toISOString();
+          row[approvalType] = true;
+          row.save(callback);
+        });
+      });
+      return Promise.all(updates).nodeify(cb);
+    }).catch(function(err) {
+      cb(err);
+    });
+  };
+
+  Purchaseorderrow.unapprove = function(approvalType, ids, cb) {
+    Purchaseorderrow.findByIds(ids).then(function(rows) {
+      var updates = _.map(rows, function(row) {
+        return Promise.fromNode(function(callback) {
+          row.modified = (new Date()).toISOString();
+
+          // Cannot unapprove if already approved
+          if (row[approvalType] === true) {
+            return callback(null, row);
+          }
+
+          // Reset other approvals to null (i.e. return to orderer)
+          row.controllerApproval = null;
+          row.userSectionApproval = null;
+          row.providerApproval = null;
+
+          row[approvalType] = false;
+
+          row.save(callback);
+        });
+      });
+      return Promise.all(updates).nodeify(cb);
+    }).catch(function(err) {
+      cb(err);
+    });
+  };
+
+  Purchaseorderrow.approveController = function(ids, cb) {
+    Purchaseorderrow.approve('controllerApproval', ids, cb);
+  };
+
+  Purchaseorderrow.unapproveController = function(ids, cb) {
+    Purchaseorderrow.unapprove('controllerApproval', ids, cb);
+  };
+
   Purchaseorderrow.remoteMethod(
     'CSVExport',
     {
       http: { path: '/CSVExport', verb: 'get' },
       returns: { arg: 'csv', type: 'string' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'approveController',
+    {
+      accepts: { arg: 'ids', type: 'array', required: 'true' },
+      returns: { arg: 'result', type: 'string' },
+      http: { path: '/approve/controller', verb: 'post' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'unapproveController',
+    {
+      accepts: { arg: 'ids', type: 'array', required: 'true' },
+      returns: { arg: 'result', type: 'string' },
+      http: { path: '/unapprove/controller', verb: 'post' },
     }
   );
 };

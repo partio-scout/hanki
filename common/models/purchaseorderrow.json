@@ -446,6 +446,20 @@
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "CSVExport"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "approveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "unapproveController"
     }
   ],
   "methods": {}
