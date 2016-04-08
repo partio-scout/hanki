@@ -26,7 +26,6 @@ module.exports = function(Purchaseorder) {
   Purchaseorder.observe('before delete', function(ctx, next) {
     // Deletes all purchase order rows for the orders about to be deleted
 
-    var app = require('../../server/server');
     var PurchaseOrderRow = app.models.Purchaseorderrow;
 
     var findPurchaseOrder = Promise.promisify(Purchaseorder.find, Purchaseorder);
@@ -105,9 +104,30 @@ module.exports = function(Purchaseorder) {
     }
   });
 
+  Purchaseorder.beforeRemote('prototype.__destroyById__order_rows', function(ctx, purchaseOrder, next) {
+    var findOrderrow = Promise.promisify(app.models.Purchaseorderrow.findById, app.models.Purchaseorderrow);
+    function proceedIfEverythingAllowed(userIsAllowed) {
+      if (userIsAllowed) {
+        next();
+      } else {
+        var newError = new Error('Authorization Required');
+        newError.statusCode = 401;
+        next(newError);
+      }
+    }
+    if (ctx.args) {
+      findOrderrow(ctx.args.fk, { include: 'Order' }).then(function(orderrow) {
+        var order = orderrow.Order();
+        // Check that user is orderer of the costcenter of order
+        return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
+      }).then(proceedIfEverythingAllowed);
+    } else {
+      next();
+    }
+  });
+
   Purchaseorder.beforeRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
     function proceedIfEverythingAllowed(userIsAllowed) {
-
       if (userIsAllowed) {
         next();
       } else {
@@ -121,6 +141,28 @@ module.exports = function(Purchaseorder) {
       // Check that user is orderer of the costcenter of order
       return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
       .then(proceedIfEverythingAllowed);
+    } else {
+      next();
+    }
+  });
+
+  Purchaseorder.beforeRemote('deleteById', function(ctx, purchaseOrder, next) {
+    var findOrder = Promise.promisify(Purchaseorder.findById, Purchaseorder);
+    function proceedIfEverythingAllowed(userIsAllowed) {
+      if (userIsAllowed) {
+        next();
+      } else {
+        var newError = new Error('Authorization Required');
+        newError.statusCode = 401;
+        next(newError);
+      }
+    }
+
+    if (ctx.args) {
+      findOrder(ctx.args.id).then(function(order) {
+        // Check that user is orderer of the costcenter of order
+        return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
+      }).then(proceedIfEverythingAllowed);
     } else {
       next();
     }
