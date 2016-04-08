@@ -42,6 +42,10 @@ function find(modelName, whereClause, includeClause) {
   return find(what);
 }
 
+function findById(modelName, id) {
+  return Promise.promisify(app.models[modelName].findById, app.models[modelName])(id);
+}
+
 module.exports = {
   loginUser: loginUser,
   createFixture: createFixture,
@@ -49,4 +53,5 @@ module.exports = {
   deleteFixturesIfExist: deleteFixturesIfExist,
   expectModelToBeDeleted: expectModelToBeDeleted,
   find: find,
+  findById: findById,
 };
