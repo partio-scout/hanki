@@ -253,4 +253,14 @@ describe('Approvals', function() {
     });
   });
 
+  describe('Unauthenticated users', function() {
+    it('cannot access controller approval endpoint', function() {
+      return request(app).post('/api/Purchaseorderrows/approve/controller').expect(401);
+    });
+
+    it('cannot access controller unapproval endpoint', function() {
+      return request(app).post('/api/Purchaseorderrows/unapprove/controller').expect(401);
+    });
+  });
+
 });
