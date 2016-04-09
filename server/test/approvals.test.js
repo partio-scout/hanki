@@ -295,6 +295,56 @@ describe('Approvals', function() {
           expect(rows[1]).to.have.property('providerApproval', true);
         });
     });
+
+    it('can edit approved rows', function() {
+      return request(app)
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[5] + '?access_token=' + masterAccessToken)
+        .send(getExampleFixture({ orderRowId: orderRowIds[5], memo: 'changed!' }))
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[5]).to.have.property('memo', 'changed!');
+        });
+    });
+  });
+
+  describe('Orderers', function() {
+    this.timeout(5000);
+    var token;
+
+    beforeEach(function() {
+      return testUtils.loginUser('orderer').then(function(accessToken) {
+        token = accessToken.id;
+      });
+    });
+
+    it('cannot edit controller-approved rows', function() {
+      return request(app)
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[6] + '?access_token=' + token)
+        .send(getExampleFixture({ orderRowId: orderRowIds[6], memo: 'changed!' }))
+        .expect(401)
+        .then(function(res) {
+          expect(res.text).to.contain('You cannot edit rows that have approvals');
+        })
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[6]).not.to.have.property('memo', 'changed!');
+        });
+    });
+
+    it('cannot edit procurement-approved rows', function() {
+      return request(app)
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[1] + '?access_token=' + token)
+        .send(getExampleFixture({ orderRowId: orderRowIds[1], memo: 'changed!' }))
+        .expect(401)
+        .then(function(res) {
+          expect(res.text).to.contain('You cannot edit rows that have approvals');
+        })
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[1]).not.to.have.property('memo', 'changed!');
+        });
+    });
   });
 
   describe('Unauthenticated users', function() {

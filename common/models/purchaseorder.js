@@ -12,8 +12,36 @@ module.exports = function(Purchaseorder) {
     next();
   });
 
-  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
-    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update row');
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, row, next) {
+    var isInRole = Promise.promisify(app.models.Role.isInRole, app.models.Role);
+    var id = ctx.args.fk;
+    var userId = ctx.req.accessToken.userId;
+
+    Promise.join(
+      app.models.Purchaseorderrow.findById(id),
+      isInRole('procurementMaster', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      isInRole('procurementAdmin', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      function(row, isProcurementMaster, isProcurementAdmin) {
+        if (isProcurementMaster || isProcurementAdmin) {
+          return next();
+        }
+
+        var hasApprovals = row.controllerApproval || row.providerApproval;
+        if (hasApprovals) {
+          var err = new Error('You cannot edit rows that have approvals');
+          err.statusCode = 401;
+          next(err);
+        } else {
+          next();
+        }
+      }
+    ).catch(function(err) {
+      next(err);
+    });
+  });
+
+  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, row, next) {
+    app.models.History.remember.PurchaseOrder(ctx, row, 'update row');
     next();
   });
 
