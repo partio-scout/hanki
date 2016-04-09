@@ -251,6 +251,50 @@ describe('Approvals', function() {
           expect(rows[2]).to.have.property('providerApproval', null);
         });
     });
+
+    it('can unapprove rows', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/unapprove/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[2] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[0]).to.have.property('providerApproval', false);
+          expect(rows[2]).to.have.property('providerApproval', false);
+          expect(rows[2]).to.have.property('userSectionApproval', null);
+        });
+    });
+
+    it('can unapprove rows without affecting other rows', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/unapprove/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[0]).to.have.property('providerApproval', false);
+          expect(rows[1]).to.have.property('providerApproval', true);
+          expect(rows[2]).to.have.property('providerApproval', null);
+        });
+    });
+
+    it('cannot unapprove only rows that have been approved by procurement already', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/unapprove/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[1] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[0]).to.have.property('providerApproval', false);
+          expect(rows[1]).to.have.property('providerApproval', true);
+        });
+    });
   });
 
   describe('Unauthenticated users', function() {

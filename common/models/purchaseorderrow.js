@@ -125,6 +125,10 @@ module.exports = function(Purchaseorderrow) {
     Purchaseorderrow.approve('providerApproval', ids, cb);
   };
 
+  Purchaseorderrow.unapproveProcurement = function(ids, cb) {
+    Purchaseorderrow.unapprove('providerApproval', ids, cb);
+  };
+
   Purchaseorderrow.remoteMethod(
     'CSVExport',
     {
@@ -157,6 +161,15 @@ module.exports = function(Purchaseorderrow) {
       accepts: { arg: 'ids', type: 'array', required: 'true' },
       returns: { arg: 'result', type: 'string' },
       http: { path: '/approve/procurement', verb: 'post' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'unapproveProcurement',
+    {
+      accepts: { arg: 'ids', type: 'array', required: 'true' },
+      returns: { arg: 'result', type: 'string' },
+      http: { path: '/unapprove/procurement', verb: 'post' },
     }
   );
 };
