@@ -450,9 +450,23 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "approveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "approveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "unapproveController"
     },
     {
       "accessType": "EXECUTE",

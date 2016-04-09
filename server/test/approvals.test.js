@@ -20,7 +20,6 @@ function getExampleFixture(changes) {
 
 describe('Approvals', function() {
   var orderRowIds;
-  var controllerAccessToken;
 
   function fetchAllFixtures() {
     return app.models.Purchaseorderrow.findByIds(orderRowIds);
@@ -37,10 +36,6 @@ describe('Approvals', function() {
       getExampleFixture({ 'controllerApproval': true }),
     ]).then(function(rows) {
       orderRowIds = _.map(rows, 'orderRowId');
-    }).then(function() {
-      return testUtils.loginUser('controller');
-    }).then(function(accessToken) {
-      controllerAccessToken = accessToken.id;
     });
   });
 
@@ -53,8 +48,12 @@ describe('Approvals', function() {
   });
 
   describe('Controllers', function() {
-    it('have their own endpoint for approving rows', function() {
-      return request(app).post('/api/Purchaseorderrows/approve/controller').expect(401);
+    var controllerAccessToken;
+
+    beforeEach(function() {
+      return testUtils.loginUser('controller').then(function(accessToken) {
+        controllerAccessToken = accessToken.id;
+      });
     });
 
     it('can approve a row', function() {
@@ -182,6 +181,76 @@ describe('Approvals', function() {
         });
     });
 
+    it('cannot approve rows as procurement', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/approve/procurement?access_token=' + controllerAccessToken)
+        .expect(401);
+    });
+  });
+
+  describe('Procurement masters', function() {
+    var masterAccessToken;
+
+    beforeEach(function() {
+      return testUtils.loginUser('procurementMaster').then(function(accessToken) {
+        masterAccessToken = accessToken.id;
+      });
+    });
+
+    it('cannot approve rows as controller', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/approve/controller?access_token=' + masterAccessToken)
+        .expect(401);
+    });
+
+    it('cannot unapprove rows as controller', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/unapprove/controller?access_token=' + masterAccessToken)
+        .expect(401);
+    });
+
+    it('can approve rows for procurement', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/approve/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[2] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[0]).to.have.property('providerApproval', true);
+          expect(rows[0]).to.have.property('controllerApproval', null);
+          expect(rows[0]).to.have.property('userSectionApproval', null);
+
+          expect(rows[2]).to.have.property('providerApproval', true);
+        });
+    });
+
+    it('do not affect other rows when approving', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/approve/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[1] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[2]).to.have.property('providerApproval', null);
+        });
+    });
+
+    it('can approve several rows without affecting other rows', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/approve/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[1] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
+          expect(rows[2]).to.have.property('providerApproval', null);
+        });
+    });
   });
 
 });
