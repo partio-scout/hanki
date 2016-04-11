@@ -129,7 +129,6 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             deliveries={ this.props.deliveries }
             readOnly={ this.props.readOnly }
             selectionCallback={ this.rowSelectionChanged }
-            restrictToRoles={ restrictToRoles }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />
