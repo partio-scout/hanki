@@ -120,7 +120,7 @@ if (accessToken) {
 
 if (accessToken && accessToken.userId && accessTokenValid) {
   UserActions.fetchCurrentUser(accessToken.userId);
-  PurchaseOrderActions.fetchMyPurchaseOrders(accessToken.userId);
+  PurchaseOrderActions.fetchAllPurchaseOrders();
   CostCenterActions.fetchOwnCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
