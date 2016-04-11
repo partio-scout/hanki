@@ -35,7 +35,7 @@ var AcceptanceStatus = React.createClass({
           ref="value"
         />
       );
-    };
+    }
   },
 });
 

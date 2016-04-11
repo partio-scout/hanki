@@ -42,7 +42,7 @@ function getPurchaseOrder(PurchaseOrderActions, restrictToRoles) {
       this.setState({
         'controller': [],
         'procurement': [],
-      })
+      });
     },
 
     rowSelectionChanged: function(orderRowId, type, isChecked) {
