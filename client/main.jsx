@@ -52,7 +52,7 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
-var PurchaseOrderRowTable = require('./components/PurchaseOrderRowTable')();
+var PurchaseOrderRowTable = require('./components/PurchaseOrderRowTable')(restrictToRoles);
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
 

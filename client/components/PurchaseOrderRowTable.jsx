@@ -11,7 +11,9 @@ var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 var Input = ReactBootstrap.Input;
 
-function getPurchaseOrderRowTable() {
+function getAcceptanceStatus(editRoles, restrictToRoles) {
+  var Restricted = restrictToRoles(editRoles, 'div');
+
   var AcceptanceStatus = React.createClass({
     propTypes: {
       status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
@@ -30,15 +32,24 @@ function getPurchaseOrderRowTable() {
         return <Glyphicon glyph="remove" className="declined" />;
       } else {
         return (
-          <Input
-            type="checkbox"
-            onChange={ this.onChange }
-            ref="value"
-          />
+          <Restricted>
+            <Input
+              type="checkbox"
+              onChange={ this.onChange }
+              ref="value"
+            />
+          </Restricted>
         );
       }
     },
   });
+
+  return AcceptanceStatus;
+}
+
+function getPurchaseOrderRowTable(restrictToRoles) {
+  var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);
+  var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
 
   var PurchaseOrderRow = React.createClass({
     propTypes: {
@@ -114,14 +125,14 @@ function getPurchaseOrderRowTable() {
 
           </td>
           <td>
-            <AcceptanceStatus
+            <ProcurementAcceptance
               type="procurement"
               status={ row.providerApproval }
               onChange={ this.selectionChanged }
             />
           </td>
           <td>
-            <AcceptanceStatus
+            <ControllerAcceptance
               type="controller"
               status={ row.controllerApproval }
               onChange={ this.selectionChanged }
