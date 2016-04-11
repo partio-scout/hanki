@@ -2,6 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
+var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var ReactRouterBootstrap = require('react-router-bootstrap');
@@ -27,6 +28,24 @@ var PurchaseOrder = React.createClass({
     };
   },
 
+  getInitialState: function() {
+    return {
+      'selectedRows': {
+        'controller': [],
+        'procurement': []
+      }
+    };
+  },
+
+  rowSelectionChanged: function(orderRowId, type, isChecked) {
+    var stateChange = { selectedRows: {} };
+    if(isChecked) {
+      stateChange.selectedRows[type] = this.state.selectedRows[type].concat([ orderRowId ]);
+    }
+    console.log('set state')
+    this.setState(stateChange);
+  },
+
   render: function () {
     var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
       var title = this.props.titles[row.titleId] || { };
@@ -50,18 +69,29 @@ var PurchaseOrder = React.createClass({
             <Glyphicon glyph="remove" />
           </ButtonLink>
         </h2>
-        <div className="toolBar">
+        <div className="toolBar pull-left">
           <ButtonLink to="new_purchase_order_row" disabled={ this.props.readOnly }
             params={ { purchaseOrder: this.props.purchaseOrder.orderId } } bsStyle="primary">
             <Glyphicon glyph="plus" />
             <span> Lisää tuote</span>
           </ButtonLink>
         </div>
+        <div className="toolBar pull-right">
+          <Button bsStyle="success">
+            <Glyphicon glyph="check" />
+            <span> Hyväksy (talous)</span>
+          </Button>
+          <Button bsStyle="danger" className="space-left">
+            <Glyphicon glyph="check" />
+            <span> Hylkää (talous)</span>
+          </Button>
+        </div>
         <PurchaseOrderRowTable
           purchaseOrderRows={ this.props.purchaseOrderRows }
           titles={ this.props.titles }
           deliveries={ this.props.deliveries }
           readOnly={ this.props.readOnly }
+          selectionCallback={ this.rowSelectionChanged }
         />
         <div className="purchase-order-total-price">
           Yhteensä: <Price value={ totalPrice } />

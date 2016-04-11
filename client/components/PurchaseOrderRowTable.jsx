@@ -9,6 +9,7 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
+var Input = ReactBootstrap.Input;
 
 var PurchaseOrderRow = React.createClass({
   propTypes: {
@@ -16,6 +17,7 @@ var PurchaseOrderRow = React.createClass({
     titles: React.PropTypes.object,
     deliveries: React.PropTypes.object,
     readOnly: React.PropTypes.bool,
+    selectionCallback: React.PropTypes.function,
   },
 
   getDefaultProps: function() {
@@ -24,7 +26,17 @@ var PurchaseOrderRow = React.createClass({
       row: { },
       deliveries: { },
       readOnly: false,
+      selectionCallback: _.noop,
     };
+  },
+
+  selectionChanged: function(type) {
+    var isChecked = this.refs[type].getChecked();
+    this.props.selectionCallback(this.props.row.orderRowId, type, isChecked);
+  },
+
+  controllerSelectionChanged: function() {
+    this.selectionChanged('controller');
   },
 
   render: function () {
@@ -81,7 +93,11 @@ var PurchaseOrderRow = React.createClass({
 
         </td>
         <td>
-
+          <Input
+            type="checkbox"
+            onChange={ this.controllerSelectionChanged }
+            ref="controller"
+          />
         </td>
         <td>
 
@@ -100,11 +116,13 @@ var PurchaseOrderRowTable = React.createClass({
     titles: React.PropTypes.object,
     deliveries: React.PropTypes.object,
     readOnly: React.PropTypes.bool,
+    selectionCallback: React.PropTypes.function,
   },
 
   getDefaultProps: function() {
     return {
       readOnly: false,
+      selectionCallback: _.noop
     };
   },
 
@@ -137,6 +155,7 @@ var PurchaseOrderRowTable = React.createClass({
                 titles={ this.props.titles }
                 deliveries={ this.props.deliveries }
                 readOnly={ this.props.readOnly }
+                selectionCallback={ this.props.selectionCallback }
               />
             )
           }
