@@ -67,6 +67,29 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       return this.state[type] && this.state[type].length > 0;
     },
 
+    selectAllRowsAs: function(type) {
+      //TODO Harmonize the data model/terminology in the actions or backend, this is awful
+      var acceptanceFields = {
+        controller: 'controllerApproval',
+        procurement: 'providerApproval',
+      };
+      var acceptanceField = acceptanceFields[type];
+
+      var all = _(this.props.purchaseOrderRows)
+        .filter((row) => _.isNull(row[acceptanceField]))
+        .map(row => row.orderRowId)
+        .value();
+
+      // If all rows were already selected, select none
+      if (this.state[type].length === all.length) {
+        all = [];
+      }
+
+      var stateChange = { };
+      stateChange[type] = all;
+      this.setState(stateChange);
+    },
+
     acceptRows: function() {
       if (this.areRowsSelectedAs('controller')) {
         PurchaseOrderActions.acceptPurchaseOrderRows('controller', this.state.controller);

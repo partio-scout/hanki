@@ -19,7 +19,7 @@ function getAcceptanceStatus(editRoles, restrictToRoles) {
       status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
       onChange: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
-      orderRowId: React.PropTypes.func,
+      orderRowId: React.PropTypes.number,
       type: React.PropTypes.string,
     },
 
