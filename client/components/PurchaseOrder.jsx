@@ -11,7 +11,7 @@ var PurchaseOrderRowTable = require('./PurchaseOrderRowTable');
 
 var Price = require('./utils/Price');
 
-function getPurchaseOrder(PurchaseOrderActions, restrictToRoles) {
+function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles) {
   var ApproversOnly = restrictToRoles(['controller', 'procurementMaster', 'procurementAdmin'], 'div');
 
   var PurchaseOrder = React.createClass({
