@@ -6,13 +6,12 @@ var _ = require('lodash');
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var Well = ReactBootstrap.Well;
-var PurchaseOrderList = require('./PurchaseOrderList');
 var CostCenterSelector = require('./utils/CostCenterSelector');
 var Price = require('./utils/Price');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
+var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList) {
   var costCenterPurchaseOrders = React.createClass({
     mixins: [ ReactAddons.LinkedStateMixin ],
 

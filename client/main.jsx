@@ -47,15 +47,20 @@ var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 var ErrorActions = require('./actions/ErrorActions')(alt);
 var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions);
 
-// Setup main views
+// Setup stateful components
 
+var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
-var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
+var PurchaseOrderComponent = require('./components/PurchaseOrder')();
+var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
+
+// Setup main views
+
 var App = require('./components/AppComponent')(ErrorNotification, SessionTimeoutNotification, restrictToRoles, UserStore, UserActions);
 var HomePage = require('./components/HomePage')(UserStore, UserActions);
 
-var MyPurchaseOrders = require('./components/MyPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
+var MyPurchaseOrders = require('./components/MyPurchaseOrders')(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 var NewPurchaseOrder = require('./components/NewPurchaseOrder')(PurchaseOrderActions, CostCenterStore);
 var EditPurchaseOrder = require('./components/EditPurchaseOrder')(PurchaseOrderActions, CostCenterStore, PurchaseOrderStore);
 var DeletePurchaseOrder = require('./components/DeletePurchaseOrder')(PurchaseOrderActions, PurchaseOrderStore);
@@ -71,7 +76,7 @@ var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], req
 
 var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
 
-var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore);
+var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 
 // Setup routes
 

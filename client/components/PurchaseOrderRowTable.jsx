@@ -122,7 +122,7 @@ var PurchaseOrderRowTable = React.createClass({
   getDefaultProps: function() {
     return {
       readOnly: false,
-      selectionCallback: _.noop
+      selectionCallback: _.noop,
     };
   },
 
