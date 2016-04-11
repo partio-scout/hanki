@@ -18,11 +18,17 @@ function getAcceptanceStatus(editRoles, restrictToRoles) {
     propTypes: {
       status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
       onChange: React.PropTypes.func,
+      isSelectedCallback: React.PropTypes.func,
+      orderRowId: React.PropTypes.func,
       type: React.PropTypes.string,
     },
 
     onChange: function() {
-      this.props.onChange && this.props.onChange(this.props.type, this.refs.value.getChecked());
+      this.props.onChange && this.props.onChange(this.props.orderRowId, this.props.type, !this.isChecked());
+    },
+
+    isChecked: function() {
+      return this.props.isSelectedCallback(this.props.type, this.props.orderRowId);
     },
 
     render: function() {
@@ -36,7 +42,7 @@ function getAcceptanceStatus(editRoles, restrictToRoles) {
             <Input
               type="checkbox"
               onChange={ this.onChange }
-              ref="value"
+              checked={ this.isChecked() }
             />
           </Restricted>
         );
@@ -58,6 +64,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.function,
+      isSelectedCallback: React.PropTypes.function,
     },
 
     getDefaultProps: function() {
@@ -68,10 +75,6 @@ function getPurchaseOrderRowTable(restrictToRoles) {
         readOnly: false,
         selectionCallback: _.noop,
       };
-    },
-
-    selectionChanged: function(type, isChecked) {
-      this.props.selectionCallback(this.props.row.orderRowId, type, isChecked);
     },
 
     render: function () {
@@ -128,14 +131,18 @@ function getPurchaseOrderRowTable(restrictToRoles) {
             <ProcurementAcceptance
               type="procurement"
               status={ row.providerApproval }
-              onChange={ this.selectionChanged }
+              onChange={ this.props.selectionCallback }
+              isSelectedCallback={ this.props.isSelectedCallback }
+              orderRowId={ row.orderRowId }
             />
           </td>
           <td>
             <ControllerAcceptance
               type="controller"
               status={ row.controllerApproval }
-              onChange={ this.selectionChanged }
+              onChange={ this.props.selectionCallback }
+              isSelectedCallback={ this.props.isSelectedCallback }
+              orderRowId={ row.orderRowId }
             />
           </td>
           <td>
@@ -156,6 +163,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.function,
+      isSelectedCallback: React.PropTypes.function,
     },
 
     getDefaultProps: function() {
@@ -195,6 +203,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
                   deliveries={ this.props.deliveries }
                   readOnly={ this.props.readOnly }
                   selectionCallback={ this.props.selectionCallback }
+                  isSelectedCallback={ this.props.isSelectedCallback }
                 />
               )
             }

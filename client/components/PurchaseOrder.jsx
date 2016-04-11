@@ -55,6 +55,10 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       this.setState(stateChange);
     },
 
+    isSelected: function(type, id) {
+      return this.state[type].indexOf(id) >= 0;
+    },
+
     areRowsSelected: function() {
       return this.areRowsSelectedAs('controller') || this.areRowsSelectedAs('procurement');
     },
@@ -129,6 +133,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             deliveries={ this.props.deliveries }
             readOnly={ this.props.readOnly }
             selectionCallback={ this.rowSelectionChanged }
+            isSelectedCallback={ this.isSelected }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />
