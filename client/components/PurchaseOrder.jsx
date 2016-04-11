@@ -11,7 +11,9 @@ var PurchaseOrderRowTable = require('./PurchaseOrderRowTable');
 
 var Price = require('./utils/Price');
 
-function getPurchaseOrder() {
+function getPurchaseOrder(PurchaseOrderActions, restrictToRoles) {
+  var ApproversOnly = restrictToRoles(['controller', 'procurementMaster', 'procurementAdmin'], 'div');
+
   var PurchaseOrder = React.createClass({
     propTypes: {
       purchaseOrderRows: React.PropTypes.object,
@@ -31,19 +33,54 @@ function getPurchaseOrder() {
 
     getInitialState: function() {
       return {
-        'selectedRows': {
-          'controller': [],
-          'procurement': [],
-        },
+        'controller': [],
+        'procurement': [],
       };
     },
 
+    clearSelections: function() {
+      this.setState({
+        'controller': [],
+        'procurement': [],
+      })
+    },
+
     rowSelectionChanged: function(orderRowId, type, isChecked) {
-      var stateChange = { selectedRows: {} };
+      var stateChange = { };
       if (isChecked) {
-        stateChange.selectedRows[type] = this.state.selectedRows[type].concat([ orderRowId ]);
+        stateChange[type] = this.state[type].concat([ orderRowId ]);
+      } else {
+        stateChange[type] = _(this.state[type]).without(orderRowId).value();
       }
       this.setState(stateChange);
+    },
+
+    areRowsSelected: function() {
+      return this.areRowsSelectedAs('controller') || this.areRowsSelectedAs('procurement');
+    },
+
+    areRowsSelectedAs: function(type) {
+      return this.state[type] && this.state[type].length > 0;
+    },
+
+    acceptRows: function() {
+      if (this.areRowsSelectedAs('controller')) {
+        PurchaseOrderActions.acceptPurchaseOrderRows('controller', this.state.controller);
+      }
+      if (this.areRowsSelectedAs('procurement')) {
+        PurchaseOrderActions.acceptPurchaseOrderRows('procurement', this.state.procurement);
+      }
+      this.clearSelections();
+    },
+
+    declineRows: function() {
+      if (this.areRowsSelectedAs('controller')) {
+        PurchaseOrderActions.declinePurchaseOrderRows('controller', this.state.controller);
+      }
+      if (this.areRowsSelectedAs('procurement')) {
+        PurchaseOrderActions.declinePurchaseOrderRows('procurement', this.state.procurement);
+      }
+      this.clearSelections();
     },
 
     render: function () {
@@ -76,22 +113,23 @@ function getPurchaseOrder() {
               <span> Lisää tuote</span>
             </ButtonLink>
           </div>
-          <div className="toolBar pull-right">
-            <Button bsStyle="success">
-              <Glyphicon glyph="check" />
-              <span> Hyväksy (talous)</span>
+          <ApproversOnly className="toolBar pull-right">
+            <Button bsStyle="success" onClick={ this.acceptRows } disabled={ !this.areRowsSelected() }>
+              <Glyphicon glyph="ok" />
+              <span> Hyväksy</span>
             </Button>
-            <Button bsStyle="danger" className="space-left">
-              <Glyphicon glyph="check" />
-              <span> Hylkää (talous)</span>
+            <Button bsStyle="danger" className="space-left" onClick={ this.declineRows } disabled={ !this.areRowsSelected() }>
+              <Glyphicon glyph="remove" />
+              <span> Hylkää</span>
             </Button>
-          </div>
+          </ApproversOnly>
           <PurchaseOrderRowTable
             purchaseOrderRows={ this.props.purchaseOrderRows }
             titles={ this.props.titles }
             deliveries={ this.props.deliveries }
             readOnly={ this.props.readOnly }
             selectionCallback={ this.rowSelectionChanged }
+            restrictToRoles={ restrictToRoles }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />

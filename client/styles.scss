@@ -184,3 +184,11 @@ th.reactable-header-sort-desc::after {
 .space-left {
   margin-left: 10px;
 }
+
+.accepted {
+  color: $green;
+}
+
+.declined {
+  color: $orange;
+}

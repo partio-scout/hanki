@@ -11,6 +11,34 @@ var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 var Input = ReactBootstrap.Input;
 
+var AcceptanceStatus = React.createClass({
+  propTypes: {
+    status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
+    onChange: React.PropTypes.func,
+    type: React.PropTypes.string,
+  },
+
+  onChange: function() {
+    this.props.onChange && this.props.onChange(this.props.type, this.refs.value.getChecked());
+  },
+
+  render: function() {
+    if (this.props.status === true) {
+      return <Glyphicon glyph="ok" className="accepted" />;
+    } else if (this.props.status === false) {
+      return <Glyphicon glyph="remove" className="declined" />;
+    } else {
+      return (
+        <Input
+          type="checkbox"
+          onChange={ this.onChange }
+          ref="value"
+        />
+      );
+    };
+  },
+});
+
 var PurchaseOrderRow = React.createClass({
   propTypes: {
     row: React.PropTypes.object,
@@ -30,13 +58,8 @@ var PurchaseOrderRow = React.createClass({
     };
   },
 
-  selectionChanged: function(type) {
-    var isChecked = this.refs[type].getChecked();
+  selectionChanged: function(type, isChecked) {
     this.props.selectionCallback(this.props.row.orderRowId, type, isChecked);
-  },
-
-  controllerSelectionChanged: function() {
-    this.selectionChanged('controller');
   },
 
   render: function () {
@@ -81,7 +104,7 @@ var PurchaseOrderRow = React.createClass({
           { comment }
         </td>
         <td>
-          { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon text-success" /> : null }
+          { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
         </td>
         <td>
 
@@ -90,13 +113,17 @@ var PurchaseOrderRow = React.createClass({
 
         </td>
         <td>
-
+          <AcceptanceStatus
+            type="procurement"
+            status={ row.providerApproval }
+            onChange={ this.selectionChanged }
+          />
         </td>
         <td>
-          <Input
-            type="checkbox"
-            onChange={ this.controllerSelectionChanged }
-            ref="controller"
+          <AcceptanceStatus
+            type="controller"
+            status={ row.controllerApproval }
+            onChange={ this.selectionChanged }
           />
         </td>
         <td>

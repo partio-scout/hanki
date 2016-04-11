@@ -86,9 +86,9 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
                 />
               </form>
             </Well>
-            <div>
+            <p>
               Yhteensä: <Price value={ totalPrice } />
-            </div>
+            </p>
             { list }
           </Col>
         </Row>
