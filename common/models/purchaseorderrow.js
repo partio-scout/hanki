@@ -3,6 +3,38 @@ var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorderrow) {
+  //TODO Refactor approval login to more generic
+  var approvalTypes = {
+    controller: {
+      fieldName: 'controllerApproval',
+    },
+    procurement: {
+      fieldName: 'providerApproval',
+    },
+    userSection: {
+      fieldName: 'userSectionApproval',
+    },
+  }
+
+  Purchaseorderrow.addProhibitChangesFieldToResultRow = function(row) {
+    var approvalValues = _(approvalTypes)
+      .pluck('fieldName')
+      .map(function(fieldName) {
+        return row[fieldName];
+      })
+      .value();
+
+    if (_.includes(approvalValues, false)) {
+      row.prohibitChanges = false;
+    } else if(_.includes(approvalValues, true)) {
+      row.prohibitChanges = true;
+    } else {
+      row.prohibitChanges = false;
+    }
+
+    return row;
+  }
+
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.modified = (new Date()).toISOString();
     next();
@@ -10,6 +42,15 @@ module.exports = function(Purchaseorderrow) {
 
   Purchaseorderrow.afterRemote('create', function(ctx, purchaseOrder, next) {
     app.models.History.remember.PurchaseOrderRow(ctx, purchaseOrder, 'add row');
+    next();
+  });
+
+  Purchaseorderrow.afterRemote('**', function(ctx, purchaseOrder, next) {
+    if (ctx.result && _.isArray(ctx.result)) {
+      ctx.result = _.map(ctx.result, Purchaseorderrow.addProhibitChangesFieldToResultRow);
+    } else if (ctx.result) {
+      Purchaseorderrow.addProhibitChangesFieldToResultRow(ctx.result);
+    }
     next();
   });
 

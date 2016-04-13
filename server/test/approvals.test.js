@@ -34,6 +34,7 @@ describe('Approvals', function() {
       getExampleFixture({ 'controllerApproval': false }),
       getExampleFixture({ 'controllerApproval': true, 'providerApproval': true }),
       getExampleFixture({ 'controllerApproval': true }),
+      getExampleFixture({ 'controllerApproval': true, 'providerApproval': false }),
     ]).then(function(rows) {
       orderRowIds = _.map(rows, 'orderRowId');
     });
@@ -325,6 +326,79 @@ describe('Approvals', function() {
         .then(function(rows) {
           expect(rows[1]).not.to.have.property('memo', 'changed!');
         });
+    });
+  });
+
+  describe('PurchaseOrderRow\'s prohibitChanges field', function() {
+    var ordererToken, procurementMasterToken;
+
+    beforeEach(function() {
+      return Promise.join(
+        testUtils.loginUser('orderer'),
+        testUtils.loginUser('procurementMaster'),
+        function(ot, pmt) {
+          ordererToken = ot.id;
+          procurementMasterToken = pmt.id;
+        }
+      );
+    });
+
+    function getOrderRowAndExpectProhibitChangesToBe(fixtureNumber, expectedValue) {
+      return request(app)
+        .get('/api/Purchaseorders/2/order_rows/' + orderRowIds[fixtureNumber] + '?access_token=' + ordererToken)
+        .expect(200)
+        .then(function(res) {
+          expect(res.body).to.have.property('prohibitChanges', expectedValue);
+        });
+    }
+
+    it('should be true when there is only user section acceptance', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(2, true);
+    });
+
+    it('should be true when there is only controller acceptance', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(6, true);
+    });
+
+    it('should be true when there is only procurement acceptance', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(1, true);
+    });
+
+    it('should be true when there are several acceptances', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(5, true);
+    });
+
+    it('should be false when there are no acceptances', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(0, false);
+    });
+
+    it('should be false when there are acceptances and declines', function() {
+      return getOrderRowAndExpectProhibitChangesToBe(7, false);
+    });
+
+    it('should be present when loading rows from the rows endpoint', function() {
+      return request(app)
+        .get('/api/Purchaseorderrows?access_token=' + procurementMasterToken)
+        .expect(200)
+        .then(function(res) {
+          expect(res.body[0]).to.have.property('prohibitChanges');
+        });
+    });
+
+    it('should be present when loading a row from the rows endpoint', function() {
+      return request(app)
+        .get('/api/Purchaseorderrows/' + orderRowIds[1] + '?access_token=' + procurementMasterToken)
+        .expect(200)
+        .then(function(res) {
+          expect(res.body).to.have.property('prohibitChanges', true);
+        });
+    });
+
+    it('should be ignored when updating models', function() {
+      return request(app)
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[0] + '?access_token=' + ordererToken)
+        .send(getExampleFixture({ orderRowId: orderRowIds[0], prohibitChanges: true }))
+        .expect(200);
     });
   });
 

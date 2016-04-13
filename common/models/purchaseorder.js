@@ -45,6 +45,11 @@ module.exports = function(Purchaseorder) {
     next();
   });
 
+  Purchaseorder.afterRemote('prototype.__findById__order_rows', function(ctx, row, next) {
+    ctx.result = app.models.Purchaseorderrow.addProhibitChangesFieldToResultRow(ctx.result);
+    next();
+  });
+
   Purchaseorder.afterRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
     app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update');
     next();
