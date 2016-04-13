@@ -128,8 +128,17 @@ describe('Approvals', function() {
         .then(function(rows) {
           expect(rows[1]).to.have.property('controllerApproval', false);
           expect(rows[2]).to.have.property('controllerApproval', false);
+        });
+    });
 
-          // Unapproval should not affect other approvals
+    it('can unapprove rows without affecting the row\'s other approvals', function() {
+      return request(app).post('/api/Purchaseorderrows/unapprove/controller?access_token=' + controllerAccessToken)
+        .send({
+          'ids': [ orderRowIds[1], orderRowIds[2] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
           expect(rows[1]).to.have.property('userSectionApproval', null);
           expect(rows[2]).to.have.property('userSectionApproval', true);
           expect(rows[1]).to.have.property('providerApproval', true);
@@ -237,6 +246,18 @@ describe('Approvals', function() {
         .then(function(rows) {
           expect(rows[0]).to.have.property('providerApproval', false);
           expect(rows[2]).to.have.property('providerApproval', false);
+        });
+    });
+
+    it('can unapprove rows without affecting the row\'s other approvals', function() {
+      return request(app)
+        .post('/api/Purchaseorderrows/unapprove/procurement?access_token=' + masterAccessToken)
+        .send({
+          ids: [ orderRowIds[0], orderRowIds[2] ],
+        })
+        .expect(200)
+        .then(fetchAllFixtures)
+        .then(function(rows) {
           expect(rows[2]).to.have.property('userSectionApproval', true);
         });
     });
