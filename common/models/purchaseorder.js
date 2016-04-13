@@ -2,17 +2,7 @@ var Promise = require('bluebird');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorder) {
-  Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
-    ctx.args.data.subscriberId = ctx.req.accessToken.userId;
-    next();
-  });
-
-  Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
-    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
-    next();
-  });
-
-  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, row, next) {
+  var checkRowEditOrDeleteAccess = function(ctx, row, next) {
     var isInRole = Promise.promisify(app.models.Role.isInRole, app.models.Role);
     var id = ctx.args.fk;
     var userId = ctx.req.accessToken.userId;
@@ -27,7 +17,7 @@ module.exports = function(Purchaseorder) {
         }
 
         if (app.models.Purchaseorderrow.areChangesProhibited(row)) {
-          var err = new Error('You cannot edit rows that have been approved');
+          var err = new Error('You cannot edit or delete rows that have been approved');
           err.statusCode = 401;
           next(err);
         } else {
@@ -37,7 +27,20 @@ module.exports = function(Purchaseorder) {
     ).catch(function(err) {
       next(err);
     });
+  };
+
+  Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
+    ctx.args.data.subscriberId = ctx.req.accessToken.userId;
+    next();
   });
+
+  Purchaseorder.afterRemote('create', function(ctx, purchaseOrder, next) {
+    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'add');
+    next();
+  });
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', checkRowEditOrDeleteAccess);
+  Purchaseorder.beforeRemote('prototype.__destroyById__order_rows', checkRowEditOrDeleteAccess);
 
   Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, row, next) {
     app.models.History.remember.PurchaseOrder(ctx, row, 'update row');

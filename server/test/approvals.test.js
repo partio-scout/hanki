@@ -313,7 +313,7 @@ describe('Approvals', function() {
         .send(getExampleFixture({ orderRowId: orderRowIds[6], memo: 'changed!' }))
         .expect(401)
         .then(function(res) {
-          expect(res.text).to.contain('You cannot edit rows that have been approved');
+          expect(res.text).to.contain('You cannot edit or delete rows that have been approved');
         })
         .then(fetchAllFixtures)
         .then(function(rows) {
@@ -328,7 +328,26 @@ describe('Approvals', function() {
         .expect(200);
     });
 
-    //TODO Deletions
+    it('can delete rows with no approvals or declines', function() {
+      return request(app)
+        .delete('/api/Purchaseorders/2/order_rows/' + orderRowIds[0] + '?access_token=' + token)
+        .expect(204);
+    });
+
+    it('cannot delete rows with only approvals', function() {
+      return request(app)
+        .delete('/api/Purchaseorders/2/order_rows/' + orderRowIds[6] + '?access_token=' + token)
+        .expect(401)
+        .then(function(res) {
+          expect(res.text).to.contain('You cannot edit or delete rows that have been approved');
+        });
+    });
+
+    it('can delete rows with approvals and declines', function() {
+      return request(app)
+        .delete('/api/Purchaseorders/2/order_rows/' + orderRowIds[7] + '?access_token=' + token)
+        .expect(204);
+    });
   });
 
   describe('PurchaseOrderRow\'s prohibitChanges field', function() {
