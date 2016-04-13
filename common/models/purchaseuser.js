@@ -114,6 +114,17 @@ module.exports = function(Purchaseuser) {
     });
   };
 
+  Purchaseuser.afterRemote('prototype.__findById__orders', function(ctx, row, next) {
+    if (ctx.result && _.isArray(ctx.result)) {
+      ctx.result = _.map(ctx.result, function(order) {
+        if (order.order_rows) {
+          order.order_rows = _(order.order_rows).map(app.models.Purchaseorderrow.addProhibitChangesFieldToResultRow);
+        }
+      });
+    }
+    next();
+  });
+
   Purchaseuser.remoteMethod(
     'getRoles',
     {

@@ -415,6 +415,16 @@ describe('Approvals', function() {
         });
     });
 
+    it('should be present when loading a row from the user\'s orders endpoint', function() {
+      return request(app)
+        .get('/api/Purchaseusers/1/orders?access_token=' + ordererToken)
+        .expect(200)
+        .then(function(res) {
+          console.log(res)
+          expect(res.body[0].order_rows[0]).to.have.property('prohibitChanges', false);
+        });
+    });
+
     it('should be ignored when updating models', function() {
       return request(app)
         .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[0] + '?access_token=' + ordererToken)
