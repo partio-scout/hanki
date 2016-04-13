@@ -300,13 +300,20 @@ describe('Approvals', function() {
       });
     });
 
-    it('cannot edit controller-approved rows', function() {
+    it('can edit rows with no approvals or declines', function() {
+      return request(app)
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[0] + '?access_token=' + token)
+        .send(getExampleFixture({ orderRowId: orderRowIds[0], memo: 'changed!' }))
+        .expect(200);
+    });
+
+    it('cannot edit rows with only approvals', function() {
       return request(app)
         .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[6] + '?access_token=' + token)
         .send(getExampleFixture({ orderRowId: orderRowIds[6], memo: 'changed!' }))
         .expect(401)
         .then(function(res) {
-          expect(res.text).to.contain('You cannot edit rows that have approvals');
+          expect(res.text).to.contain('You cannot edit rows that have been approved');
         })
         .then(fetchAllFixtures)
         .then(function(rows) {
@@ -314,19 +321,14 @@ describe('Approvals', function() {
         });
     });
 
-    it('cannot edit procurement-approved rows', function() {
+    it('can edit rows with approvals and declines', function() {
       return request(app)
-        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[1] + '?access_token=' + token)
-        .send(getExampleFixture({ orderRowId: orderRowIds[1], memo: 'changed!' }))
-        .expect(401)
-        .then(function(res) {
-          expect(res.text).to.contain('You cannot edit rows that have approvals');
-        })
-        .then(fetchAllFixtures)
-        .then(function(rows) {
-          expect(rows[1]).not.to.have.property('memo', 'changed!');
-        });
+        .put('/api/Purchaseorders/2/order_rows/' + orderRowIds[7] + '?access_token=' + token)
+        .send(getExampleFixture({ orderRowId: orderRowIds[7], memo: 'changed!' }))
+        .expect(200);
     });
+
+    //TODO Deletions
   });
 
   describe('PurchaseOrderRow\'s prohibitChanges field', function() {

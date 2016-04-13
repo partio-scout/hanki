@@ -26,9 +26,8 @@ module.exports = function(Purchaseorder) {
           return next();
         }
 
-        var hasApprovals = row.controllerApproval || row.providerApproval;
-        if (hasApprovals) {
-          var err = new Error('You cannot edit rows that have approvals');
+        if (app.models.Purchaseorderrow.areChangesProhibited(row)) {
+          var err = new Error('You cannot edit rows that have been approved');
           err.statusCode = 401;
           next(err);
         } else {

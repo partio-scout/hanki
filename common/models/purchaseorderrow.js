@@ -14,9 +14,9 @@ module.exports = function(Purchaseorderrow) {
     userSection: {
       fieldName: 'userSectionApproval',
     },
-  }
+  };
 
-  Purchaseorderrow.addProhibitChangesFieldToResultRow = function(row) {
+  Purchaseorderrow.areChangesProhibited = function(row) {
     var approvalValues = _(approvalTypes)
       .pluck('fieldName')
       .map(function(fieldName) {
@@ -25,15 +25,18 @@ module.exports = function(Purchaseorderrow) {
       .value();
 
     if (_.includes(approvalValues, false)) {
-      row.prohibitChanges = false;
-    } else if(_.includes(approvalValues, true)) {
-      row.prohibitChanges = true;
+      return false;
+    } else if (_.includes(approvalValues, true)) {
+      return true;
     } else {
-      row.prohibitChanges = false;
+      return false;
     }
+  };
 
+  Purchaseorderrow.addProhibitChangesFieldToResultRow = function(row) {
+    row.prohibitChanges = Purchaseorderrow.areChangesProhibited(row);
     return row;
-  }
+  };
 
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.modified = (new Date()).toISOString();
