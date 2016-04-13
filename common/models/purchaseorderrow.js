@@ -92,11 +92,6 @@ module.exports = function(Purchaseorderrow) {
         return Promise.fromNode(function(callback) {
           row.modified = (new Date()).toISOString();
 
-          // Cannot unapprove if already approved
-          if (row[approvalType] === true) {
-            return callback(null, row);
-          }
-
           // Reset other approvals to null (i.e. return to orderer)
           row.controllerApproval = null;
           row.userSectionApproval = null;

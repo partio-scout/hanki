@@ -118,7 +118,7 @@ describe('Approvals', function() {
       return request(app).post('/api/Purchaseorderrows/unapprove/controller').expect(401);
     });
 
-    it('can unapprove rows that have not been approved yet', function() {
+    it('can unapprove rows', function() {
       return request(app).post('/api/Purchaseorderrows/unapprove/controller?access_token=' + controllerAccessToken)
         .send({
           'ids': [ orderRowIds[1], orderRowIds[2] ],
@@ -152,32 +152,6 @@ describe('Approvals', function() {
           // Unapproval should reset other approvals of the row to null
           expect(rows[3]).to.have.property('userSectionApproval', false);
           expect(rows[5]).to.have.property('providerApproval', true);
-        });
-    });
-
-    it('cannot unapprove rows that have been approved already', function() {
-      return request(app).post('/api/Purchaseorderrows/unapprove/controller?access_token=' + controllerAccessToken)
-        .send({
-          'ids': [ orderRowIds[5], orderRowIds[6] ],
-        })
-        .expect(200)
-        .then(fetchAllFixtures)
-        .then(function(rows) {
-          expect(rows[5]).to.have.property('controllerApproval', true);
-          expect(rows[6]).to.have.property('controllerApproval', true);
-        });
-    });
-
-    it('can unapprove rows that haven\'t been approved yet, even if there are some approved rows', function() {
-      return request(app).post('/api/Purchaseorderrows/unapprove/controller?access_token=' + controllerAccessToken)
-        .send({
-          'ids': [ orderRowIds[0], orderRowIds[6] ],
-        })
-        .expect(200)
-        .then(fetchAllFixtures)
-        .then(function(rows) {
-          expect(rows[0]).to.have.property('controllerApproval', false);
-          expect(rows[6]).to.have.property('controllerApproval', true);
         });
     });
 
@@ -279,20 +253,6 @@ describe('Approvals', function() {
           expect(rows[0]).to.have.property('providerApproval', false);
           expect(rows[1]).to.have.property('providerApproval', true);
           expect(rows[2]).to.have.property('providerApproval', null);
-        });
-    });
-
-    it('cannot unapprove only rows that have been approved by procurement already', function() {
-      return request(app)
-        .post('/api/Purchaseorderrows/unapprove/procurement?access_token=' + masterAccessToken)
-        .send({
-          ids: [ orderRowIds[0], orderRowIds[1] ],
-        })
-        .expect(200)
-        .then(fetchAllFixtures)
-        .then(function(rows) {
-          expect(rows[0]).to.have.property('providerApproval', false);
-          expect(rows[1]).to.have.property('providerApproval', true);
         });
     });
 
