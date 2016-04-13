@@ -129,10 +129,10 @@ describe('Approvals', function() {
           expect(rows[1]).to.have.property('controllerApproval', false);
           expect(rows[2]).to.have.property('controllerApproval', false);
 
-          // Unapproval should reset other approvals of the row to null
+          // Unapproval should not affect other approvals
           expect(rows[1]).to.have.property('userSectionApproval', null);
-          expect(rows[2]).to.have.property('userSectionApproval', null);
-          expect(rows[1]).to.have.property('providerApproval', null);
+          expect(rows[2]).to.have.property('userSectionApproval', true);
+          expect(rows[1]).to.have.property('providerApproval', true);
 
         });
     });
@@ -149,7 +149,7 @@ describe('Approvals', function() {
           expect(rows[3]).to.have.property('controllerApproval', false);
           expect(rows[4]).to.have.property('controllerApproval', false);
 
-          // Unapproval should reset other approvals of the row to null
+          // Unapproval should not affect other rows
           expect(rows[3]).to.have.property('userSectionApproval', false);
           expect(rows[5]).to.have.property('providerApproval', true);
         });
@@ -237,7 +237,7 @@ describe('Approvals', function() {
         .then(function(rows) {
           expect(rows[0]).to.have.property('providerApproval', false);
           expect(rows[2]).to.have.property('providerApproval', false);
-          expect(rows[2]).to.have.property('userSectionApproval', null);
+          expect(rows[2]).to.have.property('userSectionApproval', true);
         });
     });
 

@@ -92,11 +92,6 @@ module.exports = function(Purchaseorderrow) {
         return Promise.fromNode(function(callback) {
           row.modified = (new Date()).toISOString();
 
-          // Reset other approvals to null (i.e. return to orderer)
-          row.controllerApproval = null;
-          row.userSectionApproval = null;
-          row.providerApproval = null;
-
           row[approvalType] = false;
 
           row.save(callback);
