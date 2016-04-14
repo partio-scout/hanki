@@ -3,7 +3,7 @@ var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorderrow) {
-  //TODO Refactor approval login to more generic
+  //TODO Refactor approval logic to more generic
   var approvalTypes = {
     controller: {
       fieldName: 'controllerApproval',
