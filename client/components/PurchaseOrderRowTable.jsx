@@ -98,11 +98,11 @@ function getPurchaseOrderRowTable(restrictToRoles) {
         <tr>
           <td className="purchase_order_row_name">
             <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order_row"
-              disabled={ this.props.readOnly } params={ { purchaseOrderRow: row.orderRowId } }>
+              disabled={ this.props.readOnly || row.prohibitChanges } params={ { purchaseOrderRow: row.orderRowId } }>
               <Glyphicon glyph="pencil" />
             </ButtonLink>
             <ButtonLink bsStyle="link" className="delete" to="delete_purchase_order_row"
-              disabled={ this.props.readOnly } params={ { purchaseOrderRow: row.orderRowId } }>
+              disabled={ this.props.readOnly || row.prohibitChanges } params={ { purchaseOrderRow: row.orderRowId } }>
               <Glyphicon glyph="remove" />
             </ButtonLink>
              <div className="product-name">
