@@ -417,10 +417,9 @@ describe('Approvals', function() {
 
     it('should be present when loading a row from the user\'s orders endpoint', function() {
       return request(app)
-        .get('/api/Purchaseusers/1/orders?access_token=' + ordererToken)
+        .get('/api/Purchaseusers/1/orders?access_token=' + ordererToken + '&filter[order]=orderId%20DESC&filter[include]=order_rows')
         .expect(200)
         .then(function(res) {
-          console.log(res)
           expect(res.body[0].order_rows[0]).to.have.property('prohibitChanges', false);
         });
     });
