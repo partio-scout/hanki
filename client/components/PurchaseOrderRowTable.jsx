@@ -187,7 +187,6 @@ function getPurchaseOrderRowTable(restrictToRoles) {
     },
 
     render: function() {
-      console.log(this.props)
       return (
         <Table striped>
           <thead>
