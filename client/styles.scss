@@ -66,6 +66,11 @@ table {
   margin: 10px 0;
 }
 
+th .btn-link, th .btn-link:hover, th .btn-link:focus {
+  color: $white;
+  text-decoration: underline;
+}
+
 td {
   vertical-align: top;
 }

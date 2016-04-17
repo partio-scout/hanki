@@ -5,6 +5,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap');
 
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
+var Button = ReactBootstrap.Button;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
@@ -156,6 +157,9 @@ function getPurchaseOrderRowTable(restrictToRoles) {
     },
   });
 
+  var ProcurementButton = restrictToRoles([ 'procurementMaster', 'procurementAdmin' ], Button);
+  var ControllerButton = restrictToRoles([ 'controller' ], Button);
+
   var PurchaseOrderRowTable = React.createClass({
     propTypes: {
       purchaseOrderRows: React.PropTypes.object,
@@ -164,6 +168,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.function,
       isSelectedCallback: React.PropTypes.function,
+      selectAllCallback: React.PropTypes.function,
     },
 
     getDefaultProps: function() {
@@ -173,7 +178,16 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       };
     },
 
+    selectAllProcurement: function() {
+      this.props.selectAllCallback('procurement');
+    },
+
+    selectAllController: function() {
+      this.props.selectAllCallback('controller');
+    },
+
     render: function() {
+      console.log(this.props)
       return (
         <Table striped>
           <thead>
@@ -189,9 +203,21 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               <th rowSpan="2">Toimitus</th>
             </tr>
             <tr>
-              <th>päällikkö</th>
-              <th>hankinta</th>
-              <th>talous</th>
+              <th>
+                päällikkö
+              </th>
+              <th>
+                <div>hankinta</div>
+                <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAllProcurement }>
+                  kaikki
+                </ProcurementButton>
+              </th>
+              <th>
+                <div>talous</div>
+                <ControllerButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAllController }>
+                  kaikki
+                </ControllerButton>
+              </th>
             </tr>
           </thead>
           <tbody>

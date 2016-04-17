@@ -157,6 +157,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             readOnly={ this.props.readOnly }
             selectionCallback={ this.rowSelectionChanged }
             isSelectedCallback={ this.isSelected }
+            selectAllCallback={ this.selectAllRowsAs }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />
