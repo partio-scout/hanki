@@ -128,7 +128,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
           <td>
 
           </td>
-          <td>
+          <td className="acceptance">
             <ProcurementAcceptance
               type="procurement"
               status={ row.providerApproval }
@@ -137,7 +137,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               orderRowId={ row.orderRowId }
             />
           </td>
-          <td>
+          <td className="acceptance">
             <ControllerAcceptance
               type="controller"
               status={ row.controllerApproval }
