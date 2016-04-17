@@ -2,6 +2,33 @@ var Promise = require('bluebird');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorder) {
+  var checkRowEditOrDeleteAccess = function(ctx, row, next) {
+    var isInRole = Promise.promisify(app.models.Role.isInRole, app.models.Role);
+    var id = ctx.args.fk;
+    var userId = ctx.req.accessToken.userId;
+
+    Promise.join(
+      app.models.Purchaseorderrow.findById(id),
+      isInRole('procurementMaster', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      isInRole('procurementAdmin', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      function(row, isProcurementMaster, isProcurementAdmin) {
+        if (isProcurementMaster || isProcurementAdmin) {
+          return next();
+        }
+
+        if (app.models.Purchaseorderrow.areChangesProhibited(row)) {
+          var err = new Error('You cannot edit or delete rows that have been approved');
+          err.statusCode = 401;
+          next(err);
+        } else {
+          next();
+        }
+      }
+    ).catch(function(err) {
+      next(err);
+    });
+  };
+
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.subscriberId = ctx.req.accessToken.userId;
     next();
@@ -12,8 +39,16 @@ module.exports = function(Purchaseorder) {
     next();
   });
 
-  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
-    app.models.History.remember.PurchaseOrder(ctx, purchaseOrder, 'update row');
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', checkRowEditOrDeleteAccess);
+  Purchaseorder.beforeRemote('prototype.__destroyById__order_rows', checkRowEditOrDeleteAccess);
+
+  Purchaseorder.afterRemote('prototype.__updateById__order_rows', function(ctx, row, next) {
+    app.models.History.remember.PurchaseOrder(ctx, row, 'update row');
+    next();
+  });
+
+  Purchaseorder.afterRemote('prototype.__findById__order_rows', function(ctx, row, next) {
+    ctx.result = app.models.Purchaseorderrow.addProhibitChangesFieldToResultRow(ctx.result);
     next();
   });
 

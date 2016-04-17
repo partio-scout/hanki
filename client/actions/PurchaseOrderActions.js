@@ -181,6 +181,32 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
     deletingPurchaseOrderRowFailed(err) {
       this.dispatch(err);
     }
+
+    acceptPurchaseOrderRows(type, ids) {
+      this.dispatch(type, ids);
+      PurchaseOrderRow.rawWithBody('POST', 'approve/' + type, { ids: ids }, (err, rows) => {
+        if (err) {
+          this.actions.error(err);
+        } else {
+          this.actions.fetchAllPurchaseOrders();
+        }
+      });
+    }
+
+    declinePurchaseOrderRows(type, ids) {
+      this.dispatch(type, ids);
+      PurchaseOrderRow.rawWithBody('POST', 'unapprove/' + type, { ids: ids }, (err, rows) => {
+        if (err) {
+          this.actions.error(err);
+        } else {
+          this.actions.fetchAllPurchaseOrders();
+        }
+      });
+    }
+
+    error(message, err) {
+      this.dispatch(message, err);
+    }
   }
   return alt.createActions(PurchaseOrderActions);
 }

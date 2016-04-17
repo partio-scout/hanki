@@ -206,6 +206,11 @@
       "type": "hasMany",
       "model": "Title",
       "foreignKey": "supplierId"
+    },
+    "ExternalOrders": {
+      "type": "hasMany",
+      "model": "Externalorder",
+      "foreignKey": "supplierId"
     }
   },
   "acls": [

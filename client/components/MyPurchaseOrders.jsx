@@ -11,9 +11,7 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrderList = require('./PurchaseOrderList');
-
-var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList) {
   var myPurchaseOrders = React.createClass({
     propTypes: {
       purchaseOrders: React.PropTypes.object,
@@ -46,7 +44,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               Omat tilaukset
             </h1>
             <div className="toolBar">
-              <ButtonLink to="new_purchase_order" bsStyle="primary" disabled={ true }>
+              <ButtonLink to="new_purchase_order" bsStyle="primary">
                 <Glyphicon glyph="plus" />
                 <span> Uusi tilaus</span>
               </ButtonLink>
@@ -57,7 +55,6 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
-              readOnly={ true }
             />
           </Col>
         </Row>
