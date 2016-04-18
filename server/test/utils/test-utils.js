@@ -31,7 +31,6 @@ function expectModelToBeDeleted(modelName, id, cb) {
     app.models[modelName].findById(id, function(err, res) {
       expect(err).to.be.undefined;
       expect(res).to.be.null;
-      console.log(res);
       cb();
     });
   };

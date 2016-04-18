@@ -5,7 +5,6 @@ var testUtils = require('./utils/test-utils');
 var Promise = require('bluebird');
 
 describe('Orderer', function() {
-  var nameForOrder = 'Liikaa nauloja';
   var userId, ownedOrderId, ownedOrderrowId, otherOrderId, otherCcOrderId, otherOrderrowId, otherCcOrderrowId, accessToken;
 
   var purchaseUser = app.models.Purchaseuser;
@@ -124,8 +123,8 @@ describe('Orderer', function() {
         .send(msg)
         .expect(200)
         .expect(function(res) {
-            // Make sure that things really happened
-            expect(res.body.name).to.equal(nameForOrder);
+          // Make sure that things really happened
+          expect(res.body.name).to.equal(nameForOrder);
         })
         .end(done);
       });
@@ -162,8 +161,8 @@ describe('Orderer', function() {
         .send(msg)
         .expect(200)
         .expect(function(res) {
-            // Make sure that things really happened
-            expect(res.body.name).to.equal(nameForOrder);
+          // Make sure that things really happened
+          expect(res.body.name).to.equal(nameForOrder);
         })
         .end(done);
       });
