@@ -32,7 +32,7 @@ module.exports = function getRestrictRoles(UserStore) {
         if (this.state.currentUser && _.some(roles, role => this.state.currentUser.hasRole(role))) {
           return <Component {...this.props} />;
         } else {
-          return <EmptyComponent />;
+          return <AlternativeComponent />;
         }
       },
     });

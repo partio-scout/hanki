@@ -97,6 +97,7 @@ var routes = (
       <Route name="delete_title" path=":titleId/delete" handler={ DeleteTitle } />
     </Route>
     <Route name="all_purchase_orders" path="allOrders" handler={ AllPurchaseOrders }>
+      <Route name="all_purchase_orders_create_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
       <Route name="all_purchase_orders_edit_row" path=":purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="all_purchase_orders_delete_row" path=":purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>

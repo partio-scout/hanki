@@ -96,9 +96,17 @@ module.exports = function(Purchaseorder) {
     }
 
     if (ctx.args.data) {
-      // Check that user is orderer of the costcenter of order
-      return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
-      .then(proceedIfEverythingAllowed);
+      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
+        if (err) {
+          next(err);
+        } else if (_.includes(roles, 'orderer')) {
+          // Check that user is orderer of the costcenter of order
+          return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
+          .then(proceedIfEverythingAllowed);
+        } else {
+          next();
+        }
+      });
     } else {
       next();
     }
@@ -115,12 +123,21 @@ module.exports = function(Purchaseorder) {
         next(newError);
       }
     }
+
     if (ctx.args) {
-      findOrderrow(ctx.args.fk, { include: 'Order' }).then(function(orderrow) {
-        var order = orderrow.Order();
-        // Check that user is orderer of the costcenter of order
-        return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
-      }).then(proceedIfEverythingAllowed);
+      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
+        if (err) {
+          next(err);
+        } else if (_.includes(roles, 'orderer')) {
+          findOrderrow(ctx.args.fk, { include: 'Order' }).then(function(orderrow) {
+            var order = orderrow.Order();
+            // Check that user is orderer of the costcenter of order
+            return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
+          }).then(proceedIfEverythingAllowed);
+        } else {
+          next();
+        }
+      });
     } else {
       next();
     }
@@ -138,9 +155,17 @@ module.exports = function(Purchaseorder) {
     }
 
     if (ctx.args.data) {
-      // Check that user is orderer of the costcenter of order
-      return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
-      .then(proceedIfEverythingAllowed);
+      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
+        if (err) {
+          next(err);
+        } else if (_.includes(roles, 'orderer')) {
+          // Check that user is orderer of the costcenter of order
+          return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
+          .then(proceedIfEverythingAllowed);
+        } else {
+          next();
+        }
+      });
     } else {
       next();
     }
@@ -159,10 +184,18 @@ module.exports = function(Purchaseorder) {
     }
 
     if (ctx.args) {
-      findOrder(ctx.args.id).then(function(order) {
-        // Check that user is orderer of the costcenter of order
-        return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
-      }).then(proceedIfEverythingAllowed);
+      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
+        if (err) {
+          next(err);
+        } else if (_.includes(roles, 'orderer')) {
+          findOrder(ctx.args.id).then(function(order) {
+            // Check that user is orderer of the costcenter of order
+            return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
+          }).then(proceedIfEverythingAllowed);
+        } else {
+          next();
+        }
+      });
     } else {
       next();
     }
