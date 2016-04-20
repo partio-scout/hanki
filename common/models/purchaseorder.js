@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var app = require('../../server/server');
+var _ = require('lodash');
 
 module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('create', function(ctx, purchaseOrder, next) {
@@ -55,4 +56,67 @@ module.exports = function(Purchaseorder) {
       })
       .nodeify(next);
   });
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    var User = app.models.Purchaseuser;
+    var Costcenter = app.models.Costcenter;
+    var Role = app.models.Role;
+    var RoleMapping = app.models.RoleMapping;
+    var findUser = Promise.promisify(User.findById, User);
+    var findCostcenter = Promise.promisify(Costcenter.findById, Costcenter);
+
+    // Allow order approving only for costcenter approvers
+    if (ctx.args.data && (_.isBoolean(ctx.args.data.approved))) {
+      // changing state of approval
+
+      Promise.join(
+        findUser(ctx.req.accessToken.userId, {
+          include: [{
+            relation: 'isApproverOfCostcenter',
+          }],
+        }),
+        findCostcenter(ctx.instance.costcenterId),
+        function (user, costcenter, err) {
+          if (err) throw401();
+          var userCostcenter = user.isApproverOfCostcenter();
+          proceedIfApprovalAllowed(userCostcenter, costcenter);
+        }
+      );
+
+    }
+
+    if (ctx.args.data && (_.isBoolean(ctx.args.data.controllerApproval))) {
+      // changing state of ControllerApproval
+      // check if user is controller
+      Role.isInRole('controller', { principalType: RoleMapping.USER, principalId: ctx.req.accessToken.userId }, function (err, inRole) {
+        if (err) console.log(err);
+        if (inRole) {
+          next();
+        } else {
+          throw401();
+        }
+      });
+    }
+
+    function throw401(err) {
+      var newError = new Error('Authorization Required');
+      newError.statusCode = 401;
+      newError.originalError = err;
+      next(newError);
+    }
+
+    function proceedIfApprovalAllowed(userCostcenter, rowCostcenter) {
+
+      var allowed = _.some(userCostcenter, { 'costcenterId': rowCostcenter.costcenterId });
+      if (allowed) {
+        // user is allowed to approve rows for costcenter
+        next();
+      } else {
+        throw401();
+      }
+    }
+
+    next();
+  });
+
 };
