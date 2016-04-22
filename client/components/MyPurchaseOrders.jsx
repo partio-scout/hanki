@@ -12,9 +12,7 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var PurchaseOrderList = require('./PurchaseOrderList');
-
-var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore) {
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList) {
   var myPurchaseOrders = React.createClass({
     propTypes: {
       purchaseOrders: React.PropTypes.object,

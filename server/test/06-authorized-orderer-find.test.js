@@ -1,7 +1,6 @@
 var app = require('../server');
 var request = require('supertest');
 var expect = require('chai').expect;
-var Promise = require('bluebird');
 var testUtils = require('./utils/test-utils');
 
 describe('Orderer', function() {
@@ -103,40 +102,38 @@ describe('Orderer', function() {
       });
 
       it('Purchaseorders', function(done) {
-        var login = testUtils.loginUser('orderer');
-        var find = login.then(function(accessToken) {
-          return testUtils.find('Purchaseorder', { subscriberId: accessToken.userId });
-        });
-        Promise.join(login, find, function(accessToken, template) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app)
             .get('/api/Purchaseusers/' + accessToken.userId + '/orders')
             .query({ access_token: accessToken.id })
             .expect(200)
             .expect(function(res) {
-
-              // there must be better way to compare between two JSON arrays
-              // (or 'template' just has some interesting contents which doesn't allow comparing them directly)
-              // i.e. this doesn't work
-              // expect(res.body).to.deep.have.members(template);
-              expect(JSON.stringify(res.body)).to.equal(JSON.stringify(template));
+              expect(res.body).to.have.length(2);
+              expect(res.body[0]).to.have.property('name', 'Tanssilava - orderer');
+              expect(res.body[0]).to.have.property('subscriberId', accessToken.userId);
+              expect(res.body[0]).to.have.property('costcenterId', 1);
             })
             .end(done);
         });
       });
 
       it('Purchaseorderrows', function(done) {
-        var login = testUtils.loginUser('orderer');
-        var find = login.then(function(accessToken) {
-          return testUtils.find('Purchaseorder', { subscriberId: accessToken.userId }, 'order_rows');
-        });
-        Promise.join(login, find, function(accessToken, template) {
+        testUtils.loginUser('orderer').then(function(accessToken) {
           request(app)
             .get('/api/Purchaseusers/' + accessToken.userId + '/orders')
             .query({ filter: { 'include':['order_rows'] } })
             .query({ access_token: accessToken.id })
             .expect(200)
             .expect(function(res) {
-              expect(JSON.stringify(res.body)).to.equal(JSON.stringify(template));
+              expect(res.body).to.have.length(2);
+              expect(res.body[0]).to.have.property('name', 'Tanssilava - orderer');
+              expect(res.body[0]).to.have.property('subscriberId', accessToken.userId);
+              expect(res.body[0]).to.have.property('costcenterId', 1);
+
+              expect(res.body[0].order_rows).to.have.length(1);
+              expect(res.body[0].order_rows[0]).to.have.property('amount', 2);
+              expect(res.body[0].order_rows[0]).to.have.property('orderId', 2);
+              expect(res.body[0].order_rows[0]).to.have.property('titleId', 1);
             })
             .end(done);
         });

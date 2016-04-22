@@ -4,7 +4,6 @@ var Promise = require('bluebird');
 var app = require('../server/server');
 var testUtils = require('../server/test/utils/test-utils');
 var request = require('supertest');
-var expect = require('chai').expect;
 
 describe('Own orders', function() {
   var loginUrl, userId, orderId, orderrowId, accessToken;
