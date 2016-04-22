@@ -2,9 +2,12 @@ var appRunner = require('./utils/app-runner');
 var devLogin = require('./utils/dev-login');
 var Promise = require('bluebird');
 var app = require('../server/server');
+var testUtils = require('../server/test/utils/test-utils');
+var request = require('supertest');
+var expect = require('chai').expect;
 
 describe('Own orders', function() {
-  var loginUrl;
+  var loginUrl, userId, orderId, orderrowId, accessToken;
   var purchaseUser = app.models.Purchaseuser;
   var findCostcenter = Promise.promisify(app.models.Costcenter.find, app.models.Costcenter);
   var findRole = Promise.promisify(app.models.Role.find, app.models.Role);
@@ -26,6 +29,37 @@ describe('Own orders', function() {
           enlistment: 'Ostaja',
           userSection: 'Palvelut',
         }, roles, ccs, [], []);
+      }).then(function(user) {
+        userId = user.id;
+        return testUtils.loginUser('newOrderer');
+      }).then(function(newAccessToken) {
+        accessToken = newAccessToken;
+        return request(app).post('/api/Purchaseorders?access_token=' + accessToken.id)
+        .send({
+          'name': 'Tanjan tilaus',
+          'costcenterId': 1,
+          'subscriberId': accessToken.userId,
+        })
+        .expect(200)
+        .expect(function(res) {
+          orderId = res.body.orderId;
+        });
+      }).then(function() {
+        var d = new Date().toISOString();
+        return request(app).post('/api/Purchaseorderrows?access_token=' + accessToken.id)
+        .send({
+          'titleId': 2,
+          'amount': 2026,
+          'deliveryId': 1,
+          'orderId': orderId,
+          'approved': false,
+          'finished': false,
+          'modified': d,
+        })
+        .expect(200)
+        .expect(function(res) {
+          orderrowId = res.body.orderRowId;
+        });
       }).then(function() {
         devLogin('tanja@tilaa.ja', function(err, url) {
           loginUrl = url;
@@ -37,22 +71,33 @@ describe('Own orders', function() {
   it('should show existing own orders', function() {
     return browser.url(loginUrl) // Should redirect orderer to own orders
       .waitForVisible('h1=Omat tilaukset')
-      .waitForVisible('div=Iso naula')
+      .waitForVisible('div=Kakkosnelonen')
       .waitForVisible('td=Hankin itse')
-      .getText('div=Iso naula').should.eventually.be.ok
-      .getText('h2=Tanssilava - orderer').should.eventually.be.ok;
+      .waitForVisible('span=2026')
+      .getText('div=Kakkosnelonen').should.eventually.be.ok
+      .getText('span=Tanjan tilaus').should.eventually.be.ok;
   });
 
-  it('should show other\'s orders from owned costcenter', function() {
+  it('should show other\'s orders from owned costcenters', function() {
     return browser.url(loginUrl)
+      .waitForVisible('h1=Omat tilaukset')
       .waitForVisible('div=Iso naula')
-      .isVisible('h2=Leirin tavarat - controller').should.eventually.be.ok;
+      .isVisible('span=Leirin tavarat - controller').should.eventually.equal(true);
+
   });
 
   afterEach(function() {
     return browser
       .click('=Kirjaudu ulos')
       .waitForVisible('.btn*=Kirjaudu sisään');
+  });
+
+  afterEach(function(done) {
+    Promise.join(
+      testUtils.deleteFixtureIfExists('Purchaseuser', userId),
+      testUtils.deleteFixtureIfExists('Purchaseorder', orderId),
+      testUtils.deleteFixtureIfExists('Purchaseorderrow', orderrowId)
+    ).nodeify(done);
   });
 
   after(function(done) {
