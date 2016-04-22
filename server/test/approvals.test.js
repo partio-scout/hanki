@@ -292,12 +292,37 @@ describe('Approvals', function() {
 
   describe('Orderers', function() {
     this.timeout(5000);
-    var token;
+    var token, userId;
+
+    var purchaseUser = app.models.Purchaseuser;
+    var findCostcenter = Promise.promisify(app.models.Costcenter.find, app.models.Costcenter);
+    var findRole = Promise.promisify(app.models.Role.find, app.models.Role);
 
     beforeEach(function() {
-      return testUtils.loginUser('orderer').then(function(accessToken) {
-        token = accessToken.id;
-      });
+      return Promise.join(
+        findCostcenter({ where: { code: '00000' } }),
+        findRole({ where: { name: 'orderer' } }),
+        function (ccs, roles) {
+          return purchaseUser.createWithRolesAndCostcenters({
+            memberNumber: '0000010',
+            username: 'newOrderer',
+            password: 'salasana',
+            name: 'Tanja Tilaaja',
+            phone: '050 2345678',
+            email: 'tanja@tilaa.ja',
+            enlistment: 'Ostaja',
+            userSection: 'Palvelut',
+          }, roles, ccs, [], []);
+        }).then(function(user) {
+          userId = user.id;
+          return testUtils.loginUser('newOrderer').then(function(accessToken) {
+            token = accessToken.id;
+          });
+        });
+    });
+
+    afterEach(function(done) {
+      return testUtils.deleteFixtureIfExists('Purchaseuser', userId).nodeify(done);
     });
 
     it('can edit rows with no approvals or declines', function() {
@@ -351,17 +376,43 @@ describe('Approvals', function() {
   });
 
   describe('PurchaseOrderRow\'s prohibitChanges field', function() {
-    var ordererToken, procurementMasterToken;
+    var ordererToken, procurementMasterToken, userId;
+
+    var purchaseUser = app.models.Purchaseuser;
+    var findCostcenter = Promise.promisify(app.models.Costcenter.find, app.models.Costcenter);
+    var findRole = Promise.promisify(app.models.Role.find, app.models.Role);
 
     beforeEach(function() {
       return Promise.join(
-        testUtils.loginUser('orderer'),
-        testUtils.loginUser('procurementMaster'),
-        function(ot, pmt) {
-          ordererToken = ot.id;
-          procurementMasterToken = pmt.id;
-        }
-      );
+        findCostcenter({ where: { code: '00000' } }),
+        findRole({ where: { name: 'orderer' } }),
+        function (ccs, roles) {
+          return purchaseUser.createWithRolesAndCostcenters({
+            memberNumber: '0000010',
+            username: 'newOrderer',
+            password: 'salasana',
+            name: 'Tanja Tilaaja',
+            phone: '050 2345678',
+            email: 'tanja@tilaa.ja',
+            enlistment: 'Ostaja',
+            userSection: 'Palvelut',
+          }, roles, ccs, [], []);
+        }).then(function(user) {
+          userId = user.id;
+
+          return Promise.join(
+            testUtils.loginUser('newOrderer'),
+            testUtils.loginUser('procurementMaster'),
+            function(ot, pmt) {
+              ordererToken = ot.id;
+              procurementMasterToken = pmt.id;
+            }
+          );
+        });
+    });
+
+    afterEach(function(done) {
+      return testUtils.deleteFixtureIfExists('Purchaseuser', userId).nodeify(done);
     });
 
     function getOrderRowAndExpectProhibitChangesToBe(fixtureNumber, expectedValue) {
@@ -416,12 +467,15 @@ describe('Approvals', function() {
     });
 
     it('should be present when loading a row from the user\'s orders endpoint', function() {
-      return request(app)
-        .get('/api/Purchaseusers/1/orders?access_token=' + ordererToken + '&filter[order]=orderId%20DESC&filter[include]=order_rows')
-        .expect(200)
-        .then(function(res) {
-          expect(res.body[0].order_rows[0]).to.have.property('prohibitChanges', false);
-        });
+      // Here login orderer because row is taken through user endpoint so other users don't have access
+      return testUtils.loginUser('orderer').then(function(accessToken) {
+        return request(app)
+          .get('/api/Purchaseusers/1/orders?access_token=' + accessToken.id + '&filter[order]=orderId%20DESC&filter[include]=order_rows')
+          .expect(200)
+          .then(function(res) {
+            expect(res.body[0].order_rows[0]).to.have.property('prohibitChanges', false);
+          });
+      });
     });
 
     it('should be ignored when updating models', function() {
