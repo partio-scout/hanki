@@ -45,22 +45,226 @@
       "_selectable": true,
       "comments": "muistio"
     },
-    "supplierId": {
-      "type": "number",
+    "supplierName": {
+      "type": "String",
       "required": true,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
+      "length": 255,
+      "precision": null,
+      "scale": null,
       "postgresql": {
-        "columnName": "supplier_id",
-        "dataType": "integer",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
+        "columnName": "name",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "toimittajatunnus"
+      "comments": "toimittajan nimi"
+    },
+    "deliveryAddress": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "delivery_address",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "toimitusosoite"
+    },
+    "contactPerson": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "contact_person",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "yhteyshenkilö"
+    },
+    "email": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "email",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "yhteyshenkilön sähköpostiosoite"
+    },
+    "customerNumber": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "customer_number",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "asiakastunnus"
+    },
+    "businessId": {
+      "type": "String",
+      "required": true,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "business_id",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "y-tunnus"
+    },
+    "methodOfDelivery": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "method_of_delivery",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "toimitustapa"
+    },
+    "phone": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "phone",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "yhteyshenkilön puhelinnumero"
+    },
+    "termsOfDelivery": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "terms_of_delivery",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "toimitusehto"
+    },
+    "termsOfPayment": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "terms_of_payment",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "maksuehto"
+    },
+    "reference": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "reference",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "viite"
+    },
+    "deliveryTime": {
+      "type": "String",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "delivery_time",
+        "dataType": "timestamp without time zone",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "muokattu"
+    },
+    "ordered": {
+      "type": "Boolean",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "ordered",
+        "dataType": "boolean",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      },
+      "_selectable": false,
+      "comments": "tilattu"
     }
   },
   "validations": [],
@@ -69,11 +273,6 @@
       "type": "hasMany",
       "model": "Purchaseorderrow",
       "foreignKey": "externalorderId"
-    },
-    "supplier": {
-      "type": "belongsTo",
-      "model": "Supplier",
-      "foreignKey": "supplierId"
     }
   },
   "acls": [

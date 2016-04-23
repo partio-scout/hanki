@@ -9,7 +9,8 @@ describe('External order', function() {
   beforeEach(function(done) {
     testUtils.createFixture('Externalorder', {
       'memo': 'Tämä on testi',
-      'supplierId': 1,
+      'supplierName': 'testitoimittaja',
+      'businessId': '1234567',
     }).then(function(exOrder) {
       externalOrderId = exOrder.externalorderId;
     }).nodeify(done);
@@ -20,7 +21,7 @@ describe('External order', function() {
     .nodeify(done);
   });
 
-  it('should have code over 4 characters long', function(done) {
+  it('should have code over 5 characters long', function(done) {
     testUtils.loginUser('procurementAdmin').then(function(accessToken) {
       request(app).get('/api/Externalorders')
       .query({ access_token: accessToken.id })
@@ -31,7 +32,7 @@ describe('External order', function() {
         } else {
           try {
             expect(err).to.be.null;
-            expect(res.body[0].externalorderCode).to.have.length.least(4);
+            expect(res.body[0].externalorderCode).to.have.length.least(5);
             done();
           } catch (e) {
             done(e);
