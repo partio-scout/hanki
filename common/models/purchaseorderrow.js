@@ -47,10 +47,38 @@ module.exports = function(Purchaseorderrow) {
     }
   };
 
-  Purchaseorderrow.addProhibitChangesFieldToResultRow = function(row) {
-    row.prohibitChanges = Purchaseorderrow.areChangesProhibited(row);
-    return row;
-  };
+  Purchaseorderrow.addProhibitChangesField = function(ctx, purchaseOrder, next) {
+    var isInRole = Promise.promisify(app.models.Role.isInRole, app.models.Role);
+    var userId = ctx.req.accessToken.userId;
+
+    Promise.join(
+      isInRole('procurementMaster', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      isInRole('procurementAdmin', { principalType: app.models.RoleMapping.USER, principalId: userId }),
+      function(isProcurementMaster, isProcurementAdmin) {
+        function addField(row) {
+          row.prohibitChanges = Purchaseorderrow.areChangesProhibited(row);
+          if (isProcurementMaster || isProcurementAdmin) {
+            row.prohibitChanges = false;
+          }
+          return row;
+        }
+
+        if (ctx.result && ctx.result.length && ctx.result[0].order_rows) {
+          ctx.result = _.map(ctx.result, function(rawOrder) {
+            var order = rawOrder.toObject();
+            if (order.order_rows) {
+              order.order_rows = _.map(order.order_rows, addField);
+            }
+            return order;
+          });
+        } else if (ctx.result && _.isArray(ctx.result)) {
+          ctx.result = _.map(ctx.result, addField);
+        } else if (ctx.result) {
+          addField(ctx.result);
+        }
+        next();
+      }).catch(next);
+  }
 
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.modified = (new Date()).toISOString();
@@ -62,14 +90,7 @@ module.exports = function(Purchaseorderrow) {
     next();
   });
 
-  Purchaseorderrow.afterRemote('**', function(ctx, purchaseOrder, next) {
-    if (ctx.result && _.isArray(ctx.result)) {
-      ctx.result = _.map(ctx.result, Purchaseorderrow.addProhibitChangesFieldToResultRow);
-    } else if (ctx.result) {
-      Purchaseorderrow.addProhibitChangesFieldToResultRow(ctx.result);
-    }
-    next();
-  });
+  Purchaseorderrow.afterRemote('**', Purchaseorderrow.addProhibitChangesField);
 
   Purchaseorderrow.afterRemote('CSVExport', function(ctx, orderrow, next) {
     ctx.res.attachment('orders.csv');
