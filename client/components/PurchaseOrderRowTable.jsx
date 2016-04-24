@@ -19,6 +19,7 @@ function getAcceptanceStatus(editRoles, restrictToRoles) {
     propTypes: {
       status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
       onChange: React.PropTypes.func,
+      onReset: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
       orderRowId: React.PropTypes.number,
       type: React.PropTypes.string,
@@ -32,11 +33,29 @@ function getAcceptanceStatus(editRoles, restrictToRoles) {
       return this.props.isSelectedCallback(this.props.type, this.props.orderRowId);
     },
 
+    reset: function() {
+      this.props.onReset && this.props.onReset(this.props.type, this.props.orderRowId);
+    },
+
     render: function() {
       if (this.props.status === true) {
-        return <Glyphicon glyph="ok" className="accepted" />;
+        return (
+          <div>
+            <Glyphicon glyph="ok" className="accepted" />
+            <Restricted>
+              <Button onClick={ this.reset } bsStyle="link" className="reset">nollaa</Button>
+            </Restricted>
+          </div>
+        );
       } else if (this.props.status === false) {
-        return <Glyphicon glyph="remove" className="declined" />;
+        return (
+          <div>
+            <Glyphicon glyph="remove" className="declined" />
+            <Restricted>
+              <Button onClick={ this.reset } bsStyle="link" className="reset">nollaa</Button>
+            </Restricted>
+          </div>
+        );
       } else {
         return (
           <Restricted>
@@ -65,6 +84,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.function,
+      resetCallback: React.PropTypes.function,
       isSelectedCallback: React.PropTypes.function,
     },
 
@@ -135,6 +155,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               onChange={ this.props.selectionCallback }
               isSelectedCallback={ this.props.isSelectedCallback }
               orderRowId={ row.orderRowId }
+              onReset={ this.props.resetCallback }
             />
           </td>
           <td className="acceptance">
@@ -144,6 +165,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               onChange={ this.props.selectionCallback }
               isSelectedCallback={ this.props.isSelectedCallback }
               orderRowId={ row.orderRowId }
+              onReset={ this.props.resetCallback }
             />
           </td>
           <td>
@@ -169,6 +191,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       selectionCallback: React.PropTypes.function,
       isSelectedCallback: React.PropTypes.function,
       selectAllCallback: React.PropTypes.function,
+      resetCallback: React.PropTypes.function,
     },
 
     getDefaultProps: function() {
@@ -229,6 +252,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
                   readOnly={ this.props.readOnly }
                   selectionCallback={ this.props.selectionCallback }
                   isSelectedCallback={ this.props.isSelectedCallback }
+                  resetCallback={ this.props.resetCallback }
                 />
               )
             }

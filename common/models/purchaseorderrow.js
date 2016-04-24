@@ -155,7 +155,7 @@ module.exports = function(Purchaseorderrow) {
       Purchaseorderrow.remoteMethod(methodName, {
         accepts: { arg: 'ids', type: 'array', required: 'true' },
         returns: { arg: 'result', type: 'string' },
-        http: { path: '/' + opName + '/' + approvalName.toLowerCase() + '', verb: 'post' },
+        http: { path: '/' + opName + '/' + approvalName.toLowerCase(), verb: 'post' },
       });
     });
   });

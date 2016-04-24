@@ -110,6 +110,10 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       this.clearSelections();
     },
 
+    resetRow: function(type, id) {
+      PurchaseOrderActions.resetRowAcceptance(type, id);
+    },
+
     render: function () {
       var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
         var title = this.props.titles[row.titleId] || { };
@@ -158,6 +162,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             selectionCallback={ this.rowSelectionChanged }
             isSelectedCallback={ this.isSelected }
             selectAllCallback={ this.selectAllRowsAs }
+            resetCallback={ this.resetRow }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />
