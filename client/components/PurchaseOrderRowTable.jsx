@@ -10,7 +10,6 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
-var Input = ReactBootstrap.Input;
 
 function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
   var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);

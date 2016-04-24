@@ -54,8 +54,9 @@ var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
 
+var withAcceptances = require('./components/utils/AcceptanceContainer')(PurchaseOrderActions, restrictToRoles);
 var getAcceptanceStatus = require('./components/AcceptanceStatus');
-var PurchaseOrderRowTable = require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles);
+var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
 
