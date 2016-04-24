@@ -78,7 +78,7 @@ module.exports = function(Purchaseorderrow) {
         }
         next();
       }).catch(next);
-  }
+  };
 
   Purchaseorderrow.beforeRemote('create', function(ctx, purchaseOrder, next) {
     ctx.args.data.modified = (new Date()).toISOString();

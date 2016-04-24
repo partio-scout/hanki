@@ -1,5 +1,4 @@
 var Promise = require('bluebird');
-var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseuser) {
