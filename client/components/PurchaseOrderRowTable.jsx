@@ -83,9 +83,9 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
-      selectionCallback: React.PropTypes.function,
-      resetCallback: React.PropTypes.function,
-      isSelectedCallback: React.PropTypes.function,
+      selectionCallback: React.PropTypes.func,
+      resetCallback: React.PropTypes.func,
+      isSelectedCallback: React.PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -188,10 +188,10 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
-      selectionCallback: React.PropTypes.function,
-      isSelectedCallback: React.PropTypes.function,
-      selectAllCallback: React.PropTypes.function,
-      resetCallback: React.PropTypes.function,
+      selectionCallback: React.PropTypes.func,
+      isSelectedCallback: React.PropTypes.func,
+      selectAllCallback: React.PropTypes.func,
+      resetCallback: React.PropTypes.func,
     },
 
     getDefaultProps: function() {
