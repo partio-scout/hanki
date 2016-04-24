@@ -3,16 +3,30 @@ var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseorderrow) {
-  //TODO Refactor approval logic to more generic
   var approvalTypes = {
-    controller: {
+    Controller: {
       fieldName: 'controllerApproval',
+      fieldOperations: {
+        'approve': true,
+        'unapprove': false,
+        'reset': null,
+      },
     },
-    procurement: {
+    Procurement: {
       fieldName: 'providerApproval',
+      fieldOperations: {
+        'approve': true,
+        'unapprove': false,
+        'reset': null,
+      },
     },
-    userSection: {
+    UserSection: {
       fieldName: 'userSectionApproval',
+      fieldOperations: {
+        'approve': true,
+        'unapprove': false,
+        'reset': null,
+      },
     },
   };
 
@@ -115,12 +129,12 @@ module.exports = function(Purchaseorderrow) {
   };
 
   //Don't expose this directly over API - allows overwriting any field
-  Purchaseorderrow.approve = function(approvalType, ids, cb) {
+  Purchaseorderrow.setField = function(fieldName, value, ids, cb) {
     Purchaseorderrow.findByIds(ids).then(function(rows) {
       var updates = _.map(rows, function(row) {
         return Promise.fromNode(function(callback) {
           row.modified = (new Date()).toISOString();
-          row[approvalType] = true;
+          row[fieldName] = value;
           row.save(callback);
         });
       });
@@ -130,80 +144,27 @@ module.exports = function(Purchaseorderrow) {
     });
   };
 
-  Purchaseorderrow.unapprove = function(approvalType, ids, cb) {
-    Purchaseorderrow.findByIds(ids).then(function(rows) {
-      var updates = _.map(rows, function(row) {
-        return Promise.fromNode(function(callback) {
-          row.modified = (new Date()).toISOString();
+  _.each(approvalTypes, function(type, approvalName) {
+    var fieldName = type.fieldName;
+    _.each(type.fieldOperations, function(opValue, opName) {
+      var methodName = opName + approvalName;
+      Purchaseorderrow[methodName] = function(ids, cb) {
+        Purchaseorderrow.setField(fieldName, opValue, ids, cb);
+      };
 
-          row[approvalType] = false;
-
-          row.save(callback);
-        });
+      Purchaseorderrow.remoteMethod(methodName, {
+        accepts: { arg: 'ids', type: 'array', required: 'true' },
+        returns: { arg: 'result', type: 'string' },
+        http: { path: '/' + opName + '/' + approvalName.toLowerCase() + '', verb: 'post' },
       });
-      return Promise.all(updates).nodeify(cb);
-    }).catch(function(err) {
-      cb(err);
     });
-  };
-
-  Purchaseorderrow.approveController = function(ids, cb) {
-    Purchaseorderrow.approve('controllerApproval', ids, cb);
-  };
-
-  Purchaseorderrow.unapproveController = function(ids, cb) {
-    Purchaseorderrow.unapprove('controllerApproval', ids, cb);
-  };
-
-  Purchaseorderrow.approveProcurement = function(ids, cb) {
-    Purchaseorderrow.approve('providerApproval', ids, cb);
-  };
-
-  Purchaseorderrow.unapproveProcurement = function(ids, cb) {
-    Purchaseorderrow.unapprove('providerApproval', ids, cb);
-  };
+  });
 
   Purchaseorderrow.remoteMethod(
     'CSVExport',
     {
       http: { path: '/CSVExport', verb: 'get' },
       returns: { arg: 'csv', type: 'string' },
-    }
-  );
-
-  Purchaseorderrow.remoteMethod(
-    'approveController',
-    {
-      accepts: { arg: 'ids', type: 'array', required: 'true' },
-      returns: { arg: 'result', type: 'string' },
-      http: { path: '/approve/controller', verb: 'post' },
-    }
-  );
-
-  Purchaseorderrow.remoteMethod(
-    'unapproveController',
-    {
-      accepts: { arg: 'ids', type: 'array', required: 'true' },
-      returns: { arg: 'result', type: 'string' },
-      http: { path: '/unapprove/controller', verb: 'post' },
-    }
-  );
-
-  Purchaseorderrow.remoteMethod(
-    'approveProcurement',
-    {
-      accepts: { arg: 'ids', type: 'array', required: 'true' },
-      returns: { arg: 'result', type: 'string' },
-      http: { path: '/approve/procurement', verb: 'post' },
-    }
-  );
-
-  Purchaseorderrow.remoteMethod(
-    'unapproveProcurement',
-    {
-      accepts: { arg: 'ids', type: 'array', required: 'true' },
-      returns: { arg: 'result', type: 'string' },
-      http: { path: '/unapprove/procurement', verb: 'post' },
     }
   );
 };
