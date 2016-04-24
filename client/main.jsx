@@ -88,6 +88,7 @@ var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(
 
 var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore));
 var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
+var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 
 // Setup routes
 
@@ -120,6 +121,7 @@ var routes = (
     <Route name="costcenter_purchase_orders" path="costCenterPurchaseOrders" handler={ CostcenterPurchaseOrders } />
     <Route name="external_orders" path="externalOrders" handler={ ExternalOrders } >
       <Route name="new_external_order" path="new" handler={ NewExternalOrder } />
+      <Route name="edit_external_order" path=":externalorderId/edit" handler={ EditExternalOrder } />
     </Route>
   </Route>
 );

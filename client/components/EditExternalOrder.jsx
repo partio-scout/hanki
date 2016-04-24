@@ -6,8 +6,11 @@ var ExternalOrderForm = require('./ExternalOrderForm');
 
 var validateExternalOrder = require('../validation/externalorder');
 
-module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrderStore) {
+module.exports = function getEditExternalOrder(ExternalOrderActions, ExternalOrderStore) {
   return React.createClass({
+    propTypes: {
+      params: React.PropTypes.object,
+    },
 
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
@@ -16,7 +19,8 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
     },
 
     transformState: function (externalOrderStoreState) {
-      let state = { };
+      const externalOrders = externalOrderStoreState.externalOrders || { };
+      let state = externalOrders[this.props.params.externalorderId] || { };
       state.validationErrors = [];
       return state;
     },
@@ -57,13 +61,14 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
     },
 
     onSave: function() {
-      const externalOrder = this.getExternalOrderFromState();
-      const validationErrors = validateExternalOrder(externalOrder);
-      // TODO enemmän validointeja
+      const newExternalOrder = this.getExternalOrderFromState();
+
+      const validationErrors = validateExternalOrder(newExternalOrder);
+
       this.setState({ validationErrors });
 
       if (validationErrors.length === 0) {
-        ExternalOrderActions.createExternalOrder(externalOrder);
+        ExternalOrderActions.updateExternalOrder(newExternalOrder);
         this.transitionTo('external_orders');
       }
     },
@@ -87,12 +92,12 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
       };
       return (
         <ExternalOrderForm
-          formTitle="Uusi ulkoinen tilaus"
+          formTitle="Muokkaa ulkoista tilausta"
           validationErrors={ this.state.validationErrors }
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }
-          canEditId={ true }
+          canEditId={ false }
         />
       );
     },

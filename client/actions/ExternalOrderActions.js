@@ -36,6 +36,21 @@ function getExternalOrderActions(alt, ExternalOrder) {
         }
       });
     }
+
+    updateExternalOrder(externalOrder) {
+      this.dispatch(externalOrder);
+      ExternalOrder.update(externalOrder.externalorderId, externalOrder, (err, savedExternalOrder) => {
+        if (err) {
+          this.actions.updateExternalOrderFailed(null);
+        } else {
+          this.actions.fetchExternalOrders();
+        }
+      });
+    }
+
+    updateExternalOrderFailed(error) {
+      this.dispatch(error);
+    }
   }
   return alt.createActions(ExternalOrderActions);
 }
