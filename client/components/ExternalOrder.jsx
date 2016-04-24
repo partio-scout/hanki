@@ -1,15 +1,8 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
-var Button = ReactBootstrap.Button;
-var Glyphicon = ReactBootstrap.Glyphicon;
 
-var ReactRouterBootstrap = require('react-router-bootstrap');
-var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var ExternalOrderRowTable = require('./ExternalOrderRowTable');
-
-var Price = require('./utils/Price');
 
 function getExternalOrder(ExternalOrderActions, ExternalOrderRowTable, restrictToRoles) {
 
@@ -18,6 +11,9 @@ function getExternalOrder(ExternalOrderActions, ExternalOrderRowTable, restrictT
       orderRows: React.PropTypes.object,
       externalOrder: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
+      purchaseOrders: React.PropTypes.object,
+      costcenters: React.PropTypes.object,
+      titles: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -36,6 +32,9 @@ function getExternalOrder(ExternalOrderActions, ExternalOrderRowTable, restrictT
           <ExternalOrderRowTable
             orderRows={ this.props.orderRows }
             readOnly={ this.props.readOnly }
+            purchaseOrders={ this.props.purchaseOrders }
+            costcenters={ this.props.costcenters }
+            titles={ this.props.titles }
           />
         </Panel>
       );

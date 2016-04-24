@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
@@ -10,55 +9,28 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var Reactable = require('reactable');
-var Table = Reactable.Table;
-var Tr = Reactable.Tr;
-var Td = Reactable.Td;
-
-var Price = require('./utils/Price');
-
-// function getExternalOrderEditButton(externalOrder) {
-//   return (
-//     <ButtonLink
-//       bsStyle="link"
-//       className="edit"
-//       to="edit_external_order"
-//       params={ { externalorderId: externalOrder.externalorderId } }
-//       disabled={ externalOrder.ordered }>
-//       <Glyphicon glyph="pencil" />
-//     </ButtonLink>
-//   );
-// }
-
-// function getExternalOrderDeleteButton(externalOrder) {
-//   return (
-//     <ButtonLink
-//       bsStyle="link"
-//       className="delete"
-//       to="delete_external_order"
-//       params={ { externalorderId: externalOrder.externalorderId } }
-//       disabled={ externalOrder.ordered || externalOrder.order_rows.length !== 0 }>
-//       <Glyphicon glyph="remove" />
-//     </ButtonLink>
-//   );
-// }
-
-function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList) {
+function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore) {
   return connectToStores(React.createClass({
     propTypes: {
       externalOrders: React.PropTypes.object,
-      orderrows: React.PropTypes.object,
+      orderRows: React.PropTypes.object,
+      titles: React.PropTypes.object,
+      costcenters: React.PropTypes.object,
+      purchaseOrders: React.PropTypes.object,
     },
 
     statics: {
       getStores() {
-        return [ ExternalOrderStore, PurchaseOrderStore ];
+        return [ ExternalOrderStore, PurchaseOrderStore, TitleStore, CostCenterStore ];
       },
 
       getPropsFromStores() {
         return {
           externalOrders: ExternalOrderStore.getState().externalOrders,
-          orderrows: PurchaseOrderStore.getState().purchaseOrderRows,
+          orderRows: PurchaseOrderStore.getState().purchaseOrderRows,
+          titles: TitleStore.getState().titles,
+          costcenters: CostCenterStore.getState().allCostCenters,
+          purchaseOrders: PurchaseOrderStore.getState().allPurchaseOrders,
         };
       },
     },
@@ -78,9 +50,12 @@ function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrder
               </ButtonLink>
             </div>
             <ExternalOrderList
-              ExternalOrders={ this.props.externalOrders }
-              orderRows={ this.props.orderrows }
-              readOnly={ this.props.readOnly }
+              externalOrders={ this.props.externalOrders }
+              orderRows={ this.props.orderRows }
+              readOnly={ false }
+              titles={ this.props.titles }
+              costcenters={ this.props.costcenters }
+              purchaseOrders={ this.props.purchaseOrders }
             />
           </Col>
         </Row>

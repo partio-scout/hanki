@@ -86,7 +86,7 @@ var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 
-var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList));
+var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore));
 var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 
 // Setup routes
@@ -142,6 +142,7 @@ if (accessToken && accessToken.userId && accessTokenValid) {
   PurchaseOrderActions.fetchMyPurchaseOrders();
   PurchaseOrderActions.fetchAllPurchaseOrders();
   CostCenterActions.fetchOwnCostCenters();
+  CostCenterActions.fetchAllCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
   ExternalOrderActions.fetchExternalOrders();

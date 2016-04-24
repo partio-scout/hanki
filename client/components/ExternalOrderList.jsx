@@ -5,13 +5,15 @@ function getExternalOrderList(ExternalOrder) {
   var ExternalOrderList = React.createClass({
     propTypes: {
       externalOrders: React.PropTypes.object,
-      orderrows: React.PropTypes.object,
+      orderRows: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
+      titles: React.PropTypes.object,
+      costcenters: React.PropTypes.object,
+      purchaseOrders: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
       return {
-        externalOrders: [],
         readOnly: false,
       };
     },
@@ -37,6 +39,9 @@ function getExternalOrderList(ExternalOrder) {
                     externalOrder={ externalOrder }
                     orderRows={ rows }
                     readOnly={ this.props.readOnly }
+                    purchaseOrders={ this.props.purchaseOrders }
+                    costcenters={ this.props.costcenters }
+                    titles={ this.props.titles }
                   />
                 );
               })
