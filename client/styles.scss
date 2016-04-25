@@ -213,3 +213,11 @@ th.reactable-header-sort-desc::after {
 .declined {
   color: $orange;
 }
+
+.reset {
+  display: block;
+  padding: 0;
+  margin: 0;
+  font-size: 10px;
+  text-align: center !important;
+}
