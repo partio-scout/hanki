@@ -51,6 +51,20 @@ function getExternalOrderActions(alt, ExternalOrder) {
     updateExternalOrderFailed(error) {
       this.dispatch(error);
     }
+
+    deleteExternalOrder(externalOrder) {
+      ExternalOrder.del(externalOrder.externalorderId, (err, deletedOrder) => {
+        if (err) {
+          this.actions.deletingExternalOrderFailed(err);
+        } else {
+          this.actions.fetchExternalOrders();
+        }
+      });
+    }
+
+    deletingExternalOrderFailed(error) {
+      this.dispatch(error);
+    }
   }
   return alt.createActions(ExternalOrderActions);
 }

@@ -62,10 +62,6 @@ function getExternalOrderRowTable(restrictToRoles) {
     },
 
     render: function() {
-      if (this.props.orderRows && this.props.orderRows.length === 0) {
-        return <div>Ei tilausrivejä.</div>;
-      }
-
       return (
         <Table striped>
           <thead>

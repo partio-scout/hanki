@@ -26,13 +26,17 @@ function getExternalOrder(ExternalOrderActions, ExternalOrderRowTable, restrictT
     },
 
     render: function () {
+      var canDelete = (this.props.externalOrder && this.props.externalOrder.order_rows.length === 0 && !this.props.externalOrder.ordered);
 
       return (
         <Panel className="external-order">
           <h2>
             { this.props.externalOrder.externalorderCode } { this.props.externalOrder.supplierName }
-          <ButtonLink bsStyle="link" className="edit" to="edit_external_order" disabled= { this.props.externalOrder.ordered } params={ { externalorderId: this.props.externalOrder.externalorderId } }>
+          <ButtonLink bsStyle="link" className="edit" to="edit_external_order" disabled={ this.props.externalOrder.ordered } params={ { externalorderId: this.props.externalOrder.externalorderId } }>
             <Glyphicon glyph="pencil" />
+          </ButtonLink>
+          <ButtonLink bsStyle="link" className="delete" to="delete_external_order" disabled={ !canDelete } params={ { externalorderId: this.props.externalOrder.externalorderId } }>
+              <Glyphicon glyph="remove" />
           </ButtonLink>
           </h2>
           <ExternalOrderRowTable
