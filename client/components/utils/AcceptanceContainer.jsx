@@ -5,7 +5,7 @@ var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
-  var ApproversOnly = restrictToRoles(['controller', 'procurementMaster', 'procurementAdmin'], 'div');
+  var ApproversOnly = restrictToRoles(['orderer', 'controller', 'procurementMaster', 'procurementAdmin'], 'div');
   return function withAcceptances(Elem) {
     var AcceptanceContainer = React.createClass({
       propTypes: {
