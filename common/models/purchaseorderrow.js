@@ -4,6 +4,14 @@ var app = require('../../server/server');
 
 module.exports = function(Purchaseorderrow) {
   var approvalTypes = {
+    Orderer: {
+      fieldName: 'confirmed',
+      fieldOperations: {
+        'approve': true,
+        'unapprove': false,
+        'reset': null,
+      },
+    },
     Controller: {
       fieldName: 'controllerApproval',
       fieldOperations: {
