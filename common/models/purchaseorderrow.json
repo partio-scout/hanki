@@ -474,6 +474,20 @@
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "unapproveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "resetController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "resetController"
     }
   ],
   "methods": {}
