@@ -59,7 +59,7 @@
         "nullable": "YES"
       },
       "_selectable": true,
-      "comments": "vahvistettu"
+      "comments": "tilaaja on tarkistanut tilauksensa, eikä enää muokkaa sitä"
     },
     "controllerApproval": {
       "type": "Boolean",
