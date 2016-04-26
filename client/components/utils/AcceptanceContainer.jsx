@@ -15,6 +15,7 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
       getInitialState: function() {
         return {
           'controller': [],
+          'orderer': [],
           'procurement': [],
         };
       },
@@ -22,6 +23,7 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
       clearSelections: function() {
         this.setState({
           'controller': [],
+          'orderer': [],
           'procurement': [],
         });
       },
@@ -41,7 +43,7 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
       },
 
       areRowsSelected: function() {
-        return this.areRowsSelectedAs('controller') || this.areRowsSelectedAs('procurement');
+        return this.areRowsSelectedAs('orderer') || this.areRowsSelectedAs('controller') || this.areRowsSelectedAs('procurement');
       },
 
       areRowsSelectedAs: function(type) {
@@ -51,6 +53,7 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
       selectAllRowsAs: function(type) {
         //TODO Harmonize the data model/terminology in the actions or backend, this is awful
         var acceptanceFields = {
+          orderer: 'ordererApproval',
           controller: 'controllerApproval',
           procurement: 'providerApproval',
         };
@@ -75,6 +78,9 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
         if (this.areRowsSelectedAs('controller')) {
           PurchaseOrderActions.acceptPurchaseOrderRows('controller', this.state.controller);
         }
+        if (this.areRowsSelectedAs('orderer')) {
+          PurchaseOrderActions.acceptPurchaseOrderRows('orderer', this.state.orderer);
+        }
         if (this.areRowsSelectedAs('procurement')) {
           PurchaseOrderActions.acceptPurchaseOrderRows('procurement', this.state.procurement);
         }
@@ -84,6 +90,9 @@ function getWithAcceptances(PurchaseOrderActions, restrictToRoles) {
       declineRows: function() {
         if (this.areRowsSelectedAs('controller')) {
           PurchaseOrderActions.declinePurchaseOrderRows('controller', this.state.controller);
+        }
+        if (this.areRowsSelectedAs('orderer')) {
+          PurchaseOrderActions.declinePurchaseOrderRows('orderer', this.state.orderer);
         }
         if (this.areRowsSelectedAs('procurement')) {
           PurchaseOrderActions.declinePurchaseOrderRows('procurement', this.state.procurement);

@@ -12,6 +12,7 @@ var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 
 function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
+  var OrdererAcceptance = getAcceptanceStatus([ 'orderer' ], restrictToRoles);
   var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);
   var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
 
@@ -80,8 +81,15 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
           <td>
             { row.requestService ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
           </td>
-          <td>
-
+          <td className="acceptance">
+            <OrdererAcceptance
+              type="orderer"
+              status={ row.confirmed }
+              onChange={ this.props.selectionCallback }
+              isSelectedCallback={ this.props.isSelectedCallback }
+              orderRowId={ row.orderRowId }
+              onReset={ this.props.resetCallback }
+            />
           </td>
           <td>
 
@@ -139,6 +147,10 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       };
     },
 
+    selectAllOrderer: function() {
+      this.props.selectAllCallback('orderer');
+    },
+
     selectAllProcurement: function() {
       this.props.selectAllCallback('procurement');
     },
@@ -157,7 +169,12 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               <th rowSpan="2">Summa</th>
               <th rowSpan="2">Huomiot</th>
               <th rowSpan="2">Vaatii palvelua</th>
-              <th rowSpan="2">Hyväksyt&shy;täväksi</th>
+              <th rowSpan="2">
+                <div>Hyväksyt&shy;täväksi</div>
+                <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAllOrderer }>
+                  kaikki
+                </ProcurementButton>
+                </th>
               <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
               <th rowSpan="2">Tilattu</th>
               <th rowSpan="2">Toimitus</th>
