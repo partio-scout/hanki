@@ -10,51 +10,8 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
-var Input = ReactBootstrap.Input;
 
-function getAcceptanceStatus(editRoles, restrictToRoles) {
-  var Restricted = restrictToRoles(editRoles, 'div');
-
-  var AcceptanceStatus = React.createClass({
-    propTypes: {
-      status: React.PropTypes.oneOfType([ React.PropTypes.bool, React.PropTypes.object ]),
-      onChange: React.PropTypes.func,
-      isSelectedCallback: React.PropTypes.func,
-      orderRowId: React.PropTypes.number,
-      type: React.PropTypes.string,
-    },
-
-    onChange: function() {
-      this.props.onChange && this.props.onChange(this.props.orderRowId, this.props.type, !this.isChecked());
-    },
-
-    isChecked: function() {
-      return this.props.isSelectedCallback(this.props.type, this.props.orderRowId);
-    },
-
-    render: function() {
-      if (this.props.status === true) {
-        return <Glyphicon glyph="ok" className="accepted" />;
-      } else if (this.props.status === false) {
-        return <Glyphicon glyph="remove" className="declined" />;
-      } else {
-        return (
-          <Restricted>
-            <Input
-              type="checkbox"
-              onChange={ this.onChange }
-              checked={ this.isChecked() }
-            />
-          </Restricted>
-        );
-      }
-    },
-  });
-
-  return AcceptanceStatus;
-}
-
-function getPurchaseOrderRowTable(restrictToRoles) {
+function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
   var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);
   var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
 
@@ -64,8 +21,9 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
-      selectionCallback: React.PropTypes.function,
-      isSelectedCallback: React.PropTypes.function,
+      selectionCallback: React.PropTypes.func,
+      resetCallback: React.PropTypes.func,
+      isSelectedCallback: React.PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -135,6 +93,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               onChange={ this.props.selectionCallback }
               isSelectedCallback={ this.props.isSelectedCallback }
               orderRowId={ row.orderRowId }
+              onReset={ this.props.resetCallback }
             />
           </td>
           <td className="acceptance">
@@ -144,6 +103,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
               onChange={ this.props.selectionCallback }
               isSelectedCallback={ this.props.isSelectedCallback }
               orderRowId={ row.orderRowId }
+              onReset={ this.props.resetCallback }
             />
           </td>
           <td>
@@ -166,9 +126,10 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
-      selectionCallback: React.PropTypes.function,
-      isSelectedCallback: React.PropTypes.function,
-      selectAllCallback: React.PropTypes.function,
+      selectionCallback: React.PropTypes.func,
+      isSelectedCallback: React.PropTypes.func,
+      selectAllCallback: React.PropTypes.func,
+      resetCallback: React.PropTypes.func,
     },
 
     getDefaultProps: function() {
@@ -229,6 +190,7 @@ function getPurchaseOrderRowTable(restrictToRoles) {
                   readOnly={ this.props.readOnly }
                   selectionCallback={ this.props.selectionCallback }
                   isSelectedCallback={ this.props.isSelectedCallback }
+                  resetCallback={ this.props.resetCallback }
                 />
               )
             }
@@ -237,7 +199,6 @@ function getPurchaseOrderRowTable(restrictToRoles) {
       );
     },
   });
-
   return PurchaseOrderRowTable;
 }
 

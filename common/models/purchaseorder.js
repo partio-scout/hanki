@@ -49,8 +49,7 @@ module.exports = function(Purchaseorder) {
   });
 
   Purchaseorder.afterRemote('prototype.__findById__order_rows', function(ctx, row, next) {
-    ctx.result = app.models.Purchaseorderrow.addProhibitChangesFieldToResultRow(ctx.result);
-    next();
+    app.models.Purchaseorderrow.addProhibitChangesField(ctx, row, next);
   });
 
   Purchaseorder.afterRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {

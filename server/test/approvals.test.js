@@ -376,7 +376,7 @@ describe('Approvals', function() {
   });
 
   describe('PurchaseOrderRow\'s prohibitChanges field', function() {
-    var ordererToken, procurementMasterToken, userId;
+    var ordererToken, controllerAccessToken, userId;
 
     var purchaseUser = app.models.Purchaseuser;
     var findCostcenter = Promise.promisify(app.models.Costcenter.find, app.models.Costcenter);
@@ -402,10 +402,10 @@ describe('Approvals', function() {
 
           return Promise.join(
             testUtils.loginUser('newOrderer'),
-            testUtils.loginUser('procurementMaster'),
-            function(ot, pmt) {
+            testUtils.loginUser('controller'),
+            function(ot, ct) {
               ordererToken = ot.id;
-              procurementMasterToken = pmt.id;
+              controllerAccessToken = ct.id;
             }
           );
         });
@@ -450,7 +450,7 @@ describe('Approvals', function() {
 
     it('should be present when loading rows from the rows endpoint', function() {
       return request(app)
-        .get('/api/Purchaseorderrows?access_token=' + procurementMasterToken)
+        .get('/api/Purchaseorderrows?access_token=' + controllerAccessToken)
         .expect(200)
         .then(function(res) {
           expect(res.body[0]).to.have.property('prohibitChanges');
@@ -459,7 +459,7 @@ describe('Approvals', function() {
 
     it('should be present when loading a row from the rows endpoint', function() {
       return request(app)
-        .get('/api/Purchaseorderrows/' + orderRowIds[1] + '?access_token=' + procurementMasterToken)
+        .get('/api/Purchaseorderrows/' + orderRowIds[1] + '?access_token=' + controllerAccessToken)
         .expect(200)
         .then(function(res) {
           expect(res.body).to.have.property('prohibitChanges', true);

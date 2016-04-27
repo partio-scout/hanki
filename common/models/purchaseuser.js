@@ -1,5 +1,4 @@
 var Promise = require('bluebird');
-var _ = require('lodash');
 var app = require('../../server/server');
 
 module.exports = function(Purchaseuser) {
@@ -117,16 +116,7 @@ module.exports = function(Purchaseuser) {
   };
 
   Purchaseuser.afterRemote('prototype.__get__orders', function(ctx, orders, next) {
-    if (ctx.result && _.isArray(ctx.result)) {
-      ctx.result = _.map(ctx.result, function(rawOrder) {
-        var order = rawOrder.toObject();
-        if (order.order_rows) {
-          order.order_rows = _.map(order.order_rows, app.models.Purchaseorderrow.addProhibitChangesFieldToResultRow);
-        }
-        return order;
-      });
-    }
-    next();
+    app.models.Purchaseorderrow.addProhibitChangesField(ctx, orders, next);
   });
 
   Purchaseuser.remoteMethod(

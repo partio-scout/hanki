@@ -52,7 +52,9 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
-var PurchaseOrderRowTable = require('./components/PurchaseOrderRowTable')(restrictToRoles);
+var withAcceptances = require('./components/utils/AcceptanceContainer')(PurchaseOrderActions, restrictToRoles);
+var getAcceptanceStatus = require('./components/AcceptanceStatus');
+var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
 
@@ -75,7 +77,8 @@ var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], requir
 var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
 var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
-var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore));
+var AllPurchaseOrdersTable = withAcceptances(require('./components/AllPurchaseOrdersTable')(getAcceptanceStatus, restrictToRoles));
+var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, AllPurchaseOrdersTable));
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 

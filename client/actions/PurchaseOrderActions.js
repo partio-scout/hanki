@@ -204,6 +204,17 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       });
     }
 
+    resetRowAcceptance(type, id) {
+      this.dispatch(type, id);
+      PurchaseOrderRow.rawWithBody('POST', 'reset/' + type, { ids: [ id ] }, (err, rows) => {
+        if (err) {
+          this.actions.error(err);
+        } else {
+          this.actions.fetchAllPurchaseOrders();
+        }
+      });
+    }
+
     error(message, err) {
       this.dispatch(message, err);
     }
