@@ -44,7 +44,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
         .values().sortBy('orderId').reverse().value();
       var purchaseOrders = this.props.purchaseOrders.allPurchaseOrders || { };
       return (
-        <Table className="table table-striped all-orders-table" itemsPerPage={ 3 } sortable={ true }
+        <Table className="table table-striped all-orders-table" itemsPerPage={ 60 } sortable={ true }
           filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
           <Thead>
             <Th column="Kohde">Kohde</Th>
