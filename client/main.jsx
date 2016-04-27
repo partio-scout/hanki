@@ -50,10 +50,8 @@ var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrder
 // Setup stateful components
 
 var restrictToRoles = require('./components/utils/restrictToRoles')(UserStore);
-
 var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, ErrorStore);
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
-
 var withAcceptances = require('./components/utils/AcceptanceContainer')(PurchaseOrderActions, restrictToRoles);
 var getAcceptanceStatus = require('./components/AcceptanceStatus');
 var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));

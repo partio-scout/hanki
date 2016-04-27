@@ -36,8 +36,8 @@ SCRIPT
 # Download selenium and configure it to start at boot
 $configure_selenium = <<SCRIPT
 selenium_dir=/selenium
-selenium_version_minor="2.48"
-selenium_version_patch="2"
+selenium_version_minor="2.53"
+selenium_version_patch="0"
 
 echo "Removing old selenium directory and creating new"
 rm -rf "$selenium_dir"

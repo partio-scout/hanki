@@ -199,7 +199,6 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       );
     },
   });
-
   return PurchaseOrderRowTable;
 }
 

@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ReactRouterBootstrap = require('react-router-bootstrap');
+var _ = require('lodash');
 
 var connectToStores = require('alt/utils/connectToStores');
 
@@ -35,7 +36,27 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
       },
     },
 
+    componentDidMount: function() {
+      PurchaseOrderActions.fetchAllPurchaseOrders();
+    },
+
+    componentDidUpdate: function() {
+      PurchaseOrderActions.fetchAllPurchaseOrders();
+    },
+
     render: function () {
+      var allOrders = this.props.purchaseOrders.allPurchaseOrders || {};
+      var ownedCostcenterIds = _.map(this.props.costCenters.ownCostCenters, function(c) { return c.costcenterId; });
+      var ordersOfOwnedCostcenters = _.filter(allOrders, function(o) {
+        return _.some(ownedCostcenterIds, function(id) {
+          if (id == o.costcenterId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+      });
+
       return (
         <Row>
           <Col>
@@ -50,7 +71,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               </ButtonLink>
             </div>
             <PurchaseOrderList
-              purchaseOrders={ this.props.purchaseOrders.myPurchaseOrders }
+              purchaseOrders={ ordersOfOwnedCostcenters }
               purchaseOrderRows={ this.props.purchaseOrders.purchaseOrderRows }
               costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }

@@ -44,16 +44,18 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
         .values().sortBy('orderId').reverse().value();
       var purchaseOrders = this.props.purchaseOrders.allPurchaseOrders || { };
       return (
-        <Table className="table table-striped all-orders-table" itemsPerPage={ 3 } sortable={ true }
+        <Table className="table table-striped all-orders-table" itemsPerPage={ 60 } sortable={ true }
           filterable={ [ 'Kohde', 'Tuote', 'Toimitus' ] } filterPlaceholder="Etsi rivejä">
           <Thead>
             <Th column="Kohde">Kohde</Th>
             <Th column="Tuote">Tuote</Th>
             <Th column="Hank.hyv.">
               Hank.hyv.
-              <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAll }>
-                kaikki
-              </ProcurementButton>
+              <div>
+                <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAll }>
+                  kaikki
+                </ProcurementButton>
+              </div>
             </Th>
             <Th column="Määrä">Määrä</Th>
             <Th column="Summa">Summa</Th>
@@ -106,7 +108,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                     </span>
                   </span>
                 </Td>
-                <Td column="Hank.hyv." value={ acceptanceValue }>
+                <Td column="Hank.hyv." value={ acceptanceValue } className="acceptance">
                   <ProcurementAcceptance
                     onChange={ this.props.selectionCallback }
                     onReset={ this.props.resetCallback }
