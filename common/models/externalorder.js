@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 module.exports = function(Externalorder) {
   Externalorder.afterRemote('*', function(ctx, exOrder, next) {
-    if (ctx.result) {
+    if (ctx.result && !_.has(ctx.result, 'count')) {
       if (_.isArray(ctx.result)) {
         ctx.result = _.map(ctx.result, function(order) {
           order = order.toObject();
