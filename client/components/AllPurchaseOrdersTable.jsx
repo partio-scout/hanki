@@ -51,9 +51,11 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             <Th column="Tuote">Tuote</Th>
             <Th column="Hank.hyv.">
               Hank.hyv.
-              <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAll }>
-                kaikki
-              </ProcurementButton>
+              <div>
+                <ProcurementButton bsSize="xsmall" bsStyle="link" onClick={ this.selectAll }>
+                  kaikki
+                </ProcurementButton>
+              </div>
             </Th>
             <Th column="Määrä">Määrä</Th>
             <Th column="Summa">Summa</Th>
@@ -106,7 +108,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                     </span>
                   </span>
                 </Td>
-                <Td column="Hank.hyv." value={ acceptanceValue }>
+                <Td column="Hank.hyv." value={ acceptanceValue } className="acceptance">
                   <ProcurementAcceptance
                     onChange={ this.props.selectionCallback }
                     onReset={ this.props.resetCallback }
