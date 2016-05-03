@@ -3,7 +3,7 @@ var _ = require('lodash');
 function getExternalOrderActions(alt, ExternalOrder) {
   class ExternalOrderActions {
 
-    externalOrderUpdateFailed(error) {
+    externalOrdersUpdateFailed(error) {
       this.dispatch(error);
     }
 
@@ -15,22 +15,18 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch();
       ExternalOrder.findAll((err, externalOrders) => {
         if (err) {
-          this.actions.externalOrderUpdateFailed(null);
+          this.actions.externalOrdersUpdateFailed(null);
         } else {
           this.actions.updateExternalOrders(_.indexBy(externalOrders, 'externalorderId'));
         }
       }, 'filter={"include":{"relation":"order_rows","scope":{"fields":["orderRowId"]}}}');
     }
 
-    saveExternalOrderFailed(error) {
-      this.dispatch(error);
-    }
-
     createExternalOrder(externalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.create(externalOrder, (err) => {
         if (err) {
-          this.actions.saveExternalOrderFailed(null);
+          this.actions.externalOrdersUpdateFailed(null);
         } else {
           this.actions.fetchExternalOrders();
         }
@@ -41,30 +37,23 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.update(externalOrder.externalorderId, externalOrder, (err, savedExternalOrder) => {
         if (err) {
-          this.actions.updateExternalOrderFailed(null);
+          this.actions.externalOrdersUpdateFailed(null);
         } else {
           this.actions.fetchExternalOrders();
         }
       });
-    }
-
-    updateExternalOrderFailed(error) {
-      this.dispatch(error);
     }
 
     deleteExternalOrder(externalOrder) {
       ExternalOrder.del(externalOrder.externalorderId, (err, deletedOrder) => {
         if (err) {
-          this.actions.deletingExternalOrderFailed(err);
+          this.actions.externalOrdersUpdateFailed(err);
         } else {
           this.actions.fetchExternalOrders();
         }
       });
     }
 
-    deletingExternalOrderFailed(error) {
-      this.dispatch(error);
-    }
   }
   return alt.createActions(ExternalOrderActions);
 }
