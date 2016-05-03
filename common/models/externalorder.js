@@ -6,13 +6,17 @@ module.exports = function(Externalorder) {
       if (_.isArray(ctx.result)) {
         ctx.result = _.map(ctx.result, function(order) {
           order = order.toObject();
-          order.externalorderCode = _.padLeft(order.externalorderId, 5, '0');
+          if (!order.externalorderCode || order.externalorderCode == '') {
+            order.externalorderCode = _.padLeft(order.externalorderId, 5, '0');
+          }
           return order;
         });
         next();
       } else {
         ctx.result = ctx.result.toObject();
-        ctx.result.externalorderCode = _.padLeft(ctx.result.externalorderId, 5, '0');
+        if (!ctx.result.externalorderCode || ctx.result.externalorderCode == '') {
+          ctx.result.externalorderCode = _.padLeft(ctx.result.externalorderId, 5, '0');
+        }
         next();
       }
     }

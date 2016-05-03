@@ -40,7 +40,7 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
     getExternalOrderFromState() {
       return {
         supplierName: this.state.supplierName,
-        externalorderId: this.state.externalorderId,
+        externalorderCode: this.state.externalorderCode,
         businessId: this.state.businessId,
         contactPerson: this.state.contactPerson,
         email: this.state.email,
@@ -71,7 +71,7 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
     render() {
       const valueLinks = {
         supplierName: this.linkState('supplierName'),
-        externalorderId: this.linkState('externalorderId'),
+        externalorderCode: this.linkState('externalorderCode'),
         businessId: this.linkState('businessId'),
         contactPerson: this.linkState('contactPerson'),
         email: this.linkState('email'),
@@ -92,7 +92,6 @@ module.exports = function getNewExternalOrder(ExternalOrderActions, ExternalOrde
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           valueLinks={ valueLinks }
-          canEditId={ true }
         />
       );
     },

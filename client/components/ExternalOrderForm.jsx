@@ -16,7 +16,7 @@ module.exports = React.createClass({
 
     valueLinks: React.PropTypes.shape({
       supplierName: React.PropTypes.object.isRequired,
-      externalorderId: React.PropTypes.object,
+      externalorderCode: React.PropTypes.object,
       businessId: React.PropTypes.object.isRequired,
       contactPerson: React.PropTypes.object,
       email: React.PropTypes.object,
@@ -30,8 +30,6 @@ module.exports = React.createClass({
       reference: React.PropTypes.object,
       memo: React.PropTypes.object,
     }).isRequired,
-
-    canEditId: React.PropTypes.boolean,
   },
 
   getDefaultProps() {
@@ -50,7 +48,7 @@ module.exports = React.createClass({
         <Modal.Body>
           <form className="form-horizontal">
             <ErrorMessages messages={ this.props.validationErrors } />
-            <Input label="Tilausnumero" type="text" valueLink={ this.props.valueLinks.externalorderId } labelClassName="col-xs-3" wrapperClassName="col-xs-9" disabled={ !this.props.canEditId } />
+            <Input label="Tilausnumero" type="text" valueLink={ this.props.valueLinks.externalorderCode } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
             <Input label="* Toimittajan nimi" type="text" valueLink={ this.props.valueLinks.supplierName } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
             <Input label="* Toimittajan Y-tunnus" type="text" valueLink={ this.props.valueLinks.businessId } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
             <Input label="Yhteyshenkilön nimi" type="text" valueLink={ this.props.valueLinks.contactPerson } labelClassName="col-xs-3" wrapperClassName="col-xs-9" />
