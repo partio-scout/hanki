@@ -4,5 +4,11 @@
     "name": "Roihun johtoryhmä",
     "approverUserId": 2,
     "controllerUserId": 3
+  },
+  {
+    "code": "00001",
+    "name": "Testikustannuspaikka",
+    "approverUserId": 2,
+    "controllerUserId": 3
   }
 ]

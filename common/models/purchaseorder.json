@@ -140,7 +140,7 @@
     {
       "accessType": "WRITE",
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "orderer",
       "permission": "ALLOW"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "orderer",
       "permission": "ALLOW",
       "property": "__create__order_rows"
     },
@@ -163,13 +163,13 @@
     },
     {
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "orderer",
       "permission": "ALLOW",
       "property": "__updateById__order_rows"
     },
     {
       "principalType": "ROLE",
-      "principalId": "$owner",
+      "principalId": "orderer",
       "permission": "ALLOW",
       "property": "__destroyById__order_rows"
     },
