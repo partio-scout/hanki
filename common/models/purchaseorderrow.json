@@ -354,6 +354,23 @@
       },
       "_selectable": true,
       "comments": "Pyydä palvelua -flagi"
+    },
+    "externalorderId": {
+      "type": "number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "externalorder_id",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "ulkoisen tilauksen numero"
     }
   },
   "validations": [],
@@ -372,6 +389,11 @@
       "type": "belongsTo",
       "model": "Purchaseorder",
       "foreignKey": "orderId"
+    },
+    "Externalorder": {
+      "type": "belongsTo",
+      "model": "Externalorder",
+      "foreignKey": "externalorderId"
     }
   },
   "acls": [
@@ -424,6 +446,48 @@
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "CSVExport"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "approveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "approveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "unapproveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "unapproveController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "resetController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "controller",
+      "permission": "ALLOW",
+      "property": "resetController"
     }
   ],
   "methods": {}

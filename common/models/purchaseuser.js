@@ -1,4 +1,5 @@
 var Promise = require('bluebird');
+var app = require('../../server/server');
 
 module.exports = function(Purchaseuser) {
   Purchaseuser.createWithRolesAndCostcenters = function (user, roles, costcenters, costCentersApproverOf, costCentersControllerOf) {
@@ -85,6 +86,38 @@ module.exports = function(Purchaseuser) {
         return user.costcenters.add(costCenter);
       }).nodeify(cb);
   };
+
+  Purchaseuser.getDevLoginUrl = function(email, opts, cb) {
+    var timeToLive = opts.timeToLive || 8*3600;
+    var port = opts.port || '3000';
+
+    var query = {
+      where: {
+        email: email,
+      },
+    };
+
+    Purchaseuser.findOne(query, function(err, user) {
+      if (err) {
+        cb(err);
+      } else if (user === null) {
+        cb(new Error('Can\'t find user: ' + email));
+      } else {
+        user.createAccessToken(timeToLive, function(err, accessToken) {
+          if (err) {
+            cb(err);
+          } else {
+            var url = 'http://localhost:' + port + '/dev-login/' + accessToken.id;
+            cb(null, url);
+          }
+        });
+      }
+    });
+  };
+
+  Purchaseuser.afterRemote('prototype.__get__orders', function(ctx, orders, next) {
+    app.models.Purchaseorderrow.addProhibitChangesField(ctx, orders, next);
+  });
 
   Purchaseuser.remoteMethod(
     'getRoles',

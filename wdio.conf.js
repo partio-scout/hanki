@@ -93,6 +93,7 @@ exports.config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
+    timeout: 20000,
   },
 
   //
@@ -119,5 +120,7 @@ exports.config = {
     // Some eslint rules disabled for the next line, since it is the wdio recommended way of initializing chai
     expect = chai.expect; // eslint-disable-line no-unused-vars, no-undef
     chai.Should();
+
+    chaiAsPromised.transferPromiseness = browser.transferPromiseness; // eslint-disable-line no-undef
   },
 };

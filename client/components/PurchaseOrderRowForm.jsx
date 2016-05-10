@@ -7,6 +7,7 @@ var Input = ReactBootstrap.Input;
 var Static = ReactBootstrap.FormControls.Static;
 var Button = ReactBootstrap.Button;
 var ErrorMessages = require('./utils/ErrorMessages');
+var Alert = ReactBootstrap.Alert;
 
 var Price = require('./utils/Price');
 
@@ -32,6 +33,7 @@ var PurchaseOrderRowForm = React.createClass({
     onSave: React.PropTypes.func,
     onCancel: React.PropTypes.func,
     title: React.PropTypes.string,
+    prohibitChanges: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
@@ -46,14 +48,23 @@ var PurchaseOrderRowForm = React.createClass({
 
   getTitleSelection: function() {
     if (this.isOtherProductSelected()) {
-      return (<Input wrapperClassName="col-xs-12" defaultValue="Muu tuote" type="text" valueLink={ this.props.valueLinks.nameOverride } />);
+      return (
+        <Input
+          wrapperClassName="col-xs-12"
+          defaultValue="Muu tuote"
+          type="text"
+          valueLink={ this.props.valueLinks.nameOverride }
+          className="title-name"
+        />
+      );
     } else {
       var selectedTitleGroup = this.props.valueLinks.selectedTitleGroup.value;
       var titlesByGroup = _.groupBy(this.props.titles, 'titlegroupId');
       var titleOptions = _.map(titlesByGroup[selectedTitleGroup], title => <option value={ title.titleId }>{ title.name }</option>);
 
       return (
-        <Input wrapperClassName="col-xs-12" valueLink={ this.props.valueLinks.selectedTitleId } type="select" onChange={ this.onSelectedTitleChange }>
+        <Input wrapperClassName="col-xs-12" valueLink={ this.props.valueLinks.selectedTitleId }
+          type="select" onChange={ this.onSelectedTitleChange } className="title-selection">
           <option value="-1">Valitse tuote...</option>
           { titleOptions }
         </Input>
@@ -114,6 +125,16 @@ var PurchaseOrderRowForm = React.createClass({
     var unitPrice = this.isOtherProductSelected() ? this.props.valueLinks.priceOverride.value : selectedTitle.priceWithTax;
     var rowTotalPrice = unitPrice * this.props.valueLinks.amount.value;
 
+    var editWarning = '';
+    if (this.props.prohibitChanges) {
+      editWarning = (
+        <Alert bsStyle="warning">
+          Tuotetta ei voi muokata, koska sillä on hyväksyntiä.
+          Jos sinun tarvitsee muokata tilausta, ota yhteyttä hankintaan.
+        </Alert>
+      );
+    }
+
     return (
       <Modal show="true" onHide={ this.props.onCancel }>
         <Modal.Header closeButton>
@@ -121,10 +142,11 @@ var PurchaseOrderRowForm = React.createClass({
         </Modal.Header>
         <Modal.Body>
           <form className="form-horizontal">
+            { editWarning }
             <ErrorMessages messages={ this.props.validationErrors } />
-
             <Static label="Tuote" labelClassName="col-xs-3" wrapperClassName="col-xs-9 field">
-              <Input type="select" valueLink={ this.props.valueLinks.selectedTitleGroup } wrapperClassName="col-xs-12">
+              <Input type="select" valueLink={ this.props.valueLinks.selectedTitleGroup }
+                wrapperClassName="col-xs-12" className="titlegroup-selection">
                 <option value="-1">Valitse tuoteryhmä...</option>
                 { titlegroupOptions }
               </Input>
@@ -154,7 +176,7 @@ var PurchaseOrderRowForm = React.createClass({
         </Modal.Body>
         <Modal.Footer>
           <div className="text-center">
-            <Button onClick={ this.props.onSave } bsStyle="primary">Tallenna</Button>
+            <Button onClick={ this.props.onSave } bsStyle="primary" disabled={ this.props.prohibitChanges }>Tallenna</Button>
             <Button onClick={ this.props.onCancel }>Peruuta</Button>
           </div>
         </Modal.Footer>

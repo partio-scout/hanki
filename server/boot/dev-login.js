@@ -1,8 +1,9 @@
 module.exports = function(app) {
 
   var isDev = process.env.NODE_ENV === 'dev';
+  var isTest = process.env.NODE_ENV === 'test';
 
-  if (isDev) {
+  if (isDev || isTest) {
     app.get('/dev-login/:id', function(req, res) {
       var id = req.params.id;
       app.models.AccessToken.findById(id, function(err, accessToken) {
