@@ -213,3 +213,9 @@ th.reactable-header-sort-desc::after {
 .declined {
   color: $orange;
 }
+
+button.row-inline {
+  outline: none;
+  border: 0;
+  background: transparent;
+}

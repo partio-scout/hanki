@@ -59,8 +59,8 @@ var SessionTimeoutNotification = require('./components/SessionTimeoutNotificatio
 var PurchaseOrderRowTable = require('./components/PurchaseOrderRowTable')(restrictToRoles);
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
-var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(restrictToRoles);
-var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, ExternalOrderRowTable, restrictToRoles);
+var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions, restrictToRoles);
+var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles);
 var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
 
 // Setup main views
@@ -90,6 +90,7 @@ var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], 
 var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
+var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions));
 
 // Setup routes
 
@@ -124,6 +125,7 @@ var routes = (
       <Route name="new_external_order" path="new" handler={ NewExternalOrder } />
       <Route name="edit_external_order" path=":externalorderId/edit" handler={ EditExternalOrder } />
       <Route name="delete_external_order" path=":externalorderId/delete" handler={ DeleteExternalOrder } />
+      <Route name="add_rows_to_external_order" path=":externalorderId/rows" handler={ AddRowsToExternalOrder } />
     </Route>
   </Route>
 );

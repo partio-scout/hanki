@@ -2,10 +2,28 @@ var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 
+var Button = ReactBootstrap.Button;
+var Glyphicon = ReactBootstrap.Glyphicon;
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
 
-function getExternalOrderRowTable(restrictToRoles) {
+function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
+  var DeleteRowButton = React.createClass({
+    propTypes: {
+      rowId: React.PropTypes.object,
+      rowDeleted: React.PropTypes.func,
+      disabled: React.PropTypes.object,
+    },
+
+    deleteRow() {
+      this.props.rowDeleted(this.props.rowId);
+    },
+
+    render() {
+      return ( <Button disabled = { this.props.disabled } onClick={ this.deleteRow } className="row-inline"><span> <Glyphicon glyph="remove" /> </span> </Button> );
+    },
+  });
+
   var ExternalOrderRow = React.createClass({
     propTypes: {
       row: React.PropTypes.object,
@@ -21,6 +39,12 @@ function getExternalOrderRowTable(restrictToRoles) {
       };
     },
 
+    deleteRow(rowId) {
+      var row = this.props.row;
+      row.externalorderId = 0;
+      PurchaseOrderActions.updatePurchaseOrderRow(row);
+    },
+
     render: function () {
       var row = this.props.row;
       var title = this.props.title;
@@ -28,8 +52,11 @@ function getExternalOrderRowTable(restrictToRoles) {
       return (
         <tr>
           <td className="external_order_row_name">
-             <div className="product-name">
-              { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+            <div>
+              <DeleteRowButton rowDeleted={ this.deleteRow } rowId={ row.orderRowId } disabled={ row.ordered } />
+              <span className="product-name">
+                { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+              </span>
             </div>
           </td>
           <td>
