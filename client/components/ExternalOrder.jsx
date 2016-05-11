@@ -54,7 +54,7 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       var orderedStatus = <span></span>;
       if (this.props.externalOrder.ordered) {
         orderedButton = <Button bsStyle="primary" onClick={ this.markNotOrdered } className="edit" ><span> Merkitse tilaamattomaksi </span> </Button>;
-        orderedStatus = <span className="ordered-status"> TILATTU </span>
+        orderedStatus = <span className="ordered-status"> TILATTU </span>;
       } else {
         orderedButton = <Button bsStyle="primary" onClick={ this.markOrdered } className="edit" ><span> Merkitse tilatuksi </span> </Button>;
       }
