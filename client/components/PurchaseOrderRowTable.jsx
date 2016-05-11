@@ -106,8 +106,8 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               onReset={ this.props.resetCallback }
             />
           </td>
-          <td>
-
+          <td column="Tilattu">
+            { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
           </td>
           <td className="delivery">
             { delivery.name }
