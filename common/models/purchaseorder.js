@@ -132,7 +132,7 @@ module.exports = function(Purchaseorder) {
     var getRoles = Promise.promisify(app.models.Purchaseuser.getRoles, app.models.Purchaseuser);
 
     return getRoles(userId).then(function(roles) {
-      if (_.includes(roles, 'orderer')) {
+      if (_.includes(roles, 'orderer') && !_.includes(roles, 'procurementAdmin') && !_.includes(roles, 'procurementMaster')) {
         return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, userId);
       } else {
         return true;
