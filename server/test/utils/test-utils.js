@@ -1,6 +1,7 @@
 var app = require('../../server');
 var Promise = require('bluebird');
 var expect = require('chai').expect;
+var _ = require('lodash');
 
 function loginUser(username, userpass) {
   userpass = userpass || 'salasana';
@@ -14,6 +15,46 @@ function loginUser(username, userpass) {
 function createFixture(modelName, fixture) {
   var create = Promise.promisify(app.models[modelName].create, app.models[modelName]);
   return create(fixture);
+}
+
+function getRolesByName(roleNames) {
+  return Promise.all(_.map(roleNames, function(roleName) {
+    return app.models.Role.findOne({ where: { name: roleName } });
+  }));
+}
+
+function createUserWithRoles(rolesToAdd, userData) {
+  var defaultData = {
+    memberNumber: '123456',
+    name: 'Eric Example',
+    phone: '+358501234567',
+    email: 'test@example.org',
+    enlistment: 'Enlistment',
+    userSection: 'Section',
+    password: '$2a$10$1rllCFIqdWhaGQM4sEnQEuUa0XSTyRjuzhXo39VEdyUDOVuc93cGC',
+    username: 'testuser',
+  };
+  var user;
+
+  return Promise.join(
+    getRolesByName(rolesToAdd),
+    createFixture('Purchaseuser', _.merge(defaultData, userData)),
+    function(roles, createdUser) {
+      user = createdUser;
+      return _.map(roles, function(role) {
+        return {
+          'principalType': 'USER',
+          'principalId': user.id,
+          'roleId': role.id,
+        };
+      });
+    })
+  .then(function(roleMappings) {
+    return createFixture('RoleMapping', roleMappings);
+  })
+  .then(function() {
+    return user;
+  });
 }
 
 function deleteFixtureIfExists(modelName, id) {
@@ -49,6 +90,7 @@ function findById(modelName, id) {
 module.exports = {
   loginUser: loginUser,
   createFixture: createFixture,
+  createUserWithRoles: createUserWithRoles,
   deleteFixtureIfExists: deleteFixtureIfExists,
   deleteFixturesIfExist: deleteFixturesIfExist,
   expectModelToBeDeleted: expectModelToBeDeleted,
