@@ -37,14 +37,33 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       });
     },
 
+    markNotOrdered: function() {
+      var order = this.props.externalOrder;
+      order.ordered = false;
+      ExternalOrderActions.updateExternalOrder(order);
+      _.forEach(this.props.orderRows, function(row) {
+        row.ordered = false;
+        PurchaseOrderActions.updatePurchaseOrderRow(row);
+      });
+    },
+
     render: function () {
       var canDelete = (this.props.externalOrder && this.props.externalOrder.order_rows.length === 0 && !this.props.externalOrder.ordered);
+
+      var orderedButton = <div></div>;
+      var orderedStatus = <span></span>;
+      if (this.props.externalOrder.ordered) {
+        orderedButton = <Button bsStyle="primary" onClick={ this.markNotOrdered } className="edit" ><span> Merkitse tilaamattomaksi </span> </Button>;
+        orderedStatus = <span className="ordered-status"> TILATTU </span>;
+      } else {
+        orderedButton = <Button bsStyle="primary" onClick={ this.markOrdered } className="edit" ><span> Merkitse tilatuksi </span> </Button>;
+      }
 
       return (
         <Panel className="external-order">
           <h2>
               { this.props.externalOrder.externalorderCode } { this.props.externalOrder.supplierName }
-            <ButtonLink bsStyle="link" className="edit" to="edit_external_order" disabled={ this.props.externalOrder.ordered } params={ { externalorderId: this.props.externalOrder.externalorderId } }>
+            <ButtonLink bsStyle="link" className="edit" to="edit_external_order" params={ { externalorderId: this.props.externalOrder.externalorderId } }>
               <Glyphicon glyph="pencil" />
             </ButtonLink>
             <ButtonLink bsStyle="link" className="delete" to="delete_external_order" disabled={ !canDelete } params={ { externalorderId: this.props.externalOrder.externalorderId } }>
@@ -54,7 +73,8 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
               <span> Lisää tilausrivejä </span>
             </ButtonLink>
             <span> </span>
-            <Button bsStyle="primary" disabled={ this.props.externalOrder.ordered } onClick={ this.markOrdered } className="edit" ><span> Merkitse tilatuksi </span> </Button>
+            { orderedButton }
+            { orderedStatus }
           </h2>
           <ExternalOrderRowTable
             orderRows={ this.props.orderRows }

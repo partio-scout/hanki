@@ -59,6 +59,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             </Th>
             <Th column="Määrä">Määrä</Th>
             <Th column="Summa">Summa</Th>
+            <Th column="Tilattu">Tilattu</Th>
             <Th column="Toimitus">Toimitus</Th>
           </Thead>
           { _.map(orderRows, (row) => {
@@ -123,6 +124,9 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   <span>{ row.amount } { row.unitOverride || title.unit }</span>
                 </Td>
                 <Td column="Summa" value={ price } className="price"><Price value={ price } /></Td>
+                <Td column="Tilattu">
+                  { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
+                </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
               </Tr>
             );
