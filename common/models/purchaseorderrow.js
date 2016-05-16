@@ -38,7 +38,9 @@ module.exports = function(Purchaseorderrow) {
       })
       .value();
 
-    if (_.includes(approvalValues, false)) {
+    if (row.ordered) {
+      return true;
+    } else if (_.includes(approvalValues, false)) {
       return false;
     } else if (_.includes(approvalValues, true)) {
       return true;
