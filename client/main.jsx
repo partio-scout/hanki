@@ -129,6 +129,7 @@ var routes = (
       <Route name="edit_external_order" path=":externalorderId/edit" handler={ EditExternalOrder } />
       <Route name="delete_external_order" path=":externalorderId/delete" handler={ DeleteExternalOrder } />
       <Route name="add_rows_to_external_order" path=":externalorderId/rows" handler={ AddRowsToExternalOrder } />
+      <Route name="external_orders_edit_row" path=":purchaseOrderRow/editrow" handler={ EditPurchaseOrderRow } />
     </Route>
   </Route>
 );

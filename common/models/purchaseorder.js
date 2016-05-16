@@ -90,7 +90,7 @@ module.exports = function(Purchaseorder) {
       .nodeify(next);
   });
 
-  Purchaseorder.checkIfUserHasCostcenter = function(costcenterRelation, costcenterId, accessToken) {
+  Purchaseorder.checkIfUserHasCostcenter = function(costcenterRelation, costcenterId, userId) {
     var User = app.models.Purchaseuser;
     var Costcenter = app.models.Costcenter;
     var findUser = Promise.promisify(User.findById, User);
@@ -101,7 +101,7 @@ module.exports = function(Purchaseorder) {
     }
 
     return Promise.join(
-      findUser(accessToken.userId, {
+      findUser(userId, {
         include: [{
           relation: costcenterRelation,
         }],
@@ -118,120 +118,70 @@ module.exports = function(Purchaseorder) {
     );
   };
 
-  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
-    function proceedIfEverythingAllowed(userIsAllowed) {
-      if (userIsAllowed) {
-        next();
-      } else {
-        var newError = new Error('Authorization Required');
-        newError.statusCode = 401;
-        next(newError);
-      }
-    }
-
-    if (ctx.args.data) {
-      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
-        if (err) {
-          next(err);
-        } else if (_.includes(roles, 'orderer')) {
-          // Check that user is orderer of the costcenter of order
-          return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
-          .then(proceedIfEverythingAllowed);
-        } else {
-          next();
-        }
-      });
+  function proceedIfEverythingAllowed(userIsAllowed) {
+    if (userIsAllowed) {
+      return;
     } else {
-      next();
+      var newError = new Error('Authorization Required');
+      newError.statusCode = 401;
+      throw newError;
     }
+  }
+
+  Purchaseorder.canOrdererEditOrDelete = function(order, userId) {
+    var getRoles = Promise.promisify(app.models.Purchaseuser.getRoles, app.models.Purchaseuser);
+
+    return getRoles(userId).then(function(roles) {
+      if (_.includes(roles, 'orderer') && !_.includes(roles, 'procurementAdmin') && !_.includes(roles, 'procurementMaster')) {
+        return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, userId);
+      } else {
+        return true;
+      }
+    });
+  };
+
+  Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
+    if (ctx.args.data) {
+      return Purchaseorder.canOrdererEditOrDelete(ctx.instance, ctx.req.accessToken.userId)
+        .then(proceedIfEverythingAllowed)
+        .nodeify(next);
+    }
+    next();
   });
 
   Purchaseorder.beforeRemote('prototype.__destroyById__order_rows', function(ctx, purchaseOrder, next) {
     var findOrderrow = Promise.promisify(app.models.Purchaseorderrow.findById, app.models.Purchaseorderrow);
-    function proceedIfEverythingAllowed(userIsAllowed) {
-      if (userIsAllowed) {
-        next();
-      } else {
-        var newError = new Error('Authorization Required');
-        newError.statusCode = 401;
-        next(newError);
-      }
-    }
-
     if (ctx.args) {
-      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
-        if (err) {
-          next(err);
-        } else if (_.includes(roles, 'orderer')) {
-          findOrderrow(ctx.args.fk, { include: 'Order' }).then(function(orderrow) {
-            var order = orderrow.Order();
-            // Check that user is orderer of the costcenter of order
-            return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
-          }).then(proceedIfEverythingAllowed);
-        } else {
-          next();
-        }
-      });
-    } else {
-      next();
+      return findOrderrow(ctx.args.fk, { include: 'Order' }).then(function(row) {
+        return row.Order();
+      }).then(function(order) {
+        return Purchaseorder.canOrdererEditOrDelete(order, ctx.req.accessToken.userId);
+      })
+      .then(proceedIfEverythingAllowed)
+      .nodeify(next);
     }
+    next();
   });
 
   Purchaseorder.beforeRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
-    function proceedIfEverythingAllowed(userIsAllowed) {
-      if (userIsAllowed) {
-        next();
-      } else {
-        var newError = new Error('Authorization Required');
-        newError.statusCode = 401;
-        next(newError);
-      }
-    }
-
     if (ctx.args.data) {
-      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
-        if (err) {
-          next(err);
-        } else if (_.includes(roles, 'orderer')) {
-          // Check that user is orderer of the costcenter of order
-          return Purchaseorder.checkIfUserHasCostcenter('costcenters', ctx.instance.costcenterId, ctx.req.accessToken)
-          .then(proceedIfEverythingAllowed);
-        } else {
-          next();
-        }
-      });
-    } else {
-      next();
+      return Purchaseorder.canOrdererEditOrDelete(ctx.instance, ctx.req.accessToken.userId)
+        .then(proceedIfEverythingAllowed)
+        .nodeify(next);
     }
+    next();
   });
 
   Purchaseorder.beforeRemote('deleteById', function(ctx, purchaseOrder, next) {
     var findOrder = Promise.promisify(Purchaseorder.findById, Purchaseorder);
-    function proceedIfEverythingAllowed(userIsAllowed) {
-      if (userIsAllowed) {
-        next();
-      } else {
-        var newError = new Error('Authorization Required');
-        newError.statusCode = 401;
-        next(newError);
-      }
-    }
-
     if (ctx.args) {
-      app.models.Purchaseuser.getRoles(ctx.req.accessToken.userId, function(err, roles) {
-        if (err) {
-          next(err);
-        } else if (_.includes(roles, 'orderer')) {
-          findOrder(ctx.args.id).then(function(order) {
-            // Check that user is orderer of the costcenter of order
-            return Purchaseorder.checkIfUserHasCostcenter('costcenters', order.costcenterId, ctx.req.accessToken);
-          }).then(proceedIfEverythingAllowed);
-        } else {
-          next();
-        }
-      });
-    } else {
-      next();
+      return findOrder(ctx.args.id)
+      .then(function(order) {
+        return Purchaseorder.canOrdererEditOrDelete(order, ctx.req.accessToken.userId);
+      })
+      .then(proceedIfEverythingAllowed)
+      .nodeify(next);
     }
+    next();
   });
 };

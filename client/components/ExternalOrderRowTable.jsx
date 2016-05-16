@@ -1,9 +1,11 @@
 var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
 
 var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
+var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
 
@@ -54,6 +56,10 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
           <td className="external_order_row_name">
             <div>
               <DeleteRowButton rowDeleted={ this.deleteRow } rowId={ row.orderRowId } disabled={ row.ordered } />
+              <ButtonLink bsStyle="link" className="edit" to="external_orders_edit_row"
+                params={ { purchaseOrderRow: row.orderRowId } }>
+                <Glyphicon glyph="pencil" />
+              </ButtonLink>
               <span className="product-name">
                 { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
               </span>
