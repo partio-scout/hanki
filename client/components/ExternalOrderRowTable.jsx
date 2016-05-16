@@ -57,7 +57,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
             <div>
               <DeleteRowButton rowDeleted={ this.deleteRow } rowId={ row.orderRowId } disabled={ row.ordered } />
               <ButtonLink bsStyle="link" className="edit" to="external_orders_edit_row"
-                 params={ { purchaseOrderRow: row.orderRowId } }>
+                params={ { purchaseOrderRow: row.orderRowId } }>
                 <Glyphicon glyph="pencil" />
               </ButtonLink>
               <span className="product-name">
