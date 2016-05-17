@@ -3,7 +3,7 @@ var _ = require('lodash');
 function getExternalOrderActions(alt, ExternalOrder) {
   class ExternalOrderActions {
 
-    externalOrdersUpdateFailed(error) {
+    externalOrderError(error) {
       this.dispatch(error);
     }
 
@@ -15,7 +15,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch();
       ExternalOrder.findAll((err, externalOrders) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.updateExternalOrders(_.indexBy(externalOrders, 'externalorderId'));
         }
@@ -26,7 +26,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.create(externalOrder, (err) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.fetchExternalOrders();
         }
@@ -37,7 +37,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.update(externalOrder.externalorderId, externalOrder, (err, savedExternalOrder) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.fetchExternalOrders();
         }
@@ -47,7 +47,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
     deleteExternalOrder(externalOrder) {
       ExternalOrder.del(externalOrder.externalorderId, (err, deletedOrder) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(err);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.fetchExternalOrders();
         }
