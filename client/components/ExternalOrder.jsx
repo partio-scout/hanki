@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
@@ -32,20 +31,12 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       var order = this.props.externalOrder;
       order.ordered = true;
       ExternalOrderActions.updateExternalOrder(order);
-      _.forEach(this.props.orderRows, function(row) {
-        row.ordered = true;
-        PurchaseOrderActions.updatePurchaseOrderRow(row);
-      });
     },
 
     markNotOrdered: function() {
       var order = this.props.externalOrder;
       order.ordered = false;
       ExternalOrderActions.updateExternalOrder(order);
-      _.forEach(this.props.orderRows, function(row) {
-        row.ordered = false;
-        PurchaseOrderActions.updatePurchaseOrderRow(row);
-      });
     },
 
     render: function () {
