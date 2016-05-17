@@ -62,14 +62,14 @@ module.exports = function getEditExternalOrder(ExternalOrderActions, ExternalOrd
     },
 
     onSave: function() {
-      const newExternalOrder = this.getExternalOrderFromState();
+      const externalOrder = this.getExternalOrderFromState();
 
-      const validationErrors = validateExternalOrder(newExternalOrder);
+      const validationErrors = validateExternalOrder(externalOrder);
 
       this.setState({ validationErrors });
 
       if (validationErrors.length === 0) {
-        ExternalOrderActions.updateExternalOrder(newExternalOrder);
+        ExternalOrderActions.updateExternalOrder(externalOrder);
         this.transitionTo('external_orders');
       }
     },

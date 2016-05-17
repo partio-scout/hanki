@@ -13,16 +13,16 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
   var DeleteRowButton = React.createClass({
     propTypes: {
       rowId: React.PropTypes.object,
-      rowDeleted: React.PropTypes.func,
+      removeRow: React.PropTypes.func,
       disabled: React.PropTypes.object,
     },
 
-    deleteRow() {
-      this.props.rowDeleted(this.props.rowId);
+    removeRowFromExternalOrder() {
+      this.props.removeRow(this.props.rowId);
     },
 
     render() {
-      return ( <Button disabled = { this.props.disabled } onClick={ this.deleteRow } className="row-inline"><span> <Glyphicon glyph="remove" /> </span> </Button> );
+      return ( <Button disabled = { this.props.disabled } onClick={ this.removeRowFromExternalOrder } className="row-inline"><span> <Glyphicon glyph="remove" /> </span> </Button> );
     },
   });
 
@@ -42,7 +42,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       };
     },
 
-    deleteRow(rowId) {
+    removeRowFromExternalOrder(rowId) {
       var row = this.props.row;
       row.externalorderId = 0;
       PurchaseOrderActions.updatePurchaseOrderRow(row);
@@ -56,7 +56,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
         <tr>
           <td className="external_order_row_name">
             <div>
-              <DeleteRowButton rowDeleted={ this.deleteRow } rowId={ row.orderRowId } disabled={ row.ordered } />
+              <DeleteRowButton removeRow={ this.removeRowFromExternalOrder } rowId={ row.orderRowId } disabled={ row.ordered } />
               <ButtonLink bsStyle="link" className="edit" to="external_orders_edit_row"
                 params={ { purchaseOrderRow: row.orderRowId } }>
                 <Glyphicon glyph="pencil" />

@@ -21,7 +21,7 @@ var Price = require('./utils/Price');
 function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore) {
   var AddRowButton = React.createClass({
     propTypes: {
-      rowId: React.PropTypes.object,
+      rowId: React.PropTypes.number,
       rowAdded: React.PropTypes.func,
     },
 
@@ -64,7 +64,7 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
       },
     },
 
-    onCancel: function() {
+    onClose: function() {
       ExternalOrderActions.fetchExternalOrders();
       this.transitionTo('external_orders');
     },
@@ -77,11 +77,11 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
 
     render: function() {
       return (
-        <Modal bsSize="lg" show="true" onHide={ this.onCancel }>
+        <Modal bsSize="lg" show="true" onHide={ this.onClose }>
           <Modal.Header>
             <h3>
               <span>Lisää rivejä tilaukseen</span>
-              <Button bsStyle="inline pull-right" onClick={ this.onCancel }>Sulje</Button>
+              <Button bsStyle="inline pull-right" onClick={ this.onClose }>Sulje</Button>
             </h3>
           </Modal.Header>
           <Modal.Body>
