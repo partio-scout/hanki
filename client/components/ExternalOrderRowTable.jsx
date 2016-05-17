@@ -33,6 +33,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       purchaseOrder: React.PropTypes.object,
       costcenter: React.PropTypes.object,
       title: React.PropTypes.object,
+      delivery: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -74,6 +75,9 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
           <td>
             { this.props.costcenter.code } { this.props.purchaseOrder.name }
           </td>
+          <td>
+            { this.props.delivery.name }
+          </td>
         </tr>
       );
     },
@@ -86,6 +90,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       readOnly: React.PropTypes.bool,
       purchaseOrders: React.PropTypes.object,
       costcenters: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -103,6 +108,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
               <th rowSpan="1">Määrä</th>
               <th rowSpan="1">Summa</th>
               <th rowSpan="4">Kohde</th>
+              <th rowSpan="4">Toimitustapa</th>
             </tr>
           </thead>
           <tbody>
@@ -111,6 +117,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
                 var order = this.props.purchaseOrders[row.orderId] || {};
                 var costcenter = _.find(this.props.costcenters, { 'costcenterId': order.costcenterId }) || {};
                 var title = this.props.titles[row.titleId] || {};
+                var delivery = this.props.deliveries[row.deliveryId] || {};
 
                 return (
                   <ExternalOrderRow
@@ -120,6 +127,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
                     purchaseOrder={ order }
                     title={ title }
                     costcenter={ costcenter }
+                    delivery={ delivery }
                   />
                 );
               })
