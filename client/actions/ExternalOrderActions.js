@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-function getExternalOrderActions(alt, ExternalOrder) {
+function getExternalOrderActions(alt, ExternalOrder, PurchaseOrderActions) {
   class ExternalOrderActions {
 
     externalOrderError(error) {
@@ -9,6 +9,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
 
     updateExternalOrders(externalOrders) {
       this.dispatch(externalOrders);
+      PurchaseOrderActions.fetchAllPurchaseOrders();
     }
 
     fetchExternalOrders() {
