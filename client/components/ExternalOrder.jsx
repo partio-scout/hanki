@@ -3,6 +3,7 @@ var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
+var Label = ReactBootstrap.Label;
 
 var ReactRouterBootstrap = require('react-router-bootstrap');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
@@ -46,7 +47,7 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       var orderedStatus = <span></span>;
       if (this.props.externalOrder.ordered) {
         orderedButton = <Button bsStyle="primary" onClick={ this.markNotOrdered } className="edit" ><span> Merkitse tilaamattomaksi </span> </Button>;
-        orderedStatus = <span className="ordered-status"> TILATTU </span>;
+        orderedStatus = <Label className="ordered-status" bsStyle="success"> Tilattu </Label>;
       } else {
         orderedButton = <Button bsStyle="primary" onClick={ this.markOrdered } className="edit" ><span> Merkitse tilatuksi </span> </Button>;
       }

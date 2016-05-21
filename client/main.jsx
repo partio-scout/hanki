@@ -89,7 +89,7 @@ var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 
-var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore, DeliveryStore));
+var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore, DeliveryStore, ExternalOrderActions));
 var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
@@ -155,7 +155,6 @@ if (accessToken && accessToken.userId && accessTokenValid) {
   CostCenterActions.fetchAllCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
-  ExternalOrderActions.fetchExternalOrders();
 } else {
   deleteAccessToken();
   UserActions.fetchCurrentUser();
