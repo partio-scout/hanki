@@ -23,6 +23,7 @@ var OwnCostCenter = new RestfulResource('/api/Purchaseusers/' + userId + '/costc
 var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 var Delivery = new RestfulResource('/api/Deliveries', accessToken);
+var ExternalOrder = new RestfulResource('/api/Externalorders', accessToken);
 
 // Set up Flux
 
@@ -44,8 +45,11 @@ var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
+var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions);
+var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
+
 var ErrorActions = require('./actions/ErrorActions')(alt);
-var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions);
 
 // Setup stateful components
 
@@ -57,6 +61,9 @@ var getAcceptanceStatus = require('./components/AcceptanceStatus');
 var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
+var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
+var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles);
+var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
 
 // Setup main views
 
@@ -81,6 +88,12 @@ var AllPurchaseOrdersTable = withAcceptances(require('./components/AllPurchaseOr
 var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, AllPurchaseOrdersTable));
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
+
+var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore, DeliveryStore, ExternalOrderActions));
+var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
+var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
+var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
+var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
 
 // Setup routes
 
@@ -111,6 +124,13 @@ var routes = (
       <Route name="all_purchase_orders_delete_row" path=":purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
     </Route>
     <Route name="costcenter_purchase_orders" path="costCenterPurchaseOrders" handler={ CostcenterPurchaseOrders } />
+    <Route name="external_orders" path="externalOrders" handler={ ExternalOrders } >
+      <Route name="new_external_order" path="new" handler={ NewExternalOrder } />
+      <Route name="edit_external_order" path=":externalorderId/edit" handler={ EditExternalOrder } />
+      <Route name="delete_external_order" path=":externalorderId/delete" handler={ DeleteExternalOrder } />
+      <Route name="add_rows_to_external_order" path=":externalorderId/rows" handler={ AddRowsToExternalOrder } />
+      <Route name="external_orders_edit_row" path=":purchaseOrderRow/editrow" handler={ EditPurchaseOrderRow } />
+    </Route>
   </Route>
 );
 
@@ -132,6 +152,7 @@ if (accessToken && accessToken.userId && accessTokenValid) {
   PurchaseOrderActions.fetchMyPurchaseOrders();
   PurchaseOrderActions.fetchAllPurchaseOrders();
   CostCenterActions.fetchOwnCostCenters();
+  CostCenterActions.fetchAllCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
 } else {

@@ -214,10 +214,20 @@ th.reactable-header-sort-desc::after {
   color: $orange;
 }
 
+button.row-inline {
+  outline: none;
+  border: 0;
+  background: transparent;
+}
+
 .reset {
   display: block;
   padding: 0;
   margin: 0;
   font-size: 10px;
   text-align: center !important;
+}
+
+.ordered-status {
+  margin-left: 10px;
 }
