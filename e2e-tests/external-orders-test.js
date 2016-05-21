@@ -107,7 +107,6 @@ describe('External orders', function() {
 
   it('should allow deleting external orders when it has no rows', function(){
     return addNewOrder(browser)
-    .saveScreenshot('./ext-order.png')
     .waitForVisible('span=Minimani')
     .click('.delete')
     .waitForVisible('h4.modal-title=Poista ulkoinen tilaus')
