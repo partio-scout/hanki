@@ -31,7 +31,7 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
 
     render() {
       return (
-        <Button onClick={ this.addRow } className="row-inline"><span> <Glyphicon glyph="plus" /> </span> </Button>
+        <Button onClick={ this.addRow } className="row-inline add-row"><span> <Glyphicon glyph="plus" /> </span> </Button>
       );
     },
   });

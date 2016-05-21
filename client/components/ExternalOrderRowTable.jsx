@@ -22,7 +22,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
     },
 
     render() {
-      return ( <Button disabled = { this.props.disabled } onClick={ this.removeRowFromExternalOrder } className="row-inline"><span> <Glyphicon glyph="remove" /> </span> </Button> );
+      return ( <Button disabled = { this.props.disabled } onClick={ this.removeRowFromExternalOrder } className="row-inline remove-row"><span> <Glyphicon glyph="remove" /> </span> </Button> );
     },
   });
 
@@ -57,7 +57,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
           <td className="external_order_row_name">
             <div>
               <DeleteRowButton removeRow={ this.removeRowFromExternalOrder } rowId={ row.orderRowId } disabled={ row.ordered } />
-              <ButtonLink bsStyle="link" className="edit" to="external_orders_edit_row" disabled={ row.ordered }
+              <ButtonLink bsStyle="link" className="edit-row" to="external_orders_edit_row" disabled={ row.ordered }
                 params={ { purchaseOrderRow: row.orderRowId } }>
                 <Glyphicon glyph="pencil" />
               </ButtonLink>
