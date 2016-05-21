@@ -90,7 +90,7 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
                 {
                   _(this.props.rows)
                     .filter(row => {
-                      return (!row.externalorderId || row.externalorderId === 0) && row.deliveryId !== 1;
+                      return (!row.externalorderId && row.deliveryId !== 1);
                     })
                     .map(row => {
                       var title = this.props.titles[row.titleId] || {};

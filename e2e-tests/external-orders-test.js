@@ -112,7 +112,7 @@ describe('External orders', function() {
     .click('.delete')
     .waitForVisible('h4.modal-title=Poista ulkoinen tilaus')
     .click('.btn-primary=Kyllä')
-    .waitForVisible('span=Minimani', [], true);
+    .waitForVisible('span=Minimani', null, true);
   });
 
   it('should allow external order to be marked as ordered', function(){
@@ -141,16 +141,14 @@ describe('External orders', function() {
     .waitForVisible('span.product-name=Kakkosnelonen')
     .click('span=Merkitse tilatuksi')
     .waitForVisible('span=Tilattu')
-    .waitForEnabled('.btn.row-inline.remove-row', [], true);
+    .waitForEnabled('.btn.row-inline.remove-row', null, true);
   });
 
   it('should not allow editing rows when order is marked as ordered', function() {
     return addRowToOrder(browser)
     .waitForVisible('span.product-name=Kakkosnelonen')
-    .saveScreenshot('./ext.order1.png')
     .click('span=Merkitse tilatuksi')
     .waitForVisible('span=Tilattu')
-    .saveScreenshot('./ext.order2.png')
     .waitForVisible('.edit-row')
     .getAttribute('.edit-row', 'disabled').should.eventually.be.ok;
   });
