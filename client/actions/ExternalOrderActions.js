@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-function getExternalOrderActions(alt, ExternalOrder, PurchaseOrderActions) {
+function getExternalOrderActions(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions) {
   class ExternalOrderActions {
 
     externalOrderError(error) {
@@ -50,6 +50,22 @@ function getExternalOrderActions(alt, ExternalOrder, PurchaseOrderActions) {
         if (err) {
           this.actions.externalOrderError(err);
         } else {
+          this.actions.fetchExternalOrders();
+        }
+      });
+    }
+
+    externalOrderRowUpdateFailed(err) {
+      this.dispatch(err);
+    }
+
+    updatePurchaseOrderRow(row) {
+      this.dispatch(row);
+      PurchaseOrderRow.update(row.orderRowId, row, (err, purchaseOrderRow) => {
+        if (err) {
+          this.actions.externalOrderRowUpdateFailed(err);
+        } else {
+          PurchaseOrderActions.purchaseOrderRowUpdated(purchaseOrderRow);
           this.actions.fetchExternalOrders();
         }
       });

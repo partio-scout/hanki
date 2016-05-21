@@ -19,6 +19,7 @@ function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions,
           TitleActions.SAVE_TITLE_FAILED,
           TitleActions.DELETE_TITLE_FAILED,
           ExternalOrderActions.EXTERNAL_ORDER_ERROR,
+          ExternalOrderActions.EXTERNAL_ORDER_ROW_UPDATE_FAILED,
         ],
         popError: ErrorActions.CONFIRM_ERROR,
       });

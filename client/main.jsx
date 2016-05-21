@@ -45,7 +45,7 @@ var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
-var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderActions);
+var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions);
 var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
 
 var ErrorActions = require('./actions/ErrorActions')(alt);
@@ -61,7 +61,7 @@ var getAcceptanceStatus = require('./components/AcceptanceStatus');
 var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
-var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions, restrictToRoles);
+var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
 var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles);
 var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
 

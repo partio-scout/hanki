@@ -9,7 +9,7 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
 
-function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
+function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, restrictToRoles) {
   var DeleteRowButton = React.createClass({
     propTypes: {
       rowId: React.PropTypes.object,
@@ -45,7 +45,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
     removeRowFromExternalOrder(rowId) {
       var row = this.props.row;
       row.externalorderId = 0;
-      PurchaseOrderActions.updatePurchaseOrderRow(row);
+      ExternalOrderActions.updatePurchaseOrderRow(row);
     },
 
     render: function () {
