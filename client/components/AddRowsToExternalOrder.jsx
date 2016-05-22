@@ -11,11 +11,6 @@ var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 var Modal = ReactBootstrap.Modal;
 
-var Reactable = require('reactable');
-var Table = Reactable.Table;
-var Tr = Reactable.Tr;
-var Td = Reactable.Td;
-
 var Price = require('./utils/Price');
 
 function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore) {
@@ -64,6 +59,11 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
       },
     },
 
+    componentWillMount() {
+      this.filter = _.debounce(this.filter,200);
+      this.setState(this.getCurrentRows());
+    },
+
     onClose: function() {
       ExternalOrderActions.fetchExternalOrders();
       this.transitionTo('external_orders');
@@ -73,6 +73,35 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
       var row = this.props.rows[rowId];
       row.externalorderId = this.props.params.externalorderId;
       PurchaseOrderActions.updatePurchaseOrderRow(row);
+    },
+
+    filter(filter) {
+      this.setState(this.getCurrentRows(filter));
+    },
+
+    getCurrentRows(filter) {
+      filter = filter.toLowerCase();
+      var finalizedRows = _.filter(this.props.rows, function(row) {
+        if (row.externalorderId || row.deliveryId === 1) {
+          return false;
+        }
+        if (!filter) {
+          return true;
+        }
+        if (row.titleId) {
+          return row.title.name.toLowerCase().indexOf(filter) > -1;
+        } else {
+          return !!row.nameOverride && ('Muu: ' + row.nameOverride).toLowerCase().indexOf(filter) > -1;
+        }
+      });
+      finalizedRows = finalizedRows.slice(0,60);
+      finalizedRows = _.indexBy(finalizedRows, 'orderRowId');
+      return { rows: finalizedRows };
+    },
+
+    handleChange: function(event) {
+      var filter = event.target.value;
+      this.filter(filter);
     },
 
     render: function() {
@@ -85,10 +114,12 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
             </h3>
           </Modal.Header>
           <Modal.Body>
-            <Table className="table table-striped" itemsPerPage={ 60 } sortable={ true }
+            <input type="text" onChange={ this.handleChange } />
+            <table className="table table-striped" itemsPerPage={ 60 } sortable={ true }
               filterable={ [ 'Tuote', 'Kohde' ] } filterPlaceholder="Etsi rivejä" >
+              <tbody>
                 {
-                  _(this.props.rows)
+                  _(this.state.rows)
                     .filter(row => {
                       return (!row.externalorderId && row.deliveryId !== 1);
                     })
@@ -114,47 +145,48 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
                       }
 
                       return (
-                        <Tr key={ row.orderRowId }>
-                          <Td column="">
+                        <tr key={ row.orderRowId }>
+                          <td column="">
                             <AddRowButton rowId={ row.orderRowId } rowAdded={ this.addRow } />
-                          </Td>
-                          <Td column="Tuote" value={ name }>
+                          </td>
+                          <td column="Tuote" value={ name }>
                             <div>
                               { name }
                             </div>
-                          </Td>
-                          <Td column="Määrä">
+                          </td>
+                          <td column="Määrä">
                             <span>
                               { row.amount } { row.unitOverride || title.unit || ' ' }
                             </span>
-                          </Td>
-                          <Td column="Hinta" value={ price } className="price"><Price value={ price } /></Td>
-                          <Td column="Päällikkö">
+                          </td>
+                          <td column="Hinta" value={ price } className="price"><Price value={ price } /></td>
+                          <td column="Päällikkö">
                             { row.userSectionApproval ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : <Glyphicon glyph="ban-circle"/> }
-                          </Td>
-                          <Td column="Hankinta">
+                          </td>
+                          <td column="Hankinta">
                             { row.providerApproval ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : <Glyphicon glyph="ban-circle"/> }
-                          </Td>
-                          <Td column="Talous">
+                          </td>
+                          <td column="Talous">
                             { row.controllerApproval ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : <Glyphicon glyph="ban-circle" bsClass="glyphicon rejected"/> }
-                          </Td>
-                          <Td column="Huomiot">
+                          </td>
+                          <td column="Huomiot">
                             { comment }
-                          </Td>
-                          <Td column="Toimitustapa">
+                          </td>
+                          <td column="Toimitustapa">
                             { delivery.name }
-                          </Td>
-                          <Td column="Kohde" value={ costcenter.code + ' ' + order.name }>
+                          </td>
+                          <td column="Kohde" value={ costcenter.code + ' ' + order.name }>
                             <div className="pull-left">
                               <div>{ costcenter.code }</div>
                               <div>{ order.name }</div>
                             </div>
-                          </Td>
-                        </Tr>
+                          </td>
+                        </tr>
                       );
                     }).value()
                 }
-            </Table>
+                </tbody>
+            </table>
           </Modal.Body>
         </Modal>
       );

@@ -46,7 +46,7 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
           var finalizedRows = _.indexBy(orderRows, 'orderRowId');
           this.actions.updatePurchaseOrderRows(finalizedRows);
         }
-      });
+      }, 'filter={"include":{"relation":"title"}}');
     }
 
     loadingPurchaseOrdersFailed(error) {
