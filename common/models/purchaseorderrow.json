@@ -445,7 +445,7 @@
       "principalType": "ROLE",
       "principalId": "controller",
       "permission": "ALLOW",
-      "property": "CSVExport"
+      "property": "CSVExportAll"
     },
     {
       "accessType": "EXECUTE",
