@@ -150,6 +150,15 @@ describe('CSVExport', function() {
     itShouldGrantAccessFor('procurementAdmin');
     itShouldGrantAccessFor('controller');
     itShouldGrantAccessFor('procurementMaster');
+
+    it('should allow fetching rows from a certain external order', function(done) {
+      testUtils.loginUser('procurementMaster').then(function(accessToken) {
+        request(app).get('/api/Purchaseorderrows/CSVExport/externalOrder/1')
+          .query({ access_token: accessToken.id })
+          .expect(200)
+          .end(done);
+      });
+    });
   });
 
   describe('method', function() {

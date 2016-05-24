@@ -94,17 +94,22 @@ module.exports = function(Purchaseorderrow) {
 
   Purchaseorderrow.afterRemote('**', Purchaseorderrow.addProhibitChangesField);
 
-  Purchaseorderrow.afterRemote('CSVExport', function(ctx, orderrow, next) {
-    ctx.res.attachment('orders.csv');
-
+  Purchaseorderrow.afterRemote('CSVExportAll', function(ctx, orderrow, next) {
+    ctx.res.attachment('orders-all.csv');
     ctx.res.send(ctx.result.csv);
   });
 
-  Purchaseorderrow.CSVExport = function(cb) {
+  Purchaseorderrow.afterRemote('CSVExportExternalOrder', function(ctx, orderrow, next) {
+    ctx.res.attachment('orders-externalorder.csv');
+    ctx.res.send(ctx.result.csv);
+  });
+
+  Purchaseorderrow.CSVExport = function(whereFilter, cb) {
     var toCSV = Promise.promisify(require('json2csv'));
     var findAllOrderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
 
     var filter = {
+      where: whereFilter,
       include: [
         'delivery',
         {
@@ -151,6 +156,14 @@ module.exports = function(Purchaseorderrow) {
     .nodeify(cb);
   };
 
+  Purchaseorderrow.CSVExportAll = function(cb) {
+    Purchaseorderrow.CSVExport({ }, cb);
+  };
+
+  Purchaseorderrow.CSVExportExternalOrder = function(externalorderId, cb) {
+    Purchaseorderrow.CSVExport({ externalorderId: externalorderId }, cb);
+  };
+
   //Don't expose this directly over API - allows overwriting any field
   Purchaseorderrow.setField = function(fieldName, value, ids, cb) {
     Purchaseorderrow.findByIds(ids).then(function(rows) {
@@ -184,9 +197,18 @@ module.exports = function(Purchaseorderrow) {
   });
 
   Purchaseorderrow.remoteMethod(
-    'CSVExport',
+    'CSVExportAll',
     {
       http: { path: '/CSVExport', verb: 'get' },
+      returns: { arg: 'csv', type: 'string' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'CSVExportExternalOrder',
+    {
+      http: { path: '/CSVExport/externalOrder/:externalorderId', verb: 'get' },
+      accepts: { arg: 'externalorderId', type: 'number', http: { source: 'path' } },
       returns: { arg: 'csv', type: 'string' },
     }
   );
