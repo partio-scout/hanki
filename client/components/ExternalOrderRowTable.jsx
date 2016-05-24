@@ -9,20 +9,20 @@ var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
 
-function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
+function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, restrictToRoles) {
   var DeleteRowButton = React.createClass({
     propTypes: {
       rowId: React.PropTypes.object,
-      rowDeleted: React.PropTypes.func,
+      removeRow: React.PropTypes.func,
       disabled: React.PropTypes.object,
     },
 
-    deleteRow() {
-      this.props.rowDeleted(this.props.rowId);
+    removeRowFromExternalOrder() {
+      this.props.removeRow(this.props.rowId);
     },
 
     render() {
-      return ( <Button disabled = { this.props.disabled } onClick={ this.deleteRow } className="row-inline"><span> <Glyphicon glyph="remove" /> </span> </Button> );
+      return ( <Button disabled = { this.props.disabled } onClick={ this.removeRowFromExternalOrder } className="row-inline remove-row"><span> <Glyphicon glyph="remove" /> </span> </Button> );
     },
   });
 
@@ -33,6 +33,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       purchaseOrder: React.PropTypes.object,
       costcenter: React.PropTypes.object,
       title: React.PropTypes.object,
+      delivery: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -41,10 +42,10 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       };
     },
 
-    deleteRow(rowId) {
+    removeRowFromExternalOrder(rowId) {
       var row = this.props.row;
       row.externalorderId = 0;
-      PurchaseOrderActions.updatePurchaseOrderRow(row);
+      ExternalOrderActions.updatePurchaseOrderRow(row);
     },
 
     render: function () {
@@ -55,8 +56,8 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
         <tr>
           <td className="external_order_row_name">
             <div>
-              <DeleteRowButton rowDeleted={ this.deleteRow } rowId={ row.orderRowId } disabled={ row.ordered } />
-              <ButtonLink bsStyle="link" className="edit" to="external_orders_edit_row"
+              <DeleteRowButton removeRow={ this.removeRowFromExternalOrder } rowId={ row.orderRowId } disabled={ row.ordered } />
+              <ButtonLink bsStyle="link" className="edit-row" to="external_orders_edit_row" disabled={ row.ordered }
                 params={ { purchaseOrderRow: row.orderRowId } }>
                 <Glyphicon glyph="pencil" />
               </ButtonLink>
@@ -74,6 +75,9 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
           <td>
             { this.props.costcenter.code } { this.props.purchaseOrder.name }
           </td>
+          <td>
+            { this.props.delivery.name }
+          </td>
         </tr>
       );
     },
@@ -86,6 +90,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
       readOnly: React.PropTypes.bool,
       purchaseOrders: React.PropTypes.object,
       costcenters: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -103,6 +108,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
               <th rowSpan="1">Määrä</th>
               <th rowSpan="1">Summa</th>
               <th rowSpan="4">Kohde</th>
+              <th rowSpan="4">Toimitustapa</th>
             </tr>
           </thead>
           <tbody>
@@ -111,6 +117,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
                 var order = this.props.purchaseOrders[row.orderId] || {};
                 var costcenter = _.find(this.props.costcenters, { 'costcenterId': order.costcenterId }) || {};
                 var title = this.props.titles[row.titleId] || {};
+                var delivery = this.props.deliveries[row.deliveryId] || {};
 
                 return (
                   <ExternalOrderRow
@@ -120,6 +127,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, restrictToRoles) {
                     purchaseOrder={ order }
                     title={ title }
                     costcenter={ costcenter }
+                    delivery={ delivery }
                   />
                 );
               })

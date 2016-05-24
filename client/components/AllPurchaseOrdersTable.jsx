@@ -98,10 +98,10 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                 </Td>
                 <Td column="Tuote" value={ titleName } className="title">
                   <span>
-                    <ButtonLink bsStyle="link" className="edit" to="all_purchase_orders_edit_row" params={ { purchaseOrderRow: row.orderRowId } }>
+                    <ButtonLink bsStyle="link" className="edit" to="all_purchase_orders_edit_row" disabled={ row.ordered } params={ { purchaseOrderRow: row.orderRowId } }>
                       <Glyphicon glyph="pencil" />
                     </ButtonLink>
-                    <ButtonLink bsStyle="link" className="delete" to="all_purchase_orders_delete_row" params={ { purchaseOrderRow: row.orderRowId } }>
+                    <ButtonLink bsStyle="link" className="delete" to="all_purchase_orders_delete_row" disabled={ row.ordered } params={ { purchaseOrderRow: row.orderRowId } }>
                       <Glyphicon glyph="remove" />
                     </ButtonLink>
                     <span>

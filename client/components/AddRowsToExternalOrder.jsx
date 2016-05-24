@@ -18,10 +18,10 @@ var Td = Reactable.Td;
 
 var Price = require('./utils/Price');
 
-function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions) {
+function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore) {
   var AddRowButton = React.createClass({
     propTypes: {
-      rowId: React.PropTypes.object,
+      rowId: React.PropTypes.number,
       rowAdded: React.PropTypes.func,
     },
 
@@ -31,7 +31,7 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
 
     render() {
       return (
-        <Button onClick={ this.addRow } className="row-inline"><span> <Glyphicon glyph="plus" /> </span> </Button>
+        <Button onClick={ this.addRow } className="row-inline add-row"><span> <Glyphicon glyph="plus" /> </span> </Button>
       );
     },
   });
@@ -45,11 +45,12 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
       titles: React.PropTypes.object,
       purchaseOrders: React.PropTypes.object,
       costcenters: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, TitleStore ];
+        return [ PurchaseOrderStore, TitleStore, DeliveryStore ];
       },
 
       getPropsFromStores() {
@@ -58,11 +59,12 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
           titles: TitleStore.getState().titles,
           purchaseOrders: PurchaseOrderStore.getState().allPurchaseOrders,
           costcenters: CostCenterStore.getState().allCostCenters,
+          deliveries: DeliveryStore.getState().deliveries,
         };
       },
     },
 
-    onCancel: function() {
+    onClose: function() {
       ExternalOrderActions.fetchExternalOrders();
       this.transitionTo('external_orders');
     },
@@ -75,11 +77,11 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
 
     render: function() {
       return (
-        <Modal bsSize="lg" show="true" onHide={ this.onCancel }>
+        <Modal bsSize="lg" show="true" onHide={ this.onClose }>
           <Modal.Header>
             <h3>
               <span>Lisää rivejä tilaukseen</span>
-              <Button bsStyle="inline pull-right" onClick={ this.onCancel }>Sulje</Button>
+              <Button bsStyle="inline pull-right" onClick={ this.onClose }>Sulje</Button>
             </h3>
           </Modal.Header>
           <Modal.Body>
@@ -88,13 +90,15 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
                 {
                   _(this.props.rows)
                     .filter(row => {
-                      return !row.externalorderId || row.externalorderId == 0;
+                      return (!row.externalorderId && row.deliveryId !== 1);
                     })
                     .map(row => {
                       var title = this.props.titles[row.titleId] || {};
                       var order = this.props.purchaseOrders[row.orderId] || {};
                       var costcenter = this.props.costcenters[order.costcenterId] || {};
                       var price = (row.priceOverride || title.priceWithTax) * row.amount;
+                      var delivery = this.props.deliveries[row.deliveryId] || {};
+                      var name = (row.nameOverride) ? 'Muu tuote: ' + row.nameOverride : title.name;
 
                       var memoTooltip = (
                         <Tooltip>{ row.memo }</Tooltip>
@@ -114,9 +118,9 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
                           <Td column="">
                             <AddRowButton rowId={ row.orderRowId } rowAdded={ this.addRow } />
                           </Td>
-                          <Td column="Tuote" value={ title.name }>
+                          <Td column="Tuote" value={ name }>
                             <div>
-                              { title.name || '?' }
+                              { name }
                             </div>
                           </Td>
                           <Td column="Määrä">
@@ -136,6 +140,9 @@ function getAddRowsToExternalOrder(PurchaseOrderStore, TitleStore, CostCenterSto
                           </Td>
                           <Td column="Huomiot">
                             { comment }
+                          </Td>
+                          <Td column="Toimitustapa">
+                            { delivery.name }
                           </Td>
                           <Td column="Kohde" value={ costcenter.code + ' ' + order.name }>
                             <div className="pull-left">

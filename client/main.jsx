@@ -45,11 +45,11 @@ var DeliveryStore = require('./stores/DeliveryStore')(alt, DeliveryActions);
 var TitleActions = require('./actions/TitleActions')(alt, Title, Titlegroup);
 var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 
-var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder);
+var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions);
 var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
 
 var ErrorActions = require('./actions/ErrorActions')(alt);
-var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions);
 
 // Setup stateful components
 
@@ -61,7 +61,7 @@ var getAcceptanceStatus = require('./components/AcceptanceStatus');
 var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
-var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions, restrictToRoles);
+var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
 var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles);
 var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
 
@@ -89,11 +89,11 @@ var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList);
 
-var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore));
+var ExternalOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ExternalOrders')(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore, DeliveryStore, ExternalOrderActions));
 var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
-var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions));
+var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
 
 // Setup routes
 
@@ -155,7 +155,6 @@ if (accessToken && accessToken.userId && accessTokenValid) {
   CostCenterActions.fetchAllCostCenters();
   TitleActions.fetchTitles();
   DeliveryActions.fetchDeliveries();
-  ExternalOrderActions.fetchExternalOrders();
 } else {
   deleteAccessToken();
   UserActions.fetchCurrentUser();

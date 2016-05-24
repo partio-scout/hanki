@@ -1,9 +1,9 @@
-var _ = require('lodash');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Button = ReactBootstrap.Button;
+var Label = ReactBootstrap.Label;
 
 var ReactRouterBootstrap = require('react-router-bootstrap');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
@@ -19,6 +19,7 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       purchaseOrders: React.PropTypes.object,
       costcenters: React.PropTypes.object,
       titles: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -31,20 +32,12 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       var order = this.props.externalOrder;
       order.ordered = true;
       ExternalOrderActions.updateExternalOrder(order);
-      _.forEach(this.props.orderRows, function(row) {
-        row.ordered = true;
-        PurchaseOrderActions.updatePurchaseOrderRow(row);
-      });
     },
 
     markNotOrdered: function() {
       var order = this.props.externalOrder;
       order.ordered = false;
       ExternalOrderActions.updateExternalOrder(order);
-      _.forEach(this.props.orderRows, function(row) {
-        row.ordered = false;
-        PurchaseOrderActions.updatePurchaseOrderRow(row);
-      });
     },
 
     render: function () {
@@ -54,7 +47,7 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
       var orderedStatus = <span></span>;
       if (this.props.externalOrder.ordered) {
         orderedButton = <Button bsStyle="primary" onClick={ this.markNotOrdered } className="edit" ><span> Merkitse tilaamattomaksi </span> </Button>;
-        orderedStatus = <span className="ordered-status"> TILATTU </span>;
+        orderedStatus = <Label className="ordered-status" bsStyle="success"> Tilattu </Label>;
       } else {
         orderedButton = <Button bsStyle="primary" onClick={ this.markOrdered } className="edit" ><span> Merkitse tilatuksi </span> </Button>;
       }
@@ -82,6 +75,7 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
             purchaseOrders={ this.props.purchaseOrders }
             costcenters={ this.props.costcenters }
             titles={ this.props.titles }
+            deliveries={ this.props.deliveries }
           />
         </Panel>
       );

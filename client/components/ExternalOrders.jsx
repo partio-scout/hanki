@@ -9,7 +9,7 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore) {
+function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrderList, TitleStore, CostCenterStore, DeliveryStore, ExternalOrderActions) {
   return connectToStores(React.createClass({
     propTypes: {
       externalOrders: React.PropTypes.object,
@@ -17,6 +17,7 @@ function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrder
       titles: React.PropTypes.object,
       costcenters: React.PropTypes.object,
       purchaseOrders: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     statics: {
@@ -31,8 +32,13 @@ function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrder
           titles: TitleStore.getState().titles,
           costcenters: CostCenterStore.getState().allCostCenters,
           purchaseOrders: PurchaseOrderStore.getState().allPurchaseOrders,
+          deliveries: DeliveryStore.getState().deliveries,
         };
       },
+    },
+
+    componentWillMount() {
+      ExternalOrderActions.fetchExternalOrders();
     },
 
     render() {
@@ -56,6 +62,7 @@ function getExternalOrders(ExternalOrderStore, PurchaseOrderStore, ExternalOrder
               titles={ this.props.titles }
               costcenters={ this.props.costcenters }
               purchaseOrders={ this.props.purchaseOrders }
+              deliveries={ this.props.deliveries }
             />
           </Col>
         </Row>

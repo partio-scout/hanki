@@ -10,6 +10,7 @@ function getExternalOrderList(ExternalOrder) {
       titles: React.PropTypes.object,
       costcenters: React.PropTypes.object,
       purchaseOrders: React.PropTypes.object,
+      deliveries: React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -42,6 +43,7 @@ function getExternalOrderList(ExternalOrder) {
                     purchaseOrders={ this.props.purchaseOrders }
                     costcenters={ this.props.costcenters }
                     titles={ this.props.titles }
+                    deliveries={ this.props.deliveries }
                   />
                 );
               })

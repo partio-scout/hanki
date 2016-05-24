@@ -1,21 +1,22 @@
 var _ = require('lodash');
 
-function getExternalOrderActions(alt, ExternalOrder) {
+function getExternalOrderActions(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions) {
   class ExternalOrderActions {
 
-    externalOrdersUpdateFailed(error) {
+    externalOrderError(error) {
       this.dispatch(error);
     }
 
     updateExternalOrders(externalOrders) {
       this.dispatch(externalOrders);
+      PurchaseOrderActions.fetchAllPurchaseOrders();
     }
 
     fetchExternalOrders() {
       this.dispatch();
       ExternalOrder.findAll((err, externalOrders) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.updateExternalOrders(_.indexBy(externalOrders, 'externalorderId'));
         }
@@ -26,7 +27,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.create(externalOrder, (err) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.fetchExternalOrders();
         }
@@ -37,7 +38,7 @@ function getExternalOrderActions(alt, ExternalOrder) {
       this.dispatch(externalOrder);
       ExternalOrder.update(externalOrder.externalorderId, externalOrder, (err, savedExternalOrder) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(null);
+          this.actions.externalOrderError(err);
         } else {
           this.actions.fetchExternalOrders();
         }
@@ -47,8 +48,24 @@ function getExternalOrderActions(alt, ExternalOrder) {
     deleteExternalOrder(externalOrder) {
       ExternalOrder.del(externalOrder.externalorderId, (err, deletedOrder) => {
         if (err) {
-          this.actions.externalOrdersUpdateFailed(err);
+          this.actions.externalOrderError(err);
         } else {
+          this.actions.fetchExternalOrders();
+        }
+      });
+    }
+
+    externalOrderRowUpdateFailed(err) {
+      this.dispatch(err);
+    }
+
+    updatePurchaseOrderRow(row) {
+      this.dispatch(row);
+      PurchaseOrderRow.update(row.orderRowId, row, (err, purchaseOrderRow) => {
+        if (err) {
+          this.actions.externalOrderRowUpdateFailed(err);
+        } else {
+          PurchaseOrderActions.purchaseOrderRowUpdated(purchaseOrderRow);
           this.actions.fetchExternalOrders();
         }
       });
