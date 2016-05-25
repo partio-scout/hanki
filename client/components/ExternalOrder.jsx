@@ -9,7 +9,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap');
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var ExternalOrderRowTable = require('./ExternalOrderRowTable');
 
-function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles) {
+function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles, accessToken) {
 
   var ExternalOrder = React.createClass({
     propTypes: {
@@ -68,6 +68,11 @@ function getExternalOrder(ExternalOrderActions, PurchaseOrderActions, ExternalOr
             <span> </span>
             { orderedButton }
             { orderedStatus }
+
+            <Button className="pull-right" href={ '/api/Purchaseorderrows/CSVExport/externalOrder/' + this.props.externalOrder.externalorderId + '?access_token=' + accessToken.id } bsStyle="primary">
+              <Glyphicon glyph="download-alt" />
+              <span> Lataa CSV</span>
+            </Button>
           </h2>
           <ExternalOrderRowTable
             orderRows={ this.props.orderRows }
