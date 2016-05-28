@@ -75,6 +75,8 @@ module.exports = function(Purchaseorderrow) {
           });
         } else if (ctx.result && _.isArray(ctx.result)) {
           ctx.result = _.map(ctx.result, addField);
+        } else if (ctx.result.modifiedOrder) {
+          addField(ctx.result.modifiedOrder);
         } else if (ctx.result) {
           addField(ctx.result);
         }
@@ -195,6 +197,27 @@ module.exports = function(Purchaseorderrow) {
       });
     });
   });
+
+  Purchaseorderrow.setFinalPriceAndPurchaseOrderNumber = function(data, cb) {
+    var findRow = Promise.promisify(Purchaseorderrow.findById, Purchaseorderrow);
+    var updateRow = Promise.promisify(Purchaseorderrow.upsert, Purchaseorderrow);
+    findRow(data.rowId).then(function(row) {
+      row.finalPrice = data.finalPrice;
+      row.purchaseOrderNumber = data.orderNumber;
+      row.ordered = true;
+      row.modified = (new Date()).toISOString();
+      return updateRow(row);
+    }).nodeify(cb);
+  };
+
+  Purchaseorderrow.remoteMethod(
+    'setFinalPriceAndPurchaseOrderNumber',
+    {
+      http: { path: '/setFinalPriceAndPurchaseOrderNumber', verb: 'post' },
+      accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+      returns: { arg: 'modifiedOrder', type: 'object' },
+    }
+  );
 
   Purchaseorderrow.remoteMethod(
     'CSVExportAll',
