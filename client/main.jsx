@@ -62,7 +62,7 @@ var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderR
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
 var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
-var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles);
+var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles, accessToken);
 var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
 
 // Setup main views
@@ -78,6 +78,7 @@ var DeletePurchaseOrder = require('./components/DeletePurchaseOrder')(PurchaseOr
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
+var PurchaseOrderNumberForm = require('./components/PurchaseOrderNumberForm')(PurchaseOrderActions, PurchaseOrderStore);
 
 var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
 var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewTitle')(TitleActions, TitleStore));
@@ -112,6 +113,7 @@ var routes = (
       <Route name="new_purchase_order_row" path=":purchaseOrder/new" handler={ NewPurchaseOrderRow } />
       <Route name="edit_purchase_order_row" path="rows/:purchaseOrderRow/edit" handler={ EditPurchaseOrderRow } />
       <Route name="delete_purchase_order_row" path="rows/:purchaseOrderRow/delete" handler={ DeletePurchaseOrderRow } />
+      <Route name="add_purchase_order_number" path="rows/:rowId/addPurchaseOrderNumber" handler={ PurchaseOrderNumberForm } />
     </Route>
     <Route name="title_list" path="titles" handler={ TitleList }>
       <Route name="new_title" path="new" handler={ NewTitle } />

@@ -75,6 +75,8 @@ module.exports = function(Purchaseorderrow) {
           });
         } else if (ctx.result && _.isArray(ctx.result)) {
           ctx.result = _.map(ctx.result, addField);
+        } else if (ctx.result.modifiedOrder) {
+          addField(ctx.result.modifiedOrder);
         } else if (ctx.result) {
           addField(ctx.result);
         }
@@ -94,17 +96,22 @@ module.exports = function(Purchaseorderrow) {
 
   Purchaseorderrow.afterRemote('**', Purchaseorderrow.addProhibitChangesField);
 
-  Purchaseorderrow.afterRemote('CSVExport', function(ctx, orderrow, next) {
-    ctx.res.attachment('orders.csv');
-
+  Purchaseorderrow.afterRemote('CSVExportAll', function(ctx, orderrow, next) {
+    ctx.res.attachment('orders-all.csv');
     ctx.res.send(ctx.result.csv);
   });
 
-  Purchaseorderrow.CSVExport = function(cb) {
+  Purchaseorderrow.afterRemote('CSVExportExternalOrder', function(ctx, orderrow, next) {
+    ctx.res.attachment('orders-externalorder.csv');
+    ctx.res.send(ctx.result.csv);
+  });
+
+  Purchaseorderrow.CSVExport = function(whereFilter, cb) {
     var toCSV = Promise.promisify(require('json2csv'));
     var findAllOrderrows = Promise.promisify(Purchaseorderrow.find, Purchaseorderrow);
 
     var filter = {
+      where: whereFilter,
       include: [
         'delivery',
         {
@@ -151,6 +158,14 @@ module.exports = function(Purchaseorderrow) {
     .nodeify(cb);
   };
 
+  Purchaseorderrow.CSVExportAll = function(cb) {
+    Purchaseorderrow.CSVExport({ }, cb);
+  };
+
+  Purchaseorderrow.CSVExportExternalOrder = function(externalorderId, cb) {
+    Purchaseorderrow.CSVExport({ externalorderId: externalorderId }, cb);
+  };
+
   //Don't expose this directly over API - allows overwriting any field
   Purchaseorderrow.setField = function(fieldName, value, ids, cb) {
     Purchaseorderrow.findByIds(ids).then(function(rows) {
@@ -183,10 +198,40 @@ module.exports = function(Purchaseorderrow) {
     });
   });
 
+  Purchaseorderrow.setFinalPriceAndPurchaseOrderNumber = function(data, cb) {
+    var findRow = Promise.promisify(Purchaseorderrow.findById, Purchaseorderrow);
+    var updateRow = Promise.promisify(Purchaseorderrow.upsert, Purchaseorderrow);
+    findRow(data.rowId).then(function(row) {
+      row.finalPrice = data.finalPrice;
+      row.purchaseOrderNumber = data.orderNumber;
+      row.ordered = true;
+      row.modified = (new Date()).toISOString();
+      return updateRow(row);
+    }).nodeify(cb);
+  };
+
   Purchaseorderrow.remoteMethod(
-    'CSVExport',
+    'setFinalPriceAndPurchaseOrderNumber',
+    {
+      http: { path: '/setFinalPriceAndPurchaseOrderNumber', verb: 'post' },
+      accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+      returns: { arg: 'modifiedOrder', type: 'object' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'CSVExportAll',
     {
       http: { path: '/CSVExport', verb: 'get' },
+      returns: { arg: 'csv', type: 'string' },
+    }
+  );
+
+  Purchaseorderrow.remoteMethod(
+    'CSVExportExternalOrder',
+    {
+      http: { path: '/CSVExport/externalOrder/:externalorderId', verb: 'get' },
+      accepts: { arg: 'externalorderId', type: 'number', http: { source: 'path' } },
       returns: { arg: 'csv', type: 'string' },
     }
   );

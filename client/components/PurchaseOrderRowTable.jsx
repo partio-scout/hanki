@@ -52,6 +52,15 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
           </OverlayTrigger>
         );
       }
+      var buttonLinkToPurchaseOrderNumberForm = null;
+      if (row.deliveryId === 1) {
+        buttonLinkToPurchaseOrderNumberForm = (
+          <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number"
+            disabled={ row.ordered } params={ { rowId: row.orderRowId } }>
+            <Glyphicon glyph="plus" />
+          </ButtonLink>
+        );
+      }
 
       return (
         <tr>
@@ -72,7 +81,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               { row.amount } { row.unitOverride || title.unit }
           </td>
           <td className="price">
-            <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
+            <Price value={ row.finalPrice || (row.priceOverride || title.priceWithTax) * row.amount } />
           </td>
           <td className="memo">
             { comment }
@@ -107,7 +116,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
             />
           </td>
           <td column="Tilattu">
-            { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
+            { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : buttonLinkToPurchaseOrderNumberForm }
           </td>
           <td className="delivery">
             { delivery.name }
