@@ -146,6 +146,25 @@ describe('Orderer', function() {
       })
       .end(done);
     });
+
+    it('Purchaseorderrow through setFinalPriceAndPurchaseOrderNumber', function(done) {
+      var data = {
+        rowId: ownedOrderrowId,
+        finalPrice: 1234,
+        orderNumber: '12345-Z',
+      };
+      request(app)
+      .post('/api/Purchaseorderrows/setFinalPriceAndPurchaseOrderNumber')
+      .query({ access_token: accessToken.id })
+      .send(data)
+      // .expect(200)
+      .expect(function(res) {
+        expect(res.body.modifiedOrder.finalPrice).to.equal(1234);
+        expect(res.body.modifiedOrder.purchaseOrderNumber).to.equal('12345-Z');
+        expect(res.body.modifiedOrder.ordered).to.be.true;
+      })
+      .end(done);
+    });
   });
 
   describe('should be allowed to update from costcenter they are orderer of', function() {
