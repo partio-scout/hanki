@@ -81,7 +81,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
       var row = this.props.rows[this.props.params.rowId];
       var state = {
         finalPrice: row.amount * row.priceOverride,
-        orderNumber: '',
+        orderNumber: row.purchaseOrderNumber || '',
         throughOwnBill: false,
       };
       return state;
