@@ -54,8 +54,8 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       }
       var orderedSymbol = null;
       if (row.deliveryId === 1) {
-        orderedSymbol = row.ordered ? ( <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph="plus" /> </ButtonLink>
-          ) : orderedSymbol = (<ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph="pencil" /> </ButtonLink> );
+        var symbol = row.ordered ? 'pencil' : 'plus';
+        orderedSymbol = (<ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> );
       } else {
         orderedSymbol = row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null;
       }
