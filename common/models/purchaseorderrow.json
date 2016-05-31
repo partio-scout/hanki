@@ -384,7 +384,7 @@
         "dataLength": null,
         "dataPrecision": 53,
         "dataScale": null,
-        "nullable": "NO"
+        "nullable": "YES"
       },
       "_selectable": false,
       "comments": "Muu tuote -kategoriassa tilausrivin lopullinen hinta"

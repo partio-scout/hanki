@@ -72,7 +72,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               <Glyphicon glyph="remove" />
             </ButtonLink>
              <div className="product-name">
-              { (row.nameOverride && ('Muu: ' + row.nameOverride) || title.name) }
+              { (row.nameOverride && ('Muu: ' + row.nameOverride + (row.purchaseOrderNumber && ' (' + row.purchaseOrderNumber + ')')) || title.name) }
             </div>
           </td>
           <td>
