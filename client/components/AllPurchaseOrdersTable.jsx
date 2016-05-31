@@ -68,7 +68,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             var costCenter = costCenters[purchaseOrder.costcenterId] || { };
             var title = titles[row.titleId] || { };
             var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
-            var price = (row.priceOverride || title.priceWithTax) * row.amount;
+            var price = row.finalPrice || ((row.priceOverride || title.priceWithTax) * row.amount);
             var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name;
 
             var acceptanceValue = 0;

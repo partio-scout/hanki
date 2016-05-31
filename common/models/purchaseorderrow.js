@@ -131,11 +131,13 @@ module.exports = function(Purchaseorderrow) {
         orderrow.titleName = orderrow.nameOverride;
         orderrow.titleUnit = orderrow.unitOverride;
         orderrow.price = orderrow.priceOverride;
+        orderrow.finalPrice = orderrow.finalPrice;
       } else {
         orderrow.titlegroupName = orderrow.title.titlegroup.name;
         orderrow.titleName = orderrow.title.name;
         orderrow.titleUnit = orderrow.title.unit;
         orderrow.price = orderrow.title.priceWithTax;
+        orderrow.finalPrice = null;
       }
 
       orderrow.orderName = orderrow.Order.name;
@@ -148,7 +150,7 @@ module.exports = function(Purchaseorderrow) {
     }
 
     function orderrowsToCSV(orderrows) {
-      var fields = [ 'orderRowId', 'titlegroupName',	'titleId',	'titleName', 'amount',	'titleUnit', 'price',	'deliveryDescription',	'costcenterCode',	'orderName', 'ordererEmail',	'confirmed',	'providerApproval',	'controllerApproval',	'userSectionApproval',	'ordered',	'purchaseOrderNumber',	'requestService',	'delivered',	'modified',	'memo' ];
+      var fields = [ 'orderRowId', 'titlegroupName',	'titleId',	'titleName', 'amount',	'titleUnit', 'price', 'finalPrice',	'deliveryDescription',	'costcenterCode',	'orderName', 'ordererEmail',	'confirmed',	'providerApproval',	'controllerApproval',	'userSectionApproval',	'ordered',	'purchaseOrderNumber',	'requestService',	'delivered',	'modified',	'memo' ];
       return toCSV({ data: orderrows, fields: fields });
     }
 

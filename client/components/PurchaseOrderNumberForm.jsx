@@ -80,9 +80,9 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
     getInitialState() {
       var row = this.props.rows[this.props.params.rowId];
       var state = {
-        finalPrice: row.amount * row.priceOverride,
-        orderNumber: '',
-        throughOwnBill: false,
+        finalPrice: row.finalPrice || (row.amount * row.priceOverride),
+        orderNumber: row.purchaseOrderNumber || '',
+        throughOwnBill: row.purchaseOrderNumber === '100' ? true : false,
       };
       return state;
     },
