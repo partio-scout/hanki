@@ -131,7 +131,6 @@ module.exports = function(Purchaseorderrow) {
         orderrow.titleName = orderrow.nameOverride;
         orderrow.titleUnit = orderrow.unitOverride;
         orderrow.price = orderrow.priceOverride;
-        orderrow.finalPrice = orderrow.finalPrice;
       } else {
         orderrow.titlegroupName = orderrow.title.titlegroup.name;
         orderrow.titleName = orderrow.title.name;

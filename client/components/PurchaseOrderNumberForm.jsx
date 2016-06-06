@@ -7,6 +7,9 @@ var Modal = ReactBootstrap.Modal;
 var Input = ReactBootstrap.Input;
 var Col = ReactBootstrap.Col;
 var Button = ReactBootstrap.Button;
+var ErrorMessages = require('./utils/ErrorMessages');
+
+var validateForm = require('../validation/purchaseOrderNumberForm');
 
 var connectToStores = require('alt/utils/connectToStores');
 
@@ -22,6 +25,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
         orderNumber: React.PropTypes.object,
         throughOwnBill: React.PropTypes.boolean,
       }),
+      validationErrors: React.PropTypes.array,
     },
 
     getDefaultProps: function() {
@@ -39,6 +43,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
           </Modal.Header>
           <Modal.Body>
             <form className="form-horizontal">
+              <ErrorMessages messages={ this.props.validationErrors } />
               <Col smOffset={ 3 } sm={ 9 }>
                 <Input type="checkbox" label="Ostan itse ja teen kululaskun" checkedLink={ this.props.valueLinks.throughOwnBill } />
               </Col>
@@ -80,7 +85,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
     getInitialState() {
       var row = this.props.rows[this.props.params.rowId];
       var state = {
-        finalPrice: row.finalPrice || (row.amount * row.priceOverride),
+        finalPrice: (row.finalPrice || row.finalPrice === 0) ? row.finalPrice : (row.amount * row.priceOverride),
         orderNumber: row.purchaseOrderNumber || '',
         throughOwnBill: row.purchaseOrderNumber === '100' ? true : false,
       };
@@ -92,12 +97,23 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
     },
 
     onSave: function() {
-      var orderNumber = this.state.throughOwnBill ? '100' : this.state.orderNumber;
-      var finalPrice = this.state.finalPrice;
-      var rowId = this.props.params.rowId;
+      var formInfo = {
+        finalPrice: this.state.finalPrice,
+        throughOwnBill: this.state.throughOwnBill,
+        orderNumber: this.state.orderNumber,
+      };
 
-      PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(rowId, finalPrice, orderNumber);
-      this.transitionTo('my_purchase_orders');
+      var validationErrors = validateForm(formInfo);
+      this.setState({ validationErrors: validationErrors });
+
+      if (validationErrors.length === 0) {
+        var orderNumber = this.state.throughOwnBill ? '100' : this.state.orderNumber;
+        var finalPrice = this.state.finalPrice;
+        var rowId = this.props.params.rowId;
+
+        PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(rowId, finalPrice, orderNumber);
+        this.transitionTo('my_purchase_orders');
+      }
     },
 
     render: function () {
@@ -114,6 +130,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
           onCancel={ this.onCancel }
           row={ this.props.rows[this.props.params.rowId] }
           valueLinks= { valueLinks }
+          validationErrors={ this.state.validationErrors }
         />
       );
     },
