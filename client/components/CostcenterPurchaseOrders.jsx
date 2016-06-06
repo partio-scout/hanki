@@ -11,7 +11,7 @@ var Price = require('./utils/Price');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList) {
+var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore, ExternalOrderActions, PurchaseOrderList) {
   var costCenterPurchaseOrders = React.createClass({
     mixins: [ ReactAddons.LinkedStateMixin ],
 
@@ -20,6 +20,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
       costCenters: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
     },
 
     getInitialState: function() {
@@ -28,7 +29,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ];
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore ];
       },
 
       getPropsFromStores() {
@@ -37,6 +38,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
           costCenters: CostCenterStore.getState(),
           titles: TitleStore.getState(),
           deliveries: DeliveryStore.getState(),
+          externalOrders: ExternalOrderStore.getState(),
         };
       },
     },
@@ -44,6 +46,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
     componentDidMount: function() {
       PurchaseOrderActions.fetchAllPurchaseOrders();
       CostCenterActions.fetchAllCostCenters();
+      ExternalOrderActions.fetchExternalOrders();
     },
 
     render: function () {
@@ -62,6 +65,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
           titles={ titles }
           costCenters={ this.props.costCenters.allCostCenters }
           deliveries={ this.props.deliveries.deliveries }
+          externalOrders={ this.props.externalOrders.externalOrders }
           readOnly={ true }
         />
       );

@@ -16,6 +16,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       titles: React.PropTypes.object,
       costCenter: React.PropTypes.object,
       purchaseOrder: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
     },
@@ -61,6 +62,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             purchaseOrderRows={ this.props.purchaseOrderRows }
             titles={ this.props.titles }
             deliveries={ this.props.deliveries }
+            externalOrders={ this.props.externalOrders }
             readOnly={ this.props.readOnly }
           />
           <div className="purchase-order-total-price">

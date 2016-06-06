@@ -111,8 +111,15 @@ td.delivery {
   text-overflow: ellipsis;
 }
 
+td.ordered {
+  width: 136px;
+  margin-left: 5px;
+}
+
 td.acceptance {
   text-align: center;
+  margin-top: 5px;
+  margin-right: 10px;
 
   div {
     padding: 0;
