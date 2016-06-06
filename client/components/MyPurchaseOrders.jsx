@@ -80,7 +80,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
-              externalOrders={ this.props.externalOrders }
+              externalOrders={ this.props.externalOrders.externalOrders }
               readOnly={ true }
             />
           </Col>
