@@ -12,18 +12,19 @@ var Col = ReactBootstrap.Col;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 
-var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, PurchaseOrderList) {
+var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore, ExternalOrderActions, PurchaseOrderList) {
   var myPurchaseOrders = React.createClass({
     propTypes: {
       purchaseOrders: React.PropTypes.object,
       costCenters: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
     },
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ];
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore ];
       },
 
       getPropsFromStores() {
@@ -32,16 +33,19 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
           costCenters: CostCenterStore.getState(),
           titles: TitleStore.getState(),
           deliveries: DeliveryStore.getState(),
+          externalOrders: ExternalOrderStore.getState(),
         };
       },
     },
 
     componentDidMount: function() {
       PurchaseOrderActions.fetchAllPurchaseOrders();
+      ExternalOrderActions.fetchExternalOrders();
     },
 
     componentDidUpdate: function() {
       PurchaseOrderActions.fetchAllPurchaseOrders();
+      ExternalOrderActions.fetchExternalOrders();
     },
 
     render: function () {
@@ -76,7 +80,9 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               costCenters={ this.props.costCenters.ownCostCenters }
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
+              externalOrders={ this.props.externalOrders.externalOrders }
               readOnly={ true }
+              disableAddPurchaseNumber={ false }
             />
           </Col>
         </Row>

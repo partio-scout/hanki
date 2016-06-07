@@ -26,7 +26,7 @@ module.exports = function(Costcenter) {
             var total = _.reduce(order.order_rows, function(totalOfOrderrows, row) {
               var title = row.title || { };
               var titlePrice = row.priceOverride || title.priceWithTax || 0;
-              return totalOfOrderrows + row.amount * titlePrice;
+              return totalOfOrderrows + (row.finalPrice || (row.amount * titlePrice));
             }, 0);
             return totalOfOrders + total;
           }, 0);

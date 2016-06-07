@@ -234,15 +234,15 @@
       "comments": "hankinnan hyväksyntä"
     },
     "purchaseOrderNumber": {
-      "type": "Number",
+      "type": "String",
       "required": false,
       "length": null,
       "precision": 32,
       "scale": 0,
       "postgresql": {
         "columnName": "purchase_order_number",
-        "dataType": "integer",
-        "dataLength": null,
+        "dataType": "character varying",
+        "dataLength": 255,
         "dataPrecision": 32,
         "dataScale": 0,
         "nullable": "YES"
@@ -371,6 +371,23 @@
       },
       "_selectable": false,
       "comments": "ulkoisen tilauksen numero"
+    },
+    "finalPrice": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 53,
+      "scale": null,
+      "postgresql": {
+        "columnName": "final_price",
+        "dataType": "double precision",
+        "dataLength": null,
+        "dataPrecision": 53,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "Muu tuote -kategoriassa tilausrivin lopullinen hinta"
     }
   },
   "validations": [],
@@ -488,6 +505,13 @@
       "principalId": "controller",
       "permission": "ALLOW",
       "property": "resetController"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "orderer",
+      "permission": "ALLOW",
+      "property": "setFinalPriceAndPurchaseOrderNumber"
     }
   ],
   "methods": {}

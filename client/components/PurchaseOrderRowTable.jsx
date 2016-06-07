@@ -20,10 +20,12 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       row: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      externalOrder: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -52,7 +54,29 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
           </OverlayTrigger>
         );
       }
+      var orderedSymbol = null;
+      var infoText = '';
+      if (row.deliveryId === 1) {
+        var symbol = row.ordered ? 'pencil' : 'plus';
+        if (row.purchaseOrderNumber == '100') {
+          infoText = 'Kululasku';
+        } else if (row.purchaseOrderNumber !== '0') {
+          infoText = row.purchaseOrderNumber;
+        }
+        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+      } else {
+        if (this.props.externalOrder) {
+          infoText = this.props.externalOrder.externalorderCode;
+        }
+        orderedSymbol = row.ordered ? <span> <Glyphicon glyph="ok" bsClass="glyphicon accepted" />  { infoText } </span> : null;
+      }
 
+      var price = 0;
+      if (row.finalPrice === 0 || row.finalPrice) {
+        price = row.finalPrice;
+      } else {
+        price =  (row.priceOverride || title.priceWithTax) * row.amount;
+      }
       return (
         <tr>
           <td className="purchase_order_row_name">
@@ -72,7 +96,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               { row.amount } { row.unitOverride || title.unit }
           </td>
           <td className="price">
-            <Price value={ (row.priceOverride || title.priceWithTax) * row.amount } />
+            <Price value={ price }  />
           </td>
           <td className="memo">
             { comment }
@@ -106,8 +130,8 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               onReset={ this.props.resetCallback }
             />
           </td>
-          <td column="Tilattu">
-            { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
+          <td className="ordered">
+            { orderedSymbol }
           </td>
           <td className="delivery">
             { delivery.name }
@@ -125,11 +149,13 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       purchaseOrderRows: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
       selectionCallback: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
       selectAllCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -187,10 +213,12 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
                   row={ row }
                   titles={ this.props.titles }
                   deliveries={ this.props.deliveries }
+                  externalOrder={ this.props.externalOrders[row.externalorderId] || {} }
                   readOnly={ this.props.readOnly }
                   selectionCallback={ this.props.selectionCallback }
                   isSelectedCallback={ this.props.isSelectedCallback }
                   resetCallback={ this.props.resetCallback }
+                  disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
                 />
               )
             }

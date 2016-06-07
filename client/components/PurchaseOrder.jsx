@@ -16,8 +16,10 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       titles: React.PropTypes.object,
       costCenter: React.PropTypes.object,
       purchaseOrder: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -31,7 +33,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
         var title = this.props.titles[row.titleId] || { };
         var titlePrice = row.priceOverride || title.priceWithTax || 0;
-        return total + row.amount * titlePrice;
+        return total + (row.finalPrice || (row.amount * titlePrice));
       }, 0);
 
       var canEdit = !this.props.readOnly;
@@ -61,7 +63,9 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             purchaseOrderRows={ this.props.purchaseOrderRows }
             titles={ this.props.titles }
             deliveries={ this.props.deliveries }
+            externalOrders={ this.props.externalOrders }
             readOnly={ this.props.readOnly }
+            disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />

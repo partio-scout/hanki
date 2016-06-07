@@ -218,6 +218,21 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
     error(message, err) {
       this.dispatch(message, err);
     }
+
+    setOtherProductFinalPriceAndPurchaseOrderNumber(orderRowId, finalPrice, purchaseOrderNumber) {
+      var body = {
+        rowId: orderRowId,
+        finalPrice: finalPrice,
+        orderNumber: purchaseOrderNumber,
+      };
+      PurchaseOrderRow.rawWithBody('POST', '/setFinalPriceAndPurchaseOrderNumber', body, (err, result) => {
+        if (err) {
+          this.actions.error(err);
+        } else {
+          this.actions.purchaseOrderRowUpdated(result.modifiedOrder);
+        }
+      });
+    }
   }
   return alt.createActions(PurchaseOrderActions);
 }
