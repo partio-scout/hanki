@@ -63,7 +63,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
         } else if (row.purchaseOrderNumber !== '0') {
           infoText = row.purchaseOrderNumber;
         }
-        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" disabled={ this.props.disableAddPurchaseNumber } params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
       } else {
         if (this.props.externalOrder) {
           infoText = this.props.externalOrder.externalorderCode;
