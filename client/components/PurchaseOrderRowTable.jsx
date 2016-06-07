@@ -25,6 +25,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       selectionCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -154,6 +155,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       isSelectedCallback: React.PropTypes.func,
       selectAllCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -216,6 +218,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
                   selectionCallback={ this.props.selectionCallback }
                   isSelectedCallback={ this.props.isSelectedCallback }
                   resetCallback={ this.props.resetCallback }
+                  disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
                 />
               )
             }

@@ -67,6 +67,7 @@ var getCostcenterPurchaseOrders = function(PurchaseOrderActions, CostCenterActio
           deliveries={ this.props.deliveries.deliveries }
           externalOrders={ this.props.externalOrders.externalOrders }
           readOnly={ true }
+          disableAddPurchaseNumber={ true }
         />
       );
 

@@ -82,6 +82,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               deliveries={ this.props.deliveries.deliveries }
               externalOrders={ this.props.externalOrders.externalOrders }
               readOnly={ true }
+              disableAddPurchaseNumber={ false }
             />
           </Col>
         </Row>

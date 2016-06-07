@@ -19,6 +19,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       externalOrders: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -64,6 +65,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
             deliveries={ this.props.deliveries }
             externalOrders={ this.props.externalOrders }
             readOnly={ this.props.readOnly }
+            disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
           />
           <div className="purchase-order-total-price">
             Yhteensä: <Price value={ totalPrice } />

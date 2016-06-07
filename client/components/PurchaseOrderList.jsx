@@ -11,6 +11,7 @@ function getPurchaseOrderList(PurchaseOrder) {
       deliveries: React.PropTypes.object,
       externalOrders: React.PropTypes.object,
       readOnly: React.PropTypes.bool,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -48,6 +49,7 @@ function getPurchaseOrderList(PurchaseOrder) {
                     deliveries={ deliveries }
                     externalOrders={ this.props.externalOrders }
                     readOnly={ this.props.readOnly }
+                    disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
                   />
                 );
               })
