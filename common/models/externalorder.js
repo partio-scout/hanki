@@ -37,7 +37,6 @@ module.exports = function(Externalorder) {
           if (row.ordered !== extOrder.ordered ) {
             row.ordered = extOrder.ordered;
             row.modified = (new Date()).toISOString();
-            console.log(row.orderRowId);
             return updateRow(row);
           }
           return Promise.resolve();
