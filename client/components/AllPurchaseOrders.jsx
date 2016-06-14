@@ -10,18 +10,19 @@ var connectToStores = require('alt/utils/connectToStores');
 
 var RouteHandler = require('react-router').RouteHandler;
 
-var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, AllPurchaseOrdersTable) {
+var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderActions, ExternalOrderStore, AllPurchaseOrdersTable) {
   var allPurchaseOrders = React.createClass({
     propTypes: {
       purchaseOrders: React.PropTypes.object,
       costCenters: React.PropTypes.object,
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
     },
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore ];
+        return [ PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore ];
       },
 
       getPropsFromStores() {
@@ -30,6 +31,7 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
           costCenters: CostCenterStore.getState(),
           titles: TitleStore.getState(),
           deliveries: DeliveryStore.getState(),
+          externalOrders: ExternalOrderStore.getState(),
         };
       },
     },
@@ -37,6 +39,7 @@ var getAllPurchaseOrders = function(accessToken, PurchaseOrderActions, CostCente
     componentDidMount: function() {
       PurchaseOrderActions.fetchAllPurchaseOrders();
       CostCenterActions.fetchAllCostCenters();
+      ExternalOrderActions.fetchExternalOrders();
     },
 
     render: function () {

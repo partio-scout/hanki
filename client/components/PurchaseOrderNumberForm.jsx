@@ -28,6 +28,8 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
       validationErrors: React.PropTypes.array,
     },
 
+    mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
+
     getDefaultProps: function() {
       return {
         row: {},
@@ -93,7 +95,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
     },
 
     onCancel: function() {
-      this.transitionTo('my_purchase_orders');
+      this.goBack();
     },
 
     onSave: function() {
@@ -112,7 +114,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
         var rowId = this.props.params.rowId;
 
         PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(rowId, finalPrice, orderNumber);
-        this.transitionTo('my_purchase_orders');
+        this.goBack();
       }
     },
 
