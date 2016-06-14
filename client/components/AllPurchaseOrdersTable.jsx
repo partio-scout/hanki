@@ -31,6 +31,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
       titles: React.PropTypes.object,
       deliveries: React.PropTypes.object,
       purchaseOrderRows: React.PropTypes.object,
+      externalOrders: React.PropTypes.object,
     },
 
     selectAll: function() {
@@ -70,6 +71,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
             var price = row.finalPrice || ((row.priceOverride || title.priceWithTax) * row.amount);
             var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name;
+            var externalOrder = this.props.externalOrders.externalOrders[row.externalorderId] || {};
 
             var acceptanceValue = 0;
             if (row.providerApproval === true) {
@@ -77,6 +79,23 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             }
             if (row.providerApproval === false) {
               acceptanceValue = 2;
+            }
+
+            var orderedSymbol = null;
+            var infoText = '';
+            if (row.deliveryId === 1) {
+              var symbol = row.ordered ? 'pencil' : 'plus';
+              if (row.purchaseOrderNumber == '100') {
+                infoText = 'Kululasku';
+              } else if (row.purchaseOrderNumber !== '0') {
+                infoText = row.purchaseOrderNumber;
+              }
+              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+            } else {
+              if (externalOrder) {
+                infoText = externalOrder.externalorderCode;
+              }
+              orderedSymbol = row.ordered ? <span> <Glyphicon glyph="ok" bsClass="glyphicon accepted" />  { infoText } </span> : null;
             }
 
             return (
@@ -124,8 +143,8 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   <span>{ row.amount } { row.unitOverride || title.unit }</span>
                 </Td>
                 <Td column="Summa" value={ price } className="price"><Price value={ price } /></Td>
-                <Td column="Tilattu">
-                  { row.ordered ? <Glyphicon glyph="ok" bsClass="glyphicon accepted" /> : null }
+                <Td column="Tilattu" className="ordered">
+                  { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
               </Tr>

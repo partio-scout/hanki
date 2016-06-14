@@ -25,6 +25,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       selectionCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
       isSelectedCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -62,7 +63,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
         } else if (row.purchaseOrderNumber !== '0') {
           infoText = row.purchaseOrderNumber;
         }
-        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" disabled={ this.props.disableAddPurchaseNumber } params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
       } else {
         if (this.props.externalOrder) {
           infoText = this.props.externalOrder.externalorderCode;
@@ -154,6 +155,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       isSelectedCallback: React.PropTypes.func,
       selectAllCallback: React.PropTypes.func,
       resetCallback: React.PropTypes.func,
+      disableAddPurchaseNumber: React.PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -216,6 +218,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
                   selectionCallback={ this.props.selectionCallback }
                   isSelectedCallback={ this.props.isSelectedCallback }
                   resetCallback={ this.props.resetCallback }
+                  disableAddPurchaseNumber={ this.props.disableAddPurchaseNumber }
                 />
               )
             }
