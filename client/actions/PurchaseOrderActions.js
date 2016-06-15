@@ -219,11 +219,12 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       this.dispatch(message, err);
     }
 
-    setOtherProductFinalPriceAndPurchaseOrderNumber(orderRowId, finalPrice, purchaseOrderNumber) {
+    setOtherProductFinalPriceAndPurchaseOrderNumber(orderRowId, finalPrice, purchaseOrderNumber, ordered) {
       var body = {
         rowId: orderRowId,
         finalPrice: finalPrice,
         orderNumber: purchaseOrderNumber,
+        ordered: ordered,
       };
       PurchaseOrderRow.rawWithBody('POST', '/setFinalPriceAndPurchaseOrderNumber', body, (err, result) => {
         if (err) {

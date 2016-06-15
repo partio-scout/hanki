@@ -152,6 +152,7 @@ describe('Orderer', function() {
         rowId: ownedOrderrowId,
         finalPrice: 1234,
         orderNumber: '12345-Z',
+        ordered: true,
       };
       request(app)
       .post('/api/Purchaseorderrows/setFinalPriceAndPurchaseOrderNumber')
