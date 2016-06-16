@@ -84,5 +84,13 @@
   "Externalorder": {
     "dataSource": "db",
     "public": true
+  },
+  "ArrivedDelivery": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ArrivedDeliveryRow": {
+    "dataSource": "db",
+    "public": true
   }
 }
