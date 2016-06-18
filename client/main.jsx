@@ -24,6 +24,8 @@ var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 var Delivery = new RestfulResource('/api/Deliveries', accessToken);
 var ExternalOrder = new RestfulResource('/api/Externalorders', accessToken);
+var ArrivedDelivery = new RestfulResource('/api/ArrivedDeliveries', accessToken);
+var ArrivedDeliveryRow = new RestfulResource('/api/ArrivedDeliveryRows', accessToken);
 
 // Set up Flux
 
@@ -48,8 +50,11 @@ var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions);
 var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
 
+var ArrivedDeliveryActions = require('./actions/ArrivedDeliveryActions')(alt, ArrivedDelivery, ArrivedDeliveryRow);
+var ArrivedDeliveryStore = require('./stores/ArrivedDeliveryStore')(alt, ArrivedDeliveryActions);
+
 var ErrorActions = require('./actions/ErrorActions')(alt);
-var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions, ArrivedDeliveryActions);
 
 // Setup stateful components
 
@@ -96,6 +101,8 @@ var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
 
+var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')());
+
 // Setup routes
 
 var React = require('react');
@@ -134,6 +141,7 @@ var routes = (
       <Route name="add_rows_to_external_order" path=":externalorderId/rows" handler={ AddRowsToExternalOrder } />
       <Route name="external_orders_edit_row" path=":purchaseOrderRow/editrow" handler={ EditPurchaseOrderRow } />
     </Route>
+    <Route name="arrived_deliveries" path="arrivedDeliveries" handler={ ArrivedDeliveries } />
   </Route>
 );
 
