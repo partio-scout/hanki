@@ -51,7 +51,6 @@ var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, Extern
 var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
 
 var ArrivedDeliveryActions = require('./actions/ArrivedDeliveryActions')(alt, ArrivedDelivery, ArrivedDeliveryRow);
-var ArrivedDeliveryStore = require('./stores/ArrivedDeliveryStore')(alt, ArrivedDeliveryActions);
 
 var ErrorActions = require('./actions/ErrorActions')(alt);
 var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions, ArrivedDeliveryActions);
@@ -101,7 +100,7 @@ var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
 
-var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')());
+var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')(ExternalOrderStore, ExternalOrderActions));
 
 // Setup routes
 
