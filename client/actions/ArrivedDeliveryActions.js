@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-function getArrivedDeliveryActions(alt, ArrivedDelivery, ArrivedDeliveryRow) {
+function getArrivedDeliveryActions(alt, ArrivedDelivery, ArrivedDeliveryRow, PurchaseOrderActions) {
   class ArrivedDeliveryActions {
     updateArrivedDeliveries(arrivedDeliveries) {
       this.dispatch(arrivedDeliveries);
@@ -29,6 +29,29 @@ function getArrivedDeliveryActions(alt, ArrivedDelivery, ArrivedDeliveryRow) {
           this.actions.arrivedDeliveryUpdateFailed(err);
         } else {
           this.actions.updateArrivedDeliveryRows(_.indexBy(deliveryRows, 'arrivedDeliveryRowId'));
+        }
+      });
+    }
+
+    createArrivedDeliveryWithRows(delivery, rows) {
+      this.dispatch();
+      delivery.rows = rows;
+      ArrivedDelivery.create(delivery, (err, delivery) => {
+        if (err) {
+          this.actions.arrivedDeliveryUpdateFailed(err);
+        } else {
+          var rows = _.map(delivery.rows, row => {
+            row.arrivedDeliveryId = delivery.arrivedDeliveryId;
+            return row;
+          });
+          ArrivedDeliveryRow.create(rows, (err, deliveryRows) => {
+            if (err) {
+              this.actions.arrivedDeliveryUpdateFailed(err);
+            } else {
+              this.actions.fetchArrivedDeliveries();
+              PurchaseOrderActions.fetchAllPurchaseOrders();
+            }
+          });
         }
       });
     }

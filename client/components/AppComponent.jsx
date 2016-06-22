@@ -67,7 +67,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
         );
         arrivedDeliveriesLink = (
           <AdminNavItemLink to="arrived_deliveries">
-            Saapuneet tilaukset
+            Saapuvat tilaukset
           </AdminNavItemLink>
         );
         myOrdersItem = (
