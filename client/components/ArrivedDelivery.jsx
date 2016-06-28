@@ -198,7 +198,7 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
           { saveButton }
           <form className="form-horizontal">
             <ErrorMessages messages={ this.state.validationErrors } />
-            <Input type="date" label="Saapumispäivä" valueLink={ valueLinks.arrivalDate } labelClassName="col-xs-3" wrapperClassName="col-xs-3"/>
+            <Input type="date" label="Saapumispäivä" valueLink={ valueLinks.arrivalDate } labelClassName="col-xs-9" wrapperClassName="col-xs-3"/>
           </form>
           <Table>
             <thead>
@@ -228,7 +228,7 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
             </tbody>
           </Table>
           <form className="form-horizontal">
-            <Input type="textarea" label="Kommentti" valueLink={ valueLinks.memo } labelClassName="col-xs-3" wrapperClassName="col-xs-3"/>
+            <Input type="textarea" label="Kommentti" valueLink={ valueLinks.memo } labelClassName="col-xs-8" wrapperClassName="col-xs-4"/>
           </form>
           { saveButton }
         </div>
