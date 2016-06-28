@@ -19,6 +19,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
       row: React.PropTypes.object,
       onSave: React.PropTypes.func,
       onCancel: React.PropTypes.func,
+      onReset: React.PropTypes.func,
       title: React.PropTypes.object,
       valueLinks: React.PropTypes.shape({
         finalPrice: React.PropTypes.object,
@@ -41,7 +42,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
       return (
         <Modal show="true" onHide={ this.props.onCancel }>
           <Modal.Header closeButton>
-            <Modal.Title>{ this.props.title }</Modal.Title>
+            <Modal.Title>{ this.props.title + ': ' + this.props.row.nameOverride  + ' ' + this.props.row.amount + ' ' + this.props.row.unitOverride }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form className="form-horizontal">
@@ -57,6 +58,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
             <div className="text-center">
             <Button onClick={ this.props.onSave } bsStyle="primary">Tallenna</Button>
             <Button onClick={ this.props.onCancel }>Peruuta</Button>
+            <Button onClick={ this.props.onReset }>Nollaa tilausnumero ja lopullinen hinta</Button>
             </div>
           </Modal.Footer>
         </Modal>
@@ -113,9 +115,14 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
         var finalPrice = this.state.finalPrice;
         var rowId = this.props.params.rowId;
 
-        PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(rowId, finalPrice, orderNumber);
+        PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(rowId, finalPrice, orderNumber, true);
         this.goBack();
       }
+    },
+
+    onReset: function() {
+      PurchaseOrderActions.setOtherProductFinalPriceAndPurchaseOrderNumber(this.props.params.rowId, null, '0', false);
+      this.goBack();
     },
 
     render: function () {
@@ -130,6 +137,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
           title="Syötä tilausnumero"
           onSave={ this.onSave }
           onCancel={ this.onCancel }
+          onReset={ this.onReset }
           row={ this.props.rows[this.props.params.rowId] }
           valueLinks= { valueLinks }
           validationErrors={ this.state.validationErrors }

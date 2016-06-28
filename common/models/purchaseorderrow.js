@@ -205,7 +205,7 @@ module.exports = function(Purchaseorderrow) {
     findRow(data.rowId).then(function(row) {
       row.finalPrice = data.finalPrice;
       row.purchaseOrderNumber = data.orderNumber;
-      row.ordered = true;
+      row.ordered = data.ordered;
       row.modified = (new Date()).toISOString();
       return updateRow(row);
     }).nodeify(cb);
