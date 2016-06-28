@@ -77,6 +77,13 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       } else {
         price =  (row.priceOverride || title.priceWithTax) * row.amount;
       }
+
+      var arrivedStatus = 'Ei';
+      if (row.arrivedStatus === 1) {
+        arrivedStatus = 'Osittain';
+      } else if (row.arrivedStatus === 2) {
+        arrivedStatus = 'Saapunut';
+      }
       return (
         <tr>
           <td className="purchase_order_row_name">
@@ -136,6 +143,9 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
           <td className="delivery">
             { delivery.name }
           </td>
+          <td className="arrived">
+            { arrivedStatus }
+          </td>
         </tr>
       );
     },
@@ -187,6 +197,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
               <th rowSpan="2">Tilattu</th>
               <th rowSpan="2">Toimitus</th>
+              <th rowSpan="2">Saapunut</th>
             </tr>
             <tr>
               <th>

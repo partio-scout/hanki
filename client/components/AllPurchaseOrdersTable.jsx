@@ -62,6 +62,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             <Th column="Summa">Summa</Th>
             <Th column="Tilattu">Tilattu</Th>
             <Th column="Toimitus">Toimitus</Th>
+            <Th column="Saapunut">Saapunut</Th>
           </Thead>
           { _.map(orderRows, (row) => {
             var purchaseOrder = purchaseOrders[row.orderId] || { };
@@ -96,6 +97,13 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                 infoText = externalOrder.externalorderCode;
               }
               orderedSymbol = row.ordered ? <span> <Glyphicon glyph="ok" bsClass="glyphicon accepted" />  { infoText } </span> : null;
+            }
+
+            var arrivedStatus = 'Ei';
+            if (row.arrivedStatus === 1) {
+              arrivedStatus = 'Osittain';
+            } else if (row.arrivedStatus === 2) {
+              arrivedStatus = 'Saapunut';
             }
 
             return (
@@ -147,6 +155,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
+                <Td column="Saapunut" value={ arrivedStatus } className="arrived"><span>{ arrivedStatus }</span></Td>
               </Tr>
             );
           }) }
