@@ -27,6 +27,23 @@
       "_selectable": false,
       "comments": "kpl-määrä"
     },
+    "arrivedAmount": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "arrived_amount",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "saapunut määrä"
+    },
     "approved": {
       "type": "Boolean",
       "required": true,
@@ -388,6 +405,40 @@
       },
       "_selectable": false,
       "comments": "Muu tuote -kategoriassa tilausrivin lopullinen hinta"
+    },
+    "arrivedAmount": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "arrived_amount",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "saapunut kpl-määrä"
+    },
+    "arrivedStatus": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "arrived_status",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "1 jos saapunut osittain, 2 jos kokonaan"
     }
   },
   "validations": [],
@@ -411,6 +462,11 @@
       "type": "belongsTo",
       "model": "Externalorder",
       "foreignKey": "externalorderId"
+    },
+    "ArrivedDeliveryRow": {
+      "type": "hasMany",
+      "model": "ArrivedDeliveryRow",
+      "foreignKey": "orderRowId"
     }
   },
   "acls": [

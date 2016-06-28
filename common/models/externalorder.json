@@ -247,7 +247,7 @@
         "nullable": "NO"
       },
       "_selectable": false,
-      "comments": "muokattu"
+      "comments": "saapumisaika"
     },
     "ordered": {
       "type": "Boolean",
@@ -290,6 +290,11 @@
     "order_rows": {
       "type": "hasMany",
       "model": "Purchaseorderrow",
+      "foreignKey": "externalorderId"
+    },
+    "arrivedDeliveries": {
+      "type": "hasMany",
+      "model": "ArrivedDelivery",
       "foreignKey": "externalorderId"
     }
   },
