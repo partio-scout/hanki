@@ -7,9 +7,12 @@ var connectToStores = require('alt/utils/connectToStores');
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 var Well = ReactBootstrap.Well;
+var Button = ReactBootstrap.Button;
+var Glyphicon = ReactBootstrap.Glyphicon;
+var Input = ReactBootstrap.Input;
 var ExternalOrderSelector = require('./utils/ExternalOrderSelector');
 
-function getArrivedDeliveries(ExternalOrderStore, ExternalOrderActions, PurchaseOrderStore, PurchaseOrderActions, CostCenterStore, CostCenterActions, TitleStore, TitleActions, ArrivedDelivery) {
+function getArrivedDeliveries(accessToken, ExternalOrderStore, ExternalOrderActions, PurchaseOrderStore, PurchaseOrderActions, CostCenterStore, CostCenterActions, TitleStore, TitleActions, ArrivedDelivery) {
   return connectToStores(React.createClass({
     mixins: [ ReactAddons.LinkedStateMixin ],
 
@@ -21,7 +24,11 @@ function getArrivedDeliveries(ExternalOrderStore, ExternalOrderActions, Purchase
     },
 
     getInitialState: function() {
-      return { externalorderId: 0 };
+      return {
+        externalorderId: 0,
+        externalorderIdForExport: 0,
+        arrivalDate: null,
+      };
     },
 
     statics: {
@@ -65,6 +72,8 @@ function getArrivedDeliveries(ExternalOrderStore, ExternalOrderActions, Purchase
 
     render() {
       var externalOrderLink = this.linkState('externalorderId');
+      var externalOrderLinkForExport = this.linkState('externalorderIdForExport');
+      var dateLinkForExport = this.linkState('arrivalDate');
       var rows = _.filter(this.state.purchaseOrderRows, { externalorderId: +this.state.externalorderId });
 
       var component = (
@@ -80,7 +89,7 @@ function getArrivedDeliveries(ExternalOrderStore, ExternalOrderActions, Purchase
       );
 
       if (!this.state.externalorderId) {
-        component = <div>Valitse ulkoinen tilaus.</div>;
+        component = <div></div>;
       }
 
       return (
@@ -90,6 +99,24 @@ function getArrivedDeliveries(ExternalOrderStore, ExternalOrderActions, Purchase
               Saapuvat tilaukset
             </h1>
             <Well className="filter-well">
+              <p>Saapuneiden tilausten vienti</p>
+              <form className="form-inline">
+                <ExternalOrderSelector
+                  externalOrders={ this.props.externalOrders }
+                  label="Ulkoinen tilaus"
+                  valueLink={ externalOrderLinkForExport }
+                  labelClassName="col-xs-5 text-center"
+                  wrapperClassName="col-xs-1"
+                />
+                <Input type="date" label="Saapumispäivä" valueLink={ dateLinkForExport } labelClassName="col-xs-4 text-center" wrapperClassName="col-xs-2"/>
+                <Button href={ '/api/ArrivedDeliveryRows/CSVExport/' + this.state.externalorderIdForExport + '/' + this.state.arrivalDate + '?access_token=' + accessToken.id } bsStyle="primary" >
+                  <Glyphicon glyph="download-alt" />
+                  <span> Lataa saapuneet tilaukset </span>
+                </Button>
+              </form>
+            </Well>
+            <Well className="filter-well">
+              <p>Uusi saapuva tilaus</p>
               <form className="form-horizontal">
                 <ExternalOrderSelector
                   externalOrders={ this.props.externalOrders }
