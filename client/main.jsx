@@ -101,7 +101,7 @@ var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
 
-var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')(ExternalOrderStore, ExternalOrderActions, PurchaseOrderStore, PurchaseOrderActions, CostCenterStore, CostCenterActions, TitleStore, TitleActions, ArrivedDeliveryComponent));
+var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')(accessToken, ExternalOrderStore, ExternalOrderActions, PurchaseOrderStore, PurchaseOrderActions, CostCenterStore, CostCenterActions, TitleStore, TitleActions, ArrivedDeliveryComponent));
 
 // Setup routes
 
