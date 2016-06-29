@@ -52,6 +52,13 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
       var row = this.props.row;
       var title = this.props.title;
 
+      var arrivedStatus = 'Ei';
+      if (row.arrivedStatus === 1) {
+        arrivedStatus = 'Osittain';
+      } else if (row.arrivedStatus === 2) {
+        arrivedStatus = 'Saapunut';
+      }
+
       return (
         <tr>
           <td className="external_order_row_name">
@@ -77,6 +84,9 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
           </td>
           <td>
             { this.props.delivery.name }
+          </td>
+          <td>
+            { arrivedStatus }
           </td>
         </tr>
       );
@@ -109,6 +119,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
               <th rowSpan="1">Summa</th>
               <th rowSpan="4">Kohde</th>
               <th rowSpan="4">Toimitustapa</th>
+              <th rowSpan="2">Saapunut</th>
             </tr>
           </thead>
           <tbody>
