@@ -67,10 +67,10 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
 
       return (
         <tr>
-          <th>{ this.props.title.name }</th>
+          <th>{ this.props.row.nameOverride || this.props.title.name }</th>
           <th>{ this.props.costCenter.code } { this.props.order.name }</th>
-          <th>{ this.props.row.amount } { this.props.title.unit }</th>
-          <th>{ this.props.row.arrivedAmount || 0 } { this.props.title.unit }</th>
+          <th>{ this.props.row.amount } { this.props.row.unitOverride || this.props.title.unit }</th>
+          <th>{ this.props.row.arrivedAmount || 0 } { this.props.row.unitOverride || this.props.title.unit }</th>
           <th>{ arrivedAmountInput }</th>
           <th>{ lastDeliveryCheckbox }</th>
         </tr>
