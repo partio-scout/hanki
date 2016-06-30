@@ -82,7 +82,7 @@ module.exports = function(ArrivedDeliveryRow) {
       deliveryRow.externalorderCode = deliveryRow.arrivedDelivery.externalorder.externalorderCode;
       deliveryRow.title = deliveryRow.orderRow.nameOverride || deliveryRow.orderRow.title.name;
       deliveryRow.unit = deliveryRow.orderRow.unitOverride || deliveryRow.orderRow.title.unit;
-      deliveryRow.price = ((deliveryRow.orderRow.priceOverride !== null && deliveryRow.orderRow.priceOverride) || deliveryRow.orderRow.title.priceWithTax) * deliveryRow.amount;
+      deliveryRow.price = ((deliveryRow.orderRow.priceOverride !== null && ('' + deliveryRow.orderRow.priceOverride)) || deliveryRow.orderRow.title.priceWithTax) * deliveryRow.amount;
       deliveryRow.costCenterCode = deliveryRow.orderRow.Order.costcenter.code;
       deliveryRow.orderName = deliveryRow.orderRow.Order.name;
 
