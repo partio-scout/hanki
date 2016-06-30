@@ -148,9 +148,9 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
 
       this.setState({ validationErrors: validationErrors });
 
-      // don't want to create row if nothing is delivered
+      // don't want to create row if nothing is delivered and delivery isn't final delivery
       var deliveryRows = _.filter(this.state.deliveryRows, function(r) {
-        return (!!r.amount);
+        return !(!r.amount && !r.finalDelivery);
       });
 
       if (validationErrors.length === 0) {
