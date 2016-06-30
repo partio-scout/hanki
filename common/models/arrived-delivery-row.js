@@ -77,12 +77,19 @@ module.exports = function(ArrivedDeliveryRow) {
     function organizeDeliveryRowsForExport(deliveryRow) {
       deliveryRow = deliveryRow.toJSON();
 
+      if (deliveryRow.orderRow.titleId === 0) {
+        deliveryRow.title = deliveryRow.orderRow.nameOverride;
+        deliveryRow.unit = deliveryRow.orderRow.unitOverride || 'kpl';
+        deliveryRow.price = deliveryRow.orderRow.priceOverride * deliveryRow.amount;
+      } else {
+        deliveryRow.title = deliveryRow.orderRow.title.name;
+        deliveryRow.unit = deliveryRow.orderRow.title.unit;
+        deliveryRow.price = deliveryRow.orderRow.title.priceWithTax * deliveryRow.amount;
+      }
+
       deliveryRow.arrivalDate = deliveryRow.arrivedDelivery.arrivalDate;
       deliveryRow.supplierName = deliveryRow.arrivedDelivery.externalorder.supplierName;
       deliveryRow.externalorderCode = deliveryRow.arrivedDelivery.externalorder.externalorderCode;
-      deliveryRow.title = deliveryRow.orderRow.nameOverride || deliveryRow.orderRow.title.name;
-      deliveryRow.unit = deliveryRow.orderRow.unitOverride || deliveryRow.orderRow.title.unit;
-      deliveryRow.price = ((deliveryRow.orderRow.priceOverride !== null && ('' + deliveryRow.orderRow.priceOverride)) || deliveryRow.orderRow.title.priceWithTax) * deliveryRow.amount;
       deliveryRow.costCenterCode = deliveryRow.orderRow.Order.costcenter.code;
       deliveryRow.orderName = deliveryRow.orderRow.Order.name;
 
