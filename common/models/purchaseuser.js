@@ -87,9 +87,9 @@ module.exports = function(Purchaseuser) {
       }).nodeify(cb);
   };
 
-  Purchaseuser.getDevLoginUrl = function(email, opts, cb) {
+  Purchaseuser.getLoginUrl = function(email, opts, cb) {
     var timeToLive = opts.timeToLive || 8*3600;
-    var port = opts.port || '3000';
+    var host = opts.host || 'http://localhost:3000';
 
     var query = {
       where: {
@@ -107,7 +107,7 @@ module.exports = function(Purchaseuser) {
           if (err) {
             cb(err);
           } else {
-            var url = 'http://localhost:' + port + '/dev-login/' + accessToken.id;
+            var url = host + '/login/' + accessToken.id;
             cb(null, url);
           }
         });

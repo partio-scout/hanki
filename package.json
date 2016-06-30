@@ -18,7 +18,7 @@
     "dev-teardown": "./scripts/dev-teardown.sh",
     "reset-database": "./scripts/reset-db.sh",
     "create-user": "node scripts/create-user.js",
-    "dev-login": "node scripts/dev-login.js",
+    "generate-login-link": "node scripts/generate-login-link.js",
     "console": "loopback-console ."
   },
   "engines": {
