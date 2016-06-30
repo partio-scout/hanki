@@ -28,7 +28,7 @@ Member number needs to be 7 characters long. You will need to specify at least o
 
 You can obtain a login URL by running:
 ```
-npm run dev-login <user email>
+npm run generate-login-link <user email>
 ```
 
 ### Resetting the dev database

@@ -1,5 +1,5 @@
 var appRunner = require('./utils/app-runner');
-var devLogin = require('./utils/dev-login');
+var login = require('./utils/login');
 
 describe('dev-login', function() {
   var loginUrl;
@@ -17,7 +17,7 @@ describe('dev-login', function() {
   after(appRunner.halt);
 
   beforeEach(function(done) {
-    devLogin('teuvo@tilaa.ja', function(err, url) {
+    login('teuvo@tilaa.ja', function(err, url) {
       loginUrl = url;
       done(err);
     });
