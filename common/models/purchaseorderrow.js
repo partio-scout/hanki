@@ -211,6 +211,26 @@ module.exports = function(Purchaseorderrow) {
     }).nodeify(cb);
   };
 
+  Purchaseorderrow.setRowDelivered = function(rowId, cb) {
+    var findRow = Promise.promisify(Purchaseorderrow.findById, Purchaseorderrow);
+    var updateRow = Promise.promisify(Purchaseorderrow.upsert, Purchaseorderrow);
+    findRow(rowId).then(function(row) {
+      row.delivered = true;
+      row.arrivedStatus = 'ARRIVED';
+      row.modified = (new Date()).toISOString();
+      return updateRow(row);
+    }).nodeify(cb);
+  };
+
+  Purchaseorderrow.remoteMethod(
+    'setRowDelivered',
+    {
+      http: { path: '/setRowDelivered/:rowId', verb: 'post' },
+      accepts: { arg: 'rowId', type: 'number', http: { source: 'path' } },
+      returns: { arg: 'result', type: 'string' },
+    }
+  );
+
   Purchaseorderrow.remoteMethod(
     'setFinalPriceAndPurchaseOrderNumber',
     {
