@@ -119,7 +119,7 @@ function getArrivedDeliveries(accessToken, ExternalOrderStore, ExternalOrderActi
               <form className="form-horizontal">
                 <ExternalOrderSelector
                   externalOrders={ this.props.externalOrders }
-                  label="Ulkoinen tilaus"
+                  label="Ulkoinen tilaus "
                   valueLink={ externalOrderLink }
                   labelClassName="col-xs-2 text-left"
                   wrapperClassName="col-xs-3"

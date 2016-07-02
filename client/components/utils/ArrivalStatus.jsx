@@ -1,23 +1,21 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
 
-var Button = ReactBootstrap.Button;
+var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var ArrivalStatus = React.createClass({
   propTypes: {
     row: React.PropTypes.object,
-    onMarkDelivered: React.PropTypes.func,
+    to: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
       row: {},
     };
-  },
-
-  onClick() {
-    this.props.onMarkDelivered(this.props.row.orderRowId || 0);
   },
 
   render: function() {
@@ -29,9 +27,9 @@ var ArrivalStatus = React.createClass({
         arrivalStatus = 'Saapunut';
       }
 
-      if (this.props.row.deliveryId === 1 && !this.props.row.delivered) {
+      if (this.props.row.deliveryId === 1) {
         arrivalStatus = (
-          <Button bsStyle="link" className="add" onClick={ this.onClick }> <Glyphicon glyph="ok" /> </Button>
+          <span><ButtonLink bsStyle="link" className="arrival-button" to={ this.props.to } disabled={ this.props.disabled } params={ { rowId: this.props.row.orderRowId } }><Glyphicon glyph="pencil" /> </ButtonLink> { arrivalStatus } </span>
         );
       }
     }

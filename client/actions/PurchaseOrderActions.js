@@ -235,10 +235,15 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
       });
     }
 
-    setOtherProductDelivered(rowId) {
-      PurchaseOrderRow.raw('POST', '/setRowDelivered/' + rowId, (err) => {
+    setOtherProductArrivalDateAndAmount(orderRowId, arrivalDate, amount) {
+      var body = {
+        rowId: orderRowId,
+        arrivalDate: arrivalDate,
+        amount: amount,
+      };
+      PurchaseOrderRow.rawWithBody('POST', '/setArrivalDateAndAmount', body, (err, result) => {
         if (err) {
-          this.actions.console.error(err);
+          this.actions.error(err);
         } else {
           this.actions.fetchAllPurchaseOrders();
         }

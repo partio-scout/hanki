@@ -193,7 +193,7 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
           { saveButton }
           <form className="form-horizontal">
             <ErrorMessages messages={ this.state.validationErrors } />
-            <Input type="date" label="Saapumispäivä" valueLink={ valueLinks.arrivalDate } labelClassName="col-xs-9" wrapperClassName="col-xs-3"/>
+            <Input type="date" label="Saapumispäivä " valueLink={ valueLinks.arrivalDate } labelClassName="col-xs-9" wrapperClassName="col-xs-3"/>
           </form>
           <Table>
             <thead>

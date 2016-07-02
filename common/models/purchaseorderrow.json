@@ -422,6 +422,23 @@
       },
       "_selectable": false,
       "comments": "PARTLY jos saapunut osittain, ARRIVED jos kokonaan"
+    },
+    "arrivalDate": {
+      "type": "String",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "arrival_date",
+        "dataType": "timestamp without time zone",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "saapumispäivämäärä"
     }
   },
   "validations": [],
@@ -557,7 +574,7 @@
       "principalType": "ROLE",
       "principalId": "orderer",
       "permission": "ALLOW",
-      "property": "setRowDelivered"
+      "property": "setArrivalDateAndAmount"
     }
   ],
   "methods": {}

@@ -211,30 +211,40 @@ module.exports = function(Purchaseorderrow) {
     }).nodeify(cb);
   };
 
-  Purchaseorderrow.setRowDelivered = function(rowId, cb) {
+  Purchaseorderrow.setArrivalDateAndAmount = function(data, cb) {
     var findRow = Promise.promisify(Purchaseorderrow.findById, Purchaseorderrow);
     var updateRow = Promise.promisify(Purchaseorderrow.upsert, Purchaseorderrow);
-    findRow(rowId).then(function(row) {
-      row.delivered = true;
-      row.arrivedStatus = 'ARRIVED';
+    findRow(data.rowId).then(function(row) {
+      row.arrivalDate = data.arrivalDate;
+      row.arrivedAmount = data.amount;
+      if (!row.arrivedAmount) {
+        row.arrivedStatus = null;
+        row.delivered = false;
+      } else if (row.arrivedAmount < row.amount) {
+        row.arrivedStatus = 'PARTLY';
+        row.delivered = false;
+      } else {
+        row.arrivedStatus = 'ARRIVED';
+        row.delivered = true;
+      }
       row.modified = (new Date()).toISOString();
       return updateRow(row);
     }).nodeify(cb);
   };
 
   Purchaseorderrow.remoteMethod(
-    'setRowDelivered',
+    'setFinalPriceAndPurchaseOrderNumber',
     {
-      http: { path: '/setRowDelivered/:rowId', verb: 'post' },
-      accepts: { arg: 'rowId', type: 'number', http: { source: 'path' } },
-      returns: { arg: 'result', type: 'string' },
+      http: { path: '/setFinalPriceAndPurchaseOrderNumber', verb: 'post' },
+      accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+      returns: { arg: 'modifiedOrder', type: 'object' },
     }
   );
 
   Purchaseorderrow.remoteMethod(
-    'setFinalPriceAndPurchaseOrderNumber',
+    'setArrivalDateAndAmount',
     {
-      http: { path: '/setFinalPriceAndPurchaseOrderNumber', verb: 'post' },
+      http: { path: '/setArrivalDateAndAmount', verb: 'post' },
       accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
       returns: { arg: 'modifiedOrder', type: 'object' },
     }
