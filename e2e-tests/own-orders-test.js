@@ -1,5 +1,5 @@
 var appRunner = require('./utils/app-runner');
-var devLogin = require('./utils/dev-login');
+var login = require('./utils/login');
 var Promise = require('bluebird');
 var app = require('../server/server');
 var testUtils = require('../server/test/utils/test-utils');
@@ -60,7 +60,7 @@ describe('Own orders', function() {
           orderrowId = res.body.orderRowId;
         });
       }).then(function() {
-        devLogin('tanja@tilaa.ja', function(err, url) {
+        login('tanja@tilaa.ja', function(err, url) {
           loginUrl = url;
           done(err);
         });

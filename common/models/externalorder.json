@@ -309,7 +309,7 @@
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "orderer",
+      "principalId": "$authenticated",
       "permission": "ALLOW"
     },
     {
