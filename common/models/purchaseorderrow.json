@@ -551,13 +551,6 @@
       "principalId": "orderer",
       "permission": "ALLOW",
       "property": "setFinalPriceAndPurchaseOrderNumber"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "orderer",
-      "permission": "ALLOW",
-      "property": "setRowDelivered"
     }
   ],
   "methods": {}
