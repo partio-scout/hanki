@@ -1,4 +1,4 @@
-function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions) {
+function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions, ArrivedDeliveryActions) {
   class ErrorStore {
     constructor() {
       this.errors = [ ];
@@ -20,6 +20,7 @@ function getErrorStore(alt, ErrorActions, PurchaseOrderActions, DeliveryActions,
           TitleActions.DELETE_TITLE_FAILED,
           ExternalOrderActions.EXTERNAL_ORDER_ERROR,
           ExternalOrderActions.EXTERNAL_ORDER_ROW_UPDATE_FAILED,
+          ArrivedDeliveryActions.ARRIVED_DELIVERY_UPDATE_FAILED,
         ],
         popError: ErrorActions.CONFIRM_ERROR,
       });

@@ -111,6 +111,13 @@ td.delivery {
   text-overflow: ellipsis;
 }
 
+td.arrived {
+  width: 136px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 td.ordered {
   width: 136px;
   margin-left: 5px;
@@ -173,6 +180,10 @@ td.acceptance {
 
   .ordered {
     width: 15%;
+  }
+
+  .arrived {
+    width: 20%;
   }
 }
 

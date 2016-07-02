@@ -8,6 +8,7 @@ var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 
 var Reactable = require('reactable');
 var Table = Reactable.Table;
@@ -62,6 +63,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             <Th column="Summa">Summa</Th>
             <Th column="Tilattu">Tilattu</Th>
             <Th column="Toimitus">Toimitus</Th>
+            <Th column="Saapunut">Saapunut</Th>
           </Thead>
           { _.map(orderRows, (row) => {
             var purchaseOrder = purchaseOrders[row.orderId] || { };
@@ -147,6 +149,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus row={ row } /></Td>
               </Tr>
             );
           }) }

@@ -24,6 +24,8 @@ var Title = new RestfulResource('/api/Titles', accessToken);
 var Titlegroup = new RestfulResource('/api/Titlegroups', accessToken);
 var Delivery = new RestfulResource('/api/Deliveries', accessToken);
 var ExternalOrder = new RestfulResource('/api/Externalorders', accessToken);
+var ArrivedDelivery = new RestfulResource('/api/ArrivedDeliveries', accessToken);
+var ArrivedDeliveryRow = new RestfulResource('/api/ArrivedDeliveryRows', accessToken);
 
 // Set up Flux
 
@@ -48,8 +50,10 @@ var TitleStore = require('./stores/TitleStore')(alt, TitleActions);
 var ExternalOrderActions = require('./actions/ExternalOrderActions')(alt, ExternalOrder, PurchaseOrderRow, PurchaseOrderActions);
 var ExternalOrderStore = require('./stores/ExternalOrderStore')(alt, ExternalOrderActions);
 
+var ArrivedDeliveryActions = require('./actions/ArrivedDeliveryActions')(alt, ArrivedDelivery, ArrivedDeliveryRow, PurchaseOrderActions);
+
 var ErrorActions = require('./actions/ErrorActions')(alt);
-var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions);
+var ErrorStore = require('./stores/ErrorStore')(alt, ErrorActions, PurchaseOrderActions, DeliveryActions, CostCenterActions, TitleActions, ExternalOrderActions, ArrivedDeliveryActions);
 
 // Setup stateful components
 
@@ -64,6 +68,7 @@ var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderC
 var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
 var ExternalOrderComponent = require('./components/ExternalOrder')(ExternalOrderActions, PurchaseOrderActions, ExternalOrderRowTable, restrictToRoles, accessToken);
 var ExternalOrderList = require('./components/ExternalOrderList')(ExternalOrderComponent);
+var ArrivedDeliveryComponent = require('./components/ArrivedDelivery')(ArrivedDeliveryActions);
 
 // Setup main views
 
@@ -95,6 +100,8 @@ var NewExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster']
 var EditExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var DeleteExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteExternalOrder')(ExternalOrderActions, ExternalOrderStore));
 var AddRowsToExternalOrder = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AddRowsToExternalOrder')(PurchaseOrderStore, TitleStore, CostCenterStore, PurchaseOrderActions, ExternalOrderActions, DeliveryStore));
+
+var ArrivedDeliveries = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/ArrivedDeliveries')(accessToken, ExternalOrderStore, ExternalOrderActions, PurchaseOrderStore, PurchaseOrderActions, CostCenterStore, CostCenterActions, TitleStore, TitleActions, ArrivedDeliveryComponent));
 
 // Setup routes
 
@@ -134,6 +141,7 @@ var routes = (
       <Route name="add_rows_to_external_order" path=":externalorderId/rows" handler={ AddRowsToExternalOrder } />
       <Route name="external_orders_edit_row" path=":purchaseOrderRow/editrow" handler={ EditPurchaseOrderRow } />
     </Route>
+    <Route name="arrived_deliveries" path="arrivedDeliveries" handler={ ArrivedDeliveries } />
   </Route>
 );
 
