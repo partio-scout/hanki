@@ -139,7 +139,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
             { delivery.name }
           </td>
           <td className="arrived">
-            <ArrivalStatus row={ row } />
+            <ArrivalStatus to="add_other_product_arrival" disabled={ this.props.disableAddPurchaseNumber } row={ row } />
           </td>
         </tr>
       );

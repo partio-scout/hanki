@@ -149,7 +149,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
-                <Td column="Saapunut" className="arrived"><ArrivalStatus row={ row } /></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus to="all_orders_add_other_product_arrival"  row={ row } /></Td>
               </Tr>
             );
           }) }
