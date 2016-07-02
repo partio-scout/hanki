@@ -43,11 +43,6 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
       ExternalOrderActions.fetchExternalOrders();
     },
 
-    componentDidUpdate: function() {
-      PurchaseOrderActions.fetchAllPurchaseOrders();
-      ExternalOrderActions.fetchExternalOrders();
-    },
-
     render: function () {
       var allOrders = this.props.purchaseOrders.allPurchaseOrders || {};
       var ownedCostcenterIds = _.map(this.props.costCenters.ownCostCenters, function(c) { return c.costcenterId; });
