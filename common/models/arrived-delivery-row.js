@@ -42,58 +42,69 @@ module.exports = function(ArrivedDeliveryRow) {
     var toCSV = Promise.promisify(require('json2csv'));
     var findAllDeliveryRows = Promise.promisify(ArrivedDeliveryRow.find, ArrivedDeliveryRow);
 
+    var whereFilter = {};
+    if (externalorderId) {
+      whereFilter.externalorderId = externalorderId;
+    }
+    if (Date.parse(date)) {
+      whereFilter.arrivalDate = date;
+    }
+
     var filter = {
       include: [
         {
-          arrivedDelivery: 'externalorder',
+          relation: 'arrivedDelivery',
+          scope: {
+            where: whereFilter,
+            include: {
+              relation: 'externalorder',
+            },
+          },
         },
         {
-          orderRow: [
-            'title',
-            {
-              Order: 'costcenter',
-            },
-          ],
+          relation: 'orderRow',
+          scope: {
+            include: [
+              {
+                relation: 'title',
+              },
+              {
+                relation: 'Order',
+                scope: {
+                  include: {
+                    relation: 'costcenter',
+                  },
+                },
+              },
+            ],
+          },
         },
       ],
     };
 
-    function filterDeliveryRowsBasedOnArrivalDate(row) { // to be used in lodash filter to remove rows that don't have desired arrivalDate
-      row = row.toJSON();
-      if (Date.parse(date) === Date.parse(row.arrivedDelivery.arrivalDate)) {
-        return true;
-      }
-      return false;
-    }
-
-    function filterDeliveryRowsBasedOnExternalOrder(row) {
-      row = row.toJSON();
-      if (row.arrivedDelivery.externalorderId === externalorderId) {
-        return true;
-      }
-      return false;
-    }
-
     function organizeDeliveryRowsForExport(deliveryRow) {
       deliveryRow = deliveryRow.toJSON();
 
-      if (deliveryRow.orderRow.titleId === 0) {
-        deliveryRow.title = deliveryRow.orderRow.nameOverride;
-        deliveryRow.unit = deliveryRow.orderRow.unitOverride || 'kpl';
-        deliveryRow.price = deliveryRow.orderRow.priceOverride * deliveryRow.amount;
-      } else {
-        deliveryRow.title = deliveryRow.orderRow.title.name;
-        deliveryRow.unit = deliveryRow.orderRow.title.unit;
-        deliveryRow.price = deliveryRow.orderRow.title.priceWithTax * deliveryRow.amount;
+      if (deliveryRow.arrivedDelivery) {
+        if (deliveryRow.orderRow.titleId === 0) {
+          deliveryRow.title = deliveryRow.orderRow.nameOverride;
+          deliveryRow.unit = deliveryRow.orderRow.unitOverride || 'kpl';
+          deliveryRow.price = deliveryRow.orderRow.priceOverride * deliveryRow.amount;
+        } else {
+          deliveryRow.title = deliveryRow.orderRow.title.name;
+          deliveryRow.unit = deliveryRow.orderRow.title.unit;
+          deliveryRow.price = deliveryRow.orderRow.title.priceWithTax * deliveryRow.amount;
+        }
+
+        deliveryRow.arrivalDate = deliveryRow.arrivedDelivery.arrivalDate;
+        deliveryRow.supplierName = deliveryRow.arrivedDelivery.externalorder.supplierName;
+        deliveryRow.externalorderCode = deliveryRow.arrivedDelivery.externalorder.externalorderCode;
+        deliveryRow.costCenterCode = deliveryRow.orderRow.Order.costcenter.code;
+        deliveryRow.orderName = deliveryRow.orderRow.Order.name;
+
+        return deliveryRow;
       }
-
-      deliveryRow.arrivalDate = deliveryRow.arrivedDelivery.arrivalDate;
-      deliveryRow.supplierName = deliveryRow.arrivedDelivery.externalorder.supplierName;
-      deliveryRow.externalorderCode = deliveryRow.arrivedDelivery.externalorder.externalorderCode;
-      deliveryRow.costCenterCode = deliveryRow.orderRow.Order.costcenter.code;
-      deliveryRow.orderName = deliveryRow.orderRow.Order.name;
-
-      return deliveryRow;
+      return {};
     }
 
     function deliveriesToCSV(deliveries) {
@@ -102,18 +113,6 @@ module.exports = function(ArrivedDeliveryRow) {
     }
 
     findAllDeliveryRows(filter)
-    .then(function(rows) {
-      if (Date.parse(date)) {
-        return _.filter(rows, filterDeliveryRowsBasedOnArrivalDate);
-      }
-      return rows;
-    })
-    .then(function(rows) {
-      if (externalorderId) {
-        return _.filter(rows, filterDeliveryRowsBasedOnExternalOrder);
-      }
-      return rows;
-    })
     .map(organizeDeliveryRowsForExport)
     .then(deliveriesToCSV)
     .nodeify(cb);

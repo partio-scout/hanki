@@ -108,7 +108,7 @@ function getArrivedDeliveries(accessToken, ExternalOrderStore, ExternalOrderActi
                   wrapperClassName="col-xs-1"
                 />
                 <Input type="date" label="Saapumispäivä" valueLink={ dateLinkForExport } labelClassName="col-xs-4 text-center" wrapperClassName="col-xs-2"/>
-                <Button href={ '/api/ArrivedDeliveryRows/CSVExport/' + this.state.externalorderIdForExport + '/' + this.state.arrivalDate + '?access_token=' + accessToken.id } bsStyle="primary" >
+                <Button href={ '/api/ArrivedDeliveryRows/CSVExport/' + this.state.externalorderIdForExport + '/' + (this.state.arrivalDate || 'null') + '?access_token=' + accessToken.id } bsStyle="primary" >
                   <Glyphicon glyph="download-alt" />
                   <span> Lataa saapuneet tilaukset </span>
                 </Button>
