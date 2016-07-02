@@ -12,10 +12,10 @@ module.exports = function(ArrivedDeliveryRow) {
         .then(function(orderRow) {
           orderRow.arrivedAmount = orderRow.arrivedAmount + arrivedRow.amount;
           if (arrivedRow.finalDelivery || (orderRow.arrivedAmount >= orderRow.amount)) {
-            orderRow.arrivedStatus = 2;
+            orderRow.arrivedStatus = 'ARRIVED';
             orderRow.delivered = true;
           } else {
-            orderRow.arrivedStatus = 1;
+            orderRow.arrivedStatus = 'PARTLY';
           }
           orderRow.modified = (new Date()).toISOString();
           return updateOrderRow(orderRow);

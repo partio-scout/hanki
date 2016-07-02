@@ -23,7 +23,7 @@ var ExternalOrderSelector = React.createClass({
 
     return (
       <Input type="select" {...this.props}>
-        <option value="">Valitse ulkoinen tilaus...</option>
+        <option value="0">Valitse ulkoinen tilaus...</option>
         { externalOrderOptions }
       </Input>
     );

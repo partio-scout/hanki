@@ -8,6 +8,7 @@ var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 
 var Reactable = require('reactable');
 var Table = Reactable.Table;
@@ -99,13 +100,6 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
               orderedSymbol = row.ordered ? <span> <Glyphicon glyph="ok" bsClass="glyphicon accepted" />  { infoText } </span> : null;
             }
 
-            var arrivedStatus = 'Ei';
-            if (row.arrivedStatus === 1) {
-              arrivedStatus = 'Osittain';
-            } else if (row.arrivedStatus === 2) {
-              arrivedStatus = 'Saapunut';
-            }
-
             return (
               <Tr key={ row.orderRowId }>
                 //TODO Add orderer name column
@@ -155,7 +149,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
-                <Td column="Saapunut" value={ arrivedStatus } className="arrived"><span>{ arrivedStatus }</span></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus row={ row } /></Td>
               </Tr>
             );
           }) }
