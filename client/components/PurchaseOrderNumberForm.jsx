@@ -13,14 +13,15 @@ var validateForm = require('../validation/purchaseOrderNumberForm');
 
 var connectToStores = require('alt/utils/connectToStores');
 
-var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderStore) {
+var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderStore, TitleStore) {
   var PurchaseOrderNumberFormModal = React.createClass({
     propTypes: {
       row: React.PropTypes.object,
+      title: React.PropTypes.object,
       onSave: React.PropTypes.func,
       onCancel: React.PropTypes.func,
       onReset: React.PropTypes.func,
-      title: React.PropTypes.object,
+      windowTitle: React.PropTypes.object,
       valueLinks: React.PropTypes.shape({
         finalPrice: React.PropTypes.object,
         orderNumber: React.PropTypes.object,
@@ -42,7 +43,7 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
       return (
         <Modal show="true" onHide={ this.props.onCancel }>
           <Modal.Header closeButton>
-            <Modal.Title>{ this.props.title + ': ' + this.props.row.nameOverride  + ' ' + this.props.row.amount + ' ' + this.props.row.unitOverride }</Modal.Title>
+            <Modal.Title>{ this.props.windowTitle + ': ' + (this.props.row.nameOverride || this.props.title.name)  + ' ' + this.props.row.amount + ' ' + (this.props.row.unitOverride || this.props.title.unit) }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form className="form-horizontal">
@@ -70,18 +71,20 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
     propTypes: {
       params: React.PropTypes.object,
       rows: React.PropTypes.object,
+      titles: React.PropTypes.object,
     },
 
     mixins: [ Router.Navigation, ReactAddons.LinkedStateMixin ],
 
     statics: {
       getStores() {
-        return [ PurchaseOrderStore ];
+        return [ PurchaseOrderStore, TitleStore ];
       },
 
       getPropsFromStores() {
         return {
           rows: PurchaseOrderStore.getState().purchaseOrderRows,
+          titles: TitleStore.getState().titles,
         };
       },
     },
@@ -134,11 +137,12 @@ var getPurchaseOrderNumberForm = function(PurchaseOrderActions, PurchaseOrderSto
 
       return (
         <PurchaseOrderNumberFormModal
-          title="Syötä tilausnumero"
+          windowTitle="Syötä tilausnumero"
           onSave={ this.onSave }
           onCancel={ this.onCancel }
           onReset={ this.onReset }
           row={ this.props.rows[this.props.params.rowId] }
+          title={ this.props.titles[this.props.rows[this.props.params.rowId].titleId] || {} }
           valueLinks= { valueLinks }
           validationErrors={ this.state.validationErrors }
         />

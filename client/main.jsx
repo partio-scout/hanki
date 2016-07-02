@@ -83,7 +83,7 @@ var DeletePurchaseOrder = require('./components/DeletePurchaseOrder')(PurchaseOr
 var NewPurchaseOrderRow = require('./components/NewPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var EditPurchaseOrderRow = require('./components/EditPurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore, DeliveryStore);
 var DeletePurchaseOrderRow = require('./components/DeletePurchaseOrderRow')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
-var PurchaseOrderNumberForm = require('./components/PurchaseOrderNumberForm')(PurchaseOrderActions, PurchaseOrderStore);
+var PurchaseOrderNumberForm = require('./components/PurchaseOrderNumberForm')(PurchaseOrderActions, PurchaseOrderStore, TitleStore);
 
 var TitleList = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/TitleList')(TitleStore));
 var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/NewTitle')(TitleActions, TitleStore));
