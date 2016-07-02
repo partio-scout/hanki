@@ -62,7 +62,7 @@ var ErrorNotification = require('./components/ErrorNotification')(ErrorActions, 
 var SessionTimeoutNotification = require('./components/SessionTimeoutNotification')(accessToken);
 var withAcceptances = require('./components/utils/AcceptanceContainer')(PurchaseOrderActions, restrictToRoles);
 var getAcceptanceStatus = require('./components/AcceptanceStatus');
-var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles, PurchaseOrderActions));
+var PurchaseOrderRowTable = withAcceptances(require('./components/PurchaseOrderRowTable')(getAcceptanceStatus, restrictToRoles));
 var PurchaseOrderComponent = require('./components/PurchaseOrder')(PurchaseOrderActions, PurchaseOrderRowTable, restrictToRoles);
 var PurchaseOrderList = require('./components/PurchaseOrderList')(PurchaseOrderComponent);
 var ExternalOrderRowTable = require('./components/ExternalOrderRowTable')(PurchaseOrderActions,ExternalOrderActions, restrictToRoles);
@@ -90,7 +90,7 @@ var NewTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], requir
 var EditTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/EditTitle')(TitleActions, TitleStore));
 var DeleteTitle = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/DeleteTitle')(TitleActions, TitleStore));
 
-var AllPurchaseOrdersTable = withAcceptances(require('./components/AllPurchaseOrdersTable')(getAcceptanceStatus, restrictToRoles, PurchaseOrderActions));
+var AllPurchaseOrdersTable = withAcceptances(require('./components/AllPurchaseOrdersTable')(getAcceptanceStatus, restrictToRoles));
 var AllPurchaseOrders = restrictToRoles(['procurementAdmin', 'procurementMaster'], require('./components/AllPurchaseOrders')(accessToken, PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderActions, ExternalOrderStore, AllPurchaseOrdersTable));
 
 var CostcenterPurchaseOrders = require('./components/CostcenterPurchaseOrders')(PurchaseOrderActions, CostCenterActions, PurchaseOrderStore, CostCenterStore, TitleStore, DeliveryStore, ExternalOrderStore, ExternalOrderActions, PurchaseOrderList);

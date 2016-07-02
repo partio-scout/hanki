@@ -234,16 +234,6 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
         }
       });
     }
-
-    setOtherProductDelivered(rowId) {
-      PurchaseOrderRow.raw('POST', '/setRowDelivered/' + rowId, (err) => {
-        if (err) {
-          this.actions.console.error(err);
-        } else {
-          this.actions.fetchAllPurchaseOrders();
-        }
-      });
-    }
   }
   return alt.createActions(PurchaseOrderActions);
 }

@@ -17,7 +17,7 @@ var Th = Reactable.Th;
 var Tr = Reactable.Tr;
 var Td = Reactable.Td;
 
-function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles, PurchaseOrderActions) {
+function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
   var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
   var ProcurementButton = restrictToRoles([ 'procurementMaster', 'procurementAdmin' ], Button);
 
@@ -38,10 +38,6 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles, Purchas
     selectAll: function() {
       this.props.selectAllCallback('procurement');
       return false;
-    },
-
-    markOtherProductDelivered(id) {
-      PurchaseOrderActions.setOtherProductDelivered(id);
     },
 
     render: function() {
@@ -153,7 +149,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles, Purchas
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
-                <Td column="Saapunut" className="arrived"><ArrivalStatus onMarkDelivered={ this.markOtherProductDelivered } row={ row } /></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus row={ row } /></Td>
               </Tr>
             );
           }) }

@@ -12,7 +12,7 @@ var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 
-function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles, PurchaseOrderActions) {
+function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
   var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);
   var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
 
@@ -37,10 +37,6 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles, Purchase
         readOnly: false,
         selectionCallback: _.noop,
       };
-    },
-
-    markOtherProductDelivered(id) {
-      PurchaseOrderActions.setOtherProductDelivered(id);
     },
 
     render: function () {
@@ -143,7 +139,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles, Purchase
             { delivery.name }
           </td>
           <td className="arrived">
-            <ArrivalStatus onMarkDelivered={ this.markOtherProductDelivered } row={ row } />
+            <ArrivalStatus row={ row } />
           </td>
         </tr>
       );
