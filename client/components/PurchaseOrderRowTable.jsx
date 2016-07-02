@@ -5,13 +5,14 @@ var ReactRouterBootstrap = require('react-router-bootstrap');
 
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 var Button = ReactBootstrap.Button;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Tooltip = ReactBootstrap.Tooltip;
 var OverlayTrigger = ReactBootstrap.OverlayTrigger;
 
-function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
+function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles, PurchaseOrderActions) {
   var ControllerAcceptance = getAcceptanceStatus([ 'controller' ], restrictToRoles);
   var ProcurementAcceptance = getAcceptanceStatus([ 'procurementMaster', 'procurementAdmin' ], restrictToRoles);
 
@@ -36,6 +37,10 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
         readOnly: false,
         selectionCallback: _.noop,
       };
+    },
+
+    markOtherProductDelivered(id) {
+      PurchaseOrderActions.setOtherProductDelivered(id);
     },
 
     render: function () {
@@ -78,12 +83,6 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
         price =  (row.priceOverride || title.priceWithTax) * row.amount;
       }
 
-      var arrivedStatus = 'Ei';
-      if (row.arrivedStatus === 1) {
-        arrivedStatus = 'Osittain';
-      } else if (row.arrivedStatus === 2) {
-        arrivedStatus = 'Saapunut';
-      }
       return (
         <tr>
           <td className="purchase_order_row_name">
@@ -144,7 +143,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
             { delivery.name }
           </td>
           <td className="arrived">
-            { arrivedStatus }
+            <ArrivalStatus onMarkDelivered={ this.markOtherProductDelivered } row={ row } />
           </td>
         </tr>
       );

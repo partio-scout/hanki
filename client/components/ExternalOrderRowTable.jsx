@@ -8,6 +8,7 @@ var Glyphicon = ReactBootstrap.Glyphicon;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 
 function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, restrictToRoles) {
   var DeleteRowButton = React.createClass({
@@ -52,13 +53,6 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
       var row = this.props.row;
       var title = this.props.title;
 
-      var arrivedStatus = 'Ei';
-      if (row.arrivedStatus === 1) {
-        arrivedStatus = 'Osittain';
-      } else if (row.arrivedStatus === 2) {
-        arrivedStatus = 'Saapunut';
-      }
-
       return (
         <tr>
           <td className="external_order_row_name">
@@ -86,7 +80,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
             { this.props.delivery.name }
           </td>
           <td>
-            { arrivedStatus }
+            <ArrivalStatus row={ row } />
           </td>
         </tr>
       );

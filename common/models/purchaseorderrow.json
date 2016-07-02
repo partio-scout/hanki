@@ -27,23 +27,6 @@
       "_selectable": false,
       "comments": "kpl-määrä"
     },
-    "arrivedAmount": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
-      "postgresql": {
-        "columnName": "arrived_amount",
-        "dataType": "integer",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
-        "nullable": "YES"
-      },
-      "_selectable": false,
-      "comments": "saapunut määrä"
-    },
     "approved": {
       "type": "Boolean",
       "required": true,
@@ -424,21 +407,21 @@
       "comments": "saapunut kpl-määrä"
     },
     "arrivedStatus": {
-      "type": "Number",
+      "type": "String",
       "required": false,
-      "length": null,
-      "precision": 32,
-      "scale": 0,
+      "length": 255,
+      "precision": null,
+      "scale": null,
       "postgresql": {
         "columnName": "arrived_status",
-        "dataType": "integer",
-        "dataLength": null,
-        "dataPrecision": 32,
-        "dataScale": 0,
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
         "nullable": "YES"
       },
       "_selectable": false,
-      "comments": "1 jos saapunut osittain, 2 jos kokonaan"
+      "comments": "PARTLY jos saapunut osittain, ARRIVED jos kokonaan"
     }
   },
   "validations": [],
@@ -568,6 +551,13 @@
       "principalId": "orderer",
       "permission": "ALLOW",
       "property": "setFinalPriceAndPurchaseOrderNumber"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "orderer",
+      "permission": "ALLOW",
+      "property": "setRowDelivered"
     }
   ],
   "methods": {}

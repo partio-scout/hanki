@@ -17,7 +17,7 @@ if (!email) {
   console.log('WARNING: The login link is primarily a development tool. You should not use it '
     + 'in production for other than read-only users.\n');
   console.log('Please provide the user\'s email and optional time-to-live in seconds and '
-    + 'optional root url: node dev-login.js <email> [<ttl>] [<root url>]');
+    + 'optional root url: node generate-login-link.js <email> [<ttl>] [<root url>]');
   process.exit(1);
 }
 

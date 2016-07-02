@@ -18,7 +18,6 @@ function getArrivedDeliveries(accessToken, ExternalOrderStore, ExternalOrderActi
 
     propTypes: {
       externalOrders: React.PropTypes.object,
-
       costCenters: React.PropTypes.object,
       titles: React.PropTypes.object,
     },

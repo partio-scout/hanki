@@ -17,7 +17,8 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
 
     propTypes: {
       row: React.PropTypes.object,
-      deliveryRow: React.PropTypes.object,
+      amount: React.PropTypes.object,
+      finalDelivery: React.PropTypes.bool,
       title: React.PropTypes.object,
       order: React.PropTypes.object,
       costCenter: React.PropTypes.object,
@@ -27,15 +28,15 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
 
     getInitialState() {
       return {
-        amount: this.props.deliveryRow.amount,
-        finalDelivery: this.props.deliveryRow.finalDelivery,
+        amount: this.props.amount,
+        finalDelivery: this.props.finalDelivery,
       };
     },
 
     componentWillReceiveProps(newProps) {
       this.setState({
-        amount: newProps.deliveryRow.amount,
-        finalDelivery: newProps.deliveryRow.finalDelivery,
+        amount: newProps.amount,
+        finalDelivery: newProps.finalDelivery,
       });
     },
 
@@ -52,7 +53,7 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
     render: function() {
       var arrivedAmountInput = '';
       var lastDeliveryCheckbox = '';
-      if (this.props.row.arrivedStatus != 2) {
+      if (this.props.row.arrivedStatus != 'ARRIVED') {
         arrivedAmountInput = (
           <Input type="text" value={ this.state.amount } onChange={ this.onArrivedAmountChange } wrapperClassName="col-xs-4" />
         );
@@ -97,30 +98,24 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
       };
     },
 
-    getInitialState: function() {
-      var createDeliveryRowArray = function(orderRow) {
-        return {
-          orderRowId: orderRow.orderRowId,
-          amount: orderRow.amount - orderRow.arrivedAmount,
-          finalDelivery: false,
-        };
+    createDeliveryRowArray: function(orderRow) {
+      return {
+        orderRowId: orderRow.orderRowId,
+        amount: orderRow.amount - orderRow.arrivedAmount,
+        finalDelivery: false,
       };
+    },
+
+    getInitialState: function() {
       return {
         arrivalDate: null,
         memo: '',
-        deliveryRows: _.map(this.props.purchaseOrderRows, createDeliveryRowArray),
+        deliveryRows: _.map(this.props.purchaseOrderRows, this.createDeliveryRowArray),
       };
     },
 
     componentWillReceiveProps(newProps) {
-      var createDeliveryRowArray = function(orderRow) {
-        return {
-          orderRowId: orderRow.orderRowId,
-          amount: orderRow.amount - orderRow.arrivedAmount,
-          finalDelivery: false,
-        };
-      };
-      this.setState({ deliveryRows: _.map(newProps.purchaseOrderRows, createDeliveryRowArray) });
+      this.setState({ deliveryRows: _.map(newProps.purchaseOrderRows, this.createDeliveryRowArray) });
     },
 
     onArrivedAmountChange(rowId, arrivedAmount) {
@@ -219,7 +214,8 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
                   title={ this.props.titles[row.titleId] || {} }
                   order={ this.props.purchaseOrders[row.orderId] }
                   costCenter={ this.props.costCenters[this.props.purchaseOrders[row.orderId].costcenterId] }
-                  deliveryRow={ _.find(this.state.deliveryRows, { orderRowId: row.orderRowId }) }
+                  amount={ (_.find(this.state.deliveryRows, { orderRowId: row.orderRowId })).amount }
+                  finalDelivery={ (_.find(this.state.deliveryRows, { orderRowId: row.orderRowId })).finalDelivery }
                   onArrivedAmountChange={ this.onArrivedAmountChange }
                   onFinalDeliveryChange={ this.onFinalDeliveryChange }
                 />
