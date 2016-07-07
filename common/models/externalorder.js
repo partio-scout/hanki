@@ -3,23 +3,26 @@ var Promise = require('bluebird');
 var app = require('../../server/server');
 
 module.exports = function(Externalorder) {
-  Externalorder.afterRemote('*', function(ctx, exOrder, next) {
+  Externalorder.afterRemote('create', function(ctx, exOrder, next) {
+    var updateExternalorder = Promise.promisify(Externalorder.upsert, Externalorder);
     if (ctx.result && !_.has(ctx.result, 'count')) {
       if (_.isArray(ctx.result)) {
-        ctx.result = _.map(ctx.result, function(order) {
+        ctx.result = Promise.map(ctx.result, function(order) {
           order = order.toObject();
           if (!order.externalorderCode || order.externalorderCode == '') {
             order.externalorderCode = _.padLeft(order.externalorderId, 5, '0');
+            return updateExternalorder(order);
           }
           return order;
-        });
-        next();
+        }).nodeify(next);
       } else {
         ctx.result = ctx.result.toObject();
         if (!ctx.result.externalorderCode || ctx.result.externalorderCode == '') {
           ctx.result.externalorderCode = _.padLeft(ctx.result.externalorderId, 5, '0');
+          return updateExternalorder(ctx.result).nodeify(next);
+        } else {
+          next();
         }
-        next();
       }
     } else {
       next();
