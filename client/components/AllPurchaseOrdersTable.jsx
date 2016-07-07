@@ -92,7 +92,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
               } else if (row.purchaseOrderNumber !== '0') {
                 infoText = row.purchaseOrderNumber;
               }
-              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="arrival-button" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
             } else {
               if (externalOrder) {
                 infoText = externalOrder.externalorderCode;
