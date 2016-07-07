@@ -4,7 +4,6 @@ var testUtils = require('./utils/test-utils');
 var expect = require('chai').expect;
 
 describe('External order', function() {
-  var externalOrderId;
 
   beforeEach(function(done) {
     testUtils.loginUser('procurementAdmin').then(function(accessToken) {
