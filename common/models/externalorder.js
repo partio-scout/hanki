@@ -16,7 +16,6 @@ module.exports = function(Externalorder) {
           return order;
         }).nodeify(next);
       } else {
-        ctx.result = ctx.result.toObject();
         if (!ctx.result.externalorderCode || ctx.result.externalorderCode == '') {
           ctx.result.externalorderCode = _.padLeft(ctx.result.externalorderId, 5, '0');
           return updateExternalorder(ctx.result).nodeify(next);
