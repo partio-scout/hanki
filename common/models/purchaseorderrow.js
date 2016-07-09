@@ -120,6 +120,7 @@ module.exports = function(Purchaseorderrow) {
         {
           Order: ['costcenter', 'subscriber'],
         },
+        'Externalorder',
       ],
     };
 
@@ -137,6 +138,10 @@ module.exports = function(Purchaseorderrow) {
         orderrow.titleUnit = orderrow.title.unit;
         orderrow.price = orderrow.title.priceWithTax;
         orderrow.finalPrice = null;
+
+        if (orderrow.Externalorder) {
+          orderrow.purchaseOrderNumber = orderrow.Externalorder.externalorderCode;
+        }
       }
 
       orderrow.orderName = orderrow.Order.name;

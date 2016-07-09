@@ -4,20 +4,22 @@ var testUtils = require('./utils/test-utils');
 var expect = require('chai').expect;
 
 describe('External order', function() {
-  var externalOrderId;
 
   beforeEach(function(done) {
-    testUtils.createFixture('Externalorder', {
-      'memo': 'Tämä on testi',
-      'supplierName': 'testitoimittaja',
-      'businessId': '1234567',
-    }).then(function(exOrder) {
-      externalOrderId = exOrder.externalorderId;
-    }).nodeify(done);
+    testUtils.loginUser('procurementAdmin').then(function(accessToken) {
+      request(app).post('/api/Externalorders?access_token=' + accessToken.id)
+      .send( {
+        'memo': 'Tämä on testi',
+        'supplierName': 'testitoimittaja',
+        'businessId': '1234567',
+      })
+      .expect(200)
+      .end(done);
+    });
   });
 
   afterEach(function(done) {
-    testUtils.deleteFixtureIfExists('Externalorder', externalOrderId)
+    testUtils.deleteFixturesIfExist('Externalorder')
     .nodeify(done);
   });
 
