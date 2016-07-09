@@ -179,7 +179,7 @@ td.acceptance {
   }
 
   .ordered {
-    width: 15%;
+    width: 20%;
   }
 
   .arrived {
@@ -252,6 +252,14 @@ button.row-inline {
 
 .ordered-status {
   margin-left: 10px;
+}
+
+.arrival-button {
+  outline: none;
+  border: 0;
+  background: transparent;
+  padding: 3px;
+  margin: 0;
 }
 
 .arrived-delivery-export {

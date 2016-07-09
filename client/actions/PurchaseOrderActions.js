@@ -234,6 +234,21 @@ function getPurchaseOrderActions(alt, PurchaseOrder, PurchaseOrderRow, MyPurchas
         }
       });
     }
+
+    setOtherProductArrivalDateAndAmount(orderRowId, arrivalDate, amount) {
+      var body = {
+        rowId: orderRowId,
+        arrivalDate: arrivalDate,
+        amount: amount,
+      };
+      PurchaseOrderRow.rawWithBody('POST', '/setArrivalDateAndAmount', body, (err, result) => {
+        if (err) {
+          this.actions.error(err);
+        } else {
+          this.actions.fetchAllPurchaseOrders();
+        }
+      });
+    }
   }
   return alt.createActions(PurchaseOrderActions);
 }

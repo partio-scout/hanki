@@ -98,7 +98,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
               } else if (row.purchaseOrderNumber !== '0') {
                 infoText = row.purchaseOrderNumber;
               }
-              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="arrival-button" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
             } else {
               if (externalOrder) {
                 infoText = externalOrder.externalorderCode;
@@ -155,7 +155,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
-                <Td column="Saapunut" className="arrived"><ArrivalStatus row={ row } /></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus to="all_orders_add_other_product_arrival"  row={ row } /></Td>
               </Tr>
             );
           }) }

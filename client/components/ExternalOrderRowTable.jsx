@@ -80,7 +80,7 @@ function getExternalOrderRowTable(PurchaseOrderActions, ExternalOrderActions, re
             { this.props.delivery.name }
           </td>
           <td>
-            <ArrivalStatus row={ row } />
+            <ArrivalStatus to="all_orders_add_other_product_arrival" disabled={ false } row={ row } />
           </td>
         </tr>
       );
