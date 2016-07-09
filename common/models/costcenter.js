@@ -24,9 +24,13 @@ module.exports = function(Costcenter) {
           var totalPrice = _.reduce(orders, function(totalOfOrders, order) {
             order = order.toObject();
             var total = _.reduce(order.order_rows, function(totalOfOrderrows, row) {
-              var title = row.title || { };
-              var titlePrice = row.priceOverride || title.priceWithTax || 0;
-              return totalOfOrderrows + (row.finalPrice || (row.amount * titlePrice));
+              if (row.finalPrice === 0 || row.finalPrice) {
+                return totalOfOrderrows + row.finalPrice;
+              } else {
+                var title = row.title || { };
+                var titlePrice = row.priceOverride || title.priceWithTax || 0;
+                return totalOfOrderrows + (row.amount * titlePrice);
+              }
             }, 0);
             return totalOfOrders + total;
           }, 0);
