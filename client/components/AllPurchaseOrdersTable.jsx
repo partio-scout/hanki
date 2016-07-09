@@ -71,9 +71,15 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             var costCenter = costCenters[purchaseOrder.costcenterId] || { };
             var title = titles[row.titleId] || { };
             var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
-            var price = row.finalPrice || ((row.priceOverride || title.priceWithTax) * row.amount);
             var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name;
             var externalOrder = this.props.externalOrders.externalOrders[row.externalorderId] || {};
+
+            var price = 0;
+            if (row.finalPrice === 0 || row.finalPrice) {
+              price = row.finalPrice;
+            } else {
+              price =  (row.priceOverride || title.priceWithTax) * row.amount;
+            }
 
             var acceptanceValue = 0;
             if (row.providerApproval === true) {
