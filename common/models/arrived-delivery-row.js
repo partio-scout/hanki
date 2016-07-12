@@ -14,7 +14,7 @@ module.exports = function(ArrivedDeliveryRow) {
           if (arrivedRow.finalDelivery || (orderRow.arrivedAmount >= orderRow.amount)) {
             orderRow.arrivedStatus = 'ARRIVED';
             orderRow.delivered = true;
-          } else {
+          } else if (arrivedRow.arrivedAmount) {
             orderRow.arrivedStatus = 'PARTLY';
           }
           orderRow.modified = (new Date()).toISOString();
