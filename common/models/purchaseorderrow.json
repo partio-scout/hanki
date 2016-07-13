@@ -388,6 +388,57 @@
       },
       "_selectable": false,
       "comments": "Muu tuote -kategoriassa tilausrivin lopullinen hinta"
+    },
+    "arrivedAmount": {
+      "type": "Number",
+      "required": false,
+      "length": null,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "arrived_amount",
+        "dataType": "integer",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "saapunut kpl-määrä"
+    },
+    "arrivedStatus": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "arrived_status",
+        "dataType": "character varying",
+        "dataLength": 255,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "PARTLY jos saapunut osittain, ARRIVED jos kokonaan"
+    },
+    "arrivalDate": {
+      "type": "String",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "arrival_date",
+        "dataType": "timestamp without time zone",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "_selectable": false,
+      "comments": "saapumispäivämäärä"
     }
   },
   "validations": [],
@@ -411,6 +462,11 @@
       "type": "belongsTo",
       "model": "Externalorder",
       "foreignKey": "externalorderId"
+    },
+    "ArrivedDeliveryRow": {
+      "type": "hasMany",
+      "model": "ArrivedDeliveryRow",
+      "foreignKey": "orderRowId"
     }
   },
   "acls": [
@@ -512,6 +568,13 @@
       "principalId": "orderer",
       "permission": "ALLOW",
       "property": "setFinalPriceAndPurchaseOrderNumber"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "orderer",
+      "permission": "ALLOW",
+      "property": "setArrivalDateAndAmount"
     }
   ],
   "methods": {}

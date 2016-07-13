@@ -8,6 +8,7 @@ var Button = ReactBootstrap.Button;
 var Glyphicon = ReactBootstrap.Glyphicon;
 
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 
 var Reactable = require('reactable');
 var Table = Reactable.Table;
@@ -62,6 +63,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             <Th column="Summa">Summa</Th>
             <Th column="Tilattu">Tilattu</Th>
             <Th column="Toimitus">Toimitus</Th>
+            <Th column="Saapunut">Saapunut</Th>
           </Thead>
           { _.map(orderRows, (row) => {
             var purchaseOrder = purchaseOrders[row.orderId] || { };
@@ -69,9 +71,15 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             var costCenter = costCenters[purchaseOrder.costcenterId] || { };
             var title = titles[row.titleId] || { };
             var delivery = this.props.deliveries.deliveries[row.deliveryId] || { };
-            var price = row.finalPrice || ((row.priceOverride || title.priceWithTax) * row.amount);
             var titleName = row.nameOverride && ('Muu: ' + row.nameOverride) || title.name;
             var externalOrder = this.props.externalOrders.externalOrders[row.externalorderId] || {};
+
+            var price = 0;
+            if (row.finalPrice === 0 || row.finalPrice) {
+              price = row.finalPrice;
+            } else {
+              price =  (row.priceOverride || title.priceWithTax) * row.amount;
+            }
 
             var acceptanceValue = 0;
             if (row.providerApproval === true) {
@@ -90,7 +98,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
               } else if (row.purchaseOrderNumber !== '0') {
                 infoText = row.purchaseOrderNumber;
               }
-              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+              orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="arrival-button" to="all_orders_add_purchase_order_number"  params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
             } else {
               if (externalOrder) {
                 infoText = externalOrder.externalorderCode;
@@ -147,6 +155,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
                   { orderedSymbol }
                 </Td>
                 <Td column="Toimitus" value={ delivery.deliveryId } className="delivery"><span>{ delivery.name }</span></Td>
+                <Td column="Saapunut" className="arrived"><ArrivalStatus to="all_orders_add_other_product_arrival"  row={ row } /></Td>
               </Tr>
             );
           }) }

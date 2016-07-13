@@ -111,6 +111,13 @@ td.delivery {
   text-overflow: ellipsis;
 }
 
+td.arrived {
+  width: 136px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 td.ordered {
   width: 136px;
   margin-left: 5px;
@@ -172,7 +179,11 @@ td.acceptance {
   }
 
   .ordered {
-    width: 15%;
+    width: 20%;
+  }
+
+  .arrived {
+    width: 20%;
   }
 }
 
@@ -241,4 +252,16 @@ button.row-inline {
 
 .ordered-status {
   margin-left: 10px;
+}
+
+.arrival-button {
+  outline: none;
+  border: 0;
+  background: transparent;
+  padding: 3px;
+  margin: 0;
+}
+
+.arrived-delivery-export {
+  max-width: 200px;
 }

@@ -44,6 +44,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
       var ordersItem = '';
       var titlesLink = '';
       var externalOrderLink = '';
+      var arrivedDeliveriesLink = '';
       var myOrdersItem = '';
       var costcenterPurchaseOrdersItem = '';
       var nameItem = '';
@@ -62,6 +63,11 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
         externalOrderLink = (
           <AdminNavItemLink to="external_orders">
             Ulkoiset tilaukset
+          </AdminNavItemLink>
+        );
+        arrivedDeliveriesLink = (
+          <AdminNavItemLink to="arrived_deliveries">
+            Saapuvat tilaukset
           </AdminNavItemLink>
         );
         myOrdersItem = (
@@ -95,6 +101,7 @@ function getApp(ErrorNotification, SessionTimeoutNotification, restrictToRoles, 
               { ordersItem }
               { titlesLink }
               { externalOrderLink }
+              { arrivedDeliveriesLink }
               { costcenterPurchaseOrdersItem }
               { myOrdersItem }
               { nameItem }

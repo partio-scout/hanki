@@ -31,9 +31,13 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
 
     render: function () {
       var totalPrice = _.reduce(this.props.purchaseOrderRows, (total, row) => {
-        var title = this.props.titles[row.titleId] || { };
-        var titlePrice = row.priceOverride || title.priceWithTax || 0;
-        return total + (row.finalPrice || (row.amount * titlePrice));
+        if (row.finalPrice === 0 || row.finalPrice) {
+          return total + row.finalPrice;
+        } else {
+          var title = this.props.titles[row.titleId] || { };
+          var titlePrice = row.priceOverride || title.priceWithTax || 0;
+          return total + (row.amount * titlePrice);
+        }
       }, 0);
 
       var canEdit = !this.props.readOnly;

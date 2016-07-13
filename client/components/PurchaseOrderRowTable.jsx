@@ -5,6 +5,7 @@ var ReactRouterBootstrap = require('react-router-bootstrap');
 
 var Table = ReactBootstrap.Table;
 var Price = require('./utils/Price');
+var ArrivalStatus = require('./utils/ArrivalStatus');
 var Button = ReactBootstrap.Button;
 var ButtonLink = ReactRouterBootstrap.ButtonLink;
 var Glyphicon = ReactBootstrap.Glyphicon;
@@ -63,7 +64,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
         } else if (row.purchaseOrderNumber !== '0') {
           infoText = row.purchaseOrderNumber;
         }
-        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="add" to="add_purchase_order_number" disabled={ this.props.disableAddPurchaseNumber } params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
+        orderedSymbol = ( <span> <ButtonLink bsStyle="link" className="arrival-button" to="add_purchase_order_number" disabled={ this.props.disableAddPurchaseNumber } params={ { rowId: row.orderRowId } }> <Glyphicon glyph={ symbol } /> </ButtonLink> { infoText } </span>);
       } else {
         if (this.props.externalOrder) {
           infoText = this.props.externalOrder.externalorderCode;
@@ -77,6 +78,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
       } else {
         price =  (row.priceOverride || title.priceWithTax) * row.amount;
       }
+
       return (
         <tr>
           <td className="purchase_order_row_name">
@@ -136,6 +138,9 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
           <td className="delivery">
             { delivery.name }
           </td>
+          <td className="arrived">
+            <ArrivalStatus to="add_other_product_arrival" disabled={ this.props.disableAddPurchaseNumber } row={ row } />
+          </td>
         </tr>
       );
     },
@@ -187,6 +192,7 @@ function getPurchaseOrderRowTable(getAcceptanceStatus, restrictToRoles) {
               <th colSpan="3" className="acceptance-colunms">Hyväksyntä</th>
               <th rowSpan="2">Tilattu</th>
               <th rowSpan="2">Toimitus</th>
+              <th rowSpan="2">Saapunut</th>
             </tr>
             <tr>
               <th>
