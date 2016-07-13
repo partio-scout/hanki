@@ -12,8 +12,7 @@ module.exports = function(app) {
         console.log('Login using link as user #' + accessToken.userId);
         res.cookie('accessToken', JSON.stringify(accessToken));
         res.redirect('/');
-      })
-      .catch(function(err) {
+      }, function(err) {
         console.log('Link login failed:', err);
         res.status(400).send('Kirjautumislinkki ei kelpaa');
       });
