@@ -55,7 +55,7 @@ function getArrivedDelivery(ArrivedDeliveryActions) {
       var lastDeliveryCheckbox = '';
       if (this.props.row.arrivedStatus != 'ARRIVED') {
         arrivedAmountInput = (
-          <Input type="text" value={ this.state.amount } onChange={ this.onArrivedAmountChange } wrapperClassName="col-xs-5" />
+          <Input type="text" value={ this.state.amount } onChange={ this.onArrivedAmountChange } wrapperClassName="col-xs-5" className="arrived-amount" />
         );
         lastDeliveryCheckbox = (
           <Input type="checkbox" checked={ this.state.finalDelivery } onChange={ this.onFinalDeliveryChange } wrapperClassName="col-xs-3"/>
