@@ -12,7 +12,7 @@ SCRIPT
 # Installs absolute minimun for building/running
 $install_packages = <<SCRIPT
 curl --silent --location https://deb.nodesource.com/setup_4.x | sudo bash -
-apt-get install -y --no-install-recommends build-essential git postgresql nodejs xvfb firefox openjdk-7-jre-headless
+apt-get install -y --no-install-recommends build-essential git postgresql nodejs xvfb firefox=28.0+build2-0ubuntu2 openjdk-7-jre-headless
 SCRIPT
 
 # Some configuration changes need to be made to postgres to allow local
