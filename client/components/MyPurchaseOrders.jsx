@@ -64,7 +64,7 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               Omat tilaukset
             </h1>
             <div className="toolBar">
-              <ButtonLink to="new_purchase_order" bsStyle="primary" disabled>
+              <ButtonLink to="new_purchase_order" bsStyle="primary">
                 <Glyphicon glyph="plus" />
                 <span> Uusi tilaus</span>
               </ButtonLink>
@@ -76,7 +76,6 @@ var getMyPurchaseOrders = function(PurchaseOrderActions, PurchaseOrderStore, Cos
               titles={ this.props.titles.titles }
               deliveries={ this.props.deliveries.deliveries }
               externalOrders={ this.props.externalOrders.externalOrders }
-              readOnly={ true }
               disableAddPurchaseNumber={ false }
             />
           </Col>
