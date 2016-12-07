@@ -24,9 +24,9 @@ module.exports = function(ArrivedDeliveryRow) {
 
     if (ctx.result) {
       if (_.isArray(ctx.result)) {
-        return Promise.each(ctx.result, updateOrderRowBasedOnArrivedRow).nodeify(next);
+        return Promise.each(ctx.result, updateOrderRowBasedOnArrivedRow);
       } else {
-        return updateOrderRowBasedOnArrivedRow(ctx.result).nodeify(next);
+        return updateOrderRowBasedOnArrivedRow(ctx.result);
       }
     } else {
       next();
@@ -112,10 +112,9 @@ module.exports = function(ArrivedDeliveryRow) {
       return toCSV({ data: deliveries, fields: fields });
     }
 
-    findAllDeliveryRows(filter)
-    .map(organizeDeliveryRowsForExport)
-    .then(deliveriesToCSV)
-    .nodeify(cb);
+    return findAllDeliveryRows(filter)
+      .map(organizeDeliveryRowsForExport)
+      .then(deliveriesToCSV);
   };
 
   ArrivedDeliveryRow.remoteMethod(

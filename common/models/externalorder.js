@@ -18,7 +18,7 @@ module.exports = function(Externalorder) {
       } else {
         if (!ctx.result.externalorderCode || ctx.result.externalorderCode == '') {
           ctx.result.externalorderCode = _.padLeft(ctx.result.externalorderId, 5, '0');
-          return updateExternalorder(ctx.result).nodeify(next);
+          return updateExternalorder(ctx.result);
         } else {
           next();
         }
@@ -80,7 +80,7 @@ module.exports = function(Externalorder) {
     }
 
     if (ctx.result) {
-      handleUpdatingRowsOfResult(ctx.result).nodeify(next);
+      return handleUpdatingRowsOfResult(ctx.result);
     } else {
       next();
     }
