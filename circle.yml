@@ -6,11 +6,6 @@ machine:
 database:
   override:
     - npm run dev-setup
-deployment:
-  demo:
-    branch: demo
-    heroku:
-      appname: fj16-procurement-demo
 dependencies:
   post:
     - wget --no-verbose -O "selenium-server-standalone.jar" "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
