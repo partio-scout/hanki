@@ -12,7 +12,7 @@ var conf = {
 var partioid = new SAML(conf);
 
 function processError(req, res, err) {
-  res.status(500).send('Oho! Nyt tapahtui virhe. Jos tällaista tapahtuu uudelleen, ole yhteydessä digitaaliset.palvelut@roihu2016.fi. Sori! :(');
+  res.status(500).send('Oho! Nyt tapahtui virhe. Jos tällaista tapahtuu uudelleen, ole yhteydessä ylläpitoon. Sori! :(');
   console.error(err);
 }
 
