@@ -187,13 +187,13 @@ describe('CSVExport', function() {
       });
     }
 
-    expectedCSV = '"0313","Testitilaus","testi@testitilaaja.com"';
+    expectedCSV = '"0313";"Testitilaus";"testi@testitilaaja.com"';
     itShould('add order name, costcenterId and ordererEmail to purchaseorderrow', expectedCSV);
 
-    expectedCSV = '"Testituote",89,"m",375';
+    expectedCSV = '"Testituote";89;"m";375';
     itShould('add title name, unit and price ', expectedCSV);
 
-    expectedCSV = '"Tuntematon tuote",0,"kappale",107';
+    expectedCSV = '"Tuntematon tuote";0;"kappale";107';
     itShould('add title name, unit and price from orderrow if titlegroup is "Muu tuote"', expectedCSV);
 
     expectedCSV = '"Testitoimitus tulee milloin tulee"';
