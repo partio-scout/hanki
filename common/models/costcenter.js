@@ -46,15 +46,15 @@ module.exports = function(Costcenter) {
 
     if (ctx.result) {
       if (_.isArray(ctx.result)) { // handling many costcenters
-        Promise.map(ctx.result, countTotalPriceOfOrders)
+        return Promise.map(ctx.result, countTotalPriceOfOrders)
         .then(function(costcenters) {
           ctx.result = costcenters;
-        }).nodeify(next);
+        });
       } else { // only one costcenter
-        countTotalPriceOfOrders(ctx.result)
+        return countTotalPriceOfOrders(ctx.result)
         .then(function(costcenter) {
           ctx.result = costcenter;
-        }).nodeify(next);
+        });
       }
     }
   });

@@ -79,15 +79,14 @@ module.exports = function(Purchaseorder) {
       }
     }
 
-    getDeletedOrderIds(ctx)
+    return getDeletedOrderIds(ctx)
       .then(function (orderIds) { return destroyAllPurchaseOrderRow({ orderId: orderIds }); })
       .catch(function (err) {
         var newError = new Error('Aborting delete, couldn\'t delete all purchase order rows.');
         newError.statusCode = 500;
         newError.originalError = err;
         throw newError;
-      })
-      .nodeify(next);
+      });
   });
 
   Purchaseorder.checkIfUserHasCostcenter = function(costcenterRelation, costcenterId, userId) {
@@ -143,8 +142,7 @@ module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('prototype.__updateById__order_rows', function(ctx, purchaseOrder, next) {
     if (ctx.args.data) {
       return Purchaseorder.canOrdererEditOrDelete(ctx.instance, ctx.req.accessToken.userId)
-        .then(proceedIfEverythingAllowed)
-        .nodeify(next);
+        .then(proceedIfEverythingAllowed);
     }
     next();
   });
@@ -157,8 +155,7 @@ module.exports = function(Purchaseorder) {
       }).then(function(order) {
         return Purchaseorder.canOrdererEditOrDelete(order, ctx.req.accessToken.userId);
       })
-      .then(proceedIfEverythingAllowed)
-      .nodeify(next);
+      .then(proceedIfEverythingAllowed);
     }
     next();
   });
@@ -166,8 +163,7 @@ module.exports = function(Purchaseorder) {
   Purchaseorder.beforeRemote('prototype.updateAttributes', function(ctx, purchaseOrder, next) {
     if (ctx.args.data) {
       return Purchaseorder.canOrdererEditOrDelete(ctx.instance, ctx.req.accessToken.userId)
-        .then(proceedIfEverythingAllowed)
-        .nodeify(next);
+        .then(proceedIfEverythingAllowed);
     }
     next();
   });
@@ -179,8 +175,7 @@ module.exports = function(Purchaseorder) {
       .then(function(order) {
         return Purchaseorder.canOrdererEditOrDelete(order, ctx.req.accessToken.userId);
       })
-      .then(proceedIfEverythingAllowed)
-      .nodeify(next);
+      .then(proceedIfEverythingAllowed);
     }
     next();
   });
