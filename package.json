@@ -64,7 +64,7 @@
     "uglify-js": "^2.5.0",
     "url-loader": "^0.5.6",
     "validator": "^4.2.1",
-    "webpack": "^1.13.0"
+    "webpack": "^2.0.0"
   },
   "optionalDependencies": {
     "loopback-component-explorer": "^2.1.1"
