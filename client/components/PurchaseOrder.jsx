@@ -46,7 +46,7 @@ function getPurchaseOrder(PurchaseOrderActions, PurchaseOrderRowTable, restrictT
       return (
         <Panel className="purchase-order">
           <h2>
-            { this.props.costCenter.code } { this.props.purchaseOrder.name }
+            { this.props.costCenter.code } { this.props.purchaseOrder.orderId + ' / ' + this.props.purchaseOrder.name }
             <ButtonLink bsStyle="link" className="edit" to="edit_purchase_order"
               disabled={ !canEdit } params={ { purchaseOrder: this.props.purchaseOrder.orderId } }>
               <Glyphicon glyph="pencil" />

@@ -64,6 +64,7 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             <Th column="Tilattu">Tilattu</Th>
             <Th column="Toimitus">Toimitus</Th>
             <Th column="Saapunut">Saapunut</Th>
+
           </Thead>
           { _.map(orderRows, (row) => {
             var purchaseOrder = purchaseOrders[row.orderId] || { };
@@ -109,11 +110,11 @@ function getAllPurchaseOrdersTable(getAcceptanceStatus, restrictToRoles) {
             return (
               <Tr key={ row.orderRowId }>
                 //TODO Add orderer name column
-                <Td column="Kohde" value={ costCenter.code + ' ' + purchaseOrder.name } className="order">
+                <Td column="Kohde" value={ costCenter.code + ' ' + purchaseOrder.orderId + ' ' + purchaseOrder.name } className="order">
                   <div>
                     <div className="pull-left">
                       <div>{ costCenter.code }</div>
-                      <div>{ purchaseOrder.name }</div>
+                      <div>{ purchaseOrder.orderId + ' / ' + purchaseOrder.name }</div>
                     </div>
                     <div className="pull-right">
                       <ButtonLink bsStyle="link" className="new" title="Luo uusi rivi tilaukseen"
