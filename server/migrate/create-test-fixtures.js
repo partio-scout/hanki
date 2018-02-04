@@ -5,11 +5,9 @@ var Promise = require('bluebird');
 var fixturesToImport = [
   'Purchaseuser',
   'Account',
-  'Titlegroup',
+  //'Titlegroup',
   'Title',
   'Supplier',
-  'Delivery',
-  'Costcenter',
   'Purchaseorder',
   'Purchaseorderrow',
   'RoleMapping',

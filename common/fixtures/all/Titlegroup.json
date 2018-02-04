@@ -1,3 +1,8 @@
 [
-  { "titlegroupId": 0, "name": "Muu tuote", "description": "Muu tuote"}
+  { "titlegroupId": 0, "name": "Muu tuote", "description": "Muu tuote"},
+  { "titlegroupId": 1, "name": "Rautatavara", "description": "Pultit ja mutterit" },
+  { "titlegroupId": 2, "name": "Puutavara", "description": "Laudat ja lankut" },
+  { "titlegroupId": 3, "name": "Keittiötavara", "description": "Kahvinkeittimet ja kattilat" },
+  { "titlegroupId": 4, "name": "Työkalut", "description": "Vasarat ja sahat" },
+  { "titlegroupId": 5, "name": "Rakennelmat", "description": "Teltat ja hallit" }
 ]

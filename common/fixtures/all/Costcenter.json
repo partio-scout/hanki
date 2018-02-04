@@ -1,0 +1,26 @@
+[
+  {
+    "code": "00000",
+    "name": "Resurssi",
+    "approverUserId": 2,
+    "controllerUserId": 3
+  },
+  {
+    "code": "00001",
+    "name": "Ohjelma",
+    "approverUserId": 2,
+    "controllerUserId": 3
+  },
+  {
+    "code": "00002",
+    "name": "Yhteisohjelma",
+    "approverUserId": 2,
+    "controllerUserId": 3
+  },
+  {
+    "code": "00003",
+    "name": "ATK",
+    "approverUserId": 2,
+    "controllerUserId": 3
+  }
+]
