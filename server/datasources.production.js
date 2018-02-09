@@ -1,6 +1,6 @@
 module.exports = {
   'db': {
     'connector': 'postgresql',
-    'url': process.env.DATABASE_URL,
+    'url': process.env.DATABASE_URL + '?sslmode=require',
   },
 };
